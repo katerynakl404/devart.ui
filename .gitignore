@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.tsbuildinfo
+.turbo/
+storybook-static/
+coverage/
+*.log
+junit.xml
+*.tgz
+.DS_Store
+.env
+.env.*
+!.env.example

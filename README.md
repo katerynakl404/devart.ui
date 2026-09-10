@@ -1,93 +1,271 @@
-# Devart.UI.React
+# @insightis/ui
 
+Shared component library built on Radix UI primitives, Tailwind CSS, and CVA variants.
 
+## Peer dependencies
 
-## Getting started
+Consumers must provide:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+| Peer | Range | Notes |
+|---|---|---|
+| `react` | `^19` | Never nested from this package — dual React → "Invalid hook call" |
+| `react-dom` | `^19` | Required by Radix primitives |
+| `tailwindcss` | `^3.4` | Required by `@insightis/ui/tailwind-preset` |
+| `@types/react` | `^19` | Optional (`peerDependenciesMeta`) |
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Importing
 
-## Add your files
+Always use subpath imports — never barrel-import from `@insightis/ui`:
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
+```ts
+import { Button } from '@insightis/ui/Button';
+import { Modal, ModalContent, ModalHeader, ModalTitle, ModalBody, ModalFooter } from '@insightis/ui/Modal';
+import { cn } from '@insightis/ui/cn';
+import { useIsMobile } from '@insightis/ui/use-mobile';
 ```
-cd existing_repo
-git remote add origin https://git.devart.com/devart/components/devart.ui.react.git
-git branch -M master
-git push -uf origin master
+
+To set up Tailwind in a consuming app:
+
+```ts
+// tailwind.config.ts
+import { preset, contentGlobs } from '@insightis/ui/tailwind-preset';
+
+export default {
+  presets: [preset],
+  content: ['./src/**/*.{ts,tsx}', ...contentGlobs],
+  theme: { extend: { /* app-own additions only */ } },
+};
 ```
 
-## Integrate with your tools
+Tailwind v3 presets do not merge `content` — spreading `contentGlobs` (absolute globs into the package's `src` and `dist`) is mandatory, not optional, or the package's own class names never get generated.
 
-* [Set up project integrations](https://git.devart.com/devart/components/devart.ui.react/-/settings/integrations)
+```css
+/* globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-## Collaborate with your team
+@import '@insightis/ui/globals.css'; /* tokens only */
+@import '@insightis/ui/fonts.css';   /* optional: self-hosted DM Sans — skip if you ship your own font and set --font-sans */
+```
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+`@insightis/ui/globals.css` is pure CSS-variable declarations, with no `@tailwind` directives of its own — the consumer owns those, so Tailwind's base/reset never runs twice.
 
-## Test and Deploy
+---
 
-Use the built-in continuous integration in GitLab.
+## Client-only package
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+`@insightis/ui` is a client-only package — every component and hook it ships requires the React client runtime. Every public entry point carries the `'use client'` directive, so a consumer using React Server Components can import any of them directly from a server component without adding its own `'use client'` boundary.
 
-***
+- The public API is subpath-only (`@insightis/ui/Button`, `@insightis/ui/cn`, `@insightis/ui/use-mobile`, …) — there is no root entry, and internal modules are not reachable; deep imports into the package's internals are not part of the supported API.
+- The package contains no server components and none are planned. A `components.json` that previously claimed `"rsc": true` has been removed.
 
-# Editing this README
+---
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## Theming and overrides
 
-## Suggestions for a good README
+Dark mode is `darkMode: ['class']`: tokens are declared for `:root` and `.dark` only, and the cascade does the rest. There is no `data-theme` attribute and no bare `prefers-color-scheme` fallback in the token file itself — a consumer that offers a "system" option must resolve it in JS and toggle the `dark` class (this is what `apps/web`'s `ThemeProvider` does).
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Override any token by redefining its `--*` variable after the import. Whether a class takes a Tailwind alpha modifier (`/20`) depends on how `src/lib/constants.ts` wraps the variable:
 
-## Name
-Choose a self-explaining name for your project.
+- HSL-triplet tokens are wrapped `hsl(var(--x) / <alpha-value>)`, so `bg-brand-primary/20` works.
+- `color-mix()` tokens are exposed as bare `var(...)` and accept **no** alpha modifier — wrapping one in `hsl()` would emit invalid CSS. Current bare-`var()` keys: `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-outline-destructive-bg-hover`, `--btn-outline-destructive-bg-press`, `--badge-brand-bg`, `--badge-brand-border`, `--badge-brand-text`, `--badge-green-bg`, `--badge-green-border`, `--badge-green-text`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-hover`, `--card-border-press`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-bg`, `--banner-grad-ic-border`, `--banner-grad-ic-shadow`, `--overlay-scrim`.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Geometry and typography axes are token-driven the same way, all seeded with Tailwind's own default values so adopting them changes nothing visually: `--radius-sm` / `--radius` / `--radius-md` / `--radius-lg` / `--radius-xl`, `--sidebar-width` / `--sidebar-width-icon` / `--sidebar-width-mobile`, `--shadow-thumb` / `--shadow-thumb-hover`, `--font-sans` (redefine the variable, or override `theme.fontFamily.sans` in your own preset extension, to ship a different typeface), the type scale — `--font-size-{xxs,xs,compact,sm,base,lg,xl,2xl,3xl,4xl}`, with `--line-height-{xs,sm,base,lg,xl,2xl,3xl,4xl}` paired for every step but `xxs`/`compact` (override the `sm` step, for example, by redefining both `--font-size-sm` and `--line-height-sm` in your own `:root`) — and the weight scale, `--font-weight-{light,normal,medium,semibold,bold,extrabold,black}` (override `--font-weight-semibold` in your own `:root`, for example, to change what `font-semibold` renders).
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Deliberately **not** tokenized: `spacing` (default Tailwind scale), `letterSpacing`, and z-index; `lineHeight` is tokenized only as the half Tailwind itself pairs with a font size, so the standalone `leading-*` scale is not.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-md` / `--breakpoint-lg` / `--breakpoint-xl` do exist and are readable from JS or `calc()`, but the preset generates them from the `BREAKPOINTS` constant (exported by `@insightis/ui/use-mobile`) that also drives `theme.extend.screens` and `useIsMobile`/`useMaxWidth` — so redefining one in your own `:root` moves nothing, because a CSS variable cannot appear in a `@media` query. To actually change a breakpoint, set `screens` in your own Tailwind config (as `theme.extend.screens`, if you want Tailwind's default `2xl` to survive) and pass the matching pixel value through `useIsMobile(breakpoint)`, `DateRangePicker`'s `mobileBreakpoint` prop, or `SidebarProvider`'s `sheetBreakpoint` prop.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+---
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Component catalog
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+| Component | Based on | Variants |
+|---|---|---|
+| **Accordion** | Radix | — |
+| **Autocomplete** | Custom | — |
+| **Avatar** | Radix | — |
+| **Badge** | CVA | `variant`, `size`, `rounded` |
+| **Button** | CVA + Radix Slot | `variant`, `size`, `align`, `rounded`, `fullWidth` |
+| **Card** | HTML | — |
+| **Checkbox** | Radix + CVA | `variant`, `size`, `rounded`, `labelPosition` |
+| **CircularProgress** | Custom | — |
+| **Collapsible** | Radix | — |
+| **Datepicker** | Custom | — |
+| **DropdownMenu** | Radix | — |
+| **File** | Custom | — |
+| **IconButton** | CVA | `variant`, `size`, `rounded` |
+| **Input** | HTML | — |
+| **InputGroup** | Custom | — |
+| **Modal** | Radix Dialog | — |
+| **Pagination** | Custom | — |
+| **PasswordInput** | Custom | — |
+| **Popover** | Radix | — |
+| **ProgressBar** | Radix + CVA | `variant`, `size`, `rounded` |
+| **ScrollShadow** | Custom | — |
+| **Separator** | Radix | — |
+| **Sheet** | Radix Dialog | — |
+| **Sidebar** | Custom | — |
+| **Skeleton** | CSS | — |
+| **Spinner** | Custom | — |
+| **Switch** | Radix | — |
+| **Table** | HTML | — |
+| **Tabs** | Radix | — |
+| **Toast** | Sonner | — |
+| **Tooltip** | Radix | — |
+| **Typography** | HTML | — |
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+---
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## Button variants
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Button is the best reference for how CVA components work in this package:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+```tsx
+// Variants
+<Button variant="primary">Save</Button>       // default
+<Button variant="secondary">Cancel</Button>
+<Button variant="outline">Edit</Button>
+<Button variant="destructive">Delete</Button>
+<Button variant="transparent">Learn more</Button>
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+// Sizes: xs | sm | md (default) | lg | xl
+<Button size="sm">Small</Button>
 
-## License
-For open source projects, say how it is licensed.
+// Slots for icons
+<Button leftSlot={<PlusIcon />}>Add item</Button>
+<Button rightSlot={<ChevronRightIcon />}>Next</Button>
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+// Full width
+<Button fullWidth>Submit</Button>
+
+// Render as a different element
+<Button asChild><a href="/settings">Settings</a></Button>
+```
+
+All CVA components accept `className` which is merged via `cn()` and appended after variant classes.
+
+---
+
+## Radix composition pattern
+
+Radix-based components are exported as composable named parts. Example with Modal:
+
+```tsx
+import {
+  Modal, ModalContent, ModalHeader, ModalTitle,
+  ModalBody, ModalFooter, ModalTrigger, ModalClose
+} from '@insightis/ui/Modal';
+
+<Modal open={isOpen} onOpenChange={setIsOpen}>
+  <ModalTrigger asChild>
+    <Button>Open</Button>
+  </ModalTrigger>
+  <ModalContent>
+    <ModalHeader>
+      <ModalTitle>Title</ModalTitle>
+    </ModalHeader>
+    <ModalBody>Content here</ModalBody>
+    <ModalFooter>
+      <ModalClose asChild><Button variant="secondary">Close</Button></ModalClose>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+```
+
+The same compositional pattern applies to `Popover`, `DropdownMenu`, `Tabs`, `Tooltip`, and `Sheet`.
+
+---
+
+## cn() and cva() — mandatory conventions
+
+### cn()
+
+`cn()` is the **only** way to construct class strings in this package. Never concatenate strings or use template literals for Tailwind classes.
+
+```ts
+import { cn } from '@insightis/ui/cn';
+
+// correct
+cn('px-2 py-1', isActive && 'bg-primary', className)
+
+// wrong — cn() resolves conflicts between Tailwind utilities; raw concatenation does not
+`px-2 py-1 ${isActive ? 'bg-primary' : ''} ${className}`
+```
+
+### cva()
+
+Any component with visual variants **must** define them with `cva()`. Do not branch on variant props with conditionals or string maps — CVA is the single source of truth for variant classes and enables typed `VariantProps`.
+
+```ts
+// correct
+const badgeVariants = cva('inline-flex items-center', {
+  variants: {
+    variant: {
+      primary: 'bg-primary text-white',
+      secondary: 'bg-chip text-content-body',
+    },
+    size: { sm: 'h-5 text-xs', md: 'h-6 text-sm' },
+  },
+  defaultVariants: { variant: 'primary', size: 'md' },
+});
+
+interface BadgeProps extends VariantProps<typeof badgeVariants> {
+  className?: string;
+}
+
+// wrong — ad-hoc branching instead of cva
+const cls = variant === 'primary' ? 'bg-primary text-white' : 'bg-chip text-content-body';
+```
+
+Always export the variants object (e.g. `badgeVariants`) alongside the component so consumers can reuse the classes without rendering the component.
+
+---
+
+## Color tokens
+
+**Never use arbitrary color values** — no hex (`#1a2b3c`), no raw hsl (`hsl(192 89% 21%)`), no Tailwind arbitrary syntax (`bg-[#1a2b3c]`). Every color must come from a token.
+
+Most tokens support the Tailwind alpha modifier (`/value`); `color-mix()`-backed ones do not — see Theming and overrides above.
+
+```ts
+// correct — token with opacity
+'bg-brand-primary/20'
+'text-ink-secondary/60'
+'border-fb-red/30'
+
+// wrong — arbitrary values
+'bg-[#0a3d52]'
+'text-[hsl(179,94%,26%)]'
+```
+
+Design System v2 is the only token system (the pre-redesign palette has been deleted). A compact sample by group — the full surface is `THEME_COLORS` in `src/lib/constants.ts`:
+
+| Group | Example classes |
+|---|---|
+| `brand` | `bg-brand-primary`, `text-brand-secondary` |
+| `ink` | `text-ink-primary`, `text-ink-body`, `text-ink-secondary` |
+| `surface` | `bg-surface-page`, `bg-surface-card`, `bg-surface-card2` |
+| `stroke` | `border-stroke`, `border-stroke-hover` |
+| `state` | `bg-state-hover`, `bg-state-pressed`, `bg-state-disabled` |
+| `fb` (feedback) | `text-fb-red`, `bg-fb-green/10`, `text-fb-attention` |
+| `table` / `tbl` | `bg-table-row-hover`, `bg-tbl-row-pressed` |
+| `badge` | `bg-badge-primary-bg`, `text-badge-secondary-text` |
+| `btn` | `bg-btn-primary-bg`, `bg-btn-primary-bg-hover` |
+| `toast` | `bg-toast-bg-success`, `border-toast-border-error` (no alpha) |
+| `dropzone` | `border-dropzone-border`, `bg-dropzone-bg-active` (no alpha) |
+
+Both light and dark values are defined for theme-dependent tokens — theming is automatic. To add a new color token: define it in `globals.css` for `:root` (and `.dark` if it is theme-dependent), then expose it in `src/lib/constants.ts`'s `THEME_COLORS`. For a non-color axis (radius, shadow, duration, …) expose it in `tailwind-preset.ts` instead.
+
+---
+
+## Adding a new component
+
+1. Create `src/components/<Name>/index.tsx`
+2. Define variants with `cva()` if the component has visual variants; export the variants object alongside the component
+3. Use only token-based color classes — no arbitrary values; add new tokens to `globals.css` + `src/lib/constants.ts` (or `tailwind-preset.ts` for non-color axes) if needed
+4. Construct all class strings with `cn()`
+5. Use a Radix primitive for any interactive behavior (focus, keyboard, a11y)
+6. Support `className` prop merged via `cn(variants(...), className)`
+7. Export the component and any variant types from `index.tsx` — the wildcard export in `package.json` handles the rest

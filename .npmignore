@@ -1,0 +1,13 @@
+# Presence of this file makes npm use it instead of .gitignore when packing.
+# That is required: the repo-root (and a future package-root) .gitignore ignores
+# `dist/`, and without an .npmignore that ignore would silently drop the built
+# output from the tarball even though `files` lists `dist`.
+#
+# Patterns below exclude anything that might otherwise slip past the `files`
+# allowlist. They do NOT need to restate what `files` already omits.
+*.tsbuildinfo
+.turbo
+.storybook
+storybook-static
+coverage
+*.log
