@@ -1,5 +1,5 @@
 {
-  "name": "@insightis/ui",
+  "name": "@devart/ui-react",
   "version": "1.0.0",
   "description": "Devart.UI.React - design-system package: Radix-based UI primitives, CVA variants, and Tailwind theme tokens.",
   "license": "UNLICENSED",
@@ -27,6 +27,12 @@
     "clean": "node -e \"const fs=require('node:fs');for (const p of ['dist','.tsbuildinfo','.turbo','coverage','node_modules']){try{fs.rmSync(p,{recursive:true,force:true});}catch{}}\"",
     "check-types": "tsc -p tsconfig.json --noEmit",
     "test:unit": "vitest run",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "changeset": "changeset",
+    "check-changeset": "node scripts/check-changeset.mjs",
+    "smoke": "node scripts/smoke/verify-consumer.mjs",
+    "version-packages": "changeset version",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -77,6 +83,8 @@
     }
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.2",
+    "@changesets/cli": "^2.29.7",
     "@storybook/addon-a11y": "^10.4.6",
     "@storybook/addon-docs": "^10.4.6",
     "@storybook/addon-themes": "^10.4.6",
@@ -133,5 +141,6 @@
     "@types/react": {
       "optional": true
     }
-  }
+  },
+  "packageManager": "pnpm@10.27.0"
 }

@@ -13,7 +13,7 @@ const segmentedControlTriggerVariants = cva(
   cn(
     'inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap',
     'rounded font-medium text-ink-secondary',
-    'transition-[background-color,color,box-shadow] duration-100',
+    'transition-[background-color,color,box-shadow] duration-fast',
     // Icon follows currentColor — no per-state icon override.
     '[&_svg]:shrink-0',
 
@@ -37,8 +37,8 @@ const segmentedControlTriggerVariants = cva(
   {
     variants: {
       size: {
-        sm: 'h-5 px-1 text-[11px] [&_svg]:size-3',
-        md: 'h-8 px-3 text-[13px] [&_svg]:size-3.5',
+        sm: 'h-5 px-1 text-xs [&_svg]:size-3',
+        md: 'h-8 px-3 text-sm [&_svg]:size-3.5',
       },
     },
     defaultVariants: {

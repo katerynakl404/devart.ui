@@ -28,6 +28,47 @@ const typographyVariants = cva(null, {
       lead: 'font-semibold text-xl',
       large: 'font-semibold text-lg',
     },
+    /**
+     * The named type scale: size + weight + line-height decided together, so
+     * no call site re-decides them. Nineteen styles on eight size rungs —
+     * Heading carries 500 and Title carries 600 across the same rungs, so a
+     * heading and a title at 20px differ by weight, not size.
+     *
+     * Prefer this over `variant`. Choose the semantic element separately with
+     * `element` — the level comes from content hierarchy, the size from here.
+     */
+    textStyle: {
+      // Display — standalone numerals that are the page (the 404 code).
+      display: 'font-medium text-display tracking-display',
+
+      // Heading · 500
+      heading36: 'font-medium text-4xl',
+      heading30: 'font-medium text-3xl',
+      heading24: 'font-medium text-2xl',
+      heading20: 'font-medium text-xl',
+      heading16: 'font-medium text-base',
+
+      // Title · 600
+      title30: 'font-semibold text-3xl',
+      title24: 'font-semibold text-2xl',
+      title20: 'font-semibold text-xl',
+      title16: 'font-semibold text-base',
+      title14: 'font-semibold text-sm',
+      title12: 'font-semibold text-xs',
+
+      // Body · 400
+      body16: 'font-normal text-base',
+      body14: 'font-normal text-sm',
+      body12: 'font-normal text-xs',
+
+      // Label · 500. xxs carries no paired line-height, so it is set here.
+      label14: 'font-medium text-sm',
+      label12: 'font-medium text-xs',
+      label10: 'font-medium text-xxs leading-4',
+
+      // Overline · 600, uppercase, +.08em
+      overline: 'font-semibold text-xxs uppercase leading-4 tracking-caps',
+    },
     leading: {
       none: 'leading-none',
       tight: 'leading-tight',
@@ -128,6 +169,7 @@ export type TypographyProps<E extends ElementType = 'p'> =
 export function Typography<E extends ElementType = 'p'>({
   className,
   variant,
+  textStyle,
   align,
   noWrap,
   textColor,
@@ -148,6 +190,7 @@ export function Typography<E extends ElementType = 'p'>({
       className={cn(
         typographyVariants({
           variant,
+          textStyle,
           align,
           noWrap,
           textColor,

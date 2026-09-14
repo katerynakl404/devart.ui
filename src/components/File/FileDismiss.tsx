@@ -5,11 +5,21 @@ import { IconButton } from '../IconButton';
 
 interface FileDismissProps {
   onDismiss: () => void;
+  /** Accessible name for the control. Names the action, not the file row. */
+  label?: string;
 }
 
-export const FileDismiss = ({ onDismiss }: FileDismissProps) => {
+export const FileDismiss = ({
+  onDismiss,
+  label = 'Remove file',
+}: FileDismissProps) => {
   return (
-    <IconButton variant="transparent" size="sm" onClick={onDismiss}>
+    <IconButton
+      aria-label={label}
+      variant="transparent"
+      size="sm"
+      onClick={onDismiss}
+    >
       <X className="size-4 text-ink-secondary" />
     </IconButton>
   );

@@ -88,3 +88,20 @@ export const SideBySide: Story = {
     </div>
   ),
 };
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS. This component portals to `document.body`, so an OPEN overlay is not
+ * reached by a scoped class — only the trigger is themed here. Put `dark` on
+ * `<html>` to theme the overlay itself.
+ */
+export const DarkTheme: Story = {
+  ...Truncated,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};

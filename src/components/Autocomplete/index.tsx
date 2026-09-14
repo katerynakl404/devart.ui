@@ -39,11 +39,11 @@ const BADGE_LIST_PADDING_MAP: Record<
   NonNullable<InputGroupProps['size']>,
   string
 > = {
-  xs: 'py-[3px] ps-[3px] gap-[3px]',
-  sm: 'py-[5px] ps-[5px] gap-1.5',
-  md: 'py-[5px] ps-[5px] gap-1.5',
-  lg: 'py-[5px] ps-[5px] gap-1.5',
-  xl: 'py-[5px] ps-[5px] gap-1.5',
+  xs: 'gap-1 py-1 ps-1',
+  sm: 'gap-1.5 py-1 ps-1',
+  md: 'gap-1.5 py-1 ps-1',
+  lg: 'gap-1.5 py-1 ps-1',
+  xl: 'gap-1.5 py-1 ps-1',
 };
 
 export interface AutocompleteProps<
@@ -61,6 +61,10 @@ export interface AutocompleteProps<
   listboxClassName?: string;
   noOptionsText?: ReactNode;
   loadingText?: ReactNode;
+  /** Accessible name for the clear control. Names the action. */
+  clearLabel?: string;
+  /** Accessible name for the open/close suggestions control. */
+  popupIndicatorLabel?: string;
   isLoading?: boolean;
   startAddon?: ReactNode;
   endAddon?: ReactNode;
@@ -81,6 +85,8 @@ export function Autocomplete<
     placeholder = 'Search...',
     noOptionsText = 'No options',
     loadingText = 'Loading...',
+    clearLabel = 'Clear selection',
+    popupIndicatorLabel = 'Show suggestions',
     isLoading = false,
     size = 'lg',
     badgeVariant = 'secondary',
@@ -140,7 +146,7 @@ export function Autocomplete<
   const memoizedOptions = useMemo(() => {
     if (filteredOptions.length === 0) {
       return (
-        <div className="px-3.5 py-5 text-center text-ink-secondary text-sm">
+        <div className="px-4 py-5 text-center text-ink-secondary text-sm">
           {noOptionsText}
         </div>
       );
@@ -231,6 +237,7 @@ export function Autocomplete<
                 {showClear && (
                   <IconButton
                     {...getClearProps()}
+                    aria-label={clearLabel}
                     variant="transparent"
                     asChild
                     className={cn(
@@ -247,13 +254,14 @@ export function Autocomplete<
 
                 <IconButton
                   {...getPopupIndicatorProps()}
+                  aria-label={popupIndicatorLabel}
                   variant="transparent"
                   asChild
                 >
                   <ChevronDown
                     className={cn(
                       'transition-transform',
-                      'duration-200',
+                      'duration-base',
                       open && 'rotate-180'
                     )}
                   />
@@ -276,7 +284,7 @@ export function Autocomplete<
             onFocusOutside={(e) => e.preventDefault()}
           >
             {isLoading ? (
-              <div className="flex items-center justify-center gap-2 px-3.5 py-5 text-center text-ink-secondary text-sm">
+              <div className="flex items-center justify-center gap-2 px-4 py-5 text-center text-ink-secondary text-sm">
                 <Spinner size="sm" color="inherit" aria-hidden />
                 {loadingText}
               </div>

@@ -31,7 +31,7 @@ export const Open: Story = {
       <div className="flex items-center justify-between">
         <Typography weight="medium">Advanced options</Typography>
         <CollapsibleTrigger asChild>
-          <Button variant="ghost" size="sm" rightSlot={<ChevronDown />}>
+          <Button variant="tertiary" size="sm" rightSlot={<ChevronDown />}>
             Toggle
           </Button>
         </CollapsibleTrigger>
@@ -62,7 +62,7 @@ export const Interactive: Story = {
             {open ? 'Hide details' : 'Show details'}
           </Typography>
           <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="sm" rightSlot={<ChevronDown />}>
+            <Button variant="tertiary" size="sm" rightSlot={<ChevronDown />}>
               Toggle
             </Button>
           </CollapsibleTrigger>
@@ -78,4 +78,19 @@ export const Interactive: Story = {
       </Collapsible>
     );
   },
+};
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...Open,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };

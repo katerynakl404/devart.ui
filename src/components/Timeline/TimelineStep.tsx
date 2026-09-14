@@ -68,11 +68,11 @@ const TimelineStep = ({
         </span>
       )}
 
-      <span className="min-w-0 flex-initial truncate text-left font-mono text-compact text-ink-body transition-colors group-hover/timeline-step:text-ink-primary">
+      <span className="min-w-0 flex-initial truncate text-left font-mono text-ink-body text-sm transition-colors group-hover/timeline-step:text-ink-primary">
         {title}
       </span>
 
-      <ChevronDown className="pointer-events-none -ml-0.5 size-3 shrink-0 -rotate-90 text-ink-secondary transition-transform duration-200 group-hover/timeline-step:text-ink-primary group-data-[state=open]/timeline-step:rotate-0" />
+      <ChevronDown className="pointer-events-none -ml-0.5 size-3 shrink-0 -rotate-90 text-ink-secondary transition-transform duration-base group-hover/timeline-step:text-ink-primary group-data-[state=open]/timeline-step:rotate-0" />
     </CollapsiblePrimitive.Trigger>
 
     <CollapsiblePrimitive.Content

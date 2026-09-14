@@ -47,8 +47,8 @@ const ResizableHandle = ({
 );
 
 export {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
   type PanelImperativeHandle,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
 };

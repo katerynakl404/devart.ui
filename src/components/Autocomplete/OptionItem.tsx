@@ -35,7 +35,7 @@ const OptionItem = <T extends { id: string }>({
       onSelect={(e) => e.preventDefault()}
       asChild={!!renderOption}
       className={cn(
-        'min-h-11 cursor-pointer gap-2.5 rounded-md px-3.5 py-2.5',
+        'min-h-11 cursor-pointer gap-2.5 rounded-md px-4 py-2.5',
         'text-ink-primary text-sm leading-normal',
         'data-[highlighted=true]:bg-state-hover',
         'aria-selected:bg-state-hover',

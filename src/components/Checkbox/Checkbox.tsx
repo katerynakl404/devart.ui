@@ -28,7 +28,7 @@ const checkboxVariants = cva(
     'disabled:opacity-disabled',
     // Transition
     'transition-colors',
-    'duration-150',
+    'duration-fast',
     'ease-in-out',
   ],
   {
@@ -89,7 +89,7 @@ const checkboxIndicatorVariants = cva(
     'fade-in-0',
     'slide-in-from-bottom-1',
     'animate-in',
-    'duration-150',
+    'duration-fast',
   ],
   {
     variants: {
@@ -179,7 +179,7 @@ function Checkbox({
       <label
         htmlFor={id}
         className={cn(
-          'font-medium text-sm',
+          'font-medium text-ink-body text-sm',
           disabled ? 'cursor-not-allowed opacity-disabled' : 'cursor-pointer',
           labelClassName
         )}

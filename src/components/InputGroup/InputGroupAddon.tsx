@@ -30,23 +30,23 @@ const inputGroupAddonVariants = cva(
       },
       align: {
         'inline-start': cn(
-          'order-first pl-2.5',
+          'order-first',
           // kbds aligning
-          'has-[>kbd]:ml-[-0.35rem]'
+          'has-[>kbd]:-ml-1'
         ),
         'inline-end': cn(
-          'order-last pr-2.5',
+          'order-last',
           // kbds aligning
-          'has-[>kbd]:mr-[-0.35rem]'
+          'has-[>kbd]:-mr-1'
         ),
         'block-start': cn(
-          'order-first w-full justify-start px-2.5 pt-3',
+          'order-first w-full justify-start px-0 pt-3',
           // Padding adjustments
           'group-has-[>input]/input-group:pt-2.5',
           '[.border-b]:pb-3'
         ),
         'block-end': cn(
-          'order-last w-full justify-start px-3 pb-3',
+          'order-last w-full justify-start px-0 pb-3',
           // Padding adjustments
           'group-has-[>input]/input-group:pb-2.5',
           '[.border-t]:pt-3'

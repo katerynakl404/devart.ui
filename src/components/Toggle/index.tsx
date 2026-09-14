@@ -29,7 +29,7 @@ const toggleVariants = cva(
     'inline-flex items-center justify-center gap-1.5',
     'whitespace-nowrap font-medium',
     'cursor-pointer border',
-    'transition-all duration-100',
+    'transition-all duration-fast',
 
     // Focus — brand-tinted ring with a Surface/Card gap.
     'focus-visible:outline-none focus-visible:ring-2',
@@ -46,8 +46,8 @@ const toggleVariants = cva(
       variant: {
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
-          'hover:border-brand-hover hover:bg-brand-primary/[0.06]',
-          'active:border-brand-hover active:bg-brand-primary/[0.08]',
+          'hover:border-brand-hover hover:bg-brand-primary/6',
+          'active:border-brand-hover active:bg-brand-primary/8',
           'disabled:border-ink-inactive disabled:bg-transparent',
           'disabled:text-ink-inactive',
           TOGGLE_ON_CHIP
@@ -134,8 +134,8 @@ Toggle.displayName = TogglePrimitive.Root.displayName;
 export {
   Toggle,
   type ToggleProps,
-  type ToggleVariant,
-  type ToggleSize,
   type ToggleRounded,
+  type ToggleSize,
+  type ToggleVariant,
   toggleVariants,
 };

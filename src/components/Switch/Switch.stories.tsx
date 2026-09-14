@@ -67,3 +67,18 @@ export const TertiaryRow: Story = {
     className: 'h-8 w-56 justify-between px-3',
   },
 };
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...WithLabel,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};

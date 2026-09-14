@@ -67,3 +67,18 @@ export const WithLabel: Story = {
     children: <span className="text-ink-body text-xs">75%</span>,
   },
 };
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...Default,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};

@@ -1,5 +1,5 @@
 /**
- * Post-build gate for the published surface of @insightis/ui.
+ * Post-build gate for the published surface of @devart/ui-react.
  *
  * Runs in a plain Node process on purpose: no bundler, no vitest, no aliases —
  * so it exercises the same resolver a consumer would use.
@@ -88,7 +88,7 @@ if (typeof presetSrcTarget === 'string') {
 
 // 2. No unresolvable specifiers may survive into the emitted output.
 const ALIAS_SPECIFIER = /['"]@\/[^'"]*['"]/;
-const SELF_REFERENCE = /['"]@insightis\/ui(?:\/[^'"]*)?['"]/;
+const SELF_REFERENCE = /['"]@devart\/ui-react(?:\/[^'"]*)?['"]/;
 
 /** @param {string} dir @returns {string[]} */
 const collectEmitted = (dir) =>
@@ -276,7 +276,10 @@ if (pack.error) {
       if (forbiddenExact.has(packedPath)) {
         fail(`tarball contains developer-only file: ${packedPath}`);
       }
-      if (packedPath.endsWith('.stories.tsx') || packedPath.endsWith('.stories.ts')) {
+      if (
+        packedPath.endsWith('.stories.tsx') ||
+        packedPath.endsWith('.stories.ts')
+      ) {
         fail(`tarball contains a Storybook story: ${packedPath}`);
       }
     }

@@ -171,7 +171,7 @@ function SidebarNavigationItems<T extends DefaultLink>({
 
                   <span className="font-medium">{item.title}</span>
 
-                  <ChevronRight className="opacity-0 transition-transform duration-200 group-hover/trigger-row:opacity-100 group-data-[state=open]/collapsible:rotate-90" />
+                  <ChevronRight className="opacity-0 transition-transform duration-base group-hover/trigger-row:opacity-100 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
 
@@ -184,7 +184,7 @@ function SidebarNavigationItems<T extends DefaultLink>({
                     'absolute end-0 top-1/2 -translate-y-1/2',
                     'h-4 w-fit gap-0.5 p-0 text-sm',
                     '!text-ink-secondary hover:!text-ink-body',
-                    'opacity-0 transition-opacity duration-200',
+                    'opacity-0 transition-opacity duration-base',
                     'group-hover/trigger-row:opacity-100'
                   )}
                 >

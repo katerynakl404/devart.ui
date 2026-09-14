@@ -22,7 +22,7 @@ const stepSliderVariants = cva(
     // is what turns each snap between stops into a glide; the same transition on
     // the thumb itself would never fire. Nothing may be rendered after the thumb
     // or this selector picks up the wrong element and the glide silently stops.
-    '[&>span:last-child]:transition-[left] [&>span:last-child]:duration-150 [&>span:last-child]:ease-out',
+    '[&>span:last-child]:transition-[left] [&>span:last-child]:duration-fast [&>span:last-child]:ease-out',
     'motion-reduce:[&>span:last-child]:transition-none',
   ],
   {

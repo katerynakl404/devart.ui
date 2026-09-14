@@ -37,7 +37,7 @@ const TimelineHeader = ({
 
     <span className="truncate text-left">{children}</span>
 
-    <ChevronDown className="pointer-events-none size-4 shrink-0 -rotate-90 transition-transform duration-200 group-data-[state=open]/timeline-header:rotate-0" />
+    <ChevronDown className="pointer-events-none size-4 shrink-0 -rotate-90 transition-transform duration-base group-data-[state=open]/timeline-header:rotate-0" />
   </CollapsiblePrimitive.Trigger>
 );
 

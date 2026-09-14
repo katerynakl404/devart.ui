@@ -101,7 +101,7 @@ export function Calendar({
         table: 'w-full border-collapse',
         weekdays: cn('flex', defaultClassNames.weekdays),
         weekday: cn(
-          'flex-1 select-none rounded-[--cell-radius] font-normal text-[0.8rem] text-ink-secondary',
+          'flex-1 select-none rounded-[--cell-radius] font-normal text-ink-secondary text-xs',
           defaultClassNames.weekday
         ),
         week: cn('mt-2 flex w-full', defaultClassNames.week),
@@ -110,7 +110,7 @@ export function Calendar({
           defaultClassNames.week_number_header
         ),
         week_number: cn(
-          'select-none text-[0.8rem] text-ink-secondary',
+          'select-none text-ink-secondary text-xs',
           defaultClassNames.week_number
         ),
         day: cn(

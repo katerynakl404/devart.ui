@@ -81,5 +81,5 @@ function Skeleton({
   );
 }
 
-export { Skeleton, skeletonVariants };
 export type { SkeletonProps };
+export { Skeleton, skeletonVariants };

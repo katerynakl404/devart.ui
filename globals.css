@@ -5,6 +5,12 @@
   --radius-md: 0.375rem;
   --radius-lg: 0.5rem;
   --radius-xl: 0.75rem;
+  /* Dialog widths — a dialog is sized by what it holds, not one width for
+     all. S: a confirm the user only reads and answers. M (the default):
+     anything the user fills in. L: the multi-step wizard. */
+  --modal-w-sm: 22.5rem;
+  --modal-w-md: 30rem;
+  --modal-w-lg: 36rem;
   --sidebar-width: 15.95rem;
   --sidebar-width-icon: 3.563rem;
   --sidebar-width-mobile: 18rem;
@@ -45,6 +51,18 @@
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
   --font-weight-black: 900;
+
+  /* Display — fluid 88->132px, for standalone numerals that are the page
+     (the 404 code). Its own step: it fits no rung of the 8-size scale. */
+  --font-size-display: clamp(5.5rem, 8vw, 8.25rem);
+  --line-height-display: 1;
+
+  /* Tracking scale. NOTE the naming trap: Tailwind's stock `tracking-tight`
+     is -0.025em; this system's is -0.01em. Always use the tokens. */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-caps: 0.08em;
+  --tracking-display: -0.045em;
 
   /* Motion tokens */
   --motion-fast: 120ms;

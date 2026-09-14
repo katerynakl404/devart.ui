@@ -38,6 +38,17 @@ export const preset: Partial<Config> = {
       },
       opacity: {
         disabled: 'var(--opacity-disabled)',
+        // Tint steps. Stock Tailwind has no 6/8/12, and those three were the
+        // only reason tints were written as arbitrary values (/[0.06]).
+        // With these, every tint uses one notation and sits on one scale.
+        6: '0.06',
+        8: '0.08',
+        12: '0.12',
+      },
+      maxWidth: {
+        'modal-sm': 'var(--modal-w-sm)',
+        'modal-md': 'var(--modal-w-md)',
+        'modal-lg': 'var(--modal-w-lg)',
       },
       borderRadius: {
         DEFAULT: 'var(--radius)',
@@ -84,6 +95,10 @@ export const preset: Partial<Config> = {
           'var(--font-size-4xl)',
           { lineHeight: 'var(--line-height-4xl)' },
         ],
+        display: [
+          'var(--font-size-display)',
+          { lineHeight: 'var(--line-height-display)' },
+        ],
       },
       fontWeight: {
         light: 'var(--font-weight-light)',
@@ -93,6 +108,12 @@ export const preset: Partial<Config> = {
         bold: 'var(--font-weight-bold)',
         extrabold: 'var(--font-weight-extrabold)',
         black: 'var(--font-weight-black)',
+      },
+      letterSpacing: {
+        tight: 'var(--tracking-tight)',
+        normal: 'var(--tracking-normal)',
+        caps: 'var(--tracking-caps)',
+        display: 'var(--tracking-display)',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...defaultTheme.fontFamily.sans],

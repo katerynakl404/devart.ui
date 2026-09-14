@@ -1,7 +1,7 @@
 'use client';
 
 import type { ComponentProps } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, focusRing } from '../../lib/utils';
 
 function Input({ className, type, ref, ...props }: ComponentProps<'input'>) {
   return (
@@ -11,7 +11,8 @@ function Input({ className, type, ref, ...props }: ComponentProps<'input'>) {
       data-slot="input"
       className={cn(
         'h-full w-full min-w-0 px-1.5',
-        'bg-transparent outline-none',
+        'bg-transparent',
+        focusRing,
         'transition-[color,box-shadow]',
 
         //Disabled

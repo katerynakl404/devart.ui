@@ -1,6 +1,22 @@
-# @insightis/ui
+# @devart/ui-react
 
 Shared component library built on Radix UI primitives, Tailwind CSS, and CVA variants.
+
+## Install
+
+Private package — GitLab Package Registry of `devart/components/devart.ui.react`.
+
+```ini
+# .npmrc (consumer project)
+@devart:registry=https://git.devart.com/api/v4/packages/npm/
+//git.devart.com/api/v4/packages/npm/:_authToken=${NPM_TOKEN}
+```
+
+```bash
+pnpm add @devart/ui-react
+```
+
+`NPM_TOKEN` — GitLab Deploy Token / Personal Access Token with `read_package_registry`. Never commit the token value.
 
 ## Peer dependencies
 
@@ -10,25 +26,25 @@ Consumers must provide:
 |---|---|---|
 | `react` | `^19` | Never nested from this package — dual React → "Invalid hook call" |
 | `react-dom` | `^19` | Required by Radix primitives |
-| `tailwindcss` | `^3.4` | Required by `@insightis/ui/tailwind-preset` |
+| `tailwindcss` | `^3.4` | Required by `@devart/ui-react/tailwind-preset` |
 | `@types/react` | `^19` | Optional (`peerDependenciesMeta`) |
 
 ## Importing
 
-Always use subpath imports — never barrel-import from `@insightis/ui`:
+Always use subpath imports — never barrel-import from `@devart/ui-react`:
 
 ```ts
-import { Button } from '@insightis/ui/Button';
-import { Modal, ModalContent, ModalHeader, ModalTitle, ModalBody, ModalFooter } from '@insightis/ui/Modal';
-import { cn } from '@insightis/ui/cn';
-import { useIsMobile } from '@insightis/ui/use-mobile';
+import { Button } from '@devart/ui-react/Button';
+import { Modal, ModalContent, ModalHeader, ModalTitle, ModalBody, ModalFooter } from '@devart/ui-react/Modal';
+import { cn } from '@devart/ui-react/cn';
+import { useIsMobile } from '@devart/ui-react/use-mobile';
 ```
 
 To set up Tailwind in a consuming app:
 
 ```ts
 // tailwind.config.ts
-import { preset, contentGlobs } from '@insightis/ui/tailwind-preset';
+import { preset, contentGlobs } from '@devart/ui-react/tailwind-preset';
 
 export default {
   presets: [preset],
@@ -45,19 +61,19 @@ Tailwind v3 presets do not merge `content` — spreading `contentGlobs` (absolut
 @tailwind components;
 @tailwind utilities;
 
-@import '@insightis/ui/globals.css'; /* tokens only */
-@import '@insightis/ui/fonts.css';   /* optional: self-hosted DM Sans — skip if you ship your own font and set --font-sans */
+@import '@devart/ui-react/globals.css'; /* tokens only */
+@import '@devart/ui-react/fonts.css';   /* optional: self-hosted DM Sans — skip if you ship your own font and set --font-sans */
 ```
 
-`@insightis/ui/globals.css` is pure CSS-variable declarations, with no `@tailwind` directives of its own — the consumer owns those, so Tailwind's base/reset never runs twice.
+`@devart/ui-react/globals.css` is pure CSS-variable declarations, with no `@tailwind` directives of its own — the consumer owns those, so Tailwind's base/reset never runs twice.
 
 ---
 
 ## Client-only package
 
-`@insightis/ui` is a client-only package — every component and hook it ships requires the React client runtime. Every public entry point carries the `'use client'` directive, so a consumer using React Server Components can import any of them directly from a server component without adding its own `'use client'` boundary.
+`@devart/ui-react` is a client-only package — every component and hook it ships requires the React client runtime. Every public entry point carries the `'use client'` directive, so a consumer using React Server Components can import any of them directly from a server component without adding its own `'use client'` boundary.
 
-- The public API is subpath-only (`@insightis/ui/Button`, `@insightis/ui/cn`, `@insightis/ui/use-mobile`, …) — there is no root entry, and internal modules are not reachable; deep imports into the package's internals are not part of the supported API.
+- The public API is subpath-only (`@devart/ui-react/Button`, `@devart/ui-react/cn`, `@devart/ui-react/use-mobile`, …) — there is no root entry, and internal modules are not reachable; deep imports into the package's internals are not part of the supported API.
 - The package contains no server components and none are planned. A `components.json` that previously claimed `"rsc": true` has been removed.
 
 ---
@@ -75,7 +91,7 @@ Geometry and typography axes are token-driven the same way, all seeded with Tail
 
 Deliberately **not** tokenized: `spacing` (default Tailwind scale), `letterSpacing`, and z-index; `lineHeight` is tokenized only as the half Tailwind itself pairs with a font size, so the standalone `leading-*` scale is not.
 
-Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-md` / `--breakpoint-lg` / `--breakpoint-xl` do exist and are readable from JS or `calc()`, but the preset generates them from the `BREAKPOINTS` constant (exported by `@insightis/ui/use-mobile`) that also drives `theme.extend.screens` and `useIsMobile`/`useMaxWidth` — so redefining one in your own `:root` moves nothing, because a CSS variable cannot appear in a `@media` query. To actually change a breakpoint, set `screens` in your own Tailwind config (as `theme.extend.screens`, if you want Tailwind's default `2xl` to survive) and pass the matching pixel value through `useIsMobile(breakpoint)`, `DateRangePicker`'s `mobileBreakpoint` prop, or `SidebarProvider`'s `sheetBreakpoint` prop.
+Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-md` / `--breakpoint-lg` / `--breakpoint-xl` do exist and are readable from JS or `calc()`, but the preset generates them from the `BREAKPOINTS` constant (exported by `@devart/ui-react/use-mobile`) that also drives `theme.extend.screens` and `useIsMobile`/`useMaxWidth` — so redefining one in your own `:root` moves nothing, because a CSS variable cannot appear in a `@media` query. To actually change a breakpoint, set `screens` in your own Tailwind config (as `theme.extend.screens`, if you want Tailwind's default `2xl` to survive) and pass the matching pixel value through `useIsMobile(breakpoint)`, `DateRangePicker`'s `mobileBreakpoint` prop, or `SidebarProvider`'s `sheetBreakpoint` prop.
 
 ---
 
@@ -156,7 +172,7 @@ Radix-based components are exported as composable named parts. Example with Moda
 import {
   Modal, ModalContent, ModalHeader, ModalTitle,
   ModalBody, ModalFooter, ModalTrigger, ModalClose
-} from '@insightis/ui/Modal';
+} from '@devart/ui-react/Modal';
 
 <Modal open={isOpen} onOpenChange={setIsOpen}>
   <ModalTrigger asChild>
@@ -185,7 +201,7 @@ The same compositional pattern applies to `Popover`, `DropdownMenu`, `Tabs`, `To
 `cn()` is the **only** way to construct class strings in this package. Never concatenate strings or use template literals for Tailwind classes.
 
 ```ts
-import { cn } from '@insightis/ui/cn';
+import { cn } from '@devart/ui-react/cn';
 
 // correct
 cn('px-2 py-1', isActive && 'bg-primary', className)

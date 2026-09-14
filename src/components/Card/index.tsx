@@ -13,7 +13,7 @@ import { CardSectionLabel } from './CardSectionLabel';
 import { CardTitle } from './CardTitle';
 
 const cardVariants = cva(
-  cn('group/card', 'transition-[border,shadow]', 'duration-300'),
+  cn('group/card', 'transition-[border,shadow]', 'duration-slow'),
   {
     variants: {
       variant: {
@@ -43,7 +43,7 @@ const cardVariants = cva(
           'bg-surface-card font-medium text-ink-body text-sm',
           'border border-stroke/45 shadow-rest',
           // animate colors, shadow, and press-scale together
-          'transition duration-200 ease-out',
+          'transition duration-base ease-out',
           // hover + open-dropdown persistent state
           'hover:border-card-border-hover hover:bg-state-hover hover:shadow-card-hover',
           '[&:has([data-state=open])]:border-card-border-hover [&:has([data-state=open])]:bg-state-hover [&:has([data-state=open])]:shadow-card-hover',
@@ -114,13 +114,13 @@ Card.displayName = 'Card';
 
 export {
   Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
   CardContent,
+  CardDescription,
   CardDivider,
+  CardFooter,
+  CardHeader,
   CardIcon,
   CardSectionLabel,
+  CardTitle,
   cardVariants,
 };

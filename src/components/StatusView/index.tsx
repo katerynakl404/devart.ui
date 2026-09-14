@@ -205,4 +205,4 @@ const StatusView = ({
 
 StatusView.displayName = 'StatusView';
 
-export { StatusView, containerVariants };
+export { containerVariants, StatusView };

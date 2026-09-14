@@ -40,11 +40,12 @@ export const textAreaVariants = cva(
         '3xl': 'rounded-3xl',
       },
       size: {
-        xs: cn('px-1.5 py-2', 'text-xs placeholder:text-xs'),
-        sm: cn('px-1.5 py-2', 'text-xs placeholder:text-xs'),
-        md: cn('px-2 py-2', 'text-sm placeholder:text-sm'),
-        lg: cn('px-2 py-2.5', 'text-sm placeholder:text-sm'),
-        xl: cn('px-2 py-3', 'text-sm placeholder:text-sm'),
+        // Same horizontal ladder as Button and InputGroup.
+        xs: cn('px-2 py-2', 'text-xs placeholder:text-xs'),
+        sm: cn('px-3 py-2', 'text-xs placeholder:text-xs'),
+        md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
+        lg: cn('px-4 py-2.5', 'text-sm placeholder:text-sm'),
+        xl: cn('px-5 py-3', 'text-sm placeholder:text-sm'),
       },
     },
     defaultVariants: {

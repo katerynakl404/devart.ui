@@ -10,7 +10,7 @@ const iconButtonVariants = cva(
   cn(
     'inline-flex items-center justify-center',
     'cursor-pointer border',
-    'transition-all duration-100',
+    'transition-all duration-fast',
 
     // Focus: 2px ring + 2px surface-card gap; ring colour is set per variant
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
@@ -32,8 +32,8 @@ const iconButtonVariants = cva(
         ),
         primaryTertiary: cn(
           'border-transparent bg-transparent text-ink-body',
-          'hover:bg-brand-primary/[0.06]',
-          'pressed:bg-brand-primary/[0.08]',
+          'hover:bg-brand-primary/6',
+          'pressed:bg-brand-primary/8',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -46,8 +46,8 @@ const iconButtonVariants = cva(
         ),
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
-          'hover:border-brand-hover hover:bg-brand-primary/[0.06]',
-          'pressed:border-brand-hover pressed:bg-brand-primary/[0.08]',
+          'hover:border-brand-hover hover:bg-brand-primary/6',
+          'pressed:border-brand-hover pressed:bg-brand-primary/8',
           'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -76,8 +76,8 @@ const iconButtonVariants = cva(
         // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          'hover:bg-fb-red/[0.08]',
-          'active:bg-fb-red/[0.12]',
+          'hover:bg-fb-red/8',
+          'pressed:bg-fb-red/12',
           'focus-visible:ring-state-focus-ring',
           'disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -115,6 +115,12 @@ const iconButtonVariants = cva(
 export interface IconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof iconButtonVariants> {
+  /**
+   * Required. An icon-only control has no visible text, so it must carry its
+   * own accessible name or a screen reader announces only "button". Name the
+   * ACTION it performs ("Remove file"), never its surrounding context.
+   */
+  'aria-label': string;
   asChild?: boolean;
   /**
    * Replaces the icon with a spinner and blocks pointer interaction while

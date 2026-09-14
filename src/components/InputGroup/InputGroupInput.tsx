@@ -9,10 +9,10 @@ import { useInputGroup } from './InputGroupContext';
 
 const inputGroupInputVariants = cva(
   cn(
-    'flex-1 rounded-none border-0',
+    'flex-1 rounded-none border-0 px-0',
     'bg-transparent',
     'shadow-none',
-    'focus-visible:ring-0'
+    'focus-visible:ring-0 focus-visible:ring-offset-0'
   ),
   {
     variants: {

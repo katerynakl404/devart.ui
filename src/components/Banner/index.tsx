@@ -7,10 +7,10 @@ import { Typography } from '../Typography';
 
 const BANNER_ROOT_LAYOUT = cn(
   'group/banner flex items-center gap-5 rounded-xl',
-  'max-[880px]:flex-col max-[880px]:items-start max-[880px]:gap-3.5',
-  'px-6 py-[1.625rem]',
-  'max-[880px]:px-5 max-[880px]:py-5',
-  'max-[600px]:p-4'
+  'max-md:flex-col max-md:items-start max-md:gap-3.5',
+  'px-6 py-6',
+  'max-md:px-5 max-md:py-5',
+  'max-sm:p-4'
 );
 
 const ICON_BASE = cn(
@@ -18,15 +18,15 @@ const ICON_BASE = cn(
   'flex shrink-0 items-center justify-center',
   'size-[3.75rem]',
   '[&_svg]:size-7',
-  'max-[880px]:size-11',
-  'max-[880px]:[&_svg]:size-[22px]'
+  'max-md:size-11',
+  'max-md:[&_svg]:size-[22px]'
 );
 
 const ACTION_LAYOUT = cn(
-  'shrink-0 max-[880px]:flex max-[880px]:w-full',
-  'max-[880px]:[&_button]:max-w-48 max-[880px]:[&_button]:flex-1',
-  'max-[880px]:[&_button]:justify-center',
-  'max-[600px]:[&_button]:max-w-none'
+  'shrink-0 max-md:flex max-md:w-full',
+  'max-md:[&_button]:max-w-48 max-md:[&_button]:flex-1',
+  'max-md:[&_button]:justify-center',
+  'max-sm:[&_button]:max-w-none'
 );
 
 const GRADIENT_PRIMARY_ACTION = cn(

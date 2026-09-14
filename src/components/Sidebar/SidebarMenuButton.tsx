@@ -67,10 +67,10 @@ const sidebarMenuButtonVariants = cva(
           '[&>svg]:text-fb-red-text',
 
           //Hover state
-          'hover:bg-fb-red/[0.08]',
+          'hover:bg-fb-red/8',
 
           //Active state
-          'active:bg-fb-red/[0.12]',
+          'active:bg-fb-red/12',
 
           //Focus state
           'focus-visible:ring-state-focus-ring',

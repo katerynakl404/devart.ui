@@ -87,6 +87,7 @@ function CheckboxGroup({
               <label
                 htmlFor={option.id}
                 className={cn(
+                  'font-medium text-ink-body text-sm',
                   isDisabled
                     ? 'cursor-not-allowed opacity-disabled'
                     : 'cursor-pointer'

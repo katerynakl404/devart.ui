@@ -33,11 +33,14 @@ const inputGroupVariants = cva(
         ),
       },
       size: {
-        xs: 'h-7 min-h-7',
-        sm: 'h-8 min-h-8',
-        md: 'h-9 min-h-9',
-        lg: 'h-10 min-h-10',
-        xl: 'h-11 min-h-11',
+        // The field's horizontal edge, matching Button's ladder at the same
+        // size so a button and a field line up. Children inside the shell
+        // (input, addons) add none of their own.
+        xs: 'h-7 min-h-7 px-2',
+        sm: 'h-8 min-h-8 px-3',
+        md: 'h-9 min-h-9 px-3',
+        lg: 'h-10 min-h-10 px-4',
+        xl: 'h-11 min-h-11 px-5',
       },
     },
     defaultVariants: {
@@ -169,9 +172,9 @@ function InputGroup({
 
 export {
   InputGroup,
-  InputGroupInput,
   InputGroupAddon,
-  inputGroupVariants,
+  InputGroupInput,
   type InputGroupProps,
   type inputGroupAddonVariants,
+  inputGroupVariants,
 };

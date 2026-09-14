@@ -17,7 +17,7 @@ const fileVariants = cva(
         default: 'border-stroke',
         tertiary: cn(
           'border-transparent bg-transparent text-ink-body',
-          'transition-colors duration-100',
+          'transition-colors duration-fast',
           'hover:bg-state-hover',
           'active:bg-state-pressed'
         ),
@@ -160,8 +160,8 @@ function File({
 
 export {
   File,
-  fileVariants,
-  FileSkeleton,
   type FileProps,
+  FileSkeleton,
   type FileSkeletonProps,
+  fileVariants,
 };

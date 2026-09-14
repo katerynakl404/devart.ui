@@ -28,7 +28,7 @@ const radioVariants = cva(
 
     // Transition
     'transition-colors',
-    'duration-150',
+    'duration-fast',
     'ease-in-out',
   ],
   {
@@ -61,7 +61,7 @@ const radioIndicatorVariants = cva(
     'fade-in-0',
     'zoom-in-95',
     'animate-in',
-    'duration-150',
+    'duration-fast',
   ],
   {
     variants: {
@@ -145,8 +145,8 @@ const RadioButton = ({
       <label
         htmlFor={radioId}
         className={cn(
-          'font-medium text-sm',
-          disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+          'font-medium text-ink-body text-sm',
+          disabled ? 'cursor-not-allowed opacity-disabled' : 'cursor-pointer',
           labelClassName
         )}
       >
@@ -158,6 +158,6 @@ const RadioButton = ({
 
 RadioButton.displayName = 'RadioButton';
 
-export { RadioButton, radioVariants };
 export type { RadioGroupProps } from './RadioGroup';
 export { RadioGroup } from './RadioGroup';
+export { RadioButton, radioVariants };

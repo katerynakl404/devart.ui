@@ -114,7 +114,7 @@ export const Expanded: Story = {
       </Sidebar>
       <SidebarInset>
         <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="ghost" />
+          <SidebarTrigger variant="tertiary" />
           <Typography variant="h4">Dashboard</Typography>
         </div>
       </SidebarInset>
@@ -138,7 +138,7 @@ export const CollapsedIcon: Story = {
       </Sidebar>
       <SidebarInset>
         <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="ghost" />
+          <SidebarTrigger variant="tertiary" />
           <Typography variant="h4">Dashboard</Typography>
         </div>
       </SidebarInset>
@@ -160,7 +160,7 @@ export const FloatingVariant: Story = {
       </Sidebar>
       <SidebarInset>
         <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="ghost" />
+          <SidebarTrigger variant="tertiary" />
           <Typography variant="h4">Dashboard</Typography>
         </div>
       </SidebarInset>
@@ -182,10 +182,25 @@ export const InsetVariant: Story = {
       </Sidebar>
       <SidebarInset>
         <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="ghost" />
+          <SidebarTrigger variant="tertiary" />
           <Typography variant="h4">Inset content</Typography>
         </div>
       </SidebarInset>
     </SidebarProvider>
   ),
+};
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...Expanded,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };

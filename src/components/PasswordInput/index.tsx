@@ -107,5 +107,5 @@ function PasswordInput({
   );
 }
 
-export { PasswordInput };
 export type { PasswordToggleButtonProps };
+export { PasswordInput };

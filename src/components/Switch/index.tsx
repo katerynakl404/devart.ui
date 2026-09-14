@@ -114,7 +114,7 @@ const switchContainerVariants = cva('flex items-center', {
       default: null,
       tertiary: cn(
         'cursor-pointer rounded',
-        'transition-colors duration-100',
+        'transition-colors duration-fast',
         'hover:bg-state-hover',
         'active:bg-state-pressed',
         'has-[:disabled]:pointer-events-none'

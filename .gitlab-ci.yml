@@ -1,0 +1,163 @@
+# @devart/ui-react — verify (MR / default branch) → publish (tag vX.Y.Z) → pages
+
+variables:
+  NODE_IMAGE: "node:22-bookworm-slim"
+  PNPM_VERSION: "10.27.0"
+
+stages:
+  - verify
+  - publish
+  - .post
+
+.pnpm_template:
+  image:
+    name: $NODE_IMAGE
+    pull_policy: if-not-present
+  interruptible: true
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@${PNPM_VERSION} --activate
+    - pnpm config set store-dir .pnpm-store
+    - pnpm install --frozen-lockfile --prefer-offline
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
+
+.verify_rules:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH =~ /^(develop|main|master)$/
+
+version_check:
+  extends: .pnpm_template
+  stage: verify
+  variables:
+    # Needed for CI_MERGE_REQUEST_DIFF_BASE_SHA / full history.
+    GIT_DEPTH: 0
+  script:
+    - pnpm check-changeset
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  allow_failure: false
+  tags:
+    - checkbuild
+
+lint:
+  extends: .pnpm_template
+  stage: verify
+  script:
+    - pnpm format-and-lint
+  rules: !reference [.verify_rules, rules]
+  tags:
+    - checkbuild
+
+build:
+  extends: .pnpm_template
+  stage: verify
+  script:
+    - pnpm build
+    - pnpm check-types
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 2 hours
+  rules: !reference [.verify_rules, rules]
+  tags:
+    - checkbuild
+
+test:
+  extends: .pnpm_template
+  stage: verify
+  script:
+    - pnpm test:unit
+  rules: !reference [.verify_rules, rules]
+  tags:
+    - checkbuild
+
+smoke_consumer:
+  extends: .pnpm_template
+  stage: verify
+  script:
+    - pnpm build
+    - pnpm smoke
+  rules: !reference [.verify_rules, rules]
+  tags:
+    - checkbuild
+
+storybook_build:
+  extends: .pnpm_template
+  stage: verify
+  needs:
+    - build
+  script:
+    - pnpm build-storybook
+  rules: !reference [.verify_rules, rules]
+  tags:
+    - checkbuild
+
+# Tag-only publish. No `needs: build` — that job does not exist on tag
+# pipelines; this job builds its own dist.
+#
+# Target registry is Nexus, read from package.json publishConfig.registry so
+# there is exactly one place to change it. Nexus has no CI_JOB_TOKEN
+# equivalent, so publishing needs NEXUS_NPM_TOKEN — a masked CI/CD variable
+# holding the credential of the publish-only service account.
+publish_package:
+  extends: .pnpm_template
+  stage: publish
+  interruptible: false
+  script:
+    - |
+      PKG_VERSION="$(node -p "require('./package.json').version")"
+      if [ "v${PKG_VERSION}" != "${CI_COMMIT_TAG}" ]; then
+        echo "Tag ${CI_COMMIT_TAG} does not match package.json version ${PKG_VERSION}." >&2
+        echo "Run 'pnpm version-packages', commit, and tag v${PKG_VERSION}." >&2
+        exit 1
+      fi
+    - |
+      REGISTRY="$(node -p "require('./package.json').publishConfig.registry")"
+      case "${REGISTRY}" in
+        *PENDING-DEVOPS*)
+          echo "publishConfig.registry is still a placeholder: ${REGISTRY}" >&2
+          echo "Fill in the Nexus hosted repository name before tagging a release." >&2
+          exit 1
+          ;;
+      esac
+      if [ -z "${NEXUS_NPM_TOKEN}" ]; then
+        echo "NEXUS_NPM_TOKEN is empty or unset." >&2
+        echo "Add it under Settings > CI/CD > Variables (Masked)." >&2
+        echo "Without this check Nexus answers with a bare 401 and no reason." >&2
+        exit 1
+      fi
+      # The credential key is the registry URL minus the scheme: npm matches
+      # auth by URL prefix, so it has to stay byte-identical to the registry.
+      # Written expanded on purpose — pnpm >= 10.34.2 no longer substitutes
+      # ${VAR} in a repository .npmrc, and fails with a warning, not an error.
+      printf '//%s:_authToken=%s\n' "${REGISTRY#https://}" "${NEXUS_NPM_TOKEN}" > .npmrc
+    - pnpm build
+    # --no-git-checks: tag pipeline is detached HEAD.
+    - pnpm publish --no-git-checks --access restricted
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/
+  tags:
+    - checkbuild
+
+pages:
+  extends: .pnpm_template
+  stage: .post
+  needs: []
+  script:
+    - pnpm build-storybook
+    - mv storybook-static public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+      allow_failure: true
+  tags:
+    - checkbuild

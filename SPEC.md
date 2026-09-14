@@ -22,13 +22,13 @@ packages/ui/
 
 ## Concept
 
-**ui** (`@insightis/ui`) is the design-system package: 45 presentational primitives over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
+**ui** (`@devart/ui-react`) is the design-system package: 45 presentational primitives over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
 
 ---
 
 ## Package Surface
 
-Subpath-only. `exports` declares no `"."` entry, so `import { Button } from '@insightis/ui'` is not merely discouraged — it does not resolve.
+Subpath-only. `exports` declares no `"."` entry, so `import { Button } from '@devart/ui-react'` is not merely discouraged — it does not resolve.
 
 | Subpath | Target |
 |---|---|
@@ -58,15 +58,151 @@ Three color layers, plus a small geometry/elevation/typography set; 307 custom-p
 
 0. **Geometry, elevation, typography** (theme-independent, `:root` only) — `--radius-sm/--radius/--radius-md/--radius-lg/--radius-xl` (seeded with Tailwind's own default values), `--sidebar-width/--sidebar-width-icon/--sidebar-width-mobile`, `--shadow-thumb/--shadow-thumb-hover`, `--font-sans`, `--font-size-{xxs,xs,compact,sm,base,lg,xl,2xl,3xl,4xl}` and `--line-height-{xs,sm,base,lg,xl,2xl,3xl,4xl}` (same Tailwind-default seeding as the radii; `xxs`/`compact` carry no paired line-height), and `--font-weight-{light,normal,medium,semibold,bold,extrabold,black}` (also seeded at Tailwind's own defaults; `thin`/`extralight` omitted as unused). Surfaced through `tailwind-preset.ts`, not `THEME_COLORS`. `--breakpoint-{sm,md,lg,xl}` belong to this group too but are the one token the CSS files do not declare — the preset emits them into Tailwind's base layer from `BREAKPOINTS`, so they cannot disagree with `screens` (decision 9).
 1. **Primitives** — `--brand-*`, `--tertiary-*`, `--slate-*`, `--grey-*`, `--red-*`, `--orange-500`, `--green-*`, `--chart-{teal,orange,violet,blue}-*`. Theme-independent, and deliberately **not** exposed to Tailwind.
-2. **Semantic** — `--bg`, `--surface-{page,card,card2,chips,accent}`, `--brand-{primary,secondary,tertiary,hover,press}`, `--ink-{primary,body,secondary,inactive,highlight}`, `--stroke-border{,-hover}`, `--state-{hover,pressed,disabled,focus-ring}`, `--fb-*` (feedback), `--chart-*`, `--logo-*`.
-3. **Component-scoped** — `--btn-*`, `--badge-*`, `--switch-*`, `--toast-*`, `--segctrl-*`, `--tbl-*`, `--dropzone-*`, `--card-border-*`, `--banner-grad-*`, `--input-{focus,error}`, `--field-border-hover`, `--icon-wrapper-bg`.
+2. **Semantic** — `--bg`, `--surface-{page,card,card2,chips,accent}`, `--brand-{primary,secondary,tertiary,hover,press}`, `--ink-{primary,body,secondary,inactive,highlight}`, `--stroke-border{,-hover}`, `--border-hover`, `--state-{hover,pressed,disabled,focus-ring}`, `--fb-*` (feedback), `--logo-*`, `--mx-group-band`, `--chat-{shell-bg,glow-fill}`, `--overlay-scrim`, and `--chart-*` (axis, grid, surface and the six series).
+3. **Component-scoped** — `--btn-*`, `--badge-*`, `--switch-*`, `--toast-*`, `--segctrl-{btn-hover-bg,hover-shadow,active-shadow}`, `--tbl-*`, `--dropzone-*`, `--card-border-*`, `--banner-{grad-*,ic-shadow}`, `--plan-card-featured-{bg,border,shadow}`, `--shadow-{rest,card-hover,lift-hover,overlay-soft,menu,dropdown}`, `--input-{focus,error}`, `--field-border-hover`, `--icon-wrapper-bg`, `--content-on-solid`, `--focus-ring-brand`.
 
-Layers 2 and 3 are surfaced by `THEME_COLORS` (`src/lib/constants.ts`) into `theme.extend.colors`. Non-obvious points:
+Layers 2 and 3 are surfaced by `THEME_COLORS` (`src/lib/constants.ts`) into `theme.extend.colors`, with two exceptions: the `--chart-*` tokens, which no class reads — they are declared in both themes purely so a consumer can pull them out of computed styles — and the shadow/gradient tokens, which the preset surfaces under `boxShadow` / `backgroundImage` rather than `colors`. Non-obvious points:
 
 - **`<alpha-value>` vs bare `var()`** — HSL-triplet tokens are wrapped `hsl(var(--x) / <alpha-value>)`, which is what makes `bg-brand-primary/[0.06]` work. `color-mix()` tokens are passed through as bare `var(...)` and accept **no** alpha modifier — an `hsl()` wrapper around them would emit invalid CSS. Current bare-`var()` keys (`src/lib/constants.ts`): `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-outline-destructive-bg-hover`, `--btn-outline-destructive-bg-press`, `--badge-brand-{bg,border,text}`, `--badge-green-{bg,border,text}`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-{hover,press}`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-{bg,border,shadow}`, `--overlay-scrim`.
 - **Nested keys flatten with a hyphen and casing is significant** — `stroke.DEFAULT` → `border-stroke`, `outlineDestructive.border` → `border-outlineDestructive-border`.
 - **Duplicate aliases** — `table.row-hover` and `tbl.row-hover` (likewise `-row-pressed`) both point at the same `--tbl-*` variables.
 - **Table row states are utilities on `TableCell`, not row CSS** — the former `@layer components` block keyed off `[data-slot="table-row"][data-interactive]` is gone; `globals.css` carries no component-layer CSS at all now. `TableRow` (`src/components/Table/TableRow.tsx`) stamps `group/row` on the `<tr>`, and `TableCell` (`TableCell.tsx`) carries the fill utilities — `group-data-[interactive]/row:group-hover/row:bg-tbl-row-hover`, `…:group-active/row:bg-tbl-row-pressed`, `group-[.is-selected]/row:bg-tbl-row-pressed` — so the paint lands on every `<td>` rather than on the row. The `data-interactive` attribute and `.is-selected` class contract on the row is unchanged; only where the styles live moved. Two rules carry `!important` (`group-[.is-selected]/row:group-hover/row:!bg-tbl-row-selected-hover` and the matching `group-active` rule) because Tailwind emits the `.is-selected` variant classes before the `data-interactive` ones in the generated stylesheet, so hover/press-while-selected would otherwise lose to a same-specificity plain-interactive rule.
+
+### Layer Responsibilities
+
+| Layer | Answers | Declared in | `.dark` counterpart | Exposed to Tailwind |
+|---|---|---|---|---|
+| 1 — Primitives | *what colour exists* | `:root` only | never | never (decision 3) |
+| 2 — Semantic | *what role it plays* | `:root` + `.dark` | when the role changes hue | `THEME_COLORS` |
+| 3 — Component | *how one control paints in one state* | `:root` + `.dark` | only if pinned to Layer 1 | `THEME_COLORS` |
+| Non-colour | radius, shadow, motion, type | `:root` only | never | `tailwind-preset.ts` |
+
+A Layer-1 value is a bare HSL triplet with the hex in a trailing comment
+(`--brand-600: 179 89.6% 26.5%; /* #07807E */`). Every higher layer aliases it
+**as a triplet** — `--bg: var(--slate-50)` — never as `hsl(...)`, because the
+`hsl(var(--x) / <alpha-value>)` wrapper in `THEME_COLORS` supplies the function.
+The only place `hsl()` appears inside a declaration is within `color-mix()`,
+which needs a real colour, not a triplet.
+
+**The dark-mode rule follows from that indirection.** A token needs a `.dark`
+re-declaration only when it pins a Layer-1 ramp step; one that references a
+Layer-2 role re-resolves for free. `Badge` shows both halves:
+
+```css
+--badge-primary-bg: var(--brand-50);          /* Layer 1 -> needs a .dark twin */
+--badge-primary-text: var(--brand-secondary); /* Layer 2 -> no .dark twin      */
+```
+
+That is why `:root` carries 231 declarations and `.dark` only 76.
+
+### Adding a Token
+
+Work down the list and stop at the first branch that fits.
+
+1. **Can an existing semantic token carry it with an alpha modifier?** Then add
+   no token. `Badge`'s `attention` / `success` / `error` variants are
+   `bg-fb-attention/15`, `bg-fb-green/15`, `bg-fb-red/15` — three visual
+   treatments, zero new variables.
+2. **Is it a new *role* several components will reach for?** Layer 2. Declare it
+   in `:root` against a Layer-1 step, add a `.dark` line, expose it in
+   `THEME_COLORS`.
+3. **Is it one control in one state?** Layer 3, named `--<component>-<part>-<state>`
+   (`--btn-outline-bg-press`, `--switch-off-bg-hover`, `--tbl-row-selected-hover`).
+4. **Is it not a colour?** Skip `THEME_COLORS` entirely — it goes in the preset
+   under the matching `theme.extend` key (table below).
+5. **Does only JS read it?** Declare it in both themes and expose it nowhere; the
+   chart palette (`--chart-series-1..6`, `--chart-axis-*`, `--chart-grid`,
+   `--chart-surface`) is the whole of this category today. Consumers read it out
+   of computed styles, so it must never be dropped for being "unused".
+6. **Is the shade genuinely absent from the ramps?** Only then add a Layer-1
+   primitive — and it stays out of `THEME_COLORS`.
+
+Non-colour axes never touch `src/lib/constants.ts`:
+
+| Token prefix | Preset key | Class |
+|---|---|---|
+| `--radius-*` | `borderRadius` | `rounded-md` |
+| `--shadow-*`, `--segctrl-*-shadow`, `--*-ic-shadow` | `boxShadow` | `shadow-menu` |
+| `--motion-*` | `transitionDuration` | `duration-fast` |
+| `--font-size-*` / `--line-height-*` | `fontSize` | `text-sm` |
+| `--font-weight-*` | `fontWeight` | `font-semibold` |
+| `--font-sans` | `fontFamily` | `font-sans` |
+| `--opacity-disabled` | `opacity` | `opacity-disabled` |
+| `--chat-*`, `--banner-grad-*`, `--plan-card-featured-bg` | `backgroundImage` | `bg-chat-shell` |
+| `--sidebar-width*` | *(none)* | read as `var()` in a `style` prop |
+
+### Token Worked Examples
+
+**A — new semantic role (Layer 2).** An "info" feedback colour, blue in both
+themes but a different step each:
+
+```css
+/* globals.css, :root, Layer 2 block */
+--fb-info: var(--chart-blue-600);   /* #2F6FC0 */
+/* globals.css, .dark, Layer 2 block */
+--fb-info: var(--chart-blue-500);   /* #4784D6 — lifted for AA on dark */
+```
+```ts
+// src/lib/constants.ts
+fb: { /* … */ info: 'hsl(var(--fb-info) / <alpha-value>)' },
+```
+
+Now `text-fb-info` and `bg-fb-info/15` both work, and no component knows the theme.
+
+**B — opaque tint (Layer 3, `color-mix`).** A tint that sits over a card border
+cannot be an alpha fill, or the border shows through — this is exactly why
+`--badge-brand-bg` exists instead of `bg-brand-primary/22`:
+
+```css
+--badge-brand-bg: color-mix(in srgb, hsl(var(--brand-primary)) 22%, hsl(var(--surface-card)));
+```
+```ts
+'brand-bg': 'var(--badge-brand-bg)',   // bare var — NOT hsl(...)
+```
+
+Both operands are Layer-2 roles, so the mix re-resolves per theme with no `.dark`
+line. The cost is fixed: `bg-badge-brand-bg/50` is silently dead — a `color-mix()`
+token takes no alpha modifier, ever.
+
+Re-declare such a token in `.dark` only to change the *ratio*, not the operands —
+`--toast-bg-success` mixes 5% on light and 8% on dark, because the same percentage
+reads weaker against a dark card.
+
+**C — non-colour axis.** A new elevation:
+
+```css
+--shadow-popover: 0 4px 12px -2px rgb(0 0 0 / 10%);
+```
+```ts
+// tailwind-preset.ts -> theme.extend.boxShadow
+'popover': 'var(--shadow-popover)',
+```
+
+Nothing in `THEME_COLORS`; the class is `shadow-popover`.
+
+### Token Invariants and Failure Modes
+
+Nothing in the build checks any of these — every violation surfaces as a wrong
+pixel, never as an error (decision 10).
+
+- **A class naming a key absent from `THEME_COLORS` generates no CSS.** A typo in
+  a token name is invisible.
+- **A token declared only in `.dark` paints nothing in light mode.** Four exist
+  today — `--border-hover`, `--fb-red-hover`, `--fb-red-press`, `--overlay-scrim`
+  — each carrying a `declared on dark only` comment. Three are exposed in
+  `THEME_COLORS` (`stroke-border-hover`, `fb-red-hover`, `fb-red-press`) and none
+  of the four is used by any component, which is the only reason the gap is
+  harmless. Adding a fifth without a `:root` value is a light-mode bug.
+- **`hsl()` around a `color-mix()` token emits invalid CSS** and the declaration is
+  dropped whole.
+- **An exposed token with no call site drifts.** `--overlay-scrim` is exposed as
+  `bg-overlay-scrim`, but `ModalOverlay` and `Sheet` still hardcode `bg-black/80`,
+  so the token is unreachable and the scrim is not themeable.
+- **Every token edit is a two-file edit** — `globals.css` and the consumer's own
+  copy (`apps/web/src/index.css`); see Cross-Feature Dependencies. Per
+  `CONTRIBUTING.md` a `globals.css` change is at least a **minor** bump, and
+  `check-changeset` enforces that for `globals.css`, `src/lib/constants.ts` and
+  `src/lib/breakpoints.ts`.
 
 ---
 
@@ -86,9 +222,156 @@ Layers 2 and 3 are surfaced by `THEME_COLORS` (`src/lib/constants.ts`) into `the
 
 ## Theming
 
-One mechanism: `.dark` re-declares the same variable names, so every token is theme-resolved by the cascade and no component reads a theme value in JS. `apps/web`'s `ThemeProvider` toggles `dark` on `document.documentElement` for `light | dark | system`; because the tokens are plain cascade, a scoped `.dark` also works — `AuthPageLayout` puts `dark` in its own `className` to force dark auth pages regardless of user preference. Storybook flips the same class via `withThemeByClassName` (`light: ''`, `dark: 'dark'`). Theme-independent tokens (`--btn-primary-text`, `--fb-attention`, `--btn-primary-bg`) are declared once in `:root` and intentionally absent from `.dark`. The single place token values are mirrored into TypeScript is `apps/web/src/shared/utils/chart/chart-palette-fallback.ts`, a fallback for the chart palette that is normally read out of computed styles by briefly toggling `.dark` (`with-resolved-theme.ts`).
+One mechanism: `.dark` re-declares the same variable names, so every token is theme-resolved by the cascade and no component reads a theme value in JS. `apps/web`'s `ThemeProvider` toggles `dark` on `document.documentElement` for `light | dark | system`; because the tokens are plain cascade, a scoped `.dark` also works — `AuthPageLayout` puts `dark` in its own `className` to force dark auth pages regardless of user preference. Storybook flips the same class via `withThemeByClassName` (`light: ''`, `dark: 'dark'`). Eight tokens are theme-independent by design — `--btn-primary-{bg,bg-hover,bg-press,text}`, `--content-on-solid`, `--focus-ring-brand`, `--banner-grad-{text,sub}` — pinned to a Layer-1 step in `:root` with no `.dark` counterpart, so a primary button stays brand-teal with white text in both themes. Seven further tokens (`--fb-red`, `--fb-error-{hover,press}`, `--fb-attention`, `--btn-outline-destructive-border{,-hover}`, `--banner-grad-btn-text`) *are* re-declared in `.dark`, but with the identical value — no-op overrides kept for symmetry with their neighbours. The single place token values are mirrored into TypeScript is `apps/web/src/shared/utils/chart/chart-palette-fallback.ts`, a fallback for the chart palette that is normally read out of computed styles by briefly toggling `.dark` (`with-resolved-theme.ts`).
 
-Sidebar widths, border radii, the thumb shadow pair, the font family, the type scale and the font weights follow the same cascade mechanism but are theme-independent (`:root` only, no `.dark` counterpart): `--sidebar-width*`, `--radius-*`, `--shadow-thumb*`, `--font-sans`, `--font-size-*`, `--line-height-*`, `--font-weight-*`. Overriding any of them is a plain `:root { --x: … }` redeclaration or a `style` prop — there is no dark-mode value to keep in sync. `--breakpoint-*` are `:root`-only as well, but the preset generates them and redeclaring one changes nothing (decision 9).
+Sidebar widths, border radii, the thumb shadow pair, the font family, the type scale, the font weights, the motion durations and the disabled opacity follow the same cascade mechanism but are theme-independent (`:root` only, no `.dark` counterpart): `--sidebar-width*`, `--radius-*`, `--shadow-thumb*`, `--font-sans`, `--font-size-*`, `--line-height-*`, `--font-weight-*`, `--motion-{fast,base,slow}`, `--opacity-disabled`. Overriding any of them is a plain `:root { --x: … }` redeclaration or a `style` prop — there is no dark-mode value to keep in sync. `--breakpoint-*` are `:root`-only as well, but the preset generates them and redeclaring one changes nothing (decision 9).
+
+### Creating a New Theme
+
+A theme in this package is a CSS class that re-declares a subset of Layer 2 and
+Layer 3. There is no theme provider, no context and no JS branch inside the
+package — `.dark` is the reference implementation and the only one shipped.
+
+Its shape is the budget for any new theme: **76 declarations — 72 overrides of a
+`:root` token plus 4 declared only there** (`--border-hover`, `--fb-red-hover`,
+`--fb-red-press`, `--overlay-scrim`). Seven of the 72 repeat the `:root` value
+verbatim, so the real delta between the two shipped themes is **65 values**.
+Layer 1 and the geometry/typography/motion set are never re-declared in a theme
+block.
+
+Three shapes, in rising cost:
+
+| Goal | Mechanism | Touches the package? |
+|---|---|---|
+| Re-skin light or dark | redeclare tokens in your own `:root` / `.dark` after the `@import` | no |
+| Add a third theme | a new class block (`.midnight { … }`) toggled like `dark` | no, unless you hit the two holdouts below |
+| Theme one subtree | the same class on a wrapper element | no — but see Portals |
+
+#### What a third theme must re-declare
+
+Start from the 44 Layer-2 tokens `.dark` touches — `--bg`, `--surface-*`,
+`--ink-*`, `--brand-*`, `--stroke-*`, `--state-*`, `--fb-*`, `--logo-*`,
+`--chart-series-*`, `--chat-*`, `--overlay-scrim`. Most of Layer 3 then follows
+for free: of the 118 Layer-2/3 tokens declared in `:root`, `.dark` leaves 46
+alone precisely because they reference Layer-2 roles or `color-mix()` over them.
+
+Add a Layer-3 override only for the two reasons `.dark` does:
+
+- the token pins a Layer-1 ramp step — `--badge-primary-bg: var(--brand-50)`
+  needs `var(--brand-800)` on dark;
+- the *ratio* of a `color-mix()` reads wrong — `--toast-bg-success` mixes 5% on
+  light and 8% on dark with identical operands.
+
+**Eight tokens will not follow your theme, by design.** They are pinned to Layer 1
+with no `.dark` counterpart, so they render identically in every theme:
+
+```
+--btn-primary-bg        --btn-primary-bg-hover    --btn-primary-bg-press
+--btn-primary-text      --content-on-solid        --focus-ring-brand
+--banner-grad-text      --banner-grad-sub
+```
+
+A primary button is brand-teal with white text in both shipped themes, and the
+focus ring is `--brand-600` in both. A theme that changes the brand hue, or that
+needs a dark fill on a light-inked control, must re-declare these explicitly —
+nothing else will.
+
+#### The two class-level holdouts
+
+The package branches on the theme in a class string — rather than through a
+token — in exactly two places:
+
+- `src/components/Datepicker/CalendarDayButton.tsx` — `dark:hover:text-ink-primary`
+- `src/components/SegmentedControl/SegmentedControlTrigger.tsx` — `dark:data-[state=active]:bg-surface-chips`
+
+Under a third theme class these fall back to their light-mode rule: a
+`SegmentedControl`'s active pill would paint `--surface-card` instead of
+`--surface-chips`, and on a dark-like theme the raised pill stops reading as
+raised. Three ways out, best first:
+
+1. **Tokenize it** — introduce `--segctrl-active-bg` (Layer 3, `--surface-card`
+   on `:root`, `--surface-chips` on `.dark`) and drop the `dark:` class. This is
+   what decision 4 exists for, and it makes the component theme-count-agnostic.
+2. **Ship both classes** — apply `class="dark midnight"`, letting `.midnight`
+   win the cascade on the tokens it redeclares while `dark:` rules still fire.
+3. **Widen the variant** in your own config (Tailwind >= 3.4.1; peer range is `^3.4`):
+   ```ts
+   darkMode: ['variant', ['.dark &', '.midnight &']],
+   ```
+
+#### Tailwind config side
+
+The preset hardcodes `darkMode: ['class']`. A consumer's own top-level `darkMode`
+**replaces** it rather than merging — v3 presets merge `theme` and `plugins`, not
+arbitrary top-level keys. A third theme that never needs `dark:` utilities
+requires no Tailwind change at all: every component reads tokens, so the cascade
+alone re-themes it.
+
+#### Portals
+
+Nine components render through a portal to `document.body` — `Modal`, `Sheet`,
+`Popover`, `DropdownMenu`, `Tooltip`, `TruncatedTitleTooltip` — as does Sonner's
+`Toaster`. A theme class on a subtree does not reach them: a dialog opened from
+inside a scoped theme renders under whatever class the document root carries.
+Scoped theming is therefore safe for page chrome and unsafe for any surface that
+opens a portaled overlay, unless the same class is also on `<html>`.
+
+#### Not themeable
+
+`--radius-*`, `--sidebar-width*`, `--shadow-thumb*`, `--font-sans`,
+`--font-size-*`, `--line-height-*`, `--font-weight-*`, `--motion-*` and
+`--opacity-disabled` are `:root`-only and theme-independent; override them once
+globally rather than per theme. `--breakpoint-*` are inert (decision 9) — a theme
+block redeclaring one changes nothing.
+
+#### Checklist
+
+1. Declare the class block after the `@import` of `globals.css`, never inside it.
+2. Cover the 44 Layer-2 roles; add Layer 3 only for ramp-pinned tokens and mix ratios.
+3. Decide explicitly about the 8 theme-constant tokens above.
+4. Handle the two `dark:` holdouts.
+5. Verify in Storybook by adding the theme to `withThemeByClassName` in
+   `.storybook/preview.tsx` — this is the only gate the package has (decision 10);
+   a token you forget produces an unstyled element, not an error.
+6. Open one portaled surface (`Modal`) under the theme to confirm the class is on
+   the document root and not only on a wrapper.
+
+#### Worked example — a `.midnight` third theme
+
+```css
+@import '@devart/ui-react/globals.css';
+
+.midnight {
+  /* Layer 2 — the 44 roles; abbreviated */
+  --bg: 258 30% 6%;
+  --surface-page: 258 30% 6%;
+  --surface-card: 257 26% 11%;
+  --surface-card2: 257 24% 15%;
+  --surface-chips: 257 22% 19%;
+  --ink-primary: 250 20% 97%;
+  --ink-body: 250 14% 88%;
+  --ink-secondary: 250 10% 70%;
+  --stroke-border: 257 20% 22%;
+  --state-hover: 257 24% 15%;
+  /* … */
+
+  /* The 8 constants — opted into the theme rather than inherited */
+  --btn-primary-bg: var(--tertiary-500);
+  --btn-primary-text: var(--grey-950);
+  --focus-ring-brand: var(--tertiary-400);
+
+  /* Layer 3 — only what the roles cannot carry */
+  --badge-primary-bg: 257 24% 19%;   /* was pinned to --brand-50 */
+  --toast-bg-success: color-mix(in srgb, hsl(var(--fb-green)) 8%, hsl(var(--surface-card)));
+}
+```
+```ts
+// tailwind.config.ts — only needed to keep the two dark: holdouts working
+darkMode: ['variant', ['.dark &', '.midnight &']],
+```
+
+Everything else — all 43 `cva()` recipes, every `color-mix()` tint, both Layer-1
+ramps — is untouched.
 
 ---
 
@@ -124,9 +407,9 @@ Hardcoded in the preset: `darkMode: ['class']` — a consumer that needs a diffe
 
 ## Cross-Feature Dependencies
 
-- **ui → (none)** — leaf package. Zero `@insightis/*` dependencies of any kind: TypeScript config is vendored as `tsconfig.base.json`, and vitest is configured locally (`vitest.config.ts`) rather than via `@insightis/unit-tests`. Peer contract (never runtime `dependencies`): `react` `^19`, `react-dom` `^19` (Radix), `tailwindcss` `^3.4` (preset imports `tailwindcss/defaultTheme` / `plugin`), and optional `@types/react` `^19` via `peerDependenciesMeta`. `react` / `react-dom` / `tailwindcss` stay in `devDependencies` only for Storybook and local builds — shipping them as `dependencies` nests a second React under the package and triggers "Invalid hook call" when the consumer is on another 19.x. Publish target is the GitLab Package Registry of `devart/components/devart.ui.react` (`publishConfig.registry`); the package will be renamed to `@devart/ui-react` when it lands in that repository.
-- **apps/web → ui** — the most heavily imported internal package: 710 subpath imports across 382 files. Also inherits the Tailwind theme via `presets: [preset]` (`@insightis/ui/tailwind-preset`), the `pressed:` variant, and `tailwindcss-animate` — dropped from `apps/web`'s own `devDependencies` now that the preset supplies it.
-- **apps/web → ui (tokens, duplicated)** — `apps/web/src/index.css` keeps its own full copy of the token set inline (inside `@layer base`), rather than `@import`ing `@insightis/ui/globals.css`; the app decided to keep `index.css` as the single file where its tokens and its own `@layer base` additions live (see `apps/web/SPEC.md`, decision 4). `packages/ui/globals.css` is this package's shipped token file, consumed by Storybook and by external consumers of the published package. The two files are deliberately kept in sync by hand and are currently identical: 231 `:root` + 76 `.dark` custom properties, same values, both legacy-palette-free, both carrying the same geometry/elevation/typography tokens. Every token addition or change is therefore a two-file edit (`apps/web/src/index.css` and `packages/ui/globals.css`); nothing in the build enforces the two staying in sync, so drift surfaces as a wrong pixel rather than a failing build. Separately, and unaffected by the token duplication: `apps/web` consumes the Tailwind preset via `./tailwind-preset` and spreads `contentGlobs` into its own `content` array. The package additionally ships `fonts.css` (self-hosted DM Sans `@font-face` + the four `.woff2` files under `fonts/`) for consumers with no font pipeline of their own, such as Storybook; `apps/web` keeps its own near-identical `@font-face` block rather than importing it, because `index.html` preloads `/fonts/dm-sans-latin-normal.woff2` from the app's own public path.
+- **ui → (none)** — leaf package. Zero monorepo workspace dependencies: TypeScript config is vendored as `tsconfig.base.json`, and vitest is configured locally (`vitest.config.ts`). Peer contract (never runtime `dependencies`): `react` `^19`, `react-dom` `^19` (Radix), `tailwindcss` `^3.4` (preset imports `tailwindcss/defaultTheme` / `plugin`), and optional `@types/react` `^19` via `peerDependenciesMeta`. `react` / `react-dom` / `tailwindcss` stay in `devDependencies` only for Storybook and local builds — shipping them as `dependencies` nests a second React under the package and triggers "Invalid hook call" when the consumer is on another 19.x. Published name is `@devart/ui-react`; registry is the GitLab Package Registry of this project (`publishConfig.registry`).
+- **apps/web → ui** — the most heavily imported internal package: 710 subpath imports across 382 files. Also inherits the Tailwind theme via `presets: [preset]` (`@devart/ui-react/tailwind-preset`), the `pressed:` variant, and `tailwindcss-animate` — dropped from `apps/web`'s own `devDependencies` now that the preset supplies it.
+- **apps/web → ui (tokens, duplicated)** — `apps/web/src/index.css` keeps its own full copy of the token set inline (inside `@layer base`), rather than `@import`ing `@devart/ui-react/globals.css`; the app decided to keep `index.css` as the single file where its tokens and its own `@layer base` additions live (see `apps/web/SPEC.md`, decision 4). `packages/ui/globals.css` is this package's shipped token file, consumed by Storybook and by external consumers of the published package. The two files are deliberately kept in sync by hand and are currently identical: 231 `:root` + 76 `.dark` custom properties, same values, both legacy-palette-free, both carrying the same geometry/elevation/typography tokens. Every token addition or change is therefore a two-file edit (`apps/web/src/index.css` and `packages/ui/globals.css`); nothing in the build enforces the two staying in sync, so drift surfaces as a wrong pixel rather than a failing build. Separately, and unaffected by the token duplication: `apps/web` consumes the Tailwind preset via `./tailwind-preset` and spreads `contentGlobs` into its own `content` array. The package additionally ships `fonts.css` (self-hosted DM Sans `@font-face` + the four `.woff2` files under `fonts/`) for consumers with no font pipeline of their own, such as Storybook; `apps/web` keeps its own near-identical `@font-face` block rather than importing it, because `index.html` preloads `/fonts/dm-sans-latin-normal.woff2` from the app's own public path.
 - **apps/web → ui (DOM contract)** — `apps/web/src/shared/utils/is-modal-open.ts` queries `[data-modal-overlay][data-state="open"]` to suppress the global file-drop overlay and its window-level drop guard while a modal or sheet is open (see `apps/web/SPEC.md`, decision 9). The dependency is a CSS selector, so it is invisible to TypeScript and to the Storybook gate: dropping the attribute, or shipping a new overlay primitive without it, yields a file drop landing behind an open dialog and no error anywhere.
 - **web-e2e → ui (indirect)** — Playwright locators bind to primitives' accessible semantics rather than test ids (e.g. `UploadFilePage.ts` matches the `File` component by `role="button"` plus accessible name), so changing a primitive's role or label structure breaks e2e without touching `apps/web`.
 
@@ -134,7 +417,7 @@ Hardcoded in the preset: `darkMode: ['class']` — a consumer that needs a diffe
 
 ## Key Architectural Decisions
 
-1. **Subpath-only exports, no root barrel** — the `./*` wildcard maps directly onto `src/components/*/index.tsx`, so an import names exactly one component directory and pulls in nothing else. There is no `src/index.ts` to keep in sync and no accidental whole-library import; the cost is that non-component modules need an explicit entry (`./cn`, `./use-mobile`) and internal hooks are private by omission. Contrast `@insightis/shared-utils`, which is single-barrel — see `packages/shared-utils/SPEC.md`, Key Architectural Decisions.
+1. **Subpath-only exports, no root barrel** — the `./*` wildcard maps directly onto `src/components/*/index.tsx`, so an import names exactly one component directory and pulls in nothing else. There is no `src/index.ts` to keep in sync and no accidental whole-library import; the cost is that non-component modules need an explicit entry (`./cn`, `./use-mobile`) and internal hooks are private by omission.
 2. **Legacy palette frozen, then deleted, rather than rewritten in place** — the redesign introduced Design System v2 **additively**: the legacy variables kept their values and their names, and a parallel three-layer palette was added alongside them. Rewriting `--primary`/`--accent`/`--text-*` in place would have re-themed every component in one commit, with no way to review or revert a single component's appearance; freezing them instead let each component migrate in its own ticket while un-migrated ones stayed pixel-identical. That migration is now finished: the frozen block, the `content.*` nesting, and the `text-content-*` class names have been deleted from both `globals.css` and `THEME_COLORS`. What was previously an enforced-by-review convention (nothing in the build rejected `bg-card`) is now a hard build-time miss — a class resolving to a legacy name simply generates no CSS.
 3. **Layer-1 primitives are not exposed to Tailwind** — the ramp variables exist in CSS so semantic tokens can reference them, but `THEME_COLORS` omits them deliberately, so no component can write `bg-slate-200` and pin itself to a specific shade instead of a role. Theme switching therefore never requires touching a component.
 4. **Component-scoped tokens as the third layer** — `--btn-*`, `--badge-*`, `--toast-*`, `--segctrl-*`, `--tbl-*` exist so a component's entire state recipe (rest / hover / press / disabled, both themes) is expressible as static utility classes with zero conditionals in TSX, and so a designer-driven tweak to one control is a one-line CSS edit per theme rather than a hunt through variant strings. The accepted cost is the width of the token surface and the fact that some of these variables have exactly one consumer.

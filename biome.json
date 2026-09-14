@@ -1,0 +1,100 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "files": {
+    "ignoreUnknown": false,
+    "includes": [
+      "src/**/*",
+      ".storybook/**/*",
+      "scripts/**/*",
+      "**/*.{json,md,css,ts,tsx,js,mjs}",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/.turbo",
+      "!**/.pnpm-store",
+      "!**/coverage",
+      "!**/storybook-static",
+      "!**/junit.xml",
+      "!**/gl-code-quality.json",
+      "!**/.ds-sync",
+      "!**/ds-bundle",
+      "!**/.design-sync"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "attributePosition": "auto"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": {
+        "noStaticElementInteractions": "off"
+      },
+      "style": {
+        "useImportType": "warn"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off",
+        "noConfusingVoidType": "off"
+      },
+      "recommended": true,
+      "complexity": {
+        "useDateNow": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "error"
+      },
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "functions": ["clsx", "cva", "cn", "cx"]
+          }
+        }
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "es5",
+      "semicolons": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/generated/**"],
+      "linter": {
+        "enabled": false
+      }
+    }
+  ],
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  }
+}

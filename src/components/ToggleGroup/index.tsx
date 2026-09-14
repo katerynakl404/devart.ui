@@ -51,5 +51,5 @@ const ToggleGroup = ({
 
 ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName;
 
-export { ToggleGroup, ToggleGroupItem, toggleVariants };
 export type { ToggleGroupItemProps } from './ToggleGroupItem';
+export { ToggleGroup, ToggleGroupItem, toggleVariants };

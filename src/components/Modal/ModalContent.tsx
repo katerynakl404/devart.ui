@@ -1,6 +1,7 @@
 'use client';
 
 import * as ModalPrimitive from '@radix-ui/react-dialog';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import type { ComponentProps, ComponentPropsWithRef } from 'react';
 
@@ -19,8 +20,26 @@ import { ModalPortal } from './ModalPortal';
 
 const DEFAULT_CLOSE_LABEL = 'Close';
 
+/**
+ * A dialog is sized by what it holds. Three steps, and every dialog maps to
+ * one: `sm` for a confirm the user only reads and answers, `md` (the default)
+ * for anything the user fills in, `lg` for a multi-step wizard. Rename is
+ * `md`, not `sm` — the user types into it, so it is a form, not a confirm.
+ */
+export const modalContentVariants = cva(null, {
+  variants: {
+    size: {
+      sm: 'max-w-modal-sm',
+      md: 'max-w-modal-md',
+      lg: 'max-w-modal-lg',
+    },
+  },
+  defaultVariants: { size: 'md' },
+});
+
 interface ModalContentProps
-  extends ComponentPropsWithRef<typeof ModalPrimitive.Content> {
+  extends ComponentPropsWithRef<typeof ModalPrimitive.Content>,
+    VariantProps<typeof modalContentVariants> {
   isCloseButtonVisible?: boolean;
   closeButtonProps?: ComponentProps<typeof IconButton>;
 }
@@ -29,6 +48,7 @@ export function ModalContent({
   ref,
   className,
   children,
+  size,
   isCloseButtonVisible = true,
   closeButtonProps,
   ...props
@@ -46,7 +66,8 @@ export function ModalContent({
         ref={ref}
         aria-describedby={undefined}
         className={cn(
-          'flex max-h-[90dvh] max-w-lg flex-col',
+          'flex max-h-[90dvh] flex-col',
+          modalContentVariants({ size }),
           'fixed top-1/2 left-1/2 z-[100] w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2',
           'rounded-lg',
           // Own compositing layer: without it a partial repaint inside the
@@ -55,7 +76,7 @@ export function ModalContent({
           // rounded ones. `transform-gpu` keeps the centering translate.
           'transform-gpu [backface-visibility:hidden]',
           'border border-stroke',
-          'bg-surface-card p-4 shadow-lg duration-200',
+          'bg-surface-card p-4 shadow-lg duration-base',
 
           // Closed state
           'data-[state=closed]:fade-out-0',

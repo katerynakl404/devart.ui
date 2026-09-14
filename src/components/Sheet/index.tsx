@@ -8,7 +8,7 @@ import type {
   ComponentPropsWithRef,
   HTMLAttributes,
 } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, focusRing } from '../../lib/utils';
 import { DialogTitleFallback } from '../DialogTitleFallback';
 
 const DEFAULT_CLOSE_LABEL = 'Close';
@@ -78,7 +78,7 @@ const sheetVariants = cva(
 
     // Closed state
     'data-[state=closed]:animate-out',
-    'data-[state=closed]:duration-300',
+    'data-[state=closed]:duration-slow',
 
     // Opened state
     'data-[state=open]:animate-in',
@@ -185,11 +185,7 @@ function SheetContent({
               'hover:opacity-100',
               'hover:bg-state-hover hover:text-ink-body',
 
-              'ring-offset-surface-page',
-              'focus:outline-none',
-              'focus:ring-2',
-              'focus:ring-focus-ring-brand',
-              'focus:ring-offset-2',
+              focusRing,
 
               'disabled:pointer-events-none',
 
@@ -199,7 +195,7 @@ function SheetContent({
             {...restCloseButtonProps}
             aria-label={closeLabel}
           >
-            <X className="h-6.5 w-6.5 p-1" />
+            <X className="size-6 p-1" />
             <span className="sr-only">{closeLabel}</span>
           </SheetPrimitive.Close>
         )}
@@ -291,14 +287,14 @@ function SheetFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 
 export {
   Sheet,
-  SheetPortal,
-  SheetTrigger,
-  SheetClose,
-  SheetOverlay,
-  SheetContent,
-  SheetHeader,
   SheetBody,
-  SheetFooter,
-  SheetTitle,
+  SheetClose,
+  SheetContent,
   SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetOverlay,
+  SheetPortal,
+  SheetTitle,
+  SheetTrigger,
 };

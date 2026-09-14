@@ -1,6 +1,8 @@
 'use client';
 
 import * as PopoverPrimitive from '@radix-ui/react-popover';
+import type { ComponentProps } from 'react';
+import { cn, focusRing } from '../../lib/utils';
 import { PopoverContent } from './PopoverContent';
 
 /**
@@ -16,6 +18,18 @@ const PopoverAnchor = PopoverPrimitive.Anchor;
 /**
  * The element (usually a button) that toggles the popover when clicked.
  */
-const PopoverTrigger = PopoverPrimitive.Trigger;
+const PopoverTrigger = ({
+  className,
+  asChild,
+  ...props
+}: ComponentProps<typeof PopoverPrimitive.Trigger>) => (
+  <PopoverPrimitive.Trigger
+    asChild={asChild}
+    className={asChild ? className : cn(focusRing, className)}
+    {...props}
+  />
+);
 
-export { Popover, PopoverAnchor, PopoverTrigger, PopoverContent };
+PopoverTrigger.displayName = PopoverPrimitive.Trigger.displayName;
+
+export { Popover, PopoverAnchor, PopoverContent, PopoverTrigger };

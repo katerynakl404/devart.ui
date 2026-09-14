@@ -44,8 +44,8 @@ const dropdownMenuItemVariants = cva(
         ),
         danger: cn(
           'text-fb-red-text',
-          'focus:bg-fb-red/[0.08] data-[highlighted]:bg-fb-red/[0.08]',
-          'active:bg-fb-red/[0.12]'
+          'focus:bg-fb-red/8 data-[highlighted]:bg-fb-red/8',
+          'active:bg-fb-red/12'
         ),
       },
     },

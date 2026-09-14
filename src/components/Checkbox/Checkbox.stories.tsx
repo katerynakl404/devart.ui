@@ -45,3 +45,18 @@ export const States: Story = {
 export const WithoutLabel: Story = {
   args: { label: undefined, 'aria-label': 'Select row' },
 };
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...WithLabel,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
+};

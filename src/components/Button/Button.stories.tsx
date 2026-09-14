@@ -23,7 +23,6 @@ const meta = {
         'secondary',
         'outline',
         'tertiary',
-        'ghost',
         'destructive',
         'destructiveOutline',
         'transparent',
@@ -63,9 +62,6 @@ export const Variants: Story = {
       </Button>
       <Button {...args} variant="tertiary">
         Tertiary
-      </Button>
-      <Button {...args} variant="ghost">
-        Ghost
       </Button>
       <Button {...args} variant="destructive">
         Destructive
@@ -123,4 +119,19 @@ export const Disabled: Story = {
 export const FullWidth: Story = {
   args: { fullWidth: true },
   parameters: { layout: 'padded' },
+};
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS.
+ */
+export const DarkTheme: Story = {
+  ...Primary,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };

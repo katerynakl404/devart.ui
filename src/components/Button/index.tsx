@@ -12,7 +12,7 @@ const buttonVariants = cva(
     'inline-flex items-center justify-center gap-1.5',
     'whitespace-nowrap font-medium',
     'cursor-pointer border',
-    'transition-all duration-100',
+    'transition-all duration-fast',
 
     // Focus: 2px ring + 2px surface-card gap; ring colour is set per variant
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
@@ -36,8 +36,8 @@ const buttonVariants = cva(
         ),
         primaryTertiary: cn(
           'border-transparent bg-transparent text-ink-body',
-          'hover:bg-brand-primary/[0.06]',
-          'pressed:bg-brand-primary/[0.08]',
+          'hover:bg-brand-primary/6',
+          'pressed:bg-brand-primary/8',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -52,8 +52,8 @@ const buttonVariants = cva(
         // Brand-bordered, transparent fill (previous Secondary look).
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
-          'hover:border-brand-hover hover:bg-brand-primary/[0.06]',
-          'pressed:border-brand-hover pressed:bg-brand-primary/[0.08]',
+          'hover:border-brand-hover hover:bg-brand-primary/6',
+          'pressed:border-brand-hover pressed:bg-brand-primary/8',
           'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -63,14 +63,6 @@ const buttonVariants = cva(
           'border-transparent bg-transparent text-ink-body',
           'hover:bg-state-hover',
           'pressed:bg-state-pressed',
-          'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive'
-        ),
-        // Neutral ghost: transparent like tertiary
-        ghost: cn(
-          'border-transparent bg-transparent text-ink-body',
-          'pressed:bg-state-pressed hover:bg-state-hover',
-          'transition-colors duration-100',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -94,14 +86,14 @@ const buttonVariants = cva(
         // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          'hover:bg-fb-red/[0.08]',
-          'active:bg-fb-red/[0.12]',
+          'hover:bg-fb-red/8',
+          'pressed:bg-fb-red/12',
           'focus-visible:ring-state-focus-ring',
           'disabled:bg-transparent disabled:text-ink-inactive'
         ),
         // Bare utility (no box, fit-content) for inline/icon triggers.
         transparent: cn(
-          '!p-0 m-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',
+          'm-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',
           'focus-visible:ring-focus-ring-brand'
         ),
         transparentUnderline: cn(
@@ -110,11 +102,15 @@ const buttonVariants = cva(
         ),
       },
       size: {
-        xs: 'h-7 px-2.5 text-xs [&_svg]:size-3',
-        sm: 'h-8 px-2.5 text-sm [&_svg]:size-4',
-        md: 'h-9 px-2.5 text-sm [&_svg]:size-4',
-        lg: 'h-10 px-2.5 text-sm [&_svg]:size-4',
-        xl: 'h-11 px-2.5 text-sm [&_svg]:size-4',
+        // Padding ladder pairs with the height: 8/12/12/16/20. Input, TextArea
+        // and Selector take the identical ladder, so a button and a field of
+        // the same size share one edge. 12px repeats at sm and md deliberately
+        // - those are the two sizes the product actually uses.
+        xs: 'h-7 px-2 text-xs [&_svg]:size-3',
+        sm: 'h-8 px-3 text-sm [&_svg]:size-4',
+        md: 'h-9 px-3 text-sm [&_svg]:size-4',
+        lg: 'h-10 px-4 text-sm [&_svg]:size-4',
+        xl: 'h-11 px-5 text-sm [&_svg]:size-4',
       },
       align: {
         left: 'justify-start',
@@ -135,6 +131,15 @@ const buttonVariants = cva(
         false: 'w-fit',
       },
     },
+    compoundVariants: [
+      {
+        // The bare inline/icon trigger has no box, so it takes no padding from
+        // the size ladder. Declared here rather than as an !important override
+        // on the variant, so padding still resolves in one place.
+        variant: 'transparent',
+        class: 'p-0',
+      },
+    ],
     defaultVariants: {
       variant: 'primary',
       size: 'md',
@@ -174,6 +179,12 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const Comp = asChild ? Slot : 'button';
+  // An empty label would otherwise add a 0px flex child and double the gap.
+  const hasLabel =
+    children !== undefined &&
+    children !== null &&
+    children !== false &&
+    children !== '';
 
   return (
     <Comp
@@ -195,20 +206,22 @@ const Button = ({
         leftSlot
       )}
 
-      <span
-        className={cn(
-          'align-text-top',
-          fullWidth
-            ? cn(
-                'min-w-0 flex-1 truncate text-center',
-                align === 'left' && 'text-left',
-                align === 'right' && 'text-right'
-              )
-            : 'inline-block'
-        )}
-      >
-        {children}
-      </span>
+      {hasLabel && (
+        <span
+          className={cn(
+            'align-text-top',
+            fullWidth
+              ? cn(
+                  'min-w-0 flex-1 truncate text-center',
+                  align === 'left' && 'text-left',
+                  align === 'right' && 'text-right'
+                )
+              : 'inline-block'
+          )}
+        >
+          {children}
+        </span>
+      )}
 
       {rightSlot}
     </Comp>

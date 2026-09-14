@@ -1,0 +1,69 @@
+{
+  "projectId": "ff886db2-b664-4103-8ea6-def41cba21d8",
+  "shape": "storybook",
+  "pkg": "@devart/ui-react",
+  "globalName": "DevartUI",
+  "storybookConfigDir": ".storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "buildCmd": "corepack pnpm run build && node .design-sync/make-entry.mjs && node .design-sync/gen-classlist.mjs && corepack pnpm exec tailwindcss -c .design-sync/tailwind-export.config.ts -i .design-sync/tailwind-export.css -o .design-sync/.cache/ds-utilities.css --minify",
+  "entry": "./dist/_ds-entry.js",
+  "tokensGlob": [
+    "globals.css"
+  ],
+  "extraFonts": [
+    "fonts.css"
+  ],
+  "storyImports": {
+    "loaders": {
+      ".woff2": "dataurl",
+      ".woff": "dataurl",
+      ".ttf": "dataurl"
+    }
+  },
+  "titleMap": {
+    "Datepicker": "SingleDatePicker",
+    "Resizable": "ResizablePanelGroup",
+    "Toast": "ToastMessage"
+  },
+  "cssEntry": ".design-sync/.cache/ds-utilities.css",
+  "guidelinesGlob": [
+    "SPEC.md",
+    "README.md"
+  ],
+  "readmeHeader": ".design-sync/conventions.md",
+  "provider": {
+    "component": "TooltipProvider"
+  },
+  "overrides": {
+    "DropdownMenu": {
+      "cardMode": "single"
+    },
+    "Modal": {
+      "cardMode": "single"
+    },
+    "Popover": {
+      "cardMode": "single"
+    },
+    "Sheet": {
+      "cardMode": "single"
+    },
+    "Sidebar": {
+      "cardMode": "single"
+    },
+    "TextArea": {
+      "cardMode": "column"
+    },
+    "Timeline": {
+      "cardMode": "column"
+    },
+    "Card": {
+      "cardMode": "column"
+    },
+    "Collapsible": {
+      "cardMode": "column"
+    },
+    "ToastMessage": {
+      "cardMode": "column"
+    }
+  }
+}

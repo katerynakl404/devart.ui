@@ -20,7 +20,7 @@ function SortIcon({ direction }: { direction: TableSortDirection }) {
   return (
     <ChevronDown
       className={cn(
-        'size-3.5 text-ink-body transition-transform duration-200',
+        'size-3.5 text-ink-body transition-transform duration-base',
         direction === 'asc' && 'rotate-180'
       )}
     />

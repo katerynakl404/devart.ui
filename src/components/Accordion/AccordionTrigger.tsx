@@ -3,7 +3,7 @@
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDown } from 'lucide-react';
 import type { ComponentProps } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, focusRing } from '../../lib/utils';
 
 const AccordionTrigger = ({
   className,
@@ -20,7 +20,7 @@ const AccordionTrigger = ({
           'rounded-lg p-3',
           'text-ink-primary text-sm',
           'font-medium',
-          'outline-none',
+          focusRing,
           'transition-all',
           '[&[data-state=open]>svg]:rotate-180',
           className
@@ -28,7 +28,7 @@ const AccordionTrigger = ({
         {...props}
       >
         {children}
-        <ChevronDown className="pointer-events-none size-4 shrink-0 text-ink-secondary transition-transform duration-200" />
+        <ChevronDown className="pointer-events-none size-4 shrink-0 text-ink-secondary transition-transform duration-base" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

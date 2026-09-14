@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { cn } from '../../lib/utils';
 import { Button } from '../Button';
 import { Typography } from '../Typography';
 import {
@@ -10,6 +11,7 @@ import {
   ModalHeader,
   ModalTitle,
   ModalTrigger,
+  modalContentVariants,
 } from './index';
 
 const meta = {
@@ -102,4 +104,62 @@ export const InitiallyOpen: Story = {
       </ModalContent>
     </Modal>
   ),
+};
+
+/**
+ * A dialog is sized by what it holds, not one width for everything. Three
+ * steps, and every dialog maps to one — so a one-line confirm no longer reads
+ * as a major modal.
+ *
+ * | Step | Width | Holds |
+ * |---|---|---|
+ * | `sm` | 360px | a confirm the user only reads and answers |
+ * | `md` | 480px | the default — anything the user fills in |
+ * | `lg` | 576px | the multi-step wizard |
+ *
+ * Rename is `md`, not `sm`: the user types into it, so it is a form, not a
+ * confirmation. Only Delete and Disconnect are `sm`.
+ */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      {(
+        [
+          ['sm', '360px', 'a confirm the user only reads and answers'],
+          ['md', '480px', 'the default — anything the user fills in'],
+          ['lg', '576px', 'the multi-step wizard'],
+        ] as const
+      ).map(([size, width, holds]) => (
+        <div
+          className={cn(
+            modalContentVariants({ size }),
+            'w-full rounded-lg border border-stroke bg-surface-card p-4'
+          )}
+          key={size}
+        >
+          <Typography textStyle="title14">{`size="${size}" · ${width}`}</Typography>
+          <Typography textColor="secondary" textStyle="body12">
+            {holds}
+          </Typography>
+        </div>
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
+ * the subtree — no provider, no props, no JS. This component portals to `document.body`, so an OPEN overlay is not
+ * reached by a scoped class — only the trigger is themed here. Put `dark` on
+ * `<html>` to theme the overlay itself.
+ */
+export const DarkTheme: Story = {
+  ...Default,
+  decorators: [
+    (Story) => (
+      <div className="dark rounded-lg bg-surface-page p-6">
+        <Story />
+      </div>
+    ),
+  ],
 };
