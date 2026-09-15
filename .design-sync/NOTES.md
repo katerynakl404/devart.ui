@@ -310,3 +310,302 @@ Found by the dark previews, agreed by BOTH panels (so not sync defects):
 - **OPEN**: the `TruncatedTitleTooltip` story's trigger is a bare `<a>` with no
   ink class, so it renders dark-on-dark. A story-authoring nit, not a component
   bug — the component's own tooltip content is correctly tokenised.
+
+## Disabled-state recipe: spec vs kit
+
+The design report specifies, for Checkbox disabled (unchecked & checked):
+`opacity: --opacity-disabled` (.65) + `pointer-events:none` + `cursor:not-allowed`
+— *"each position fades from its own base; no colour override"* — and claims it
+**"unifies with Switch / Button / IconButton / Tabs"**.
+
+Measured against the kit:
+
+| Component | Recipe in code | Matches the spec? |
+|---|---|---|
+| Checkbox | `disabled:opacity-disabled` | yes |
+| Switch | `disabled:opacity-disabled` | yes |
+| Tabs (`TabsTrigger`) | `disabled:opacity-disabled` | yes |
+| RadioButton | `disabled:opacity-50` | **no — wrong value**, was a raw 0.5 instead of the 0.65 token. FIXED to `opacity-disabled`. |
+| Button | `disabled:bg-state-disabled` + `disabled:text-ink-inactive` | **no — colour override**, per-variant |
+| IconButton | `disabled:bg-state-disabled` + `disabled:text-ink-inactive` | **no — colour override**, per-variant |
+
+So the unification the spec describes holds for Switch and Tabs but **not** for
+Button and IconButton, which override colour rather than fading from their own
+base. That is a real spec-vs-kit discrepancy and needs a decision: either the
+spec's "unifies with Button / IconButton" claim is wrong, or those two should
+move to the opacity recipe (a visible change to every disabled button).
+
+**Do not "fix" Checkbox to a fill-based recipe.** It was already correct; one
+was attempted during this sync and reverted. The dimmed-brand-fill appearance
+of a disabled+checked checkbox is the specified behaviour.
+
+## Regression introduced and fixed during this sync
+
+Moving the field's horizontal padding onto the InputGroup shell (audit #36)
+zeroed both the addon's `pl-2.5` and the control's `px-1.5` — but that control
+padding was also the only thing separating a leading icon from the placeholder
+text, so the icon and text ended up touching. The outer edge is the shell's
+job; the icon-to-text distance is a **gap between siblings**, so it now lives on
+the inline addons (`me-2` / `ms-2`) where it cannot affect the full-width block
+addons. Watch for this if the ladder is ever retuned.
+
+## Open component findings from the design review (NOT yet rebuilt/uploaded)
+
+The reference is `C:\Users\katerynak\Documents\Claude\Projects\Insightis\
+insightis-preview-kit.html` — a 561KB preview kit with a section per component
+plus a written `Spec.` line for each. It is the authority on intended
+appearance, and it is far more specific than the UX audit was.
+
+Fixed in the working tree, pending a rebuild:
+- **SegmentedControl**: the trigger hardcoded `rounded` (4px) and never read the
+  track's `rounded` from context, so at `rounded="full"` the track was a pill and
+  every trigger stayed square. Now derived from context, inset one step; `md`
+  unchanged so the default does not regress.
+- **Sheet**: panel used `bg-surface-page` (the page ground) where Modal uses
+  `bg-surface-card`. Now `surface-card`.
+- **Modal + Sheet overlays**: hardcoded `bg-black/80`, so `--overlay-scrim` was
+  unreachable and the scrim was not themeable — SPEC's own failure-modes list
+  calls this out. The token was **declared only under `.dark`**, so using it
+  first required a `:root` value; added, and both overlays now use
+  `bg-overlay-scrim`.
+- **InputGroup**: regression from the #36 padding move — see the regression note
+  above.
+- **RadioButton**: control used raw `opacity-50` instead of `opacity-disabled`.
+
+Known-open, not yet addressed:
+- **Sidebar does not match the reference shell at all.** The kit's section
+  specifies a brand row + dark-teal CTA header, four compact 32px nav rows, a
+  hairline-separated Pinned/Recent chat list with hover-revealed row actions, and
+  a footer with a tokens meter and user row; nav row spec is h32 / radius md /
+  gap 8 / icon 16 / text-sm medium, active = `State/Pressed` bg with `Text/Body`
+  ink and NO brand colour. The kit's Sidebar stories are a generic nav tree.
+- **Datepicker range endpoints**: rounding reads wrong at the range ends
+  (`range_start`/`range_end` round the outer side while the selected day button
+  is forced `rounded-none`). Needs checking against the kit's datepicker section.
+- **Modal sizes are invisible in the product card** because Modal is
+  `cardMode: "single"`, which renders exactly one story. The portal-container
+  work below is what unblocks moving it to `column`.
+- **Autocomplete card clips** its wider cells; needs `cardMode: "column"`.
+
+## Planned but unfinished: portal containment + dark state matrix
+
+`src/lib/portal-container.ts` was added (a `PortalContainerContext` +
+`usePortalContainer`) and exported as `./portal-container` in both export maps,
+but **it is not yet wired into the portal components**. The intent:
+
+1. `DropdownMenuContent`, `DropdownMenuSubContent`, `PopoverContent`,
+   `TooltipContent`, `ModalPortal`, `SheetContent` and `TruncatedTitleTooltip`
+   take an optional `portalContainer`, falling back to the context, then to
+   Radix's `document.body`.
+2. Stories provide the container, so an open overlay renders INSIDE the card and
+   inside a `.dark` subtree. That fixes both the light-dropdown-on-dark-panel bug
+   and the reason those components need single-story cards.
+3. With overlays contained, `cardMode` for DropdownMenu/Modal/Popover/Sheet/
+   Sidebar can move from `single` to `column`, so every story (Modal's three
+   sizes included) becomes visible in the product card.
+4. `DarkTheme` stories should then compose the component's OTHER stories inside
+   one dark wrapper, so every state appears in dark rather than one demo.
+
+# Reference-kit review (insightis-preview-kit.html)
+
+Four agents compared all 44 components against their section + `Spec.` line.
+Reference sections are split to `.design-sync/.cache/reference/<id>.html` by
+`/tmp/splitkit.mjs` logic (regenerate by re-splitting the kit).
+
+## CLOSED: the disabled-recipe question
+
+**Button and IconButton are correct as shipped.** The IconButton section states
+for every variant: `Disabled — bg State/Disabled, icon Text/Inactive`, and
+`Loading — spinner, aria-busy, --opacity-disabled`; the kit CSS agrees
+(`.btn-primary:disabled{background:var(--state-disabled);color:var(--ink-inactive)}`).
+So the opacity fade is the **loading** recipe, not the disabled one, and the
+earlier "Button/IconButton deviate" note was a misreading — the Checkbox spec's
+"unifies with Button" line refers to loading. Both already do both correctly.
+
+## More dead CSS (the recurring failure mode in this kit)
+
+A class naming a key that does not exist compiles to nothing and fails as a
+wrong pixel, never an error. Beyond Banner's `max-[880px]:` and Sheet's `h-6.5`:
+
+- **RadioButton** focus ring used `ring-ring` — `--ring` has ZERO declarations,
+  so the ring fell back to browser-default blue.
+- **IconButton** `destructiveOutline` used `outline-destructive-*`; the real
+  Tailwind key is `outlineDestructive-*`, so its border and both washes emitted
+  nothing.
+- **Typography** `h3` read `'texl-xl …'` — a typo, so `h3` had no base size and
+  jumped from inherited straight to `text-2xl` at `md`.
+- **Card** `CardDivider`'s base began with `hidden`, so it never rendered.
+- **Banner** `sm` gated on `[data-gradient-icon]`, an attribute set nowhere.
+
+## Central token work applied
+
+`--line-height-compact` (13px had no paired leading — wrong in TextArea),
+`spacing.control` (Checkbox `size-[18px]` vs RadioButton `size-5` disagreed and
+one was arbitrary), `formFocusRing` (brand never visualises FORM-control focus;
+three controls were hand-rolling a neutral ring), `--radius-2xl: .875rem` and
+`--shadow-modal` (both themes — the dialog used stock `shadow-lg`, which has no
+dark value), and `--sidebar-width` 15.95rem -> 16rem.
+
+## Deferred token requests, with reasons
+
+- **11px step** (Badge `sm`, StatusView `sm` description). **Rejected for now:**
+  it contradicts the agreed type scale (audit #24), which is deliberately eight
+  sizes — 10/12/14/16/20/24/30/36. Adding 11px reintroduces an off-scale step.
+  Needs a design decision between the two documents.
+- **`--shadow-focus`** (4 call sites). All four already approximate it with
+  `ring-2 ring-focus-ring-brand` + offset, which renders the same; adding an
+  unused token would be drift. Worth doing only alongside rewiring all four.
+- **Card 300ms** vs `--motion-slow` 240ms — a 60ms delta does not earn a fourth
+  motion token; likely the reference means the existing `slow`.
+- **Banner collapse keyframes**, **`--chat-fade`** — both belong with the
+  features that need them (dismiss animation; the Sidebar chat row).
+
+## Open conflicts — reference vs the agreed audit decisions
+
+1. **TextArea padding**: reference says square 8px; audit #36 put it on the
+   8/12/12/16/20 ladder shared with Button. Left on the ladder.
+2. **InputGroup default variant**: reference marks `primary` default; the code
+   defaults to `outline`. Flipping restyles PasswordInput, Autocomplete,
+   Datepicker and File. `primary` now EXISTS and is selectable; default unchanged.
+3. **tertiary hover**: the States tables say `Brand/Primary @6%` but the kit's
+   own `kit-theme.css` renders neutral `--state-hover`, with a comment about
+   moving away from the brand tint. Not flipped — it would make `tertiary` a
+   byte-for-byte duplicate of `primaryTertiary`, which is exactly what got
+   `ghost` deleted.
+4. **Button gap**: prose says 6px, kit CSS renders 8px.
+
+Note the kit's prose and its `pages/kit-theme.css` disagree in at least three
+places. **The CSS is the renderer, so prefer it when they conflict.**
+
+## [API] gaps — Sidebar is a different component, not a restyle
+
+The paint is now close (nav + chat rows hit the kit's geometry, ink tokens and
+all four states). The SHELL is absent: brand row with logo swap, full-width
+primary CTA, a chat-section primitive (hairline + all-caps label + collapse
+chevron + See-all), a chat-row primitive (right-edge gradient fade, status slot
+with 10px spinner / 6px dot, hover- and focus-within-revealed kebab opening
+Pin/Unpin -> Rename -> Delete), a footer tokens meter and user row, and the
+collapsed-mode Chats icon. Closing it means ~5 new exported subcomponents
+(`SidebarBrand`, `SidebarChatSection`, `SidebarChatRow`, `SidebarTokensMeter`,
+`SidebarUser`). Purely additive breaks nothing; **repurposing `NavigationGroup`
+or `SidebarMenuSubButton` into the chat row WOULD break `apps/web`**, which
+drives both through `SidebarNavigationItems items={…}` with a custom `renderLink`.
+
+Also open: `NavigationItem` has no `isActive` (only `SidebarMenuButton` does);
+`File` has no `disabled` state though the kit's states table asks for one;
+`Modal`'s multi-step wizard shell (`.dlg-progress`/`.dlg-body`/`.dlg-step`) has
+no React counterpart.
+
+# AUTHORITY ORDER — read this before resolving any design conflict
+
+When sources disagree, later entries lose:
+
+1. **Decisions recorded in this file** (agreed with the design owner in session).
+2. **The UX audit + type-scale companion** (2026-09-04) — the agreed *target*.
+3. **`insightis-preview-kit.html`'s CSS** (`pages/kit-theme.css`) — what it
+   actually renders.
+4. **The preview kit's prose** — demonstrably the least reliable layer.
+5. **Production** (`insightis-app.devart.info`) — useful evidence of what exists
+   today, but it is PRE-migration, so it is not a target.
+
+**The preview kit can be wrong.** Two confirmed errors so far:
+- Its Tertiary blurb and states table claimed `Brand/Primary @6%/@8%` hover and
+  press while its own `kit-theme.css` renders neutral `--state-hover` /
+  `--state-pressed` — which is also what production shows. **Corrected in the
+  kit itself** this session (a `.bak` sits beside it).
+- Its type sizes are pre-migration (see below).
+
+## Type scale: 13px and 11px are NOT targets
+
+The type-scale companion defines nineteen styles on **eight sizes** —
+10/12/14/16/20/24/30/36 — and its migration table says outright:
+`size — 13→14, 11→12, 9→10, 18→20`.
+
+Production is pre-migration and still renders both as ARBITRARY values
+(measured live): sidebar nav rows `text-[0.8125rem]` (13px), sidebar balance
+footer `text-[0.688rem]` (11px). The preview kit mirrors that state.
+
+**Decision: the design system follows the scale and leads the migration.**
+- `text-compact` (13px) is used by NO kit component. The `--font-size-compact`
+  token stays (it is public API) and now has a paired `--line-height-compact`,
+  but nothing in the kit should reach for it.
+- The 11px token request (Badge `sm`, StatusView `sm` description, sidebar
+  balance) is **rejected** — 11px maps to 12px under the migration.
+- A review agent moved InputGroup/TextArea/Sidebar to 13px to match the kit;
+  those were reverted. The real bug it found underneath — InputGroup `sm` mixing
+  a 12px control with a 14px placeholder — stays fixed, resolved DOWN to 12.
+
+## Production sidebar, measured live (evidence, not a target)
+
+Nav row: h32 · px 8 · radius 6 · gap 8 · icon 16 · weight 500 · `--ink-secondary`
+· `hover:bg-state-hover` · `active:bg-state-pressed`. Everything except the font
+size matches what the reference review already fixed. Sidebar width ~254px.
+Footer carries a Balance label + wallet glyph + value, and a user row (avatar,
+email, "Owner · Trial", chevron) — so the footer meter and user row DO exist in
+production. **"New Chat" is a nav ROW there, not the full-width teal CTA the kit
+spec describes** — another place the kit and production disagree.
+
+## Deferred: migrate the preview kit's own off-scale type sizes
+
+Agreed to handle separately, not during a sync. Scope, already surveyed:
+
+- `insightis-preview-kit.html` has **20 hardcoded off-scale `font-size` decls**:
+  `11px` x7, `13px` x5, `18px` x8. Per the migration table these become 12 / 14
+  / 20.
+- `pages/kit-theme.css` has **none** — it already runs on a `--ts-*` token
+  system (`--ts-body-m-size`, `--ts-title-14-size`, `--ts-overline-size`, …), so
+  the stylesheet is on-scale and only the demo markup in the HTML is not.
+- **Only touch `font-size` declarations.** The raw 9px/18px counts are dominated
+  by geometry (icon sizes, padding, offsets) that must not move.
+- The kit's Tertiary prose was already corrected this session; a `.bak` of the
+  file sits beside it.
+
+## The 900x700 capture ceiling — a SILENT failure
+
+**Preview (`_ds`) captures are a fixed 900x700 viewport. Anything taller is
+cropped with no `[GRID_OVERFLOW]` and no warning of any kind** — the run looks
+clean while the product card shows a truncated component. The storybook (`_sb`)
+side is captured full-height, so the sheet can even look plausible.
+
+Caught on two cards, both now carrying a declared `viewport` override:
+- `Colors` — the full token grid is ~2500px; roughly 17 of 24 groups never
+  rendered. Grid densified to 6 columns with 24px swatches, `viewport 900x1600`.
+- `Typography` — the `Text Styles` story is 766px, so the scale was cut after
+  `label12`. `viewport 900x1000`.
+
+**Check tall stories on every sync**: compare the `_sb` raw height against 700.
+A `viewport` override is the fix, and it re-grades that component (the capture
+viewport is part of the grade key).
+
+## Reading techniques worth reusing (folded from the final fan-out)
+
+- **Levels-stretch near-zero-contrast fills.** Draw the raw PNG to a canvas in a
+  chromium page and map an input range like [238,256] onto [0,255]. Every
+  "missing" Skeleton bar / progress track / Separator rule became plainly
+  visible, and none was actually absent. `playwright` is NOT resolvable from the
+  repo root but IS installed under `.ds-sync/node_modules` — import it by an
+  absolute `file:///` URL or node throws `ERR_UNSUPPORTED_ESM_URL_SCHEME`.
+- **Measure the ink bounding box** instead of eyeballing 1px geometry: most
+  common colour = ground, then bbox of everything far from it. Separator came
+  out exactly 256x1 / 1x64 on BOTH panels, turning "is the rule even there" into
+  an equality.
+- **Sample the pixel** when "dimmed vs not" is too close to call. StepSlider
+  `Disabled`: stop ink rgb(144,156,171) vs rgb(147,158,172), against
+  rgb(90,106,128) enabled — same dimming both sides.
+- **The `_sb` capture is the storybook ROOT (868px wide), not the element box.**
+  Computing a fill fraction against 868 instead of the real track width makes a
+  correct 65% bar read as 21%.
+- **Gating is systematic, not occasional.** For every "Initially Open" overlay
+  story the reference is cropped to the TRIGGER's box (Modal 240x40, Sheet
+  110x55, Popover 140x60, DropdownMenu ~90x55) while the preview renders the
+  whole overlay. Six of seven portalled stories had a defective reference.
+- **The `--surface-page` canvas effect is broader than first thought**: any
+  control whose own fill is `--surface-page` or transparent (StepSlider track,
+  ScrollShadow tiles, Toggle's `Primary` on-state, File's `tertiary` row) reads
+  as unfilled on the LEFT panel only.
+
+## Two story-level ink defects (identical on both panels, so not sync defects)
+
+`TruncatedTitleTooltip` `DarkTheme` renders a dark title on the dark card, and
+`SingleDatePicker` `DarkTheme` a dark month caption. Both are the stories' own
+untokenised ink, reproduced faithfully. Worth fixing in the stories.

@@ -1,9 +1,12 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { ComponentPropsWithRef } from 'react';
+import { usePortalContainer } from '../../lib/portal-container';
 import { cn } from '../../lib/utils';
 
 interface TooltipContentProps
   extends ComponentPropsWithRef<typeof TooltipPrimitive.Content> {
+  /** Render the tooltip into this element instead of `document.body`. */
+  portalContainer?: HTMLElement | null;
   showArrow?: boolean;
   arrowClassName?: string;
 }
@@ -13,6 +16,7 @@ interface TooltipContentProps
  * Features automated entry/exit animations based on the current side and state.
  */
 function TooltipContent({
+  portalContainer,
   className,
   sideOffset = 8,
   showArrow = true,
@@ -21,8 +25,9 @@ function TooltipContent({
   ref,
   ...props
 }: TooltipContentProps) {
+  const container = usePortalContainer(portalContainer);
   return (
-    <TooltipPrimitive.Portal>
+    <TooltipPrimitive.Portal container={container}>
       <TooltipPrimitive.Content
         ref={ref}
         sideOffset={sideOffset}
@@ -31,6 +36,11 @@ function TooltipContent({
           'px-2 py-1',
           'rounded-md bg-ink-primary',
           'text-surface-card text-xs',
+
+          // The bubble hugs short copy and wraps at 288px — the same width as a
+          // medium menu — so a long tip gets two or three lines instead of
+          // running off the viewport.
+          'w-max max-w-72 whitespace-normal text-left',
 
           // Animation
           'fade-in-0 zoom-in-95 animate-in',

@@ -121,26 +121,53 @@ export const InitiallyOpen: Story = {
  * confirmation. Only Delete and Disconnect are `sm`.
  */
 export const Sizes: Story = {
+  parameters: { layout: 'padded' },
   render: () => (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-6">
       {(
         [
-          ['sm', '360px', 'a confirm the user only reads and answers'],
-          ['md', '480px', 'the default — anything the user fills in'],
-          ['lg', '576px', 'the multi-step wizard'],
+          [
+            'sm',
+            '360px',
+            'Delete file?',
+            "This action can't be undone. The file will be permanently removed.",
+          ],
+          ['md', '480px', 'Rename file', 'Give your file a recognizable name.'],
+          [
+            'lg',
+            '576px',
+            'New connection',
+            'The multi-step wizard — a long connector name and a two-line token field both need the extra width.',
+          ],
         ] as const
-      ).map(([size, width, holds]) => (
-        <div
-          className={cn(
-            modalContentVariants({ size }),
-            'w-full rounded-lg border border-stroke bg-surface-card p-4'
-          )}
-          key={size}
-        >
-          <Typography textStyle="title14">{`size="${size}" · ${width}`}</Typography>
-          <Typography textColor="secondary" textStyle="body12">
-            {holds}
+      ).map(([size, width, title, body]) => (
+        <div className="flex flex-col gap-1" key={size}>
+          <Typography textColor="secondary" textStyle="overline">
+            {`size="${size}" · max-width ${width}`}
           </Typography>
+          {/* The dialog shell rendered inline (not portalled) so all three
+              widths are visible side by side in one frame. */}
+          <div
+            className={cn(
+              modalContentVariants({ size }),
+              'flex w-full flex-col rounded-lg border border-stroke bg-surface-card p-4'
+            )}
+          >
+            <ModalHeader>
+              {/* Radix's Title needs a Dialog context, so this static preview
+                  renders the same type style directly. */}
+              <Typography textColor="primary" textStyle="heading20">
+                {title}
+              </Typography>
+            </ModalHeader>
+            <Typography textColor="secondary">{body}</Typography>
+            <ModalFooter>
+              <Button size="sm" variant="secondary">
+                Cancel
+              </Button>
+              <Button size="sm">Save</Button>
+            </ModalFooter>
+          </div>
         </div>
       ))}
     </div>

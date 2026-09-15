@@ -40,13 +40,13 @@ const stopMenuButtonPropagation = (event: MouseEvent) => {
   event.stopPropagation();
 };
 
+// Kit nav row: h32 (from the button's `default` size), radius md, gap 8px,
+// horizontal padding 8px, 16px icon, ink Text/Secondary. The expanded-state
+// overrides that previously forced min-h-9 / rounded-none / px-4 are gone —
+// they were what made this read as a generic nav tree rather than the kit row.
 const menuButtonClassName = cn(
-  'gap-1.5 px-1.5 py-1.5',
-  'text-ink-secondary [&_svg]:size-5',
-
-  'group-data-[state=expanded]:min-h-9',
-  'group-data-[state=expanded]:rounded-none',
-  'group-data-[state=expanded]:px-4'
+  'gap-2 px-2',
+  'text-ink-secondary [&_svg]:size-4'
 );
 
 /**
@@ -183,7 +183,8 @@ function SidebarNavigationItems<T extends DefaultLink>({
                     '!bg-transparent',
                     'absolute end-0 top-1/2 -translate-y-1/2',
                     'h-4 w-fit gap-0.5 p-0 text-sm',
-                    '!text-ink-secondary hover:!text-ink-body',
+                    // Kit: the hover-revealed "See all" link is Brand/Primary.
+                    '!text-brand-primary hover:!text-brand-hover',
                     'opacity-0 transition-opacity duration-base',
                     'group-hover/trigger-row:opacity-100'
                   )}

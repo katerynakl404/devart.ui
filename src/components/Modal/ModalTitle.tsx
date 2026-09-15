@@ -3,7 +3,6 @@
 import { Title } from '@radix-ui/react-dialog';
 import type { ComponentPropsWithRef } from 'react';
 
-import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 
 interface ModalTitleProps extends ComponentPropsWithRef<typeof Typography> {}
@@ -19,10 +18,10 @@ export function ModalTitle({
       <Typography
         ref={ref}
         variant="span"
-        weight="semibold"
+        textStyle="heading20"
         textColor="primary"
         align={align}
-        className={cn('text-xl', className)}
+        className={className}
         {...props}
       />
     </Title>

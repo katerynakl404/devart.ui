@@ -22,8 +22,9 @@ const DropdownMenuRadioItem = ({
       onPointerDown?.(event);
     }}
     className={cn(
-      'relative flex items-center rounded-md py-1.5 pr-2 pl-8',
-      'text-sm',
+      // Radius is one step inside the 8px `.menu` shell.
+      'relative flex items-center rounded py-1.5 pr-2 pl-8',
+      'text-ink-body text-sm',
       'outline-none',
       'transition-colors',
       'cursor-default select-none',
@@ -32,9 +33,10 @@ const DropdownMenuRadioItem = ({
       'focus:bg-state-hover data-[highlighted]:bg-state-hover',
       'active:bg-state-pressed',
 
-      //Disabled state
+      // Disabled — label drops to Text/Inactive, surface unchanged
       'data-[disabled]:pointer-events-none',
-      'data-[disabled]:opacity-disabled',
+      'data-[disabled]:cursor-not-allowed',
+      'data-[disabled]:text-ink-inactive',
 
       className
     )}

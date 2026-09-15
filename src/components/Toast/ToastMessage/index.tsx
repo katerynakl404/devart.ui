@@ -70,14 +70,16 @@ export function ToastMessage({
       {...props}
     >
       <div className="flex flex-1 items-start justify-between gap-3">
-        <div className="flex min-w-0 items-start gap-3">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
           {icon ?? (
             <IconComponent
               className={cn('mb-auto size-5 shrink-0', iconColor)}
             />
           )}
 
-          <div className="flex max-w-60 flex-col gap-0.5 text-left">
+          {/* fluid — the reference toast is width:100% up to its max, so the
+              body must not clamp itself to a narrower rail */}
+          <div className="flex min-w-0 flex-1 flex-col gap-0.5 text-left">
             <Typography
               variant="span"
               weight="medium"
@@ -86,7 +88,7 @@ export function ToastMessage({
               {message}
             </Typography>
             {description && (
-              <span className="text-ink-secondary text-xs leading-[1.4]">
+              <span className="text-ink-secondary text-xs leading-snug">
                 {description}
               </span>
             )}

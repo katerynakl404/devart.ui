@@ -155,6 +155,57 @@ export const WithSelectionItems: Story = {
 };
 
 /**
+ * Every item state the menu ships, rendered open.
+ *
+ * | State | Treatment |
+ * |---|---|
+ * | Default | `Text/Body` label, 16px leading glyph at stroke 1.75 |
+ * | Highlighted (hover + keyboard) | `State/Hover` fill |
+ * | Pressed | `State/Pressed` fill |
+ * | Destructive | `Feedback/Red_Text` label and glyph together |
+ * | Disabled | label drops to `Text/Inactive` — no fade, no fill change, so a
+ *   disabled row still aligns with its peers |
+ *
+ * A section heading is the Overline style in `Text/Inactive`, on the same 12px
+ * rail as the items.
+ */
+export const ItemStates: Story = {
+  render: (args) => (
+    <DropdownMenu defaultOpen>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary" rightSlot={<MoreHorizontal />}>
+          Item states
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent {...args} align="start">
+        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+        <DropdownMenuItem onSelect={fn()}>
+          <Pencil />
+          Default
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={fn()}>
+          <Copy />
+          Duplicate
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled onSelect={fn()}>
+          <Settings />
+          Disabled
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="danger" onSelect={fn()}>
+          <Trash2 />
+          Destructive
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled variant="danger" onSelect={fn()}>
+          <Trash2 />
+          Destructive · disabled
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+};
+
+/**
  * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
  * the subtree — no provider, no props, no JS. This component portals to `document.body`, so an OPEN overlay is not
  * reached by a scoped class — only the trigger is themed here. Put `dark` on

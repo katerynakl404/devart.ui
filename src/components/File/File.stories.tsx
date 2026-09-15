@@ -104,6 +104,43 @@ export const CustomIcon: Story = {
 };
 
 /**
+ * The interactive chip's own states. A chip is interactive only when `onClick`
+ * is set; it then takes `State/Hover` on hover and `State/Pressed` while held,
+ * plus the brand focus ring on `focus-visible`. Hover and pressed cannot be
+ * frozen as CSS pseudo-states in a static story, so they are reproduced here
+ * with the exact fill utilities the recipe applies.
+ */
+export const InteractiveStates: Story = {
+  args: { onClick: fn() },
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-2">
+      <File {...args} />
+      <File {...args} className="bg-state-hover" />
+      <File {...args} className="bg-state-pressed" />
+      <File
+        {...args}
+        className="ring-2 ring-focus-ring-brand ring-offset-2"
+        name="focus-visible.pdf"
+      />
+    </div>
+  ),
+};
+
+/** Size ladder and the borderless `tertiary` variant. */
+export const Variants: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-2">
+      <File {...args} size="xs" name="xs.pdf" />
+      <File {...args} size="sm" name="sm.pdf" />
+      <File {...args} size="md" name="md.pdf" />
+      <File {...args} size="lg" name="lg.pdf" />
+      <File {...args} size="xl" name="xl.pdf" />
+      <File {...args} variant="tertiary" name="tertiary.pdf" onClick={fn()} />
+    </div>
+  ),
+};
+
+/**
  * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
  * the subtree — no provider, no props, no JS.
  */

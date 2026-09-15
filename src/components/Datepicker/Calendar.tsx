@@ -92,7 +92,7 @@ export function Calendar({
           defaultClassNames.dropdown
         ),
         caption_label: cn(
-          'select-none font-medium',
+          'select-none font-medium text-ink-primary',
           captionLayout === 'label'
             ? 'text-sm'
             : 'cn-calendar-caption-label flex items-center gap-1 rounded-[--cell-radius] text-sm [&>svg]:size-3.5 [&>svg]:text-ink-secondary',
@@ -113,24 +113,41 @@ export function Calendar({
           'select-none text-ink-secondary text-xs',
           defaultClassNames.week_number
         ),
+        // The cell paints nothing by itself, so it carries NO base radius: a
+        // base `rounded-[--cell-radius]` shorthand is not cancelled by the
+        // `rounded-l-*` / `rounded-r-*` longhands the range modifiers add, so
+        // every range cell ended up rounded on all four corners and the inner
+        // edges of the range bar showed a notch. Each modifier now states its
+        // own four corners outright.
         day: cn(
-          'group/day relative aspect-square h-full w-full select-none rounded-[--cell-radius] p-0 text-center [&:last-child[data-selected=true]_button]:rounded-r-[--cell-radius]',
+          'group/day relative aspect-square h-full w-full select-none p-0 text-center [&:last-child[data-selected=true]_button]:rounded-r-[--cell-radius]',
+          // Hover on an unselected day — State/Hover. Scoped with :not() so it
+          // can never tie with the range / selected fills.
+          '[&:not([data-selected=true])]:hover:rounded-[--cell-radius] [&:not([data-selected=true])]:hover:bg-state-hover',
           props.showWeekNumber
             ? '[&:nth-child(2)[data-selected=true]_button]:rounded-l-[--cell-radius]'
             : '[&:first-child[data-selected=true]_button]:rounded-l-[--cell-radius]',
           defaultClassNames.day
         ),
         range_start: cn(
-          'relative isolate -z-0 rounded-l-[--cell-radius] bg-state-hover after:absolute after:inset-y-0 after:right-0 after:w-4 after:bg-state-hover',
+          'bg-state-hover',
+          'rounded-r-none rounded-l-[--cell-radius]',
           defaultClassNames.range_start
         ),
-        range_middle: cn('rounded-none', defaultClassNames.range_middle),
+        range_middle: cn(
+          'rounded-none bg-state-hover',
+          defaultClassNames.range_middle
+        ),
         range_end: cn(
-          'relative isolate -z-0 rounded-r-[--cell-radius] bg-state-hover after:absolute after:inset-y-0 after:left-0 after:w-4 after:bg-state-hover',
+          'bg-state-hover',
+          'rounded-r-[--cell-radius] rounded-l-none',
           defaultClassNames.range_end
         ),
+        // Expressed as a :not() so it cannot tie with the range modifiers'
+        // radius at equal specificity — a range that starts or ends on today
+        // keeps its rounded outer corner.
         today: cn(
-          'rounded-[--cell-radius] bg-state-hover text-ink-primary data-[selected=true]:rounded-none',
+          'bg-state-hover text-ink-primary [&:not([data-selected=true])]:rounded-[--cell-radius]',
           defaultClassNames.today
         ),
         outside: cn(

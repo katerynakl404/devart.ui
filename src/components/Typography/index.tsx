@@ -16,7 +16,7 @@ const typographyVariants = cva(null, {
     variant: {
       h1: 'scroll-m-20 font-medium text-3xl md:text-4xl',
       h2: 'scroll-m-20 font-medium text-2xl md:text-3xl',
-      h3: 'texl-xl scroll-m-20 font-medium md:text-2xl',
+      h3: 'scroll-m-20 font-medium text-xl md:text-2xl',
       h4: 'scroll-m-20 font-medium text-lg md:text-xl',
       h5: 'scroll-m-20 font-medium text-base md:text-lg',
       h6: 'scroll-m-20 font-medium text-sm md:text-base',

@@ -96,10 +96,11 @@ function PasswordInput({
           {...toggleButtonProps}
           onClick={onToggleVisible}
         >
+          {/* Icon names the action: Eye reveals, EyeOff hides. */}
           {visible ? (
-            <Eye aria-hidden className="!size-[1.125rem]" />
+            <EyeOff aria-hidden className="!size-4" />
           ) : (
-            <EyeOff aria-hidden className="!size-[1.125rem]" />
+            <Eye aria-hidden className="!size-4" />
           )}
         </IconButton>
       </InputGroupAddon>

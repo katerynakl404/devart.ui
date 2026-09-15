@@ -49,8 +49,21 @@ export const States: Story = {
   ),
 };
 
+/**
+ * `sm` — 28 x 16 px track with a 12 x 12 px thumb. Same colour tokens and
+ * states as the default switch; use it in compact rows where 36 x 20 is too
+ * large.
+ */
 export const Small: Story = {
   args: { size: 'sm' },
+  render: (args) => (
+    <div className="flex flex-col gap-3">
+      <Switch {...args} label="Off" />
+      <Switch {...args} defaultChecked label="On" />
+      <Switch {...args} disabled label="Disabled off" />
+      <Switch {...args} defaultChecked disabled label="Disabled on" />
+    </div>
+  ),
 };
 
 export const WithoutLabel: Story = {

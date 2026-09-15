@@ -81,6 +81,24 @@ export const Disabled: Story = {
   ),
 };
 
+/**
+ * `aria-invalid` mirrors the Input / Checkbox error signal: the error border
+ * replaces the neutral one, and the error fill wins over the checked fill.
+ */
+export const ErrorState: Story = {
+  render: (args) => (
+    <RadioGroup defaultValue="on">
+      <RadioButton
+        {...args}
+        aria-invalid
+        label="Invalid unchecked"
+        value="off"
+      />
+      <RadioButton {...args} aria-invalid label="Invalid checked" value="on" />
+    </RadioGroup>
+  ),
+};
+
 export const LabelPositions: Story = {
   render: (args) => {
     const positions = ['right', 'left', 'top', 'bottom'] as const;

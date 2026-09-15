@@ -8,6 +8,8 @@ import { cn } from '../../lib/utils';
 const badgeVariants = cva(
   cn(
     'inline-flex items-center gap-2 border',
+    // reference: `.badge .b-ic { width:14px; height:14px; flex:none }`
+    '[&_svg]:shrink-0',
     'font-medium',
     'transition-colors',
     'focus:outline-none',
@@ -32,8 +34,8 @@ const badgeVariants = cva(
       },
       size: {
         xs: 'h-5 px-2 text-xs [&_svg]:size-3',
-        sm: 'h-5 px-1.5 text-xs [&_svg]:size-4',
-        md: 'h-7 px-2.5 text-xs [&_svg]:size-4',
+        sm: 'h-5 px-1.5 text-xs [&_svg]:size-3.5',
+        md: 'h-7 px-2.5 text-xs [&_svg]:size-3.5',
         lg: 'h-8 px-2.5 text-sm [&_svg]:size-4',
         xl: 'h-9 px-2.5 text-sm [&_svg]:size-4',
       },

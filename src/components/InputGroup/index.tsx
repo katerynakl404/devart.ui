@@ -22,6 +22,17 @@ const inputGroupVariants = cva(
   {
     variants: {
       variant: {
+        // Page-level fields sitting on Surface/Card — the field reads as a
+        // well cut into the page.
+        primary: cn(
+          'border border-stroke bg-surface-bg text-ink-secondary',
+          //Hover (suppressed while focused, pressed or disabled)
+          '[&:hover:not(:focus-within):not(:active):not(:has(input:disabled))]:border-stroke-field-hover',
+          //Pressed — border swap only, no bg lift
+          '[&:active:not(:has(input:disabled))]:border-input-focus',
+          //On internal input focus state — neutral, no outer ring
+          'has-[[data-slot=input-group-control]:focus-visible]:border-input-focus'
+        ),
         outline: cn(
           'border border-stroke bg-surface-card text-ink-secondary',
           //Hover (suppressed while focused, pressed or disabled)
@@ -147,6 +158,7 @@ function InputGroup({
 
             //Disabled — real fill instead of opacity dimming
             'has-[[data-slot=input-group-control]:disabled]:select-none',
+            'has-[[data-slot=input-group-control]:disabled]:cursor-not-allowed',
             'has-[[data-slot=input-group-control]:disabled]:border-stroke',
             'has-[[data-slot=input-group-control]:disabled]:bg-state-disabled',
             'has-[[data-slot=input-group-control]:disabled]:text-ink-inactive',
@@ -160,7 +172,8 @@ function InputGroup({
           <Typography
             variant="span"
             textColor="destructive"
-            className="text-fb-red-text"
+            // Helper text is text-xs / medium in Feedback/Red.
+            className="font-medium text-fb-red-text text-xs"
           >
             {errorText}
           </Typography>

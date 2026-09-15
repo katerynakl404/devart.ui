@@ -30,9 +30,14 @@ const cardVariants = cva(
         ),
         outline: cn(
           'flex flex-col gap-3 p-4',
+          'bg-surface-card',
           'border border-stroke hover:border-card-border-hover',
           'shadow-sm',
-          'text-ink-body'
+          'text-ink-body',
+          // pressed — one step deeper than hover: brand-tinted fill, brand border
+          'pressed:border-card-border-press',
+          'pressed:bg-brand-primary/[0.04]',
+          'pressed:text-ink-body'
         ),
         // Compact single-row layout for list items (chats, files, insights row view)
         row: cn(
@@ -56,7 +61,7 @@ const cardVariants = cva(
           'border border-stroke',
           'shadow-rest',
           'text-ink-body',
-          'transition-all duration-slow',
+          'transition-all duration-base',
           'hover:-translate-y-0.5 hover:border-card-lift-border hover:shadow-lift-hover'
         ),
         ghost: cn(

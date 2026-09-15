@@ -58,11 +58,14 @@ export const CalendarDayButton = ({
         'data-[range-end=true]:bg-brand-secondary',
         'data-[selected-single=true]:bg-brand-secondary',
 
-        // Range text colors
-        'data-[range-start=true]:text-surface-page',
+        // Range text colors — endpoints sit on a solid brand fill, so they take
+        // the on-solid ink token. `text-surface-page` was theme-flipping: it is
+        // near-white on light but near-black on dark, which put dark text on a
+        // teal endpoint in dark mode.
+        'data-[range-start=true]:text-content-on-solid',
         'data-[range-middle=true]:text-ink-primary',
-        'data-[range-end=true]:text-surface-page',
-        'data-[selected-single=true]:text-surface-page',
+        'data-[range-end=true]:text-content-on-solid',
+        'data-[selected-single=true]:text-content-on-solid',
 
         // Focus state
         'group-data-[focused=true]/day:relative',

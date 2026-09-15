@@ -98,6 +98,8 @@ export function Autocomplete<
     isMultipleSelect = false,
     disableClearable = false,
     disableFiltering = false,
+    startAddon,
+    endAddon,
     renderOption,
     renderBadge,
     getOptionLabel: getOptionLabelProp,
@@ -206,6 +208,12 @@ export function Autocomplete<
               variant="outline"
               className={cn('group h-auto', hasTags && 'flex-wrap')}
             >
+              {startAddon && (
+                <InputGroupAddon align="inline-start">
+                  {startAddon}
+                </InputGroupAddon>
+              )}
+
               <div
                 className={cn(
                   'flex flex-1 flex-wrap items-center',
@@ -234,6 +242,8 @@ export function Autocomplete<
               </div>
 
               <InputGroupAddon align="inline-end" className="gap-0.5">
+                {endAddon}
+
                 {showClear && (
                   <IconButton
                     {...getClearProps()}

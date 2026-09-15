@@ -60,6 +60,28 @@ export const Variants: Story = {
   ),
 };
 
+/**
+ * The reference value scale: 40 / 48 / 56 px rings, stroke scaling with the
+ * ring, each carrying its own centred percentage label.
+ */
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex items-center gap-5">
+      {(
+        [
+          { size: 40, strokeWidth: 2.5, value: 25 },
+          { size: 48, strokeWidth: 3, value: 65 },
+          { size: 56, strokeWidth: 3, value: 100, variant: 'secondary' },
+        ] as const
+      ).map((step) => (
+        <CircularProgress {...args} {...step} key={step.size}>
+          <span className="text-ink-body text-xxs">{step.value}%</span>
+        </CircularProgress>
+      ))}
+    </div>
+  ),
+};
+
 export const WithLabel: Story = {
   args: {
     size: 64,

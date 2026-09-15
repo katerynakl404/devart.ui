@@ -11,11 +11,12 @@ const containerVariants = cva(
   'flex min-h-0 flex-1 flex-col items-center justify-center rounded-lg text-center',
   {
     variants: {
+      // reference ladder: sm gap 8 / pad 16 · md gap 12 / pad 24 · lg gap 16 / pad 32
       size: {
         xs: 'gap-1 p-3',
-        sm: 'gap-3 px-4 py-6',
-        md: 'gap-4 px-4 py-8',
-        lg: 'gap-5 px-6 py-12',
+        sm: 'gap-2 p-4',
+        md: 'gap-3 p-6',
+        lg: 'gap-4 p-8',
       },
       surface: {
         embedded: '',
@@ -34,18 +35,19 @@ const haloVariants = cva(
   {
     variants: {
       tone: {
-        neutral: 'bg-brand-primary/40 text-brand-tertiary',
+        neutral: 'bg-state-hover text-ink-secondary',
         muted: 'bg-brand-primary/5 text-ink-secondary',
         error: 'bg-fb-red/10 text-fb-red-text',
         info: 'bg-brand-primary/10 text-brand-primary',
         success: 'bg-fb-green/10 text-fb-green',
         transparent: 'bg-transparent',
       },
+      // reference circles: sm 32 · md 40 · lg 56; glyphs 16 · 20 · 28
       size: {
         xs: 'size-7 [&_svg]:size-4',
-        sm: 'size-10 [&_svg]:size-5',
-        md: 'size-14 [&_svg]:size-7',
-        lg: 'size-16 [&_svg]:size-8',
+        sm: 'size-8 [&_svg]:size-4',
+        md: 'size-10 [&_svg]:size-5',
+        lg: 'size-14 [&_svg]:size-7',
       },
     },
     defaultVariants: {
@@ -55,11 +57,24 @@ const haloVariants = cva(
   }
 );
 
+/**
+ * Reference type ladder — sm 13 / lg 16 for the title, sm 11 / lg 13 for the
+ * description, md sitting on the base rung between them. Expressed on the
+ * named `textStyle` scale (the nearest rung to each reference value), with the
+ * semantic element chosen separately so the size never drives the tag.
+ */
 const TITLE_BY_SIZE = {
-  xs: { variant: 'span', weight: 'medium' },
-  sm: { variant: 'span', weight: 'bold' },
-  md: { variant: 'lead', weight: 'bold' },
-  lg: { variant: 'h3', weight: 'bold' },
+  xs: { element: 'span', textStyle: 'title12' },
+  sm: { element: 'span', textStyle: 'title12' },
+  md: { element: 'p', textStyle: 'title14' },
+  lg: { element: 'h3', textStyle: 'title16' },
+} as const;
+
+const DESCRIPTION_BY_SIZE = {
+  xs: 'body12',
+  sm: 'body12',
+  md: 'body12',
+  lg: 'body14',
 } as const;
 
 type StatusTone =
@@ -163,24 +178,23 @@ const StatusView = ({
 
       <div className="flex max-w-md flex-col items-center gap-1.5">
         <Typography
-          variant={titleStyle.variant}
-          weight={titleStyle.weight}
-          textColor="primary"
           align="center"
+          element={titleStyle.element}
+          textColor="primary"
+          textStyle={titleStyle.textStyle}
         >
           {title}
         </Typography>
 
         {description && (
           <Typography
-            variant="p"
-            textColor="secondary"
             align="center"
             className={
-              isCompact
-                ? 'text-balance text-xs leading-normal'
-                : 'leading-relaxed'
+              isCompact ? 'text-balance leading-normal' : 'leading-relaxed'
             }
+            element="p"
+            textColor="secondary"
+            textStyle={DESCRIPTION_BY_SIZE[size ?? 'md']}
           >
             {description}
           </Typography>

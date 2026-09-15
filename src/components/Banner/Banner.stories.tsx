@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Link, Plug2, Sun } from 'lucide-react';
+import { fn } from 'storybook/test';
 import { Button } from '../Button';
 import { Banner } from './index';
 
@@ -31,6 +32,7 @@ const meta = {
     icon: { control: false },
     action: { control: false },
     description: { control: false },
+    onDismiss: { control: false },
     ref: { control: false, table: { disable: true } },
   },
 } satisfies Meta<typeof Banner>;
@@ -122,6 +124,40 @@ export const Sizes: Story = {
           }
         />
       ))}
+    </div>
+  ),
+};
+
+/**
+ * The corner ✕ dismiss trigger from the reference anatomy (`.banner-close`):
+ * absolute top-right, neutral hover, and the root reserves right padding so the
+ * button clears the CTA. Shown on both surfaces because the hover fill differs.
+ */
+export const Dismissible: Story = {
+  render: (args) => (
+    <div className="flex w-full flex-col gap-4">
+      <Banner
+        {...args}
+        action={
+          <Button size="sm" variant="secondary">
+            Connect source
+          </Button>
+        }
+        icon={<Plug2 />}
+        onDismiss={fn()}
+        variant="default"
+      />
+      <Banner
+        {...args}
+        action={
+          <Button size="sm" variant="secondary">
+            Explore metrics
+          </Button>
+        }
+        icon={<Sun />}
+        onDismiss={fn()}
+        variant="diagonalAiry"
+      />
     </div>
   ),
 };

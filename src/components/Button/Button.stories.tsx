@@ -25,7 +25,9 @@ const meta = {
         'tertiary',
         'destructive',
         'destructiveOutline',
+        'destructiveTertiary',
         'transparent',
+        'transparentUnderline',
       ],
     },
     size: {
@@ -48,27 +50,26 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {};
 
+/** Every boxed variant. Size is independent of variant — any of the five sizes
+ * pairs with any of these. */
+const BOXED_VARIANTS = [
+  ['primary', 'Primary'],
+  ['secondary', 'Secondary'],
+  ['outline', 'Outline'],
+  ['tertiary', 'Tertiary'],
+  ['destructive', 'Destructive'],
+  ['destructiveOutline', 'Destructive outline'],
+  ['destructiveTertiary', 'Destructive tertiary'],
+] as const;
+
 export const Variants: Story = {
   render: (args) => (
     <div className="flex flex-wrap items-center gap-3">
-      <Button {...args} variant="primary">
-        Primary
-      </Button>
-      <Button {...args} variant="secondary">
-        Secondary
-      </Button>
-      <Button {...args} variant="outline">
-        Outline
-      </Button>
-      <Button {...args} variant="tertiary">
-        Tertiary
-      </Button>
-      <Button {...args} variant="destructive">
-        Destructive
-      </Button>
-      <Button {...args} variant="destructiveOutline">
-        Destructive outline
-      </Button>
+      {BOXED_VARIANTS.map(([variant, label]) => (
+        <Button {...args} key={variant} variant={variant}>
+          {label}
+        </Button>
+      ))}
     </div>
   ),
 };
@@ -108,12 +109,60 @@ export const WithIcons: Story = {
   ),
 };
 
+/**
+ * Loading keeps the variant's own colours and fades the whole control to
+ * `--opacity-disabled` — it is deliberately NOT the disabled palette, so a
+ * primary button still reads as primary while it works.
+ */
 export const Loading: Story = {
   args: { isLoading: true },
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      {BOXED_VARIANTS.map(([variant, label]) => (
+        <Button {...args} key={variant} variant={variant}>
+          {label}
+        </Button>
+      ))}
+    </div>
+  ),
 };
 
+/**
+ * Disabled is a colour override, not a fade: `State/Disabled` fill with
+ * `Text/Inactive` ink on the filled variants, and `Text/Inactive` on border and
+ * label for the outlined/ghost ones.
+ *
+ * The bottom row is the second, focusable form — `aria-disabled` plus no
+ * `disabled` attribute, so a screen reader can still reach the control and
+ * announce why it is inert. Shipped on the two tertiary variants.
+ */
 export const Disabled: Story = {
   args: { disabled: true },
+  render: (args) => (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-3">
+        {BOXED_VARIANTS.map(([variant, label]) => (
+          <Button {...args} key={variant} variant={variant}>
+            {label}
+          </Button>
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button {...args} aria-disabled disabled={false} variant="tertiary">
+          Tertiary · aria-disabled
+        </Button>
+        <Button
+          {...args}
+          aria-disabled
+          disabled={false}
+          variant="destructiveTertiary"
+          leftSlot={<Trash2 />}
+        >
+          Delete · aria-disabled
+        </Button>
+      </div>
+    </div>
+  ),
 };
 
 export const FullWidth: Story = {

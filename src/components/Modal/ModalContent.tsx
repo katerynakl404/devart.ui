@@ -69,14 +69,14 @@ export function ModalContent({
           'flex max-h-[90dvh] flex-col',
           modalContentVariants({ size }),
           'fixed top-1/2 left-1/2 z-[100] w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2',
-          'rounded-lg',
+          'rounded-2xl',
           // Own compositing layer: without it a partial repaint inside the
           // dialog (e.g. the close button's hover transition) re-rasterizes
           // with a rectangular clip and square child corners leak over the
           // rounded ones. `transform-gpu` keeps the centering translate.
           'transform-gpu [backface-visibility:hidden]',
           'border border-stroke',
-          'bg-surface-card p-4 shadow-lg duration-base',
+          'bg-surface-card p-4 shadow-modal duration-base',
 
           // Closed state
           'data-[state=closed]:fade-out-0',

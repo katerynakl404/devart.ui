@@ -35,7 +35,7 @@ type Story = StoryObj<typeof meta>;
  */
 export const Standalone: Story = {
   render: (args) => (
-    <div className="flex h-9 w-72 items-center rounded-md border border-stroke bg-surface-card px-2">
+    <div className="flex h-9 w-72 items-center rounded-md border border-stroke bg-surface-card px-3">
       <Input {...args} />
     </div>
   ),
@@ -44,7 +44,7 @@ export const Standalone: Story = {
 export const Disabled: Story = {
   args: { disabled: true, value: 'Cannot edit' },
   render: (args) => (
-    <div className="flex h-9 w-72 items-center rounded-md border border-stroke bg-surface-card px-2">
+    <div className="flex h-9 w-72 items-center rounded-md border border-stroke bg-surface-card px-3">
       <Input {...args} />
     </div>
   ),

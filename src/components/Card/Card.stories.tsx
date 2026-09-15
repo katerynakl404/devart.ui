@@ -1,11 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Badge } from '../Badge';
 import { Button } from '../Button';
 import {
   Card,
   CardContent,
   CardDescription,
+  CardDivider,
   CardFooter,
   CardHeader,
+  CardIcon,
+  CardSectionLabel,
   CardTitle,
 } from './index';
 
@@ -21,7 +25,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['secondary', 'outline'],
+      options: ['outline', 'secondary', 'row', 'elevated', 'ghost'],
     },
     rounded: {
       control: 'select',
@@ -77,7 +81,54 @@ export const Variants: Story = {
         </CardHeader>
         <CardContent>Best for interactive list rows and tiles.</CardContent>
       </Card>
+      <Card {...args} className="w-72" variant="elevated">
+        <CardHeader>
+          <CardTitle>Elevated</CardTitle>
+          <CardDescription>
+            Lifts on hover — shadow, brand-tinted border, -2px translate.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>The provider / connector tile surface.</CardContent>
+      </Card>
+      <Card {...args} className="w-72" variant="row">
+        <CardContent>Row — compact single-line list item.</CardContent>
+      </Card>
+      <Card {...args} className="h-32 w-72" variant="ghost">
+        <CardContent>
+          Ghost — dashed &ldquo;browse more&rdquo; tile.
+        </CardContent>
+      </Card>
     </div>
+  ),
+};
+
+/**
+ * The full sub-part set the reference documents, in the shape of the provider
+ * card: icon wrapper, title + description, divider, section label, footer CTA.
+ */
+export const Anatomy: Story = {
+  render: (args) => (
+    <Card {...args} className="w-64 gap-3" rounded="xl" variant="elevated">
+      <CardHeader layout="horizontal" leftSlot={<CardIcon>JS</CardIcon>}>
+        <CardTitle>Jira Software</CardTitle>
+        <CardDescription className="text-xs">Not connected</CardDescription>
+      </CardHeader>
+      <CardDivider />
+      <CardContent className="flex flex-col gap-2">
+        <CardSectionLabel>Available metrics</CardSectionLabel>
+        <div className="flex flex-wrap gap-1.5">
+          <Badge rounded="md" size="sm" variant="secondary">
+            Issues created
+          </Badge>
+          <Badge rounded="md" size="sm" variant="secondary">
+            Bug count
+          </Badge>
+        </div>
+      </CardContent>
+      <CardFooter variant="actions">
+        <Button size="sm">Connect</Button>
+      </CardFooter>
+    </Card>
   ),
 };
 

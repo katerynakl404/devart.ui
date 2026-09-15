@@ -7,7 +7,8 @@ import { cn } from '../../lib/utils';
 // (6/12px, ~32px tall), neutral hover/pressed; danger keeps a red-tinted hover.
 const dropdownMenuItemVariants = cva(
   cn(
-    'relative flex items-center gap-2 rounded-md px-3 py-1.5',
+    // Radius is one step inside the 8px `.menu` shell.
+    'relative flex items-center gap-2 rounded px-3 py-1.5',
     'text-sm',
     'outline-none',
     'transition-colors',
@@ -16,9 +17,11 @@ const dropdownMenuItemVariants = cva(
     // Performance optimization: use transform for GPU acceleration
     '[transform:translateZ(0)]',
 
-    // Disabled state — unified opacity recipe
+    // Disabled state — the label drops to Text/Inactive with no surface change;
+    // a menu row never fades, so a disabled row still aligns with its peers.
     'data-[disabled]:pointer-events-none',
-    'data-[disabled]:opacity-disabled',
+    'data-[disabled]:cursor-not-allowed',
+    'data-[disabled]:text-ink-inactive',
 
     // Icon specific styles — one step lighter stroke for a more modern feel
     '[&_svg]:pointer-events-none',
@@ -37,7 +40,7 @@ const dropdownMenuItemVariants = cva(
     variants: {
       variant: {
         default: cn(
-          'text-ink-primary',
+          'text-ink-body',
           // Highlighted (hover + keyboard) → neutral State/Hover; pressed → State/Pressed
           'focus:bg-state-hover data-[highlighted]:bg-state-hover',
           'active:bg-state-pressed'

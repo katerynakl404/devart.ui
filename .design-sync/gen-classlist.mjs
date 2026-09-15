@@ -79,7 +79,7 @@ for (const c of colors) {
 const S = ['', 'sm:', 'md:', 'lg:', 'xl:', 'max-sm:', 'max-md:'];
 const SPACE = ['0', 'px', '0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '5', '6',
   '7', '8', '9', '10', '11', '12', '14', '16', '20', '24', '28', '32', '36', '40',
-  '44', '48', '52', '56', '60', '64', '72', '80', '96', 'auto'];
+  '44', '48', '52', '56', '60', '64', '72', '80', '96', 'auto', 'control'];
 cross(['p', 'px', 'py', 'pt', 'pb', 'pl', 'pr', 'ps', 'pe'], SPACE, S);
 cross(['m', 'mx', 'my', 'mt', 'mb', 'ml', 'mr', 'ms', 'me', '-m', '-mx', '-my',
   '-mt', '-mb', '-ml', '-mr'], SPACE, S);
@@ -159,7 +159,7 @@ for (const v of ['', 'hover:', 'focus-visible:', 'disabled:', 'dark:']) {
 for (const v of ['', 'hover:', 'focus-visible:', 'dark:', 'group-hover:']) {
   for (const s of ['sm', '', 'md', 'lg', 'xl', '2xl', 'inner', 'none', 'rest',
     'card-hover', 'dropdown', 'segctrl-hover', 'segctrl-active', 'lift-hover',
-    'overlay-soft', 'menu', 'banner-ic', 'banner-grad-ic', 'plan-card-featured',
+    'overlay-soft', 'menu', 'modal', 'banner-ic', 'banner-grad-ic', 'plan-card-featured',
     'thumb', 'thumb-hover']) add(`${v}shadow${s ? `-${s}` : ''}`);
 }
 for (const v of ['', 'hover:', 'focus-visible:', 'disabled:']) {

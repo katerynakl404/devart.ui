@@ -120,6 +120,22 @@ Custom variants: **`pressed:`** means *pressed or held open* (it expands to
 anything that can open a menu, so the trigger keeps its fill while open; use
 `active:` only where nothing can be held open. `aria-invalid:` is also enabled.
 
+
+## Overlays inside a themed or scrolling container
+
+Menus, popovers, tooltips, dialogs and sheets portal to `document.body` by
+default. That breaks a scoped `.dark` (the overlay stays light) and lets the
+overlay paint outside a card or panel. Wrap the subtree to contain them:
+
+```jsx
+<PortalContainerProvider>
+  <DropdownMenu>…</DropdownMenu>   {/* menu renders in here, correctly themed */}
+</PortalContainerProvider>
+```
+
+Every overlay component also takes an explicit `portalContainer` prop, which
+wins over the provider. Put `dark` on `<html>` when you want a page-level dark
+theme and the overlays to follow without a provider.
 ## House rules
 
 These come from the design-system audit and are not optional:
@@ -136,7 +152,7 @@ These come from the design-system audit and are not optional:
    all — use `max-sm` / `max-md` / `sm` / `md` / `lg` / `xl`.
 3. **Every icon-only control needs an accessible name.** `IconButton` requires
    `aria-label`; name the action ("Remove file"), not the surrounding row.
-4. **Button variants**: `primary` `primaryTertiary` `secondary` `outline`
+4. **Button variants**: `primary` `secondary` `outline`
    `tertiary` `destructive` `destructiveOutline` `destructiveTertiary`
    `transparent` `transparentUnderline`. There is **no `ghost`** — use
    `tertiary`. Sizes `xs|sm|md|lg|xl` carry padding 8/12/12/16/20; `Button`,
@@ -150,6 +166,13 @@ These come from the design-system audit and are not optional:
    Cancel `secondary` then the confirming action (`destructive` or `primary`).
 6. **Don't re-declare focus.** Controls that render a `Button` inherit the ring;
    everything else uses the exported `focusRing` recipe.
+
+## Foundations are browsable
+
+Four cards render the real token scales, generated from the tokens themselves
+rather than transcribed: **Colors** (every semantic and component role, by
+group), **Radius**, **Shadows** (by role) and **Spacing** (the 4px step). Open
+them rather than guessing a token name.
 
 ## Where the truth lives
 

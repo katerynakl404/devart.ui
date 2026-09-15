@@ -59,6 +59,30 @@ export const Full: Story = {
   args: { value: 100 },
 };
 
+/** Every fill variant the recipe defines. */
+export const Variants: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-4">
+      {(
+        ['primary', 'tertiary', 'green', 'attention', 'destructive'] as const
+      ).map((variant) => (
+        <ProgressBar {...args} key={variant} value={64} variant={variant} />
+      ))}
+    </div>
+  ),
+};
+
+/** Track heights: `md` 4px, `lg` 6px. */
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-4">
+      {(['md', 'lg'] as const).map((size) => (
+        <ProgressBar {...args} key={size} size={size} value={64} />
+      ))}
+    </div>
+  ),
+};
+
 export const States: Story = {
   render: (args) => (
     <div className="flex w-72 flex-col gap-4">

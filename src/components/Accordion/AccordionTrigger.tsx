@@ -22,6 +22,9 @@ const AccordionTrigger = ({
           'font-medium',
           focusRing,
           'transition-all',
+          'disabled:pointer-events-none',
+          'disabled:cursor-not-allowed',
+          'disabled:opacity-disabled',
           '[&[data-state=open]>svg]:rotate-180',
           className
         )}

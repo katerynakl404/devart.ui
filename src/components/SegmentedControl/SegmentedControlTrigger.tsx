@@ -12,7 +12,7 @@ import { useSegmentedControl } from './SegmentedControlContext';
 const segmentedControlTriggerVariants = cva(
   cn(
     'inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap',
-    'rounded font-medium text-ink-secondary',
+    'font-medium text-ink-secondary',
     'transition-[background-color,color,box-shadow] duration-fast',
     // Icon follows currentColor — no per-state icon override.
     '[&_svg]:shrink-0',
@@ -40,9 +40,19 @@ const segmentedControlTriggerVariants = cva(
         sm: 'h-5 px-1 text-xs [&_svg]:size-3',
         md: 'h-8 px-3 text-sm [&_svg]:size-3.5',
       },
+      // Inset one step from the track so the raised pill follows its corners.
+      rounded: {
+        none: 'rounded-none',
+        sm: 'rounded-sm',
+        md: 'rounded',
+        lg: 'rounded-md',
+        xl: 'rounded-lg',
+        full: 'rounded-full',
+      },
     },
     defaultVariants: {
       size: 'md',
+      rounded: 'md',
     },
   }
 );
@@ -52,11 +62,14 @@ const SegmentedControlTrigger = ({
   ref,
   ...props
 }: ComponentProps<typeof TabsPrimitive.Trigger>) => {
-  const { size } = useSegmentedControl();
+  const { size, rounded } = useSegmentedControl();
   return (
     <TabsPrimitive.Trigger
       ref={ref}
-      className={cn(segmentedControlTriggerVariants({ size }), className)}
+      className={cn(
+        segmentedControlTriggerVariants({ size, rounded }),
+        className
+      )}
       {...props}
     />
   );

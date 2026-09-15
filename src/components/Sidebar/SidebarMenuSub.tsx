@@ -62,21 +62,30 @@ function SidebarMenuSubButton({
         'flex h-7 min-w-0 items-center gap-2 rounded-md px-2',
         '-translate-x-px overflow-hidden',
 
+        // Kit chat row: 13px Text/Secondary, no brand ink in any state.
         'text-ink-secondary',
         size === 'sm' && 'text-xs',
         size === 'md' && 'text-sm',
-        'hover:text-brand-primary active:text-brand-primary',
 
-        // Active state
-        'outline-none ring-brand-secondary focus-visible:ring-2',
-        'data-[active=true]:bg-surface-page data-[active=true]:text-brand-primary',
+        // Hover — State/Hover fill only, text unchanged.
+        'hover:bg-state-hover',
+        // Pressed — State/Pressed fill only, no inset shadow.
+        'active:bg-state-pressed',
+
+        // Focus — 2px ring kept inside the row box so it cannot overlap the
+        // rows stacked directly above and below it.
+        'outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-inset',
+
+        // Active state — State/Pressed fill + Text/Body ink (no brand colour).
+        'data-[active=true]:bg-state-pressed data-[active=true]:text-ink-body',
 
         // Disabled state
         'disabled:pointer-events-none disabled:opacity-30',
         'aria-disabled:pointer-events-none aria-disabled:opacity-30',
 
         '[&>span:last-child]:truncate',
-        '[&>svg]:size-3 [&>svg]:shrink-0 [&>svg]:fill-brand-primary [&>svg]:stroke-brand-primary [&>svg]:text-brand-primary',
+        // Icon inherits the row ink — the kit forbids a brand tint here.
+        '[&>svg]:size-3 [&>svg]:shrink-0',
 
         'group-data-[collapsible=icon]:hidden',
 

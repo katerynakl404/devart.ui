@@ -14,7 +14,8 @@ const fileVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-stroke',
+        // Kit: 1px `--border` outline on a `--card` surface.
+        default: 'border-stroke bg-surface-card',
         tertiary: cn(
           'border-transparent bg-transparent text-ink-body',
           'transition-colors duration-fast',
@@ -22,12 +23,13 @@ const fileVariants = cva(
           'active:bg-state-pressed'
         ),
       },
+      // Kit padding is 4px 8px -> py-1 px-2 (was px-2.5 / 10px).
       size: {
-        xs: 'min-h-7 px-2.5 py-1 text-xs [&_svg]:size-3',
-        sm: 'min-h-8 px-2.5 py-1 text-sm [&_svg]:size-4',
-        md: 'min-h-9 px-2.5 py-1 text-sm',
-        lg: 'min-h-10 px-2.5 py-1 text-sm',
-        xl: 'min-h-11 px-2.5 py-1 text-sm',
+        xs: 'min-h-7 px-2 py-1 text-xs [&_svg]:size-3',
+        sm: 'min-h-8 px-2 py-1 text-sm [&_svg]:size-4',
+        md: 'min-h-9 px-2 py-1 text-sm',
+        lg: 'min-h-10 px-2 py-1 text-sm',
+        xl: 'min-h-11 px-2 py-1 text-sm',
       },
       rounded: {
         none: 'rounded-none',
@@ -97,6 +99,11 @@ function File({
         isError &&
           'border-fb-red/20 bg-fb-red/5 ring-fb-red/20 [&_svg]:text-fb-red-text/75',
         onClick && 'cursor-pointer',
+        // Kit: an interactive chip gets State/Hover on hover and State/Pressed
+        // while held. Skipped on error so the red tint is not overpainted.
+        onClick &&
+          !isError &&
+          'transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed',
         onClick &&
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2',
         className
@@ -111,7 +118,7 @@ function File({
           <Typography
             variant="span"
             textColor="body"
-            weight="normal"
+            weight="medium"
             className="min-w-0 truncate"
           >
             {name}

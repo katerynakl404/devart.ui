@@ -8,8 +8,9 @@ import type {
   ComponentPropsWithRef,
   HTMLAttributes,
 } from 'react';
-import { cn, focusRing } from '../../lib/utils';
+import { cn } from '../../lib/utils';
 import { DialogTitleFallback } from '../DialogTitleFallback';
+import { IconButton } from '../IconButton';
 
 const DEFAULT_CLOSE_LABEL = 'Close';
 
@@ -51,7 +52,7 @@ function SheetOverlay({
       data-modal-overlay=""
       className={cn(
         'fixed inset-0 z-50',
-        'bg-black/80',
+        'bg-overlay-scrim',
 
         // Closed state
         'data-[state=closed]:animate-out',
@@ -71,7 +72,7 @@ function SheetOverlay({
 const sheetVariants = cva(
   cn(
     'fixed z-50 gap-4 p-6',
-    'bg-surface-page',
+    'bg-surface-card',
 
     'shadow-lg',
     'transition ease-in-out',
@@ -176,27 +177,18 @@ function SheetContent({
         {children}
         <DialogTitleFallback>{props['aria-label']}</DialogTitleFallback>
         {isCloseButtonVisible && (
-          <SheetPrimitive.Close
-            className={cn(
-              'absolute top-5 right-4',
-              'rounded-md opacity-70',
-              'transition-opacity',
-
-              'hover:opacity-100',
-              'hover:bg-state-hover hover:text-ink-body',
-
-              focusRing,
-
-              'disabled:pointer-events-none',
-
-              'data-[state=open]:bg-brand-tertiary',
-              closeButtonClassName
-            )}
-            {...restCloseButtonProps}
-            aria-label={closeLabel}
-          >
-            <X className="size-6 p-1" />
-            <span className="sr-only">{closeLabel}</span>
+          // The close control is an IconButton `tertiary` at the 24px
+          // row-action size — hover, pressed and the focus ring are all
+          // inherited from that variant; the Sheet adds no bespoke styling.
+          <SheetPrimitive.Close {...restCloseButtonProps} asChild>
+            <IconButton
+              variant="tertiary"
+              size="2xs"
+              className={cn('absolute top-5 right-4', closeButtonClassName)}
+              aria-label={closeLabel}
+            >
+              <X />
+            </IconButton>
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Content>
@@ -232,7 +224,8 @@ function SheetTitle({
   return (
     <SheetPrimitive.Title
       ref={ref}
-      className={cn('font-semibold text-ink-primary text-lg', className)}
+      // Title/16 — the drawer heading sits one step below a modal title.
+      className={cn('font-semibold text-base text-ink-primary', className)}
       {...props}
     />
   );

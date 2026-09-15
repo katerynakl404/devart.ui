@@ -17,11 +17,14 @@ const inputGroupInputVariants = cva(
   {
     variants: {
       variant: {
+        primary: 'text-ink-primary placeholder:text-ink-inactive',
         outline: 'text-ink-primary placeholder:text-ink-inactive',
       },
       size: {
+        // Type ladder: xs 12 / sm 12 / md-xl 14. 13px is off the agreed
+        // eight-size scale; the placeholder now matches the control.
         xs: 'text-xs placeholder:text-xs',
-        sm: 'text-xs placeholder:text-sm',
+        sm: 'text-xs placeholder:text-xs',
         md: 'text-sm placeholder:text-sm',
         lg: 'text-sm placeholder:text-sm',
         xl: 'text-sm placeholder:text-sm',

@@ -21,11 +21,11 @@ const meta = {
   argTypes: {
     tone: {
       control: 'select',
-      options: ['neutral', 'error', 'info', 'success'],
+      options: ['neutral', 'muted', 'error', 'info', 'success', 'transparent'],
     },
     size: {
       control: 'select',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     surface: {
       control: 'select',
@@ -88,6 +88,67 @@ export const Success: Story = {
     title: 'All set',
     description: 'Your workspace has been configured successfully.',
   },
+};
+
+/**
+ * Size steps. The reference ladder is container padding 16 / 24 / 32, gap
+ * 8 / 12 / 16 and an icon circle of 32 / 40 / 56 px — `xs` sits below it for
+ * inline notices inside a small tray.
+ */
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-4">
+      {(['xs', 'sm', 'md', 'lg'] as const).map((size) => (
+        <StatusView
+          {...args}
+          description={size}
+          key={size}
+          size={size}
+          title="Title"
+          tone="info"
+        />
+      ))}
+    </div>
+  ),
+};
+
+/** Every tone, including the two the controls previously did not list. */
+export const Tones: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-start gap-4">
+      {(
+        ['neutral', 'muted', 'info', 'success', 'error', 'transparent'] as const
+      ).map((tone) => (
+        <StatusView
+          {...args}
+          className="w-56"
+          description={`${tone} variant`}
+          key={tone}
+          title="Status"
+          tone={tone}
+        />
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * The minimalist empty state: `surface="embedded"` drops the card so the block
+ * sits directly in the list or grid it replaces, with a caller-supplied
+ * illustration in place of the tone icon.
+ */
+export const EmptyState: Story = {
+  args: {
+    surface: 'embedded',
+    tone: 'transparent',
+    size: 'lg',
+    title: 'No matches found',
+    description:
+      'No data sources match your search or filters — try a different term or clear them.',
+    icon: <SearchX aria-hidden="true" className="size-12 text-ink-inactive" />,
+    withIconHalo: false,
+  },
+  parameters: { layout: 'padded' },
 };
 
 export const WithCustomIcon: Story = {

@@ -4,7 +4,7 @@ import * as SwitchPrimitives from '@radix-ui/react-switch';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
 
-import { cn } from '../../lib/utils';
+import { cn, formFocusRing } from '../../lib/utils';
 
 // Both variants share the redesigned form-control recipe: brand on-track,
 // filled neutral off-track, neutral focus ring.
@@ -32,11 +32,7 @@ const switchVariants = cva(
     'before:-inset-y-3',
     "before:content-['']",
     // Focus state — neutral ring with a Surface/Card gap
-    'focus-visible:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-state-focus-ring',
-    'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-surface-card',
+    formFocusRing,
     // Disabled states — unified opacity recipe
     'disabled:pointer-events-none',
     'disabled:cursor-not-allowed',

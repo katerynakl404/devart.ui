@@ -27,3 +27,17 @@ export const focusRing = cn(
   'focus-visible:ring-offset-surface-card',
   'focus-visible:ring-focus-ring-brand'
 );
+
+/**
+ * Focus indicator for FORM controls — checkbox, radio, switch and friends.
+ *
+ * Identical geometry to {@link focusRing}, but a neutral ring: brand colour
+ * never visualises form-control focus in this system. Actionable controls
+ * (buttons, triggers, links) use {@link focusRing} instead.
+ */
+export const formFocusRing = cn(
+  'focus-visible:outline-none',
+  'focus-visible:ring-2 focus-visible:ring-offset-2',
+  'focus-visible:ring-offset-surface-card',
+  'focus-visible:ring-state-focus-ring'
+);

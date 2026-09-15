@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Mail, Search } from 'lucide-react';
+import { Mail, Search, X } from 'lucide-react';
+import { IconButton } from '../IconButton';
 import { InputGroup, InputGroupAddon, InputGroupInput } from './index';
 
 /**
@@ -24,7 +25,7 @@ const meta = {
     },
     variant: {
       control: 'select',
-      options: ['outline'],
+      options: ['primary', 'outline'],
     },
     label: { control: 'text' },
     errorText: { control: 'text' },
@@ -133,6 +134,94 @@ export const Sizes: Story = {
       </div>
     );
   },
+};
+
+/**
+ * Two shell fills: `primary` sits on `bg-surface-bg` (the page well), `outline`
+ * on `bg-surface-card`. Border, hover, pressed, focus and error are identical.
+ */
+export const Variants: Story = {
+  render: (args) => {
+    const variants = ['primary', 'outline'] as const;
+    return (
+      <div className="flex w-72 flex-col gap-4">
+        {variants.map((variant) => (
+          <InputGroup
+            {...args}
+            key={variant}
+            inputId={`group-${variant}`}
+            label={variant}
+            variant={variant}
+          >
+            <InputGroupAddon align="inline-start">
+              <Mail aria-hidden />
+            </InputGroupAddon>
+            <InputGroupInput placeholder="you@example.com" />
+          </InputGroup>
+        ))}
+      </div>
+    );
+  },
+};
+
+/**
+ * Addons can also stack above or below the field (`block-start` /
+ * `block-end`), which turns the shell into a column.
+ */
+export const BlockAddons: Story = {
+  args: { inputId: 'group-block' },
+  render: (args) => (
+    <div className="flex w-72 flex-col gap-4">
+      <InputGroup {...args} inputId="group-block-start">
+        <InputGroupAddon align="block-start">
+          <span className="text-ink-secondary text-xs">To</span>
+        </InputGroupAddon>
+        <InputGroupInput placeholder="you@example.com" />
+      </InputGroup>
+      <InputGroup {...args} inputId="group-block-end">
+        <InputGroupInput placeholder="Message subject" />
+        <InputGroupAddon align="block-end">
+          <span className="text-ink-inactive text-xs">0 / 80</span>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  ),
+};
+
+/**
+ * Search shell: the trailing clear (x) button is revealed only while the input
+ * holds content, driven purely by `:placeholder-shown` on the shell.
+ */
+export const SearchWithClear: Story = {
+  args: { inputId: 'group-search' },
+  render: (args) => (
+    <div className="w-72">
+      <InputGroup {...args}>
+        <InputGroupAddon align="inline-start">
+          <Search aria-hidden />
+        </InputGroupAddon>
+        <InputGroupInput
+          defaultValue="Q3 KPI"
+          placeholder="Find a project…"
+          type="search"
+        />
+        <InputGroupAddon
+          align="inline-end"
+          className="group-has-[input:placeholder-shown]/input-group:hidden"
+        >
+          <IconButton
+            aria-label="Clear search"
+            rounded="sm"
+            size="sm"
+            type="button"
+            variant="tertiary"
+          >
+            <X aria-hidden />
+          </IconButton>
+        </InputGroupAddon>
+      </InputGroup>
+    </div>
+  ),
 };
 
 /**

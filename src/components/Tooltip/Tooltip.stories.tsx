@@ -82,6 +82,34 @@ export const Sides: Story = {
 };
 
 /**
+ * One recipe at every length. `w-max` keeps a short tip hugging its text,
+ * `max-w-72` (288px — the same width as a medium menu) stops a long one, and
+ * the text wraps onto two or three lines instead of running off the viewport.
+ *
+ * All three are rendered open so the wrap ceiling is visible without hovering.
+ */
+export const Widths: Story = {
+  render: (args) => (
+    <div className="flex flex-col items-start gap-10 py-8">
+      {[
+        'Copy',
+        'Check failed: API key expired or revoked (HTTP 401) · Aug 11, 11:14 AM',
+        'Turn on to receive smarter answers. Higher effort means more thorough answers but higher credit usage',
+      ].map((text) => (
+        <Tooltip key={text} open>
+          <TooltipTrigger asChild>
+            <Button variant="secondary">{`${text.slice(0, 12)}…`}</Button>
+          </TooltipTrigger>
+          <TooltipContent {...args} side="bottom">
+            {text}
+          </TooltipContent>
+        </Tooltip>
+      ))}
+    </div>
+  ),
+};
+
+/**
  * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
  * the subtree — no provider, no props, no JS. This component portals to `document.body`, so an OPEN overlay is not
  * reached by a scoped class — only the trigger is themed here. Put `dark` on

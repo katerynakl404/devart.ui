@@ -52,7 +52,10 @@ export const Truncated: Story = {
   args: { title: longTitle },
   render: (args) => (
     <TruncatedTitleTooltip {...args}>
-      <a href="#link" className="flex w-[200px] min-w-0 items-center">
+      <a
+        href="#link"
+        className="flex w-[200px] min-w-0 items-center text-ink-body"
+      >
         <span className="truncate">{longTitle}</span>
       </a>
     </TruncatedTitleTooltip>
@@ -64,7 +67,10 @@ export const NotTruncated: Story = {
   args: { title: 'Short title' },
   render: (args) => (
     <TruncatedTitleTooltip {...args}>
-      <a href="#link" className="flex w-[200px] min-w-0 items-center">
+      <a
+        href="#link"
+        className="flex w-[200px] min-w-0 items-center text-ink-body"
+      >
         <span className="truncate">Short title</span>
       </a>
     </TruncatedTitleTooltip>
@@ -76,12 +82,18 @@ export const SideBySide: Story = {
   render: (args) => (
     <div className="flex flex-col gap-3">
       <TruncatedTitleTooltip {...args} title={longTitle}>
-        <a href="#truncated" className="flex w-[200px] min-w-0 items-center">
+        <a
+          href="#truncated"
+          className="flex w-[200px] min-w-0 items-center text-ink-body"
+        >
           <span className="truncate">{longTitle}</span>
         </a>
       </TruncatedTitleTooltip>
       <TruncatedTitleTooltip {...args} title="Short title">
-        <a href="#short" className="flex w-[200px] min-w-0 items-center">
+        <a
+          href="#short"
+          className="flex w-[200px] min-w-0 items-center text-ink-body"
+        >
           <span className="truncate">Short title</span>
         </a>
       </TruncatedTitleTooltip>

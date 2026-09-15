@@ -17,8 +17,10 @@ const buttonVariants = cva(
     // Focus: 2px ring + 2px surface-card gap; ring colour is set per variant
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
 
-    // Disabled
+    // Disabled — both forms. `disabled` blocks focus; `aria-disabled` keeps the
+    // control focusable so a screen reader can announce why it is inert.
     'disabled:cursor-not-allowed',
+    'aria-disabled:cursor-not-allowed',
 
     // Child icon styles
     '[&_svg]:pointer-events-none [&_svg]:shrink-0'
@@ -34,26 +36,19 @@ const buttonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
-        primaryTertiary: cn(
-          'border-transparent bg-transparent text-ink-body',
-          'hover:bg-brand-primary/6',
-          'pressed:bg-brand-primary/8',
-          'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive'
-        ),
         // Card-tone fill with a thin neutral border.
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
           'hover:border-btn-secondary-border-hover hover:bg-state-hover',
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-btn-secondary-border-hover disabled:bg-state-disabled disabled:text-ink-inactive'
+          'disabled:border-btn-secondary-border disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
         // Brand-bordered, transparent fill (previous Secondary look).
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
-          'hover:border-brand-hover hover:bg-brand-primary/6',
-          'pressed:border-brand-hover pressed:bg-brand-primary/8',
+          'hover:border-brand-hover hover:bg-btn-outline-bg-hover',
+          'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
         ),
@@ -64,14 +59,16 @@ const buttonVariants = cva(
           'hover:bg-state-hover',
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive'
+          'disabled:bg-transparent disabled:text-ink-inactive',
+          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
-        // Destructive: theme-independent red fill, neutral focus ring.
+        // Destructive: theme-independent red fill; focus ring is the kit-wide
+        // brand teal (red-on-red would be unreadable).
         destructive: cn(
           'border-transparent bg-fb-red text-content-on-solid',
           'hover:bg-fb-error-hover',
           'pressed:bg-fb-error-press',
-          'focus-visible:ring-state-focus-ring',
+          'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
         // Destructive outline: red-bordered, transparent fill with red-tinted
@@ -79,7 +76,7 @@ const buttonVariants = cva(
           'border-outlineDestructive-border bg-transparent text-ink-body',
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
           'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
-          'focus-visible:ring-state-focus-ring',
+          'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
         ),
         // Low-emphasis destructive ghost: red label, transparent fill, red-tinted
@@ -88,8 +85,9 @@ const buttonVariants = cva(
           'border-transparent bg-transparent text-fb-red-text',
           'hover:bg-fb-red/8',
           'pressed:bg-fb-red/12',
-          'focus-visible:ring-state-focus-ring',
-          'disabled:bg-transparent disabled:text-ink-inactive'
+          'focus-visible:ring-focus-ring-brand',
+          'disabled:bg-transparent disabled:text-ink-inactive',
+          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // Bare utility (no box, fit-content) for inline/icon triggers.
         transparent: cn(
@@ -106,7 +104,9 @@ const buttonVariants = cva(
         // and Selector take the identical ladder, so a button and a field of
         // the same size share one edge. 12px repeats at sm and md deliberately
         // - those are the two sizes the product actually uses.
-        xs: 'h-7 px-2 text-xs [&_svg]:size-3',
+        // Glyph follows the label: 16px everywhere, 14px at xs — the one step
+        // where the label also drops.
+        xs: 'h-7 px-2 text-xs [&_svg]:size-3.5',
         sm: 'h-8 px-3 text-sm [&_svg]:size-4',
         md: 'h-9 px-3 text-sm [&_svg]:size-4',
         lg: 'h-10 px-4 text-sm [&_svg]:size-4',

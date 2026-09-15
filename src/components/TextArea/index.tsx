@@ -41,6 +41,7 @@ export const textAreaVariants = cva(
       },
       size: {
         // Same horizontal ladder as Button and InputGroup.
+        // Type ladder: xs 12 / sm 12 / md-xl 14 - 13px is off the scale.
         xs: cn('px-2 py-2', 'text-xs placeholder:text-xs'),
         sm: cn('px-3 py-2', 'text-xs placeholder:text-xs'),
         md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
@@ -215,7 +216,8 @@ export const TextArea = ({
         <Typography
           variant="span"
           textColor="destructive"
-          className="text-fb-red-text text-sm"
+          // Helper text is text-xs / medium in Feedback/Red — matches Input.
+          className="font-medium text-fb-red-text text-xs"
         >
           {errorText}
         </Typography>

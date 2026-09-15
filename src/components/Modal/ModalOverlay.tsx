@@ -15,7 +15,7 @@ export function ModalOverlay({ className, ref, ...props }: ModalOverlayProps) {
       data-modal-overlay=""
       className={cn(
         'fixed inset-0 z-[100]',
-        'bg-black/80',
+        'bg-overlay-scrim',
 
         // Closed state
         'data-[state=closed]:fade-out-0',

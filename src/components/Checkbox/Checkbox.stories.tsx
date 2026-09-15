@@ -37,7 +37,20 @@ export const States: Story = {
       <Checkbox {...args} checked="indeterminate" label="Indeterminate" />
       <Checkbox {...args} disabled label="Disabled" />
       <Checkbox {...args} defaultChecked disabled label="Disabled checked" />
-      <Checkbox {...args} aria-invalid defaultChecked label="Invalid" />
+      <Checkbox
+        {...args}
+        checked="indeterminate"
+        disabled
+        label="Disabled indeterminate"
+      />
+      <Checkbox {...args} aria-invalid label="Invalid" />
+      <Checkbox {...args} aria-invalid defaultChecked label="Invalid checked" />
+      <Checkbox
+        {...args}
+        aria-invalid
+        checked="indeterminate"
+        label="Invalid indeterminate"
+      />
     </div>
   ),
 };

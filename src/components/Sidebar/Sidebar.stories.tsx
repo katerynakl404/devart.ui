@@ -8,6 +8,7 @@ import {
   Search,
   Settings,
 } from 'lucide-react';
+import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 import {
   Sidebar,
@@ -15,6 +16,12 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarNavigationItems,
   SidebarProvider,
   SidebarTrigger,
@@ -186,6 +193,76 @@ export const InsetVariant: Story = {
           <Typography variant="h4">Inset content</Typography>
         </div>
       </SidebarInset>
+    </SidebarProvider>
+  ),
+};
+
+// Hover and pressed cannot be frozen as CSS pseudo-states in a static story, so
+// each is reproduced with the exact fill utility its recipe applies.
+const NAV_ROW_STATES = [
+  { state: 'default', className: '', isActive: false },
+  { state: 'hover', className: 'bg-state-hover', isActive: false },
+  { state: 'pressed', className: 'bg-state-pressed', isActive: false },
+  { state: 'active', className: '', isActive: true },
+] as const;
+
+const CHAT_ROW_STATES = NAV_ROW_STATES;
+
+const StateLabel = ({ children }: { children: string }) => (
+  <span className="w-20 shrink-0 self-center font-semibold text-ink-inactive text-xxs uppercase">
+    {children}
+  </span>
+);
+
+/**
+ * Every interaction state of a nav row and of a chat / sub row, side by side.
+ *
+ * The desktop `Sidebar` shell only mounts at `lg`, which hides these rows in a
+ * narrow docs frame — so this story renders the menu primitives directly.
+ * Hover and pressed are reproduced with the fill utilities the recipes apply
+ * (`bg-state-hover` / `bg-state-pressed`) because CSS pseudo-states cannot be
+ * frozen in a static story.
+ *
+ * Nav row: h32, radius `md`, gap 8px, 16px icon, `text-sm font-medium`, ink
+ * `Text/Secondary`. Hover paints `State/Hover` and leaves text and icon alone;
+ * pressed paints `State/Pressed` only; active paints `State/Pressed` and lifts
+ * ink to `Text/Body` — never a brand colour.
+ */
+export const RowStates: StoryObj<typeof Sidebar> = {
+  parameters: { layout: 'padded' },
+  decorators: [],
+  render: () => (
+    <SidebarProvider>
+      <div className="w-96 rounded-md border border-stroke bg-surface-card p-2">
+        <SidebarMenu>
+          {NAV_ROW_STATES.map(({ state, className, isActive }) => (
+            <SidebarMenuItem className="flex gap-3" key={state}>
+              <SidebarMenuButton
+                className={cn('gap-2 px-2', className)}
+                isActive={isActive}
+              >
+                <LayoutDashboard />
+                <span>Metrics</span>
+              </SidebarMenuButton>
+              <StateLabel>{state}</StateLabel>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+
+        <SidebarMenuSub className="ms-0 border-0 px-0 ps-0">
+          {CHAT_ROW_STATES.map(({ state, className, isActive }) => (
+            <SidebarMenuSubItem className="flex gap-3" key={state}>
+              <SidebarMenuSubButton
+                className={cn('flex-1', className)}
+                isActive={isActive}
+              >
+                <span>Q3 KPI deep-dive</span>
+              </SidebarMenuSubButton>
+              <StateLabel>{state}</StateLabel>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      </div>
     </SidebarProvider>
   ),
 };

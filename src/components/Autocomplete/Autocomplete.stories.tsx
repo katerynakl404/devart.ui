@@ -143,13 +143,58 @@ export const Disabled: Story = {
   args: { disabled: true, defaultValue: CITIES[0] ?? null },
 };
 
+/**
+ * The reference composition: multi-select with the listbox open. `open` is a
+ * controlled prop, so the list — and `autoHighlight`'s highlighted option, which
+ * paints `State/Hover` — stay visible in a static story. The listbox portals to
+ * `document.body`, hence the reserved height below the field.
+ */
+export const MultipleSelectOpen: StoryObj<typeof Autocomplete<Option, true>> = {
+  args: { isMultipleSelect: true, label: 'Cities', options: CITIES },
+  decorators: [
+    (Story) => (
+      <div className="h-80 w-80">
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => {
+    const [value, setValue] = useState<Option[]>(CITIES.slice(0, 2));
+    return (
+      <Autocomplete<Option, true>
+        {...args}
+        autoHighlight
+        getOptionLabel={getOptionLabel}
+        isMultipleSelect
+        onChange={(_event, next) => setValue(next)}
+        open
+        value={value}
+      />
+    );
+  },
+};
+
 // Empty options list -> `noOptionsText` renders inside the open listbox.
 export const NoResults: Story = {
-  args: { options: [], noOptionsText: 'No cities found' },
+  args: { open: true, options: [], noOptionsText: 'No cities found' },
+  decorators: [
+    (Story) => (
+      <div className="h-48 w-80">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const Loading: Story = {
-  args: { isLoading: true, loadingText: 'Loading cities…' },
+  args: { open: true, isLoading: true, loadingText: 'Loading cities…' },
+  decorators: [
+    (Story) => (
+      <div className="h-48 w-80">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 /**

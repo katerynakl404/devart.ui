@@ -36,6 +36,11 @@ export const preset: Partial<Config> = {
       aria: {
         invalid: 'invalid="true"',
       },
+      spacing: {
+        // The boolean-control box (Checkbox, RadioButton). Named because the
+        // two disagreed - 18px vs 20px - and one was an arbitrary value.
+        control: '1.125rem',
+      },
       opacity: {
         disabled: 'var(--opacity-disabled)',
         // Tint steps. Stock Tailwind has no 6/8/12, and those three were the
@@ -56,9 +61,11 @@ export const preset: Partial<Config> = {
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
         xl: 'var(--radius-xl)',
+        '2xl': 'var(--radius-2xl)',
       },
       boxShadow: {
         rest: 'var(--shadow-rest)',
+        modal: 'var(--shadow-modal)',
         'card-hover': 'var(--shadow-card-hover)',
         dropdown: 'var(--shadow-dropdown)',
         'segctrl-hover': 'var(--segctrl-hover-shadow)',
@@ -75,7 +82,10 @@ export const preset: Partial<Config> = {
       fontSize: {
         xxs: 'var(--font-size-xxs)',
         xs: ['var(--font-size-xs)', { lineHeight: 'var(--line-height-xs)' }],
-        compact: 'var(--font-size-compact)',
+        compact: [
+          'var(--font-size-compact)',
+          { lineHeight: 'var(--line-height-compact)' },
+        ],
         sm: ['var(--font-size-sm)', { lineHeight: 'var(--line-height-sm)' }],
         base: [
           'var(--font-size-base)',

@@ -32,23 +32,31 @@
   ],
   "readmeHeader": ".design-sync/conventions.md",
   "provider": {
-    "component": "TooltipProvider"
+    "component": "TooltipProvider",
+    "inner": {
+      "component": "PortalContainerProvider"
+    }
   },
   "overrides": {
     "DropdownMenu": {
-      "cardMode": "single"
+      "cardMode": "single",
+      "primaryStory": "ItemStates"
     },
     "Modal": {
-      "cardMode": "single"
+      "cardMode": "single",
+      "primaryStory": "Sizes"
     },
     "Popover": {
-      "cardMode": "single"
+      "cardMode": "single",
+      "primaryStory": "InitiallyOpen"
     },
     "Sheet": {
-      "cardMode": "single"
+      "cardMode": "single",
+      "primaryStory": "InitiallyOpen"
     },
     "Sidebar": {
-      "cardMode": "single"
+      "cardMode": "single",
+      "primaryStory": "RowStates"
     },
     "TextArea": {
       "cardMode": "column"
@@ -64,6 +72,20 @@
     },
     "ToastMessage": {
       "cardMode": "column"
+    },
+    "Autocomplete": {
+      "cardMode": "single",
+      "primaryStory": "MultipleSelectOpen"
+    },
+    "Tooltip": {
+      "cardMode": "single",
+      "primaryStory": "Widths"
+    },
+    "Colors": {
+      "viewport": "900x1750"
+    },
+    "Typography": {
+      "viewport": "900x1000"
     }
   }
 }

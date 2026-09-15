@@ -58,6 +58,88 @@ export const Message: Story = {
   ),
 };
 
+/**
+ * Every toast appearance, rendered statically.
+ *
+ * `toast()` is imperative — Sonner only paints a toast after a click — so the
+ * trigger-button stories below show none of the four variants at rest. These
+ * are the same `ToastMessage` primitives Sonner renders inside the portal,
+ * mounted inline so success / info / warning / error and the optional
+ * description, action button, close button and countdown strip are all visible
+ * without interaction.
+ */
+export const Appearances: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      <ToastMessage
+        duration={Number.POSITIVE_INFINITY}
+        message="Profile saved."
+        onClose={() => undefined}
+        variant="success"
+      />
+      <ToastMessage
+        action={{ label: 'View', onClick: () => undefined }}
+        description="Dashboard data refreshed automatically."
+        duration={Number.POSITIVE_INFINITY}
+        message="3 new updates available."
+        onClose={() => undefined}
+        variant="info"
+      />
+      <ToastMessage
+        description="Click Cancel to go back and save."
+        duration={Number.POSITIVE_INFINITY}
+        message="Unsaved changes will be lost."
+        onClose={() => undefined}
+        variant="warning"
+      />
+      <ToastMessage
+        duration={Number.POSITIVE_INFINITY}
+        message="Failed to upload — try again."
+        onClose={() => undefined}
+        variant="error"
+      />
+    </div>
+  ),
+};
+
+/**
+ * The optional slots, on one variant: message only, message + description,
+ * without the close button, and with the countdown strip running.
+ */
+export const States: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div className="flex w-full max-w-md flex-col gap-3">
+      <ToastMessage
+        duration={Number.POSITIVE_INFINITY}
+        message="Metric not saved"
+        onClose={() => undefined}
+        variant="error"
+      />
+      <ToastMessage
+        description="The alias @mrr_growth already belongs to another metric — change the highlighted field."
+        duration={Number.POSITIVE_INFINITY}
+        message="Metric not saved"
+        onClose={() => undefined}
+        variant="error"
+      />
+      <ToastMessage
+        description="No close affordance — dismissed by the countdown alone."
+        duration={Number.POSITIVE_INFINITY}
+        message="Jira checked successfully"
+        variant="success"
+      />
+      <ToastMessage
+        description="Countdown strip running at the default 4000ms."
+        message="Draft saved automatically"
+        onClose={() => undefined}
+        variant="info"
+      />
+    </div>
+  ),
+};
+
 /** One button per imperative variant of the `toast` helper. */
 export const Variants: Story = {
   render: () => (

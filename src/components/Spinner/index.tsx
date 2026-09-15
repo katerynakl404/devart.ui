@@ -52,6 +52,8 @@ function Spinner({
       role="status"
       aria-label={label}
       strokeLinecap="butt"
+      // reference draws the arc at 2.5, not lucide's default 2
+      strokeWidth={2.5}
       className={cn(spinnerVariants({ size, color }), className)}
       {...props}
     />

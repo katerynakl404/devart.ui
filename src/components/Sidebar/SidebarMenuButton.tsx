@@ -15,10 +15,21 @@ const sidebarMenuButtonVariants = cva(
     'group-data-[collapsible=icon]:!size-8 rounded-md',
     'flex w-full items-center gap-2',
     'text-left font-medium text-sm',
-    'hover:bg-state-hover',
     'overflow-hidden',
     'outline-none',
     'transition-[width,height,padding]',
+
+    //Default ink — kit: Text/Secondary; icon inherits currentColor
+    'text-ink-secondary',
+
+    //Hover — State/Hover fill only; text & icon stay Text/Secondary
+    'hover:bg-state-hover',
+
+    //Pressed — State/Pressed fill only. Deliberately `active:`, not the
+    //`pressed:` variant: this button doubles as a Collapsible disclosure
+    //trigger, and `pressed:` also matches [aria-expanded="true"], which would
+    //leave every open group permanently painted as if it were active.
+    'active:bg-state-pressed',
 
     //Focus state — neutral card-gap brand ring (matches Button/IconButton)
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',

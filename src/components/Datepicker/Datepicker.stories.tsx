@@ -109,6 +109,34 @@ export const CalendarSingle: StoryObj<typeof Calendar> = {
 };
 
 /**
+ * The bare `Calendar` in range mode — the only place the component's own
+ * `range_start` / `range_middle` / `range_end` recipes are exercised
+ * (`DateRangePicker` replaces all three). Shows the endpoint caps rounding on
+ * their outer side only, a flush in-range bar, `today`, and disabled days.
+ */
+export const CalendarRange: StoryObj<typeof Calendar> = {
+  render: () => {
+    const today = new Date();
+    const [range, setRange] = useState<DateRange | undefined>({
+      from: new Date(today.getFullYear(), today.getMonth(), 8),
+      to: new Date(today.getFullYear(), today.getMonth(), 17),
+    });
+    return (
+      <div className="rounded-md border border-stroke bg-surface-card">
+        <Calendar
+          mode="range"
+          selected={range}
+          defaultMonth={new Date(today.getFullYear(), today.getMonth())}
+          onSelect={setRange}
+          // Disable weekends to demo the `disabled` matcher alongside the range.
+          disabled={(day: Date) => day.getDay() === 0 || day.getDay() === 6}
+        />
+      </div>
+    );
+  },
+};
+
+/**
  * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
  * the subtree — no provider, no props, no JS.
  */

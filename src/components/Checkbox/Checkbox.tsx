@@ -2,10 +2,10 @@
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Check, Minus } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
 
-import { cn } from '../../lib/utils';
+import { cn, formFocusRing } from '../../lib/utils';
 
 export type CheckedState = CheckboxPrimitive.CheckedState;
 
@@ -17,11 +17,7 @@ const checkboxVariants = cva(
     'place-content-center',
     'border-[1.5px]',
     // Focus state — neutral ring with a Surface/Card gap
-    'focus-visible:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-state-focus-ring',
-    'focus-visible:ring-offset-2',
-    'focus-visible:ring-offset-surface-card',
+    formFocusRing,
     // Disabled state — unified opacity recipe
     'disabled:pointer-events-none',
     'disabled:cursor-not-allowed',
@@ -50,9 +46,6 @@ const checkboxVariants = cva(
           'data-[state=indeterminate]:text-content-on-solid',
           'data-[state=indeterminate]:hover:border-brand-hover',
           'data-[state=indeterminate]:hover:bg-brand-hover',
-          // Disabled mark fades to inactive ink
-          'disabled:data-[state=checked]:text-ink-inactive',
-          'disabled:data-[state=indeterminate]:text-ink-inactive',
           // Error state — mirrors Input; error fill wins over checked
           'aria-invalid:border-input-error',
           'aria-invalid:hover:border-input-error',
@@ -67,7 +60,7 @@ const checkboxVariants = cva(
         ),
       },
       size: {
-        md: 'size-[18px]',
+        md: 'size-control',
       },
       rounded: {
         md: 'rounded',
@@ -94,7 +87,9 @@ const checkboxIndicatorVariants = cva(
   {
     variants: {
       size: {
-        md: '[&>svg]:size-3.5',
+        // Check mark is a 12x12 stroke-3 glyph; the indeterminate mark is a
+        // 10 x 2 px horizontal bar.
+        md: '[&>svg]:size-3',
       },
     },
     defaultVariants: {
@@ -158,8 +153,14 @@ function Checkbox({
       <CheckboxPrimitive.Indicator
         className={cn(checkboxIndicatorVariants({ size }), 'group/indicator')}
       >
-        <Check className="group-data-[state=indeterminate]/indicator:hidden" />
-        <Minus className="hidden group-data-[state=indeterminate]/indicator:block" />
+        <Check
+          className="group-data-[state=indeterminate]/indicator:hidden"
+          strokeWidth={3}
+        />
+        <span
+          aria-hidden
+          className="hidden h-0.5 w-2.5 rounded-full bg-current group-data-[state=indeterminate]/indicator:block"
+        />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

@@ -15,9 +15,10 @@ const DropdownMenuSubContent = ({
     className={cn(
       'z-50 w-max min-w-[140px] max-w-[320px]',
       'rounded-lg border p-1',
-      'bg-surface-card text-ink-primary',
+      'border-stroke bg-surface-card text-ink-body',
       'overflow-hidden',
-      'shadow-dropdown',
+      // Same floating-surface elevation as the root menu (dark-aware).
+      'shadow-overlay-soft',
 
       'origin-[--radix-dropdown-menu-content-transform-origin]',
 

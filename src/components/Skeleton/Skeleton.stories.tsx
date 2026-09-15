@@ -52,6 +52,22 @@ export const Shapes: Story = {
   ),
 };
 
+/** Every radius step the recipe defines; `md` is the default. */
+export const Rounded: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-4">
+      {(['none', 'sm', 'md', 'lg', 'xl', 'full'] as const).map((rounded) => (
+        <Skeleton
+          {...args}
+          className="size-12"
+          key={rounded}
+          rounded={rounded}
+        />
+      ))}
+    </div>
+  ),
+};
+
 export const WithContent: Story = {
   args: {
     isLoaded: false,

@@ -23,7 +23,7 @@ interface TruncatedTitleTooltipProps {
    * Return `null` to fall back to measuring the trigger element itself.
    */
   getTruncationTarget?: (trigger: Element) => Element | null;
-  /** Tooltip side. Defaults to `right`. */
+  /** Tooltip side. Defaults to `top`. */
   side?: ComponentProps<typeof TooltipContent>['side'];
   /** Extra classes for the tooltip content. */
   className?: string;
@@ -47,7 +47,7 @@ function TruncatedTitleTooltip({
   title,
   children,
   getTruncationTarget = defaultGetTarget,
-  side = 'right',
+  side = 'top',
   className,
 }: TruncatedTitleTooltipProps) {
   const [isTruncated, setIsTruncated] = useState(false);
@@ -77,10 +77,9 @@ function TruncatedTitleTooltip({
           side={side}
           align="center"
           hidden={!isTruncated}
-          className={cn(
-            'max-w-52 break-words bg-ink-primary text-surface-card',
-            className
-          )}
+          // A behaviour component with no visual tokens of its own: surface,
+          // ink and the 288px wrap ceiling all come from Tooltip.
+          className={cn('break-words', className)}
           arrowClassName="fill-ink-primary"
         >
           {title}

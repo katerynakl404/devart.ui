@@ -3,7 +3,7 @@
 import { createContext, type RefObject, useContext } from 'react';
 
 type InputGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-type InputGroupVariant = 'outline';
+type InputGroupVariant = 'primary' | 'outline';
 
 const InputGroupContext = createContext<{
   size: InputGroupSize;

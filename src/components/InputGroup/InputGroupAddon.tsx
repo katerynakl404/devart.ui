@@ -12,6 +12,7 @@ const inputGroupAddonVariants = cva(
 
     // Disabled
     'group-has-[[data-slot=input-group-control]:disabled]/input-group:text-ink-inactive',
+    'group-has-[[data-slot=input-group-control]:disabled]/input-group:cursor-not-allowed',
 
     // Kbd shortcut styling
     '[&>kbd]:rounded-[calc(var(--radius)-5px)]'
@@ -19,6 +20,7 @@ const inputGroupAddonVariants = cva(
   {
     variants: {
       variant: {
+        primary: 'text-ink-secondary',
         outline: 'text-ink-secondary',
       },
       size: {
@@ -30,12 +32,12 @@ const inputGroupAddonVariants = cva(
       },
       align: {
         'inline-start': cn(
-          'order-first',
+          'order-first me-2',
           // kbds aligning
           'has-[>kbd]:-ml-1'
         ),
         'inline-end': cn(
-          'order-last',
+          'order-last ms-2',
           // kbds aligning
           'has-[>kbd]:-mr-1'
         ),

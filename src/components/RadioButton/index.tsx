@@ -4,7 +4,7 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Circle } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, formFocusRing } from '../../lib/utils';
 
 const radioVariants = cva(
   [
@@ -12,19 +12,17 @@ const radioVariants = cva(
     'grid',
     'shrink-0',
     'place-content-center',
-    'border',
+    'border-[1.5px]',
     'rounded-full',
-    'ring-offset-surface-page',
 
-    // Focus state
-    'focus-visible:outline-none',
-    'focus-visible:ring-2',
-    'focus-visible:ring-ring',
-    'focus-visible:ring-offset-2',
+    // Focus state — neutral ring with a Surface/Card gap, matching
+    // Checkbox / Switch. Brand colour never visualises form-control focus.
+    formFocusRing,
 
-    // Disabled state
+    // Disabled state — unified opacity recipe
+    'disabled:pointer-events-none',
     'disabled:cursor-not-allowed',
-    'disabled:opacity-50',
+    'disabled:opacity-disabled',
 
     // Transition
     'transition-colors',
@@ -35,15 +33,27 @@ const radioVariants = cva(
     variants: {
       variant: {
         primary: cn(
+          // Unchecked state — same shell as Checkbox
           'bg-surface-card',
-          'border-stroke',
+          'border-stroke-field-hover',
+          'hover:border-ink-secondary',
+          // Checked state
+          'data-[state=checked]:border-brand-primary',
           'data-[state=checked]:bg-brand-primary',
           'data-[state=checked]:text-content-on-solid',
-          'data-[state=checked]:border-transparent'
+          'data-[state=checked]:hover:border-brand-hover',
+          'data-[state=checked]:hover:bg-brand-hover',
+          // Error state — mirrors Input / Checkbox; error fill wins over checked
+          'aria-invalid:border-input-error',
+          'aria-invalid:hover:border-input-error',
+          'aria-invalid:data-[state=checked]:border-input-error',
+          'aria-invalid:data-[state=checked]:bg-input-error',
+          'aria-invalid:data-[state=checked]:hover:border-input-error',
+          'aria-invalid:data-[state=checked]:hover:bg-input-error'
         ),
       },
       size: {
-        md: 'size-5',
+        md: 'size-control',
       },
     },
     defaultVariants: {

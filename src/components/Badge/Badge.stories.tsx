@@ -24,6 +24,7 @@ const meta = {
         'success',
         'error',
         'brand',
+        'green',
       ],
     },
     size: {
@@ -66,6 +67,37 @@ export const Variants: Story = {
       <Badge {...args} variant="brand">
         Brand
       </Badge>
+      <Badge {...args} variant="green">
+        Green
+      </Badge>
+    </div>
+  ),
+};
+
+/**
+ * Size steps. `md` is the default; `sm` is the table-column step — the
+ * reference specifies height 20px / padding 0 6px for it, so a badge in a
+ * badge column never out-weighs the text rows around it.
+ */
+export const Sizes: Story = {
+  render: (args) => (
+    <div className="flex flex-col gap-4">
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <div className="flex flex-wrap items-center gap-3" key={size}>
+          <Badge {...args} size={size} variant="primary">
+            {size}
+          </Badge>
+          <Badge {...args} size={size} variant="secondary">
+            Built-in
+          </Badge>
+          <Badge {...args} rounded="full" size={size} variant="success" withDot>
+            Active
+          </Badge>
+          <Badge {...args} leftSlot={<Sparkles />} size={size} variant="brand">
+            Star
+          </Badge>
+        </div>
+      ))}
     </div>
   ),
 };
