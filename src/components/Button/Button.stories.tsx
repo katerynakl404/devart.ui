@@ -105,6 +105,10 @@ export const WithIcons: Story = {
       <Button {...args} rightSlot={<Trash2 />} variant="destructiveOutline">
         Delete
       </Button>
+      <Button {...args} variant="secondary">
+        <Plus />
+        Icon as a child
+      </Button>
     </div>
   ),
 };
@@ -171,16 +175,56 @@ export const FullWidth: Story = {
 };
 
 /**
- * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
- * the subtree — no provider, no props, no JS.
+ * `asChild` renders the button’s styling onto another element — a link, a
+ * router `<Link>`, a trigger. Regression cover: a Button renders up to three
+ * children (left slot, label, right slot) while Radix’s Slot accepts exactly
+ * one, so this threw until the label was routed through `Slottable`.
  */
-export const DarkTheme: Story = {
-  ...Primary,
-  decorators: [
-    (Story) => (
-      <div className="dark rounded-lg bg-surface-page p-6">
-        <Story />
-      </div>
-    ),
-  ],
+export const AsChild: Story = {
+  render: (args) => (
+    <div className="flex flex-wrap items-center gap-3">
+      <Button {...args} asChild>
+        <a href="#as-child">Link as a button</a>
+      </Button>
+      <Button {...args} asChild leftSlot={<Plus />} variant="secondary">
+        <a href="#as-child-icon">With a leading icon</a>
+      </Button>
+    </div>
+  ),
 };
+
+/**
+ * Dark theme — every state the component ships, on one dark surface. Tokens
+ * are pure CSS cascade, so a scoped `.dark` re-themes the whole subtree with
+ * no provider and no props.
+ */
+export const DarkTheme = {
+  render: (args, ctx) => {
+    const cells: [string, Story][] = [
+      ['Primary', Primary],
+      ['Variants', Variants],
+      ['Sizes', Sizes],
+      ['With Icons', WithIcons],
+      ['Loading', Loading],
+      ['Disabled', Disabled],
+      ['Full Width', FullWidth],
+      ['As Child', AsChild],
+    ];
+    return (
+      <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
+        {cells.map(([name, story]) => (
+          <section className="flex flex-col gap-2" key={name}>
+            <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
+              {name}
+            </span>
+            {story.render ? (
+              story.render({ ...args, ...story.args } as never, ctx)
+            ) : (
+              null
+            )}
+          </section>
+        ))}
+      </div>
+    );
+  },
+} as Story;

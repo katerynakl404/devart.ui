@@ -17,7 +17,6 @@ export const THEME_COLORS = {
   },
   surface: {
     page: 'hsl(var(--surface-page) / <alpha-value>)',
-    bg: 'hsl(var(--bg) / <alpha-value>)',
     card: 'hsl(var(--surface-card) / <alpha-value>)',
     card2: 'hsl(var(--surface-card2) / <alpha-value>)',
     chips: 'hsl(var(--surface-chips) / <alpha-value>)',
@@ -27,7 +26,6 @@ export const THEME_COLORS = {
     DEFAULT: 'hsl(var(--stroke-border) / <alpha-value>)',
     hover: 'hsl(var(--stroke-border-hover) / <alpha-value>)',
     'field-hover': 'hsl(var(--field-border-hover) / <alpha-value>)',
-    'border-hover': 'hsl(var(--border-hover) / <alpha-value>)',
   },
   table: {
     'header-bg': 'hsl(var(--tbl-header-bg) / <alpha-value>)',
@@ -59,6 +57,15 @@ export const THEME_COLORS = {
   logo: {
     ink: 'hsl(var(--logo-ink) / <alpha-value>)',
     mark: 'hsl(var(--logo-mark) / <alpha-value>)',
+  },
+  avatar: {
+    bg: 'hsl(var(--avatar-bg) / <alpha-value>)',
+  },
+  destructiveTertiary: {
+    // color-mix values (bare var) — NOT wrapped in hsl(), and they take no
+    // opacity modifier. The ratio differs per theme; see globals.css.
+    'bg-hover': 'var(--btn-destructive-tertiary-bg-hover)',
+    'bg-press': 'var(--btn-destructive-tertiary-bg-press)',
   },
   btn: {
     'primary-bg': 'hsl(var(--btn-primary-bg) / <alpha-value>)',

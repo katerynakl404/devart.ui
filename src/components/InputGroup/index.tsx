@@ -25,7 +25,7 @@ const inputGroupVariants = cva(
         // Page-level fields sitting on Surface/Card — the field reads as a
         // well cut into the page.
         primary: cn(
-          'border border-stroke bg-surface-bg text-ink-secondary',
+          'border border-stroke bg-surface-page text-ink-secondary',
           //Hover (suppressed while focused, pressed or disabled)
           '[&:hover:not(:focus-within):not(:active):not(:has(input:disabled))]:border-stroke-field-hover',
           //Pressed — border swap only, no bg lift

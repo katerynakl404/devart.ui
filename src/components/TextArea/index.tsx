@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps, ReactNode, Ref } from 'react';
-import { useCallback, useId, useLayoutEffect, useRef } from 'react';
+import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 
@@ -65,6 +65,11 @@ export interface TextAreaProps
   label?: ReactNode;
   isInvalid?: boolean;
   errorText?: string;
+  /**
+   * Shows the "used / allowed" counter under the field. Needs `maxLength`:
+   * a counter without a limit has nothing to count against.
+   */
+  showCount?: boolean;
 }
 
 const setRef = <T,>(ref: Ref<T> | undefined, value: T | null) => {
@@ -108,6 +113,8 @@ export const TextArea = ({
   label,
   isInvalid = false,
   errorText,
+  showCount = false,
+  maxLength,
   ...props
 }: TextAreaProps) => {
   const innerRef = useRef<HTMLTextAreaElement | null>(null);
@@ -120,6 +127,16 @@ export const TextArea = ({
   );
 
   const errorId = isInvalid && errorText ? `${resolvedId}-error` : undefined;
+
+  // Uncontrolled fields have no value to measure, so the count is tracked here
+  // and kept in sync from onInput. Controlled fields read straight off value,
+  // so a programmatic change updates the counter too.
+  const [uncontrolledCount, setUncontrolledCount] = useState(
+    () => String(defaultValue ?? '').length
+  );
+  const count =
+    value === undefined ? uncontrolledCount : String(value).length;
+  const hasCount = showCount && typeof maxLength === 'number';
 
   const handleRef = useCallback(
     (node: HTMLTextAreaElement | null) => {
@@ -174,8 +191,10 @@ export const TextArea = ({
       defaultValue={defaultValue}
       aria-invalid={isInvalid || undefined}
       aria-describedby={errorId}
+      maxLength={maxLength}
       onInput={(event) => {
         resizeToContent();
+        setUncontrolledCount(event.currentTarget.value.length);
         onInput?.(event);
       }}
       className={cn(
@@ -189,7 +208,7 @@ export const TextArea = ({
     />
   );
 
-  if (!label && !errorText) {
+  if (!label && !errorText && !hasCount) {
     return textareaElement;
   }
 
@@ -212,15 +231,38 @@ export const TextArea = ({
 
       {textareaElement}
 
-      {isInvalid && errorText ? (
-        <Typography
-          variant="span"
-          textColor="destructive"
-          // Helper text is text-xs / medium in Feedback/Red — matches Input.
-          className="font-medium text-fb-red-text text-xs"
-        >
-          {errorText}
-        </Typography>
+      {/* Error text and counter share one row under the field: both describe the
+          same input, and stacking them would push the next field down by a line
+          that is usually empty. The counter never wraps — it is short, and it is
+          anchored to the field's right edge, not to the error text. */}
+      {(isInvalid && errorText) || hasCount ? (
+        <div className="flex items-start justify-between gap-4">
+          {isInvalid && errorText ? (
+            <Typography
+              variant="span"
+              textColor="destructive"
+              // Helper text is text-xs / medium in Feedback/Red — matches Input.
+              className="min-w-0 flex-1 font-medium text-fb-red-text text-xs"
+            >
+              {errorText}
+            </Typography>
+          ) : null}
+
+          {hasCount ? (
+            <Typography
+              variant="span"
+              textColor="secondary"
+              aria-live="polite"
+              // Digits only. "0 characters / 4000 max" reads as a sentence and
+              // gets re-read on every keystroke; "0/4000" is a readout — the eye
+              // catches the changing number without parsing words around it.
+              // tabular-nums keeps it from twitching as the width of digits changes.
+              className="ms-auto shrink-0 whitespace-nowrap text-xs tabular-nums"
+            >
+              {count}/{maxLength}
+            </Typography>
+          ) : null}
+        </div>
       ) : null}
     </div>
   );

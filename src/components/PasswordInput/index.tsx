@@ -76,7 +76,11 @@ function PasswordInput({
       inputId={inputId}
     >
       <InputGroupAddon align="inline-start" className={startAddonClassName}>
-        <Lock aria-hidden className="size-4 shrink-0" />
+        {/* `!` for the same reason the toggle below needs it: InputGroupAddon
+            sizes descendant icons with `[&_svg]:size-5`, and that parent-scoped
+            rule outranks a plain `size-4` here — the lock came out a step
+            bigger than the visibility toggle sitting in the same field. */}
+        <Lock aria-hidden className="!size-4 shrink-0" />
       </InputGroupAddon>
 
       <InputGroupInput

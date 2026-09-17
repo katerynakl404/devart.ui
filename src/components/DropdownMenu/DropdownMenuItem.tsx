@@ -30,11 +30,9 @@ const dropdownMenuItemVariants = cva(
     '[&_svg]:stroke-[1.75]',
 
     //Focused state
-    'focus-visible:outline-none',
-    'focus-visible:ring-1',
-    'focus-visible:ring-focus-ring-brand',
-    'focus-visible:ring-offset-0',
-    'focus-visible:ring-offset-surface-card'
+    // Highlight is the ONE state here: Radix focuses the item on pointer-move,
+    // so a focus ring would always paint on top of the highlight fill.
+    'focus-visible:outline-none'
   ),
   {
     variants: {

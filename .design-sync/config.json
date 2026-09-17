@@ -44,7 +44,8 @@
     },
     "Modal": {
       "cardMode": "single",
-      "primaryStory": "Sizes"
+      "primaryStory": "Sizes",
+      "viewport": "900x1050"
     },
     "Popover": {
       "cardMode": "single",
@@ -56,22 +57,28 @@
     },
     "Sidebar": {
       "cardMode": "single",
-      "primaryStory": "RowStates"
+      "primaryStory": "RowStates",
+      "viewport": "900x2000"
     },
     "TextArea": {
-      "cardMode": "column"
+      "cardMode": "column",
+      "viewport": "900x2000"
     },
     "Timeline": {
-      "cardMode": "column"
+      "cardMode": "column",
+      "viewport": "900x2000"
     },
     "Card": {
-      "cardMode": "column"
+      "cardMode": "column",
+      "viewport": "900x2000"
     },
     "Collapsible": {
-      "cardMode": "column"
+      "cardMode": "column",
+      "viewport": "900x850"
     },
     "ToastMessage": {
-      "cardMode": "column"
+      "cardMode": "column",
+      "viewport": "900x2000"
     },
     "Autocomplete": {
       "cardMode": "single",
@@ -82,10 +89,88 @@
       "primaryStory": "Widths"
     },
     "Colors": {
-      "viewport": "900x1750"
+      "viewport": "900x1850"
     },
     "Typography": {
+      "viewport": "900x2000"
+    },
+    "Banner": {
+      "cardMode": "column",
+      "viewport": "900x2000"
+    },
+    "Pagination": {
+      "cardMode": "column",
+      "viewport": "900x950"
+    },
+    "SingleDatePicker": {
+      "cardMode": "column",
+      "viewport": "900x2000"
+    },
+    "StepSlider": {
+      "cardMode": "column",
+      "viewport": "900x2000"
+    },
+    "Table": {
+      "cardMode": "column",
+      "viewport": "900x2000"
+    },
+    "Tabs": {
+      "cardMode": "column",
+      "viewport": "900x1250"
+    },
+    "StatusView": {
+      "viewport": "900x2000"
+    },
+    "InputGroup": {
+      "viewport": "900x2000"
+    },
+    "File": {
+      "viewport": "900x2000"
+    },
+    "Button": {
+      "viewport": "900x2000"
+    },
+    "PasswordInput": {
+      "viewport": "900x1850"
+    },
+    "ToggleGroup": {
+      "viewport": "900x1600"
+    },
+    "Toggle": {
+      "viewport": "900x1350"
+    },
+    "Badge": {
+      "viewport": "900x1250"
+    },
+    "Accordion": {
+      "viewport": "900x1200"
+    },
+    "RadioButton": {
+      "viewport": "900x1100"
+    },
+    "Skeleton": {
       "viewport": "900x1000"
+    },
+    "ProgressBar": {
+      "viewport": "900x950"
+    },
+    "CircularProgress": {
+      "viewport": "900x950"
+    },
+    "Switch": {
+      "viewport": "900x900"
+    },
+    "ResizablePanelGroup": {
+      "viewport": "900x850"
+    },
+    "ScrollShadow": {
+      "viewport": "900x850"
+    },
+    "IconButton": {
+      "viewport": "900x850"
+    },
+    "Input": {
+      "viewport": "900x800"
     }
   }
 }

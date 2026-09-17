@@ -4,19 +4,25 @@ Shared component library built on Radix UI primitives, Tailwind CSS, and CVA var
 
 ## Install
 
-Private package — GitLab Package Registry of `devart/components/devart.ui.react`.
+Internal package — published to the Nexus repository on `dbfnexus.devart.com`,
+the same instance the .NET services already restore their NuGet packages from.
 
 ```ini
 # .npmrc (consumer project)
-@devart:registry=https://git.devart.com/api/v4/packages/npm/
-//git.devart.com/api/v4/packages/npm/:_authToken=${NPM_TOKEN}
+@devart:registry=https://dbfnexus.devart.com/repository/PENDING-DEVOPS/
 ```
 
 ```bash
 pnpm add @devart/ui-react
 ```
 
-`NPM_TOKEN` — GitLab Deploy Token / Personal Access Token with `read_package_registry`. Never commit the token value.
+Reads are anonymous inside the network, so consumers need no token — the same
+arrangement the backend uses for `dbForgeNuget`. Only the publish pipeline
+authenticates, via a service account. Everything outside the `@devart` scope
+still resolves from npmjs.com.
+
+> The repository name is a placeholder until DevOps provisions it; see
+> `AIINS-1537-NEXUS-SETUP.md`.
 
 ## Peer dependencies
 
@@ -108,6 +114,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **Checkbox** | Radix + CVA | `variant`, `size`, `rounded`, `labelPosition` |
 | **CircularProgress** | Custom | — |
 | **Collapsible** | Radix | — |
+| **ConnectorLogo** | CVA | `size` |
 | **Datepicker** | Custom | — |
 | **DropdownMenu** | Radix | — |
 | **File** | Custom | — |

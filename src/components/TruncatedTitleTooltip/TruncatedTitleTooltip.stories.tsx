@@ -102,18 +102,32 @@ export const SideBySide: Story = {
 };
 
 /**
- * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
- * the subtree — no provider, no props, no JS. This component portals to `document.body`, so an OPEN overlay is not
- * reached by a scoped class — only the trigger is themed here. Put `dark` on
- * `<html>` to theme the overlay itself.
+ * Dark theme — every state the component ships, on one dark surface. Tokens
+ * are pure CSS cascade, so a scoped `.dark` re-themes the whole subtree with
+ * no provider and no props.
  */
-export const DarkTheme: Story = {
-  ...Truncated,
-  decorators: [
-    (Story) => (
-      <div className="dark rounded-lg bg-surface-page p-6">
-        <Story />
+export const DarkTheme = {
+  render: (args, ctx) => {
+    const cells: [string, Story][] = [
+      ['Truncated', Truncated],
+      ['Not Truncated', NotTruncated],
+      ['Side By Side', SideBySide],
+    ];
+    return (
+      <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
+        {cells.map(([name, story]) => (
+          <section className="flex flex-col gap-2" key={name}>
+            <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
+              {name}
+            </span>
+            {story.render ? (
+              story.render({ ...args, ...story.args } as never, ctx)
+            ) : (
+              null
+            )}
+          </section>
+        ))}
       </div>
-    ),
-  ],
-};
+    );
+  },
+} as Story;

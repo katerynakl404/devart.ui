@@ -137,7 +137,7 @@ export const Sizes: Story = {
 };
 
 /**
- * Two shell fills: `primary` sits on `bg-surface-bg` (the page well), `outline`
+ * Two shell fills: `primary` sits on `bg-surface-page` (the page well), `outline`
  * on `bg-surface-card`. Border, hover, pressed, focus and error are identical.
  */
 export const Variants: Story = {
@@ -225,16 +225,38 @@ export const SearchWithClear: Story = {
 };
 
 /**
- * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
- * the subtree — no provider, no props, no JS.
+ * Dark theme — every state the component ships, on one dark surface. Tokens
+ * are pure CSS cascade, so a scoped `.dark` re-themes the whole subtree with
+ * no provider and no props.
  */
-export const DarkTheme: Story = {
-  ...Default,
-  decorators: [
-    (Story) => (
-      <div className="dark rounded-lg bg-surface-page p-6">
-        <Story />
+export const DarkTheme = {
+  render: (args, ctx) => {
+    const cells: [string, Story][] = [
+      ['Default', Default],
+      ['With Leading Icon', WithLeadingIcon],
+      ['With Both Icons', WithBothIcons],
+      ['Error State', ErrorState],
+      ['Disabled', Disabled],
+      ['Sizes', Sizes],
+      ['Variants', Variants],
+      ['Block Addons', BlockAddons],
+      ['Search With Clear', SearchWithClear],
+    ];
+    return (
+      <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
+        {cells.map(([name, story]) => (
+          <section className="flex flex-col gap-2" key={name}>
+            <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
+              {name}
+            </span>
+            {story.render ? (
+              story.render({ ...args, ...story.args } as never, ctx)
+            ) : (
+              null
+            )}
+          </section>
+        ))}
       </div>
-    ),
-  ],
-};
+    );
+  },
+} as Story;

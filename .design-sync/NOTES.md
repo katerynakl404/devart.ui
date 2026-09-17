@@ -609,3 +609,104 @@ viewport is part of the grade key).
 `TruncatedTitleTooltip` `DarkTheme` renders a dark title on the dark card, and
 `SingleDatePicker` `DarkTheme` a dark month caption. Both are the stories' own
 untokenised ink, reproduced faithfully. Worth fixing in the stories.
+
+## 2026-09-15 — Table and page-shell heights (user-reported from the live project)
+
+Reported: *"в таблицях абсолютно не вірні падінги, стрибають колонки, екшени
+виглядають погано"* and *"чомусь висоти екрану теж не вірні"*.
+
+### Table
+
+Graded against the kit's `table.tbl` recipe (`pages/kit-theme.css:2109-2120`,
+`.mx-tbl-actions` at `:3441`), which is authority over production here.
+
+| Defect | Was | Now | Kit |
+|---|---|---|---|
+| Header/body inset disagree | `th` `ps-3 pe-2`, `td` `p-2` | both `px-4 py-2.5` | `.625rem 1rem` on both |
+| Body text a step too small | `text-xs` | `text-sm` | `--ts-body-m` = 14/20 |
+| Height locked | `h-9` on `th`/`td` | padding defines it | padding + `vertical-align` |
+| Header band never painted | no class | `bg-table-header-bg` | `thead th{background:var(--card2)}` |
+| Footer border untokenised | `border-t` | `border-stroke border-t` | — |
+| Two competing row-state systems | `tbody` `tr`-level **and** `td`-level | `td`-level only | `td` |
+| No actions affordance | — | `TableActionsCell` | `.mx-tbl-actions` |
+| Columns re-measure per render | always `auto` | `layout="fixed"` opt-in | `.mx-tbl` `table-layout:fixed` |
+
+`--tbl-header-bg` was the SPEC's own *"an exposed token with no call site
+drifts"* failure mode, verbatim: zero call sites anywhere in `src/`, and its
+value had drifted to `--mx-group-band`'s (slate-150 / grey-700). The kit states
+the contract explicitly — the header band and a selected row are the same
+surface *by construction* — so it is now `var(--surface-card2)` in both themes,
+matching `--tbl-row-pressed`.
+
+`TableActionsCell` reserves its 48px whether or not the buttons show, and fades
+them with opacity. Mounting actions on hover instead reflows the table under the
+pointer, which is half of what "columns jump" describes.
+
+### Page shell
+
+`SidebarInset` was `h-full` under a `min-h-svh` `SidebarProvider`. A percentage
+height against a parent whose computed `height` is `auto` also computes to
+`auto`, so the inset never filled the screen and nothing inside it could scroll
+internally — it grew the page instead. Now `min-h-svh` (a flex item's own
+`min-height` needs no definite parent), with the inset variant's own margins
+subtracted. `conventions.md` gained a **Page shells** section with the pinned
+`h-svh min-h-0 overflow-hidden` shape and the `min-h-0` flex rule, plus a
+**Tables** section; `Sidebar` gained an `AppShell` story that renders it.
+
+### Harness
+
+`dark-matrix.mjs` was not idempotent against its own output — it looked for a
+`\n};` terminator and the generated block ends `\n} as Story;`, so a second run
+skipped all 48 files. Both terminators are now recognised.
+
+### Both-theme verification is now a gate, not a habit
+
+Design owner, 2026-09-15: *"ти ж розумієш що все має перевірятись і в темній і світлій темі?"* — correct, and the process was not doing it. The table padding work earlier the same day changed `--tbl-header-bg` on reasoning alone, with no dark measurement.
+
+`.design-sync/theme-audit.mjs` now resolves the whole `globals.css` token graph in **both** themes (following `var()` chains and `color-mix()`, including the translucent `…, transparent)` form) and reports each state ladder as a dL* step over the surface it actually paints on. It fails on a **collision** (two states within 0.5 dL*), an **inversion** (a later state weaker than an earlier one), a broken `expectEqual` pair, and a **parity** gap between the neutral and destructive versions of the same state.
+
+Run it after any token edit:
+
+```
+node .design-sync/theme-audit.mjs
+```
+
+It caught one pre-existing defect on its first run: **`--tbl-row-hover` and `--tbl-row-pressed` were the identical value on dark** (both grey-800, because row-hover was pinned to `--state-hover`), so a hovered row and a selected row were the same colour. The kit fixed this on 2026-07-09 — *"halfway between the row surface and the selected/header surface … Mirrors light exactly"* — and the package never adopted it. Now `color-mix(in srgb, hsl(var(--surface-card2)) 50%, hsl(var(--surface-card)))`, giving 2.57 / 5.09 / 9.21 on dark against light's 1.86 / 3.73 / 8.65.
+
+Because that token is now a `color-mix()`, `tbl.row-hover` **and** its `table.row-hover` alias had to move to a bare `var()` in `THEME_COLORS` — an `hsl()` wrapper round a `color-mix()` emits invalid CSS and drops the declaration whole. No call site used an alpha modifier on it, so nothing broke; `bg-tbl-row-hover/50` is now silently dead, as with every other `color-mix()` token.
+
+### Converter timings, measured (2026-09-15)
+
+Design owner: *"дуже довго ти робиш зміни і заливаєш"*. Measured rather than guessed:
+
+| step | cost |
+|---|---|
+| full `package-build` (48 components) | **725 s** |
+| per preview inside it | ~15 s |
+| `preview-rebuild.mjs --components Table` | **75 s** |
+| Storybook reference build | ~4 min |
+| `gen-classlist.mjs` | ~60 s |
+
+**A parallel-lanes fork of `lib/previews.mjs` was tried and removed.** `buildPreviews` is a strictly sequential loop of 48 full `esbuild.build()` calls, which looks like the obvious win — but sharding it 8 ways changed the total by nothing (725 s). esbuild already saturates every core inside a single build, so lanes just split the same CPU. The fork was deleted rather than kept on a hunch; both adding and removing it shift the grade contract for every component, and both were free only because `.design-sync/.cache` held no grades yet.
+
+**The real levers are workflow, not code:**
+
+1. **Close every edit before starting a chain.** Three full chains ran on 2026-09-15 and two were invalidated by edits landing after they started — roughly 50 minutes of the ~75 spent building.
+2. **`preview-rebuild.mjs --components A,B` for story, presentation and `viewport` changes** — 75 s against 725 s. It does not touch `_ds_bundle.js`, `styles.css`, `.d.ts` or `.prompt.md`, so it is wrong for a recipe or token change, and right for everything else.
+3. **Storybook is the grading reference, not a build input.** Skip it unless a capture/compare pass is actually going to run.
+4. **`gen-classlist.mjs` depends only on `THEME_COLORS`.** Skip it otherwise.
+5. **Never interrupt a running chain.** Killing one mid-flight left `dist/_ds-entry.js` missing and cost a `[NO_DIST]` failure plus a re-run to diagnose.
+
+Not done, deliberately: **content-hash caching of preview compiles.** It is the only remaining lever on a full build, but a correct key has to cover every transitive import (via esbuild's `metafile`), or a change in `Button/index.tsx` leaves Button's preview silently stale — the exact failure class this project spends its time hunting. Not worth it on the critical path without that.
+
+### Storybook is NOT optional when the component set changes
+
+Correcting the optimisation note above: "skip Storybook unless grading" is wrong for **any build that adds or removes a component**. `cfg.shape` is `storybook`, so `package-build.mjs` enumerates components from the static Storybook build — not from `dist`. Skipping it on the build that introduced `FilterChips` produced a clean, validating bundle with `components: 48` and no FilterChips directory at all: `dist` had it (52 entry points, `make-entry` 193 exports), the stories index did not, and nothing failed.
+
+Revised rule:
+
+| change | Storybook rebuild |
+|---|---|
+| new / removed component, renamed story export | **required** |
+| recipe, token, doc, viewport override | not needed for upload |
+| any capture / compare / grading pass | required (it is the fidelity oracle) |

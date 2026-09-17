@@ -44,7 +44,7 @@ system re-theme from one stylesheet.
 
 | Family | Real class names |
 |---|---|
-| Page/surfaces | `bg-surface-page` `bg-surface-card` `bg-surface-card2` `bg-surface-chips` `bg-surface-accent` `bg-surface-bg` |
+| Page/surfaces | `bg-surface-page` `bg-surface-card` `bg-surface-card2` `bg-surface-chips` `bg-surface-accent` |
 | Text | `text-ink-primary` `text-ink-body` `text-ink-secondary` `text-ink-inactive` `text-ink-highlight` |
 | Brand | `bg-brand-primary` `text-brand-secondary` `border-brand-tertiary` `hover:bg-brand-hover` `pressed:bg-brand-press` |
 | Borders | `border-stroke` `border-stroke-hover` `border-stroke-field-hover` |
@@ -166,6 +166,135 @@ These come from the design-system audit and are not optional:
    Cancel `secondary` then the confirming action (`destructive` or `primary`).
 6. **Don't re-declare focus.** Controls that render a `Button` inherit the ring;
    everything else uses the exported `focusRing` recipe.
+7. **Never write a bare `<img>` for a connector or product logo.** There are no
+   image assets to point at, so a `src` path — `/logos/slack.svg`, a CDN URL,
+   anything — renders as a broken image. Use `ConnectorLogo`, which carries its
+   marks inlined and falls back to a monogram tile for a connector it does not
+   have yet: `<ConnectorLogo connector="Amazon S3" size="md" />`. Names resolve
+   loosely, so pass whatever the page already calls the connector. Leave `label`
+   off when the name is rendered beside the mark — the logo is decorative then.
+
+## Page shells — getting the heights right
+
+A full-height app screen is the one layout the library cannot infer for you, and
+it is where a generated page goes wrong most often. The shape:
+
+```jsx
+<SidebarProvider defaultOpen className="h-svh min-h-0 overflow-hidden">
+  <Sidebar collapsible="icon">
+    <SidebarHeader>…</SidebarHeader>
+    <SidebarContent>…</SidebarContent>
+  </Sidebar>
+
+  <SidebarInset className="min-h-0">
+    <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
+      <SidebarTrigger variant="tertiary" />
+      <Typography element="h1" textStyle="title20">Connections</Typography>
+      <Button className="ms-auto" size="sm">New connection</Button>
+    </header>
+
+    {/* the ONLY scrolling region */}
+    <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-6">
+      …
+    </div>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+Three rules, in the order they are usually missed:
+
+1. **`min-h-0` on every flex ancestor of the scroller.** A flex item defaults to
+   `min-height: auto`, so it refuses to shrink below its content: without this an
+   `overflow-y-auto` child grows the page instead of scrolling, and the header
+   scrolls away with it.
+2. **Never `h-full` inside the shell.** `SidebarProvider` carries a `min-height`,
+   so its computed `height` is `auto` — and a percentage height against an `auto`
+   parent computes to `auto` too. `h-full` there is not wrong-looking, it is
+   inert. Use `flex-1` plus `min-h-0`.
+3. **Pin the shell only when the content scrolls inside it.** The default
+   `min-h-svh` on `SidebarProvider` is right for a document-style page that
+   scrolls as a whole; add `h-svh min-h-0 overflow-hidden` for an app screen with
+   its own scroll region. `SidebarInset` fills the shell either way.
+
+4. **Put `SidebarTrigger` in the `SidebarInset` header, never inside `Sidebar`.**
+   Below `lg` the sidebar is not in the layout at all (see next section), so a
+   trigger that lives inside it disappears together with the thing it opens.
+
+Page padding is `p-6`, section gap `gap-4`–`gap-6`, and the page title is one
+`h1` at `title20`.
+
+### The same shell below `lg`
+
+The shell is responsive already — `Sidebar` switches branch on its own, and the
+generated page does not opt in or out of it. Under `sheetBreakpoint`
+(`SidebarProvider`, default `BREAKPOINTS.lg` = 1024px) `Sidebar` stops rendering
+the in-flow panel and renders a `Sheet` instead:
+
+- it slides in **over** the page from the left, `--sidebar-width-mobile` (288px)
+  wide, full height, on the `overlay-scrim` backdrop, 500ms each way;
+- the content underneath keeps its full width — nothing reflows, so closing the
+  panel puts every row back where it was. This is the part that differs from the
+  desktop behaviour, where the panel is a sibling that pushes `SidebarInset`;
+- it starts **closed** on every mount (its own state, separate from the desktop
+  `open`), so a narrow screen always opens on content;
+- the scrim, `Esc`, or the trigger closes it; `Sheet`'s own close button is
+  hidden, so do not design a second one into the panel header.
+
+Nothing here needs a prop, a wrapper or a media query in page code — the only
+thing a shell can get wrong is where the trigger sits (rule 4).
+`Sidebar/MobileOverlay` is the story that shows the state. If you do write a
+breakpoint yourself, use the named variants (`max-sm` `max-md` `sm` `md` `lg`
+`xl`): arbitrary ones such as `max-[880px]:` emit no CSS (house rule 2).
+
+## Tables
+
+`Table` ships its own frame — border, radius, header band — so never wrap it in a
+`Card`. Cell padding comes from `TableCell` / `TableHead` (10px/16px, identical in
+both so a header lines up with its own column); never re-pad a cell.
+
+```jsx
+<Table layout="fixed">
+  <TableHeader>
+    <TableRow>
+      <TableHead className="w-1/2">Source</TableHead>
+      <TableHead className="w-32">Status</TableHead>
+      <TableHead className="w-32 text-right">Rows</TableHead>
+      <TableHead className="w-12"><span className="sr-only">Actions</span></TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    {rows.map((r) => (
+      <TableRow key={r.id} data-interactive>
+        <TableCell className="font-medium">{r.name}</TableCell>
+        <TableCell>{r.status}</TableCell>
+        <TableCell className="text-right">{r.rows}</TableCell>
+        <TableActionsCell>
+          <IconButton aria-label={`Actions for ${r.name}`} size="2xs" variant="tertiary">
+            <MoreHorizontal />
+          </IconButton>
+        </TableActionsCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+- **`layout="fixed"` plus a width on each first-row `TableHead`** for anything
+  that loads, paginates or filters. The default `auto` layout re-measures every
+  column from its content, so columns visibly jump between an empty state, a
+  loading `colSpan` row, and each page of data. Give one column the slack
+  (`w-1/2`, or no width at all) and pin the rest.
+- **Row actions go in `TableActionsCell`**, never a hand-rolled `TableCell`: it is
+  a fixed 48px, right-aligned, and fades its buttons in on row hover or keyboard
+  focus *without* reflowing, because the width is reserved either way. Add the
+  matching `<TableHead className="w-12">` with an `sr-only` label. Size row
+  actions `2xs` — a 24px box around a 14px glyph, one step below the shared
+  Button/IconButton ladder.
+- **Clickable rows take `data-interactive`**, which is what switches the
+  hover/press fills on. Selection is `className="is-selected"` or
+  `data-state="selected"`; both paint `--tbl-row-pressed`, the same surface as the
+  header band, in both themes.
+- Numeric columns are `text-right` on **both** the head and the cell.
 
 ## Foundations are browsable
 

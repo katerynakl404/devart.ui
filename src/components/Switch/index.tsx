@@ -180,7 +180,20 @@ const Switch = ({
           className={cn(switchThumbVariants({ variant, size }))}
         />
       </SwitchPrimitives.Root>
-      <label htmlFor={id} className={cn('font-medium text-sm', labelClassName)}>
+      <label
+        htmlFor={id}
+        // Same recipe as Checkbox and RadioButton, the two sibling controls
+        // with an inline label. It carried no ink token at all, so it
+        // inherited whatever colour its container happened to have, and no
+        // disabled treatment either.
+        className={cn(
+          'font-medium text-ink-body text-sm',
+          props.disabled
+            ? 'cursor-not-allowed opacity-disabled'
+            : 'cursor-pointer',
+          labelClassName
+        )}
+      >
         {label}
       </label>
     </div>

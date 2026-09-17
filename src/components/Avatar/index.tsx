@@ -34,7 +34,9 @@ const avatarVariants = cva('relative flex shrink-0 overflow-hidden', {
 const avatarFallbackVariants = cva(
   cn(
     'flex h-full w-full items-center justify-center',
-    'bg-brand-primary text-content-on-solid'
+    // Not bg-brand-primary: the initials are text, and brand-primary lifts on
+    // dark to a step where white fails AA. See --avatar-bg in globals.css.
+    'bg-avatar-bg text-content-on-solid'
   ),
   {
     variants: {

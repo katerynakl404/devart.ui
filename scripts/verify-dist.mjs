@@ -293,6 +293,49 @@ if (pack.error) {
   }
 }
 
+// 6. publishConfig.registry must resolve to an internal registry. Without it
+//    `pnpm publish` falls back to npmjs.com and a restricted package leaks;
+//    with a typo in it, nothing fails until a tag pipeline, where the fix
+//    costs a version bump. The trailing slash and the double-slash check are
+//    not cosmetic: npm matches credentials by URL prefix, and Nexus answers a
+//    doubled path segment with 405.
+const INTERNAL_REGISTRY_HOSTS = ['dbfnexus.devart.com', 'git.devart.com'];
+const publishRegistry = pkg.publishConfig?.registry;
+
+if (typeof publishRegistry !== 'string' || publishRegistry.length === 0) {
+  fail(
+    'package.json has no publishConfig.registry; `pnpm publish` would target npmjs.com'
+  );
+} else {
+  let registryUrl;
+  try {
+    registryUrl = new URL(publishRegistry);
+  } catch {
+    fail(`publishConfig.registry is not a valid URL: ${publishRegistry}`);
+  }
+
+  if (registryUrl) {
+    if (registryUrl.protocol !== 'https:') {
+      fail(`publishConfig.registry must use https: ${publishRegistry}`);
+    }
+
+    if (!INTERNAL_REGISTRY_HOSTS.includes(registryUrl.hostname)) {
+      fail(
+        `publishConfig.registry host "${registryUrl.hostname}" is not internal; ` +
+          `expected one of ${INTERNAL_REGISTRY_HOSTS.join(', ')}`
+      );
+    }
+
+    if (!publishRegistry.endsWith('/')) {
+      fail(`publishConfig.registry must end with "/": ${publishRegistry}`);
+    }
+
+    if (registryUrl.pathname.includes('//')) {
+      fail(`publishConfig.registry path contains "//": ${publishRegistry}`);
+    }
+  }
+}
+
 if (failures.length > 0) {
   console.error(`\nverify-dist: ${failures.length} problem(s) found:\n`);
   for (const failure of failures) {

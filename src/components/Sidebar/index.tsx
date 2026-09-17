@@ -6,6 +6,7 @@ import { Sheet, SheetContent } from '../Sheet';
 import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarGroup } from './SidebarGroup';
+import { SidebarBrand } from './SidebarBrand';
 import { SidebarHeader } from './SidebarHeader';
 import { SidebarInset } from './SidebarInset';
 import { SidebarMenu } from './SidebarMenu';
@@ -171,6 +172,7 @@ export {
   type SidebarContextProps,
   SidebarFooter,
   SidebarGroup,
+  SidebarBrand,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,

@@ -55,11 +55,16 @@
       "source": "./src/components/*/index.tsx",
       "types": "./dist/components/*/index.d.ts",
       "default": "./dist/components/*/index.js"
+    },
+    "./portal-container": {
+      "source": "./src/lib/portal-container.ts",
+      "types": "./dist/lib/portal-container.d.ts",
+      "default": "./dist/lib/portal-container.js"
     }
   },
   "publishConfig": {
     "access": "restricted",
-    "registry": "https://git.devart.com/api/v4/projects/devart%2Fcomponents%2Fdevart.ui.react/packages/npm/",
+    "registry": "https://dbfnexus.devart.com/repository/PENDING-DEVOPS/",
     "exports": {
       "./tailwind-preset": {
         "types": "./dist/tailwind-preset.d.ts",
@@ -79,6 +84,10 @@
       "./*": {
         "types": "./dist/components/*/index.d.ts",
         "default": "./dist/components/*/index.js"
+      },
+      "./portal-container": {
+        "types": "./dist/lib/portal-container.d.ts",
+        "default": "./dist/lib/portal-container.js"
       }
     }
   },

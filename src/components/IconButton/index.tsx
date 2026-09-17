@@ -63,7 +63,7 @@ const iconButtonVariants = cva(
           'disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
         destructiveOutline: cn(
-          'border-outlineDestructive-border bg-transparent text-ink-body',
+          'border-outlineDestructive-border bg-transparent text-fb-red-text',
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
           'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
@@ -73,8 +73,10 @@ const iconButtonVariants = cva(
         // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          'hover:bg-fb-red/8',
-          'pressed:bg-fb-red/12',
+          // Shares the destructiveOutline fill tokens on light and goes a step
+          // stronger on dark, where there is no border to carry the signal.
+          'hover:bg-destructiveTertiary-bg-hover',
+          'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
@@ -159,6 +161,7 @@ export function IconButton({
 
   return (
     <Comp
+      data-variant={variant ?? undefined}
       ref={ref}
       className={cn(
         iconButtonVariants({ variant, size, rounded }),

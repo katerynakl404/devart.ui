@@ -37,9 +37,17 @@ const OptionItem = <T extends { id: string }>({
       className={cn(
         'min-h-11 cursor-pointer gap-2.5 rounded-md px-4 py-2.5',
         'text-ink-primary text-sm leading-normal',
+        // Highlighted (pointer or keyboard) and selected are different states
+        // and must not share a fill: with both on State/Hover you cannot tell
+        // which option is the current value once the pointer is anywhere in the
+        // list. Selected takes the deeper step the system already uses for a
+        // chosen item — State/Pressed plus Text/Highlight — so it still reads
+        // as selected while another option is highlighted, and reads deeper
+        // still when it is the highlighted one.
         'data-[highlighted=true]:bg-state-hover',
-        'aria-selected:bg-state-hover',
-        'aria-selected:text-ink-primary',
+        'aria-selected:bg-state-pressed',
+        'aria-selected:font-medium',
+        'aria-selected:text-ink-highlight',
         'aria-disabled:pointer-events-none',
         'aria-disabled:opacity-50',
         '[&_svg]:size-4'

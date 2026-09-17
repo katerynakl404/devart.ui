@@ -28,16 +28,20 @@ const cardVariants = cva(
           'group-hover/card:bg-state-hover',
           'group-hover/card:text-ink-secondary'
         ),
+        // A surface, not a control — so it reacts to neither hover nor press.
+        // Both states were inherited affordances that misfire on a container:
+        // `:hover` lights the whole card while the pointer merely crosses it on
+        // the way to a tab or a field, and `pressed:` compiles to `&:active`,
+        // which fires while the pointer is down anywhere *inside* the element —
+        // so pressing a switch flashed a brand tint across the entire card.
+        // The clickable card is `elevated`; it guards its own active state with
+        // `:not(:has(button:active))`.
         outline: cn(
           'flex flex-col gap-3 p-4',
           'bg-surface-card',
-          'border border-stroke hover:border-card-border-hover',
+          'border border-stroke',
           'shadow-sm',
-          'text-ink-body',
-          // pressed — one step deeper than hover: brand-tinted fill, brand border
-          'pressed:border-card-border-press',
-          'pressed:bg-brand-primary/[0.04]',
-          'pressed:text-ink-body'
+          'text-ink-body'
         ),
         // Compact single-row layout for list items (chats, files, insights row view)
         row: cn(
@@ -71,12 +75,16 @@ const cardVariants = cva(
           'hover:border-ink-secondary/55 hover:bg-state-hover'
         ),
       },
+      // The full radius scale, matching Button. `rounded` is the system's 4px
+      // DEFAULT step, which this scale used to skip entirely.
       rounded: {
         none: 'rounded-none',
         sm: 'rounded-sm',
+        rounded: 'rounded',
         md: 'rounded-md',
         lg: 'rounded-lg',
         xl: 'rounded-xl',
+        full: 'rounded-full',
       },
       fullWidth: {
         true: 'w-full',

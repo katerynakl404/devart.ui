@@ -21,6 +21,24 @@
   --font-sans: "DM Sans";
   --opacity-disabled: 0.65;
 
+  /* Tint scale — the overlay strengths a wash may use. A tint is a colour laid
+     over `transparent`; its strength is one of these steps and never a literal
+     percentage, so changing how strong every wash reads is one edit here.
+     Blends (a colour mixed over another *opaque* colour) are a different thing
+     and keep their literal ratio — so do shadow alphas and gradient stops. */
+  --tint-5: 5%;
+  --tint-6: 6%;
+  --tint-8: 8%;
+  --tint-10: 10%;
+  --tint-12: 12%;
+  --tint-15: 15%;
+  --tint-20: 20%;
+  --tint-25: 25%;
+  --tint-30: 30%;
+  --tint-40: 40%;
+  --tint-55: 55%;
+  --tint-80: 80%;
+
   /* Scrim behind modal surfaces. Declared here as well as in .dark so the
      token is reachable in BOTH themes - it was dark-only, which is why the
      overlays hardcoded bg-black/80 instead of using it. */
@@ -102,7 +120,7 @@
   --tertiary-950: 190.7 81.8% 10.8%; /* #052A32 */
   --slate-50: 210 40% 98%; /* #F8FAFC */
   --slate-100: 210 40% 96%; /* #F1F5F9 */
-  --slate-150: 214 32% 94%; /* #EAEFF5 */
+  --slate-150: 212.7 35.5% 93.9%; /* #EAEFF5 */
   --slate-200: 214.3 31.8% 91.4%; /* #E2E8F0 */
   --slate-300: 213 27% 84%; /* #CBD5E1 */
   --slate-400: 215 20% 65%; /* #94A3B8 */
@@ -152,7 +170,8 @@
   --black: 0 0% 0%; /* #000000 */
 
   /* ===== Layer 2: Semantic tokens ===== */
-  --bg: var(--slate-50); /* #F8FAFC */
+  /* Unused by the default table, whose header is unbanded. Kept for a
+     banded variant; see Table/TableHeader.tsx. */
   --tbl-header-bg: var(--slate-150); /* #EAEFF5 */
   --mx-group-band: var(--slate-150); /* #EAEFF5 */
   --brand-primary: var(--brand-600); /* #07807E */
@@ -178,7 +197,7 @@
   );
   --chat-glow-fill: color-mix(
     in srgb,
-    hsl(var(--brand-tertiary)) 8%,
+    hsl(var(--brand-tertiary)) var(--tint-8),
     transparent
   );
   --stroke-border: var(--slate-200); /* #E2E8F0 */
@@ -223,26 +242,38 @@
   --btn-secondary-border-hover: var(--slate-400); /* #94A3B8 */
   --btn-outline-bg-hover: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 6%,
+    hsl(var(--brand-primary)) var(--tint-6),
     transparent
   );
   --btn-outline-bg-press: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 8%,
+    hsl(var(--brand-primary)) var(--tint-8),
     transparent
   );
   --btn-outline-destructive-border: var(--red-700); /* #B91C1C */
   --btn-outline-destructive-border-hover: var(--red-800); /* #991B1B */
   --btn-outline-destructive-bg-hover: color-mix(
     in srgb,
-    hsl(var(--fb-red)) 6%,
+    hsl(var(--fb-red)) var(--tint-6),
     transparent
   ); /* Red @6% over surface */
   --btn-outline-destructive-bg-press: color-mix(
     in srgb,
-    hsl(var(--fb-red)) 8%,
+    hsl(var(--fb-red)) var(--tint-8),
     transparent
   ); /* Red @8% over surface */
+  /* Destructive TERTIARY fill. Identical to the outline sibling on light —
+     measured at a 4.01 dL* step against the neutral --state-hover's 3.65, and
+     5.35 against --state-pressed's 5.15. The variants diverge only on dark:
+     see the .dark block. */
+  --btn-destructive-tertiary-bg-hover: var(--btn-outline-destructive-bg-hover);
+  --btn-destructive-tertiary-bg-press: var(--btn-outline-destructive-bg-press);
+  /* Avatar fill. Pinned to brand-600 rather than following --brand-primary,
+     because the initials ON it are TEXT: on dark, --brand-primary lifts to
+     brand-500 and white drops to 3.94:1, under the 4.5 body-text floor.
+     brand-600 holds 4.77:1 in both themes. The Banner icon well and the
+     Checkbox tick keep --brand-primary - they are glyphs, judged at 3:1. */
+  --avatar-bg: var(--brand-primary); /* #07807E */
   --content-on-solid: var(--white); /* #FFFFFF */
   --focus-ring-brand: var(--brand-600); /* #07807E */
   --input-focus: var(--slate-600); /* #475569 (light) — kit s-focus */
@@ -256,12 +287,12 @@
   /* Card tokens */
   --card-border-hover: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 25%,
+    hsl(var(--brand-primary)) var(--tint-25),
     transparent
   ); /* ~25% brand */
   --card-border-press: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 40%,
+    hsl(var(--brand-primary)) var(--tint-40),
     transparent
   ); /* ~40% brand */
   --card-lift-border: color-mix(
@@ -272,7 +303,7 @@
   --icon-wrapper-bg: color-mix(
     in srgb,
     hsl(var(--brand-primary)) 5%,
-    hsl(var(--bg))
+    hsl(var(--surface-page))
   );
 
   /* Dropzone tokens */
@@ -304,7 +335,7 @@
   );
   --badge-brand-border: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 40%,
+    hsl(var(--brand-primary)) var(--tint-40),
     transparent
   );
   --badge-brand-text: color-mix(
@@ -319,7 +350,7 @@
   );
   --badge-green-border: color-mix(
     in srgb,
-    hsl(var(--fb-green)) 40%,
+    hsl(var(--fb-green)) var(--tint-40),
     transparent
   );
   --badge-green-text: color-mix(
@@ -355,22 +386,22 @@
   );
   --toast-border-success: color-mix(
     in srgb,
-    hsl(var(--fb-green)) 30%,
+    hsl(var(--fb-green)) var(--tint-30),
     transparent
   );
   --toast-border-info: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 30%,
+    hsl(var(--brand-primary)) var(--tint-30),
     transparent
   );
   --toast-border-warning: color-mix(
     in srgb,
-    hsl(var(--fb-attention)) 30%,
+    hsl(var(--fb-attention)) var(--tint-30),
     transparent
   );
   --toast-border-error: color-mix(
     in srgb,
-    hsl(var(--fb-red-text)) 30%,
+    hsl(var(--fb-red-text)) var(--tint-30),
     transparent
   );
 
@@ -401,13 +432,36 @@
     inset 0 0 0 1px hsl(var(--stroke-border)), 0 1px 2px rgba(0, 0, 0, 0.06);
 
   /* Table — canonical row state bgs (light) */
+  /* Row states are ported verbatim from the Insightis kit (pages/kit-theme.css),
+     which is what ships to users — the package had drifted a step darker on both
+     tokens and had picked up a brand tint the kit explicitly forbids.
+
+     The kit's two rules, in its own words:
+
+     1. Hover is a SMALLER step off the row than selected — it has to read as LESS
+        contrast, not more. Slate-50 sits about halfway between the white row and
+        slate-100, so hover stays below selected instead of overtaking it.
+     2. Selected/pressed IS --surface-card2, the table-header band surface. So a
+        selected row and the thead band are identical BY CONSTRUCTION in every
+        theme (slate-100 light / grey-800 dark) — and it needs no .dark override,
+        because --surface-card2 already re-resolves.
+
+     Neutral in every state, never brand-tinted. */
   --tbl-row-hover: var(--slate-50); /* #F8FAFC */
-  --tbl-row-pressed: var(
-    --slate-100
-  ); /* #F1F5F9 — selected + transient press */
+  --tbl-row-pressed: var(--surface-card2); /* #F1F5F9 light · #21212C dark */
+  /* Hover while selected — a step BEYOND selected, not between hover and it.
+     Blending the two row tokens put this state halfway back toward hover, so
+     pointing at a selected row made it paler: the row read as less selected
+     the moment you touched it. Mixing --ink-inactive moves away from the
+     surface in both themes (darker on light, lighter on dark) and carries no
+     brand hue, keeping the ladder neutral and monotonic: 1.86 / 3.73 / 5.6 on
+     light, 2.53 / 5.09 / 8.2 on dark.
+
+     5% is a blend ratio between two opaque colours, so it stays a literal —
+     the --tint-* scale is for washes over transparency (see SPEC). */
   --tbl-row-selected-hover: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 10%,
+    hsl(var(--ink-inactive)) 5%,
     hsl(var(--tbl-row-pressed))
   );
 
@@ -429,11 +483,19 @@
   /* Banner — gradient recipes + on-gradient tokens (light) */
   --banner-grad-text: var(--white); /* #FFFFFF */
   --banner-grad-btn-text: var(--slate-900); /* #0F172A */
-  --banner-grad-sub: color-mix(in srgb, hsl(var(--white)) 82%, transparent);
-  --banner-grad-ic-bg: color-mix(in srgb, hsl(var(--white)) 18%, transparent);
+  --banner-grad-sub: color-mix(
+    in srgb,
+    hsl(var(--white)) var(--tint-80),
+    transparent
+  );
+  --banner-grad-ic-bg: color-mix(
+    in srgb,
+    hsl(var(--white)) var(--tint-20),
+    transparent
+  );
   --banner-grad-ic-border: color-mix(
     in srgb,
-    hsl(var(--white)) 40%,
+    hsl(var(--white)) var(--tint-40),
     transparent
   );
   --banner-grad-ic-shadow:
@@ -465,8 +527,8 @@
 }
 
 .dark {
+  --avatar-bg: var(--brand-600); /* #07807E - held, not lifted */
   /* ===== Layer 2: Semantic tokens (dark) ===== */
-  --bg: var(--grey-950); /* #0F0E14 */
   --tbl-header-bg: var(--grey-700); /* #2A2834 */
   --mx-group-band: var(--grey-700); /* #2A2834 */
   --brand-primary: var(--brand-500); /* #148F8D */
@@ -494,12 +556,11 @@
   );
   --chat-glow-fill: color-mix(
     in srgb,
-    hsl(var(--brand-tertiary)) 18%,
+    hsl(var(--brand-tertiary)) var(--tint-20),
     transparent
   );
   --stroke-border: var(--grey-700); /* #2A2834 */
   --stroke-border-hover: var(--slate-700); /* #334155 */
-  --border-hover: var(--slate-600); /* #475569 — declared on dark only */
   --state-hover: var(--grey-800); /* #21212C */
   --state-pressed: var(--grey-700); /* #2A2834 */
   --state-disabled: var(--grey-700); /* #2A2834 */
@@ -526,18 +587,44 @@
   /* ===== Layer 3: Component-scoped tokens (dark) ===== */
   --btn-secondary-border: var(--grey-600); /* #525258 */
   --btn-secondary-border-hover: var(--grey-500); /* #6B7280 */
-  --btn-outline-destructive-border: var(--red-700); /* #B91C1C */
-  --btn-outline-destructive-border-hover: var(--red-800); /* #991B1B */
+  /* Dark inherits nothing from light here: the ramp has to run the other way.
+     Border matches the label (--fb-red-text = Red-400 on dark), exactly as light
+     has both on Red-700, and hover steps LIGHTER — the same direction as
+     --btn-secondary-border on dark (Grey-600 -> Grey-500). The previous values
+     were the light ones copied across: hover DROPPED contrast 2.76 -> 2.15 on
+     Card #17171E, the only place in the kit where hover made a control less
+     visible. */
+  /* Both steps move down the ramp rather than up: red-300 is a pale pink that
+     loses the red identity, and it lifted contrast x1.79 where light lifts
+     x1.22 — the hover read as washed out, not as emphasis. red-500 -> red-400
+     keeps both steps a saturated red and still rises, which is what a hover on
+     a near-black card has to do. */
+  --btn-outline-destructive-border: var(--red-500); /* #EF4444 — CR 4.74 */
+  --btn-outline-destructive-border-hover: var(--red-400); /* #F25555 — CR 5.27 */
   --btn-outline-destructive-bg-hover: color-mix(
     in srgb,
-    hsl(var(--fb-red)) 14%,
+    hsl(var(--fb-red)) var(--tint-15),
     transparent
   ); /* Red @14% over surface #991B1B */
   --btn-outline-destructive-bg-press: color-mix(
     in srgb,
-    hsl(var(--fb-red)) 22%,
+    hsl(var(--fb-red)) var(--tint-20),
     transparent
   ); /* Red @22% over surface #7F1D1D */
+  /* Tertiary carries no border, so the fill is the whole signal — on a
+     near-black card the outline sibling's 14%/22% lands 35% short of the
+     neutral step it has to match (3.29 against --state-hover's 5.16). Measured
+     against the live tokens: 20% and 32% put it at 5.05 and 8.76. */
+  --btn-destructive-tertiary-bg-hover: color-mix(
+    in srgb,
+    hsl(var(--fb-red)) var(--tint-20),
+    transparent
+  ); /* Red @20% over surface */
+  --btn-destructive-tertiary-bg-press: color-mix(
+    in srgb,
+    hsl(var(--fb-red)) var(--tint-30),
+    transparent
+  ); /* Red @32% over surface */
   --input-focus: var(--slate-500); /* #64748B (dark) — kit s-focus */
   --field-border-hover: var(
     --slate-600
@@ -602,9 +689,17 @@
     inset 0 0 0 1px color-mix(in srgb, hsl(var(--white)) 6%, transparent),
     0 1px 2px rgba(0, 0, 0, 0.3);
 
-  /* Table — canonical row state bgs (dark): hover + pressed collapse to grey-800 */
-  --tbl-row-hover: var(--state-hover); /* #21212C */
-  --tbl-row-pressed: var(--grey-800); /* #21212C */
+  /* Table — canonical row state bgs (dark) */
+  /* Dark hover — the kit's formula is color-mix(--surface-card2 50%, --surface-card),
+     i.e. halfway between the band and the row, keeping hover a smaller step than
+     selected exactly as on light. Written here as the resulting triplet because
+     the token is consumed through hsl(var(…)) in constants.ts: a color-mix would
+     land in the stylesheet as an invalid background-color and paint nothing —
+     the very bug that made light-theme hover disappear. #1C1C25 is that mix.
+
+     No --tbl-row-pressed here on purpose: it is --surface-card2, which already
+     resolves to grey-800 in this block. */
+  --tbl-row-hover: 240 14% 12.7%; /* #1C1C25 = mix(grey-800 50%, grey-900) */
 
   /* Plan card — dark needs a stronger mix and a longer fade or the gradient reads flat */
   --plan-card-featured-bg: linear-gradient(
@@ -616,10 +711,14 @@
 
   /* Banner — dark gradient recipes */
   --banner-grad-btn-text: var(--slate-900); /* #0F172A */
-  --banner-grad-ic-bg: color-mix(in srgb, hsl(var(--white)) 12%, transparent);
+  --banner-grad-ic-bg: color-mix(
+    in srgb,
+    hsl(var(--white)) var(--tint-12),
+    transparent
+  );
   --banner-grad-ic-border: color-mix(
     in srgb,
-    hsl(var(--white)) 18%,
+    hsl(var(--white)) var(--tint-20),
     transparent
   );
   --banner-grad-ic-shadow:

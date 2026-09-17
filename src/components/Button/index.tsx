@@ -1,6 +1,6 @@
 'use client';
 
-import { Slot } from '@radix-ui/react-slot';
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { cn } from '../../lib/utils';
@@ -72,8 +72,10 @@ const buttonVariants = cva(
           'disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
         // Destructive outline: red-bordered, transparent fill with red-tinted
+        // hover/press. The label is Feedback/Red too — a neutral label under a
+        // red border read as an ordinary secondary button and lost the warning.
         destructiveOutline: cn(
-          'border-outlineDestructive-border bg-transparent text-ink-body',
+          'border-outlineDestructive-border bg-transparent text-fb-red-text',
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
           'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
@@ -83,8 +85,10 @@ const buttonVariants = cva(
         // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          'hover:bg-fb-red/8',
-          'pressed:bg-fb-red/12',
+          // Shares the destructiveOutline fill tokens on light and goes a step
+          // stronger on dark, where there is no border to carry the signal.
+          'hover:bg-destructiveTertiary-bg-hover',
+          'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
@@ -188,6 +192,7 @@ const Button = ({
 
   return (
     <Comp
+      data-variant={variant ?? undefined}
       className={cn(
         buttonVariants({ variant, size, rounded, fullWidth, align, className }),
         isLoading && 'pointer-events-none opacity-disabled'
@@ -206,21 +211,28 @@ const Button = ({
         leftSlot
       )}
 
-      {hasLabel && (
-        <span
-          className={cn(
-            'align-text-top',
-            fullWidth
-              ? cn(
-                  'min-w-0 flex-1 truncate text-center',
-                  align === 'left' && 'text-left',
-                  align === 'right' && 'text-right'
-                )
-              : 'inline-block'
-          )}
-        >
-          {children}
-        </span>
+      {asChild ? (
+        <Slottable>{children}</Slottable>
+      ) : (
+        hasLabel &&
+        // Only `fullWidth` needs a box of its own — it truncates and aligns
+        // the label inside the stretched row. Everything else goes straight
+        // into the button's own flex row: the gap and the icon alignment are
+        // already there, and one less wrapper means the design tool selects
+        // the Button itself rather than an anonymous inner span.
+        (fullWidth ? (
+          <span
+            className={cn(
+              'min-w-0 flex-1 truncate text-center',
+              align === 'left' && 'text-left',
+              align === 'right' && 'text-right'
+            )}
+          >
+            {children}
+          </span>
+        ) : (
+          children
+        ))
       )}
 
       {rightSlot}

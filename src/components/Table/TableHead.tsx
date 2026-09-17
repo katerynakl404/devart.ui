@@ -48,7 +48,13 @@ function TableHead({
           : undefined
       }
       className={cn(
-        'h-9 whitespace-nowrap ps-3 pe-2 text-left align-middle font-medium text-ink-secondary text-xs [&:has([role=checkbox])]:pr-0',
+        // Same 10px/16px padding as TableCell, deliberately duplicated rather
+        // than shortened: a header inset that differs from its column's body
+        // inset is the single most visible table defect there is.
+        'px-4 py-2.5 align-middle',
+        'whitespace-nowrap text-left',
+        'font-medium text-ink-secondary text-xs leading-4',
+        '[&:has([role=checkbox])]:pe-0',
         className
       )}
       {...props}
@@ -60,7 +66,7 @@ function TableHead({
           className={cn(
             'inline-flex items-center gap-1.5 rounded',
             'transition-colors hover:text-ink-body',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-table-header-bg',
             sortDirection && 'text-ink-body'
           )}
         >

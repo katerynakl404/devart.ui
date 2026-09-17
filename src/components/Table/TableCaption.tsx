@@ -5,7 +5,7 @@ function TableCaption({ className, ...props }: ComponentProps<'caption'>) {
   return (
     <caption
       data-slot="table-caption"
-      className={cn('mt-4 text-sm', className)}
+      className={cn('mt-3 text-ink-secondary text-sm', className)}
       {...props}
     />
   );

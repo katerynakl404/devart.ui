@@ -3,3 +3,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /*
+   * Tailwind's preflight ships `svg { display: block }`. That is right for a
+   * standalone illustration and wrong for an icon beside a label: in any
+   * NON-flex wrapper the icon takes a line of its own, and nothing errors.
+   *
+   * Every library component's root is a flex row, so components are safe on
+   * their own. An agent composing its own wrapper around an icon and some text
+   * is not — which is exactly how a "+" ends up above its button label and a
+   * warning glyph above its badge text.
+   *
+   * A flex or grid container blockifies its children regardless, so this is a
+   * no-op everywhere the library already worked; it only rescues the hand-rolled
+   * case. `vertical-align` is preflight's own value, kept so an inline icon
+   * still centres against the text rather than sitting on the baseline.
+   */
+  svg {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
