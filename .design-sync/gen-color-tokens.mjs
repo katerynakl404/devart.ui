@@ -113,6 +113,14 @@ const out = [
 fs.mkdirSync('ds-bundle/tokens', { recursive: true });
 fs.writeFileSync('ds-bundle/tokens/colors.css', out);
 
+// Ship the unresolved source next to the resolved palette. package-build's
+// copyTokens() bails on the first line when cfg has no `tokensPkg` — ours has
+// only `tokensGlob` — and the storybook-shape fallback never fires either, so
+// globals.css silently stopped reaching the bundle. It is the only readable
+// form of the three-layer system (primitives -> semantic -> component), and
+// product files cite it by path, so a consumer losing it loses the map.
+fs.copyFileSync('globals.css', 'ds-bundle/tokens/globals.css');
+
 // The product's manifest scans _ds_bundle.css and ONLY _ds_bundle.css: every one
 // of the 1797 tokens it indexed came from there, and a separate
 // tokens/colors.css was never read at all. It also stores the raw declaration

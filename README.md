@@ -2,27 +2,78 @@
 
 Shared component library built on Radix UI primitives, Tailwind CSS, and CVA variants.
 
+## Where this lives
+
+| Remote | Role |
+|---|---|
+| `git.devart.com/devart/components/devart.ui.react` | corporate repo — the package's home, and where a release eventually lands |
+| `git.devart.com/katerynak/design-system` | design-side working copy — where design-system changes are staged before they go back upstream |
+
+Both hold the same package. Prototypes are built against the design copy.
+
 ## Install
 
-Internal package — published to the Nexus repository on `dbfnexus.devart.com`,
-the same instance the .NET services already restore their NuGet packages from.
+**There is no published tarball yet.** `publishConfig.registry` still points at a
+Nexus repository DevOps has not provisioned, so `pnpm add @devart/ui-react`
+resolves to nothing:
 
 ```ini
-# .npmrc (consumer project)
-@devart:registry=https://dbfnexus.devart.com/repository/PENDING-DEVOPS/
+# package.json — placeholder, not a working registry
+"registry": "https://dbfnexus.devart.com/repository/PENDING-DEVOPS/"
 ```
+
+`scripts/verify-dist.mjs` only asserts the *host* is internal (`dbfnexus.devart.com`
+or `git.devart.com`), not that the path exists — so the build passes and publishing
+would still fail. The ticket is `AIINS-1537-NEXUS-SETUP.md`. Until it closes, two
+paths work.
+
+### A — linked package (React apps)
 
 ```bash
-pnpm add @devart/ui-react
+git clone https://git.devart.com/katerynak/design-system.git
+cd design-system && pnpm install && pnpm build
 ```
 
-Reads are anonymous inside the network, so consumers need no token — the same
-arrangement the backend uses for `dbForgeNuget`. Only the publish pipeline
-authenticates, via a service account. Everything outside the `@devart` scope
-still resolves from npmjs.com.
+`pnpm build` is not optional here: outside the monorepo the `source` export
+condition never applies, so every subpath resolves into `dist/` and an unbuilt
+clone imports nothing. Then, from the consuming app:
 
-> The repository name is a placeholder until DevOps provisions it; see
-> `AIINS-1537-NEXUS-SETUP.md`.
+```bash
+pnpm add link:../design-system
+```
+
+Continue with Peer dependencies and Importing below.
+
+### B — prebuilt bundle (prototypes, no npm, no build step)
+
+`ds-bundle/` is a browser-ready build of the whole library — every component as
+an ES module on `window.DevartUI`, the compiled Tailwind utilities, the tokens in
+both themes, the fonts, and one markdown guideline per component. A prototype
+drops the folder in and writes JSX against it; there is no install and no
+bundler. This is how the Insightis and AI Connectivity prototypes consume the
+library.
+
+Rebuilding it runs three things in order, then the design-sync package build:
+
+```bash
+node .design-sync/theme-audit.mjs   # token ladders + WCAG contrast, both themes
+pnpm build                          # dist/ — verify-dist gates it
+pnpm build-storybook                # the component roster comes from the Storybook
+                                    # index, so this is REQUIRED whenever a
+                                    # component was added or removed — skip it and
+                                    # the new component is silently absent from a
+                                    # bundle that still validates clean
+```
+
+`ds-bundle/` is generated, git-ignored and never hand-edited; the emitting step
+and the exact chain live in `.design-sync/config.json` (`buildCmd`). Conventions
+a prototype must follow: `.design-sync/conventions.md`. Everything learned about
+this pipeline the hard way: `.design-sync/NOTES.md`.
+
+Reads from an internal registry are anonymous once one exists, so consumers will
+need no token — the same arrangement the backend uses for `dbForgeNuget`. Only a
+publish pipeline authenticates. Everything outside the `@devart` scope still
+resolves from npmjs.com.
 
 ## Peer dependencies
 
@@ -103,41 +154,79 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 
 ## Component catalog
 
+50 directories under `src/components/`, each reachable as
+`@devart/ui-react/<Name>` through the `./*` wildcard export.
+
 | Component | Based on | Variants |
 |---|---|---|
-| **Accordion** | Radix | — |
+| **Accordion** | Radix Accordion | — |
 | **Autocomplete** | Custom | — |
-| **Avatar** | Radix | — |
+| **Avatar** | Radix Avatar | `size`, `rounded` |
 | **Badge** | CVA | `variant`, `size`, `rounded` |
+| **Banner** | CVA | `variant`, `size` |
 | **Button** | CVA + Radix Slot | `variant`, `size`, `align`, `rounded`, `fullWidth` |
-| **Card** | HTML | — |
-| **Checkbox** | Radix + CVA | `variant`, `size`, `rounded`, `labelPosition` |
-| **CircularProgress** | Custom | — |
-| **Collapsible** | Radix | — |
+| **Card** | CVA | `variant`, `layout`, `rounded`, `fullWidth` |
+| **Checkbox** | Radix Checkbox + CVA | `variant`, `size`, `rounded`, `labelPosition`, `gap` |
+| **CircularProgress** | Custom (SVG) | — |
+| **Collapsible** | Radix Collapsible | — |
 | **ConnectorLogo** | CVA | `size` |
-| **Datepicker** | Custom | — |
-| **DropdownMenu** | Radix | — |
-| **File** | Custom | — |
-| **IconButton** | CVA | `variant`, `size`, `rounded` |
+| **Datepicker** | react-day-picker | — |
+| **DialogTitleFallback** | Radix Dialog | — *(a11y helper: supplies a title when a dialog has none)* |
+| **DropdownMenu** | Radix DropdownMenu | `variant` |
+| **File** | CVA | `variant`, `size`, `rounded` |
+| **FilterChips** | Radix RadioGroup + CVA | `size` |
+| **Foundations** | Custom | — *(docs-only token previews: Colors, Radius, Shadows, Spacing)* |
+| **IconButton** | CVA + Radix Slot | `variant`, `size`, `rounded` |
 | **Input** | HTML | — |
-| **InputGroup** | Custom | — |
-| **Modal** | Radix Dialog | — |
+| **InputGroup** | Custom | `variant`, `size`, `align` |
+| **Modal** | Radix Dialog | `size`, `align`, `flexDirection` |
+| **PageHeader** | Custom | — |
 | **Pagination** | Custom | — |
 | **PasswordInput** | Custom | — |
-| **Popover** | Radix | — |
-| **ProgressBar** | Radix + CVA | `variant`, `size`, `rounded` |
+| **Popover** | Radix Popover | — |
+| **PortalContainer** | Custom | — *(retargets Radix portals into a subtree — required for scoped theming)* |
+| **ProgressBar** | Radix Progress + CVA | `variant`, `size`, `rounded` |
+| **RadioButton** | Radix RadioGroup + CVA | `variant`, `size`, `labelPosition`, `gap` |
+| **Resizable** | react-resizable-panels | — |
 | **ScrollShadow** | Custom | — |
-| **Separator** | Radix | — |
-| **Sheet** | Radix Dialog | — |
-| **Sidebar** | Custom | — |
-| **Skeleton** | CSS | — |
-| **Spinner** | Custom | — |
-| **Switch** | Radix | — |
-| **Table** | HTML | — |
-| **Tabs** | Radix | — |
+| **SegmentedControl** | Radix Tabs + CVA | `variant`, `size`, `rounded` |
+| **Separator** | Radix Separator | `variant`, `orientation` |
+| **Sheet** | Radix Dialog | `side` |
+| **Sidebar** | Custom + Radix Slot/Tooltip | `variant`, `size` |
+| **Skeleton** | CSS | `animation`, `rounded` |
+| **Spinner** | Custom | `size`, `color` |
+| **StatusView** | CVA | `ladder`, `size`, `surface`, `tone`, `circles` |
+| **StepSlider** | Radix Slider | `size` |
+| **Stepper** | Custom | — |
+| **Switch** | Radix Switch | `variant`, `size`, `rounded`, `labelPosition`, `gap` |
+| **Table** | HTML | `layout` (`auto` \| `fixed`) |
+| **Tabs** | Radix Tabs | `size` |
+| **TextArea** | HTML + CVA | `variant`, `size`, `rounded` |
+| **Timeline** | Radix Collapsible | `status` |
 | **Toast** | Sonner | — |
-| **Tooltip** | Radix | — |
-| **Typography** | HTML | — |
+| **Toggle** | Radix Toggle | `variant`, `size`, `rounded` |
+| **ToggleGroup** | Radix ToggleGroup | — |
+| **Tooltip** | Radix Tooltip | — |
+| **TruncatedTitleTooltip** | Radix Tooltip | — *(shows the tooltip only when the text is actually clipped)* |
+| **Typography** | HTML | `variant`, `scale`, `textStyle`, `weight`, `leading`, `textColor`, `align`, `noWrap`, `underline`, `lineThrough`, `overline` |
+
+`Toggle` and `ToggleGroup` both export `toggleVariants`. In the `ds-bundle`
+entry the collision is resolved by renaming ToggleGroup's to
+`toggleGroupVariants`; under npm the two subpaths never meet, so neither is
+renamed.
+
+**FilterChips is a radio group, not a toggle group** — exactly one chip is
+always active, which is what "filter by status" means. `SegmentedControl` is a
+different component for a different job (switching the *view*, not narrowing the
+*data*); do not substitute one for the other.
+
+Per-component usage notes — anatomy, the states a page must wire up, and the
+patterns that go wrong — live next to the component as `<Name>.md` and ship into
+`ds-bundle/guidelines/`. **17 of the 50 carry one today** (Badge, Button, Card,
+Checkbox, DropdownMenu, FilterChips, IconButton, InputGroup, Modal, PageHeader,
+Pagination, SegmentedControl, Sidebar, Table, Tabs, ToggleGroup, Typography,
+plus the four Foundations pages). The rest are undocumented — and an undocumented
+component is the one an agent assembles wrong, because it has no pattern to copy.
 
 ---
 
