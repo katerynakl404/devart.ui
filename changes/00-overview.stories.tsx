@@ -237,19 +237,6 @@ const ROWS: Row[] = [
     page: '8. The badge',
   },
   {
-    n: 'Archived',
-    area: 'Badge',
-    change: 'the gap and the glyph did not step with the size — not requested',
-    page: '8. The badge',
-  },
-  {
-    n: 'Archived',
-    area: 'Badge',
-    change:
-      'a status that had to become a control to carry a tooltip — not requested',
-    page: '8. The badge',
-  },
-  {
     n: '21',
     area: 'gen-classlist.mjs',
     change: 'empty:* enumerated, or the rule in §12 is never compiled',
