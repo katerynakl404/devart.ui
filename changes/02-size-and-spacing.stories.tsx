@@ -499,8 +499,10 @@ export const SizeAndSpacing: Story = {
             / 12 / 12 / 16 / 20, with 12 repeating at <Code>sm</Code> and{' '}
             <Code>md</Code> because those are the two steps the product actually
             uses — the sizes people see stay on one rail and only the rare large
-            ones open up. Fields take the identical ladder, so a button and an
-            input of the same size share one edge.
+            ones open up. A field follows it to <Code>md</Code> and then holds
+            at 12: a button and an input of the same size share an edge at the
+            three steps that matter, and above them the button opens out while
+            the field does not.
             <br />
             <br />
             The other two ladders both plateau, and both plateaus are the point.

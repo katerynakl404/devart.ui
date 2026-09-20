@@ -40,13 +40,17 @@ export const textAreaVariants = cva(
         '3xl': 'rounded-3xl',
       },
       size: {
-        // Same horizontal ladder as Button and InputGroup.
+        // The field ladder: 8 / 12 / 12 / 12 / 12. It matches Button at xs,
+        // sm and md and then holds, where Button opens out to 16 and 20 — a
+        // field is a place to put text and reads tighter the nearer its value
+        // starts to the edge, while a button's inset is what makes the label
+        // read as a target. InputGroup carries the same five values.
         // Type ladder: xs 12 / sm 12 / md-xl 14 - 13px is off the scale.
         xs: cn('px-2 py-1', 'text-xs placeholder:text-xs'),
         sm: cn('px-3 py-1.5', 'text-sm placeholder:text-sm'),
         md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
-        lg: cn('px-4 py-2', 'text-base placeholder:text-base'),
-        xl: cn('px-5 py-2.5', 'text-base placeholder:text-base'),
+        lg: cn('px-3 py-2', 'text-base placeholder:text-base'),
+        xl: cn('px-3 py-2.5', 'text-base placeholder:text-base'),
       },
     },
     defaultVariants: {

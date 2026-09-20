@@ -68,8 +68,8 @@ const inputGroupVariants = cva(
         xs: 'h-7 min-h-7 px-1.5',
         sm: 'h-8 min-h-8 px-3',
         md: 'h-9 min-h-9 px-3',
-        lg: 'h-10 min-h-10 px-4',
-        xl: 'h-11 min-h-11 px-5',
+        lg: 'h-10 min-h-10 px-3',
+        xl: 'h-11 min-h-11 px-3',
       },
     },
     defaultVariants: {

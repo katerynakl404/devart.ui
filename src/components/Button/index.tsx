@@ -128,9 +128,14 @@ const buttonVariants = cva(
         //
         // The padding ladder is the UX audit's (#15, #36) and it is the spec:
         // 12px repeats at sm and md because those are the two sizes the
-        // product actually uses, and only the rare large steps open up. Input,
-        // TextArea and Selector take the identical ladder, so a button and a
-        // field of the same size share one edge.
+        // product actually uses, and only the rare large steps open up.
+        //
+        // A FIELD DOES NOT FOLLOW IT PAST md. Input, InputGroup, Autocomplete
+        // and TextArea hold 12px at lg and xl, so the two share an edge at the
+        // three steps the product actually uses and part company above them:
+        // a button's inset is what makes its label read as a target, while a
+        // field is a place to put text and only reads tighter as its value
+        // starts further from the edge.
         //
         // The glyph holds 16 from sm through lg. 20px at lg made the icon the
         // loudest thing in a 40px control, next to a 16px label; only xl, where
