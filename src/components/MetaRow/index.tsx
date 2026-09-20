@@ -113,9 +113,21 @@ function MetaRow({
               variant="tertiary"
               /* Last in the row and outside `MetaRow.End`: leaving is not one
                  of the actions that act on the selection, it is the way out of
-                 having one. `ms-auto` only when nothing else claimed the
-                 right edge. */
-              className="last:ms-auto"
+                 having one.
+
+                 It claims the right edge only when `MetaRow.End` is not there
+                 to claim it. Two flex items with `margin-inline-start:auto`
+                 do not queue up at the edge — they SPLIT the free space
+                 between them, which parked the Delete button in the middle of
+                 the row with the ✕ out at the end.
+
+                 This was `last:ms-auto`, meant as "only if nothing else took
+                 the edge". It is not that: `:last-child` is true whenever the
+                 ✕ is last in the row, which is always. The condition has to
+                 look at what comes BEFORE it, so it is a sibling selector —
+                 and then the ✕ sits at the row's own gap from the actions it
+                 belongs beside. */
+              className="ms-auto [[data-slot=meta-row-end]+&]:ms-0"
               onClick={onClear}
             >
               <X />

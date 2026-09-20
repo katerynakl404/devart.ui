@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ChangeState } from './Harness';
 import { ChangePage, Code } from './Harness';
 
 const meta = {
@@ -17,7 +16,7 @@ interface Row {
   n: string;
   area: string;
   change: string;
-  state: ChangeState | 'not-visual';
+  /** Which page shows it, or `—` when there is nothing to render. */
   page: string;
 }
 
@@ -27,36 +26,18 @@ const ROWS: Row[] = [
     n: '1',
     area: 'Button, IconButton',
     change: 'destructiveOutline label is red, not neutral',
-    state: 'committed',
     page: '1. Colour and state',
   },
   {
     n: '2',
     area: 'globals.css',
     change: 'dark destructive border re-stepped so hover raises contrast',
-    state: 'committed',
-    page: '1. Colour and state',
-  },
-  {
-    n: '3',
-    area: 'ds-bundle CSS',
-    change:
-      'the dead row hover came from the bundle — the package never shipped the broken mapping',
-    state: 'not-a-library-change',
     page: '1. Colour and state',
   },
   {
     n: '4',
     area: 'Autocomplete',
     change: 'selected and highlighted no longer paint the same',
-    state: 'committed',
-    page: '1. Colour and state',
-  },
-  {
-    n: '5',
-    area: 'Card / outline',
-    change: 'a surface no longer answers hover and press',
-    state: 'committed',
     page: '1. Colour and state',
   },
   {
@@ -64,127 +45,123 @@ const ROWS: Row[] = [
     area: 'new tokens --ink-icon',
     change:
       'the colour of a standalone glyph — absent from the kit, and both values already exist in the ink ladder',
-    state: 'working-tree',
     page: '1. Colour and state',
   },
   {
     n: '7',
     area: 'TableHead',
     change:
-      'sort control gained a press state — the kit has hover only, so this is an addition',
-    state: 'working-tree',
+      'the sort glyph hovers with its label instead of sitting out the interaction; no press state',
     page: '1. Colour and state',
   },
   {
     n: '8',
     area: 'InputGroupAddon',
     change: '[&_svg] → [&>svg] — stops resizing glyphs it does not own',
-    state: 'working-tree',
     page: '2. Size and spacing',
   },
   {
     n: '9',
     area: 'TabsContent',
     change: 'inactive panel no longer returns as an empty box',
-    state: 'committed',
     page: '2. Size and spacing',
   },
   {
     n: '10',
     area: 'InputGroup, TextArea',
     change: 'field label Secondary → Body, so the hint is subordinate',
-    state: 'working-tree',
     page: '2. Size and spacing',
   },
   {
     n: '15',
     area: 'Tooltip',
     change: 'arrow 8×4, putting the visible gap on the 4px scale',
-    state: 'working-tree',
     page: '2. Size and spacing',
   },
   {
     n: '11',
     area: 'SidebarHeader',
     change: 'horizontal inset restored',
-    state: 'working-tree',
     page: '3. The sidebar under two shells',
   },
   {
     n: '12',
     area: 'SidebarHeader',
     change: 'empty:pb-0 tells the two shells apart',
-    state: 'working-tree',
     page: '3. The sidebar under two shells',
   },
   {
     n: '13',
     area: 'SidebarMenuButton',
     change: "tooltips through the package's own Tooltip",
-    state: 'working-tree',
     page: '3. The sidebar under two shells',
   },
   {
     n: '14',
     area: 'SidebarMenuButton',
     change: 'collapsed box fixed — every mark centres at 24',
-    state: 'working-tree',
     page: '3. The sidebar under two shells',
   },
   {
     n: '16',
     area: 'Sidebar.md',
     change: 'collapsing may not remove the only way to expand',
-    state: 'docs-only',
     page: '3. The sidebar under two shells',
   },
   {
     n: '17',
     area: 'PageHeader',
     change: 'new component, plus a badge slot inside the title cluster',
-    state: 'working-tree',
     page: '4. New in the system',
   },
   {
     n: '18',
     area: 'ConnectorLogo',
     change: 'new component — connector marks as data-URIs',
-    state: 'committed',
     page: '4. New in the system',
   },
   {
     n: '19',
     area: 'TextArea',
     change: 'character counter',
-    state: 'committed',
     page: '4. New in the system',
   },
   {
     n: '20',
     area: 'StatusView',
     change: 'EmptyStateIllustration — the standard empty-state artwork',
-    state: 'working-tree',
     page: '4. New in the system',
   },
   {
     n: 'Docs',
-    area: 'Card.md, Table.md, Switch.md, InputGroup.md',
-    change: 'recipes every page was otherwise inventing',
-    state: 'docs-only',
+    area: 'Table.md',
+    change:
+      'the empty state lives inside the table, and always carries an action',
+    page: '5. Documented recipes',
+  },
+  {
+    n: 'Docs',
+    area: 'Switch.md',
+    change: 'sm in a table or dense row, default in forms and settings',
+    page: '5. Documented recipes',
+  },
+  {
+    n: 'Docs',
+    area: 'InputGroup.md',
+    change:
+      'the trailing action is InputGroupAction, not an IconButton — recipe rewritten',
     page: '5. Documented recipes',
   },
   {
     n: '21',
     area: 'gen-classlist.mjs',
     change: 'empty:* enumerated, or the rule in §12 is never compiled',
-    state: 'not-visual',
     page: '—',
   },
   {
     n: '22',
     area: 'pnpm bundle, check-bundle-css',
     change: 'one command, and a gate for silent CSS gaps',
-    state: 'not-visual',
     page: '—',
   },
   // Not in DESIGN-SYSTEM-CHANGES.md: found by reading §11 against a ruler in
@@ -194,28 +171,38 @@ const ROWS: Row[] = [
     area: 'SidebarContent',
     change:
       'the nav column is missing production’s px-2 — icons on 8 instead of 16, row fill with no gutter',
-    state: 'proposed',
     page: '3. The sidebar under two shells',
   },
+  // Not numbered in DESIGN-SYSTEM-CHANGES.md: the interaction-state work
+  // carries its own changeset, `interaction-states-relative-overlays.md`.
+  {
+    n: 'Tokens',
+    area: '--state-*, --tbl-row-*',
+    change:
+      'interaction states became relative overlays — one base per theme, four strengths, so states composite instead of replacing',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: '--brand-300',
+    change: 'retuned into the interaction wash — #5DA0A8 → #46A6B9',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: '--badge-border',
+    change:
+      'every badge gained a hairline mixed from currentColor, so a Secondary chip does not dissolve into a hovered row',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: 'destructiveTertiary',
+    change:
+      'light hover/press re-stepped to hold parity with the neutral ladder',
+    page: '6. Colour tokens',
+  },
 ];
-
-const STATE_TEXT: Record<Row['state'], string> = {
-  'working-tree': 'Working tree',
-  committed: 'Committed',
-  'docs-only': 'Docs only',
-  'not-visual': 'Not visual',
-  proposed: 'Proposed',
-  'not-a-library-change': 'Not ours',
-};
-
-const STATE_CLASS: Record<Row['state'], string> = {
-  'working-tree': 'bg-fb-attention/15 text-ink-body',
-  committed: 'bg-fb-green/15 text-ink-body',
-  'docs-only': 'bg-surface-chips text-ink-secondary',
-  'not-visual': 'bg-surface-card2 text-ink-inactive',
-  proposed: 'bg-brand-primary/10 text-ink-body',
-  'not-a-library-change': 'bg-fb-red/10 text-ink-body',
-};
 
 export const Overview: Story = {
   name: 'Overview',
@@ -240,7 +227,6 @@ export const Overview: Story = {
               <th className="px-3 py-2 font-medium">§</th>
               <th className="px-3 py-2 font-medium">Area</th>
               <th className="px-3 py-2 font-medium">Change</th>
-              <th className="px-3 py-2 font-medium">State</th>
               <th className="px-3 py-2 font-medium">Page</th>
             </tr>
           </thead>
@@ -257,13 +243,6 @@ export const Overview: Story = {
                   {row.area}
                 </td>
                 <td className="px-3 py-2 text-ink-body">{row.change}</td>
-                <td className="px-3 py-2">
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-xxs ${STATE_CLASS[row.state]}`}
-                  >
-                    {STATE_TEXT[row.state]}
-                  </span>
-                </td>
                 <td className="px-3 py-2 text-ink-secondary text-xs">
                   {row.page}
                 </td>

@@ -113,7 +113,6 @@ export const ColourAndState: Story = {
           'src/components/IconButton/index.tsx',
         ]}
         n={1}
-        state="committed"
         title="destructiveOutline — a neutral label under a red border"
         why={
           <>
@@ -157,7 +156,6 @@ export const ColourAndState: Story = {
           </>
         }
         n={2}
-        state="committed"
         title="Dark destructive border — hover made the control less visible"
         why={
           <>
@@ -210,7 +208,6 @@ export const ColourAndState: Story = {
         files={['src/components/Autocomplete/OptionItem.tsx']}
         footnote="Also recorded as #43 in the Insightis UX audit."
         n={4}
-        state="committed"
         title="Autocomplete — selected and highlighted painted the same"
         why={
           <>
@@ -274,7 +271,6 @@ export const ColourAndState: Story = {
           </>
         }
         n={6}
-        state="working-tree"
         title="No token for a standalone icon — new --ink-icon / --ink-icon-hover"
         why={
           <>
@@ -340,7 +336,6 @@ export const ColourAndState: Story = {
           </>
         }
         n={7}
-        state="working-tree"
         title="The sort glyph did not hover with its label"
         why="Hover moved only the words to ink-body while the chevrons stayed inactive, so a header read as two controls — one that answers the pointer and one that ignores it."
       />

@@ -114,24 +114,29 @@ function TableHead({
         // Same 10px/16px padding as TableCell, deliberately duplicated rather
         // than shortened: a header inset that differs from its column's body
         // inset is the single most visible table defect there is.
-        'px-4 py-2.5 align-middle',
-        // 36px, fixed — the header's height is the component's, never a
-        // consequence of what a column happens to hold.
+        // 36px, fixed, and the vertical inset comes FROM that height rather
+        // than from padding. Measured: a header row was 36.5px in a table with
+        // no selection column and 38.5px in one with it, because an 18px
+        // checkbox is taller than the 16px line the labels sit on and padding
+        // adds to whatever is tallest. Two tables on the same screen, two
+        // header heights, for a reason that has nothing to do with the header.
         //
-        // Without it the row measured itself from its contents, and a sortable
-        // head renders an `inline-flex` button where a plain one renders a
-        // text node. An inline-level box sits on the baseline, so the line box
-        // around it reserves descender space that bare text does not use: the
-        // same header was ~4px taller with sorting than without. Tables that
-        // turn sorting off when there is nothing to sort — correctly, a sort
-        // control that cannot reorder anything is a control that lies — got a
-        // header that changed height the moment a search stopped matching.
+        // `h-9` alone did not fix it — on a table cell `height` is a minimum,
+        // so 20px of padding around an 18px control still won. The padding has
+        // to yield: at `py-0` the cell is exactly 36px and `align-middle`
+        // centres whatever is in it, which puts a 16px label at the same 10px
+        // from the top it had before. The label does not move; only the extra
+        // 2px under a checkbox goes.
         //
-        // 36px is what the non-sortable header already was, and what the kit's
-        // `table.tbl th` computes to (.625rem padding + a 16px line). Safe as
-        // a fixed height because the header never wraps — `whitespace-nowrap`
-        // is right below.
-        'h-9',
+        // 36px is also what the kit's `table.tbl th` computes to (.625rem of
+        // padding around a 16px line), so this is the height the header always
+        // meant to be. Safe as a fixed height because a header never wraps —
+        // `whitespace-nowrap` is right below — and nothing in one is taller
+        // than the 18px control that caused this.
+        //
+        // `TableCell` keeps its padding and still grows with its content (§51):
+        // a body row has to be able to hold two lines, a header does not.
+        'h-9 px-4 py-0 align-middle',
         'whitespace-nowrap text-left',
         width === 'control' && 'w-12',
         width === 'actions' && 'w-28',

@@ -80,16 +80,16 @@ export const NewInTheSystem: Story = {
         footnote={
           <>
             The badge renders right after the <Code>h1</Code> at the same{' '}
-            <Code>gap-2</Code> the back arrow uses. Found while building this
-            page: the example in DESIGN-SYSTEM-CHANGES.md passes{' '}
-            <Code>size="2xs"</Code> to ConnectorLogo, whose scale is{' '}
-            <Code>xs | sm | md | lg</Code> — the doc's snippet does not compile.
-            The mark in both panels is the monogram, because DB2 is not in the
-            23-logo pack either; §18 is where that fallback is the subject.
+            <Code>gap-2</Code> the back arrow uses. The mark in both panels is
+            the monogram: DB2 is not in the 23-logo pack, and §18 is where that
+            fallback is the subject.{' '}
+            <strong className="font-medium text-ink-body">To fix:</strong>{' '}
+            DESIGN-SYSTEM-CHANGES.md §17 passes <Code>size="2xs"</Code> to
+            ConnectorLogo, whose scale is <Code>xs | sm | md | lg</Code> — that
+            snippet does not compile.
           </>
         }
         n={17}
-        state="working-tree"
         title="PageHeader — a badge that belongs to the title"
         why="A badge that names what a form connects to fits neither existing slot: in actions it lands at the right edge and reads as one more control next to Save."
       />
@@ -144,7 +144,6 @@ export const NewInTheSystem: Story = {
           </>
         }
         n={18}
-        state="committed"
         title="ConnectorLogo"
         why="There was no component: every page embedded connector marks its own way, and a page never knew which slug the asset folder used."
       />
@@ -184,7 +183,6 @@ export const NewInTheSystem: Story = {
           </>
         }
         n={19}
-        state="committed"
         title="TextArea character counter"
         why="There was none, so pages wrote it by hand — differently each time."
       />
@@ -225,7 +223,6 @@ export const NewInTheSystem: Story = {
           </>
         }
         n={20}
-        state="working-tree"
         title="StatusView — EmptyStateIllustration"
         why="At page scale a lucide glyph in a halo reads as a notification icon rather than an empty region."
       />

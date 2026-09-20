@@ -116,7 +116,6 @@ export const ColourTokens: Story = {
           </>
         }
         n="Tokens · 1"
-        state="working-tree"
         title="Interaction states became relative overlays"
         why="Hovering a control on a selected row painted the colour already under it: both tokens resolved to #F1F5F9 on light, #21212C on dark."
       />
@@ -178,7 +177,6 @@ export const ColourTokens: Story = {
         files={['globals.css']}
         footnote="Rows are lighter than controls, or a list turns into stripes. Row-pressed and control-hover share a strength: hovering a control on a selected row lands at 8% over 8%. Δ figures measured over the card."
         n="Tokens · 2"
-        state="working-tree"
         title="The state ladder, painted"
         why="Four strengths — 4 / 8 / 8 / 12 — shared by both themes."
       />
@@ -220,7 +218,6 @@ export const ColourTokens: Story = {
         files={['globals.css']}
         footnote="It had no consumers, so it could be retuned rather than added to. At 29% saturation the wash read dirty; the brand role itself washes green."
         n="Tokens · 3"
-        state="working-tree"
         title="--brand-300 retuned into the wash"
         why="The overlay needs a base whose hue survives dilution to 4–12%."
       />
@@ -247,7 +244,6 @@ export const ColourTokens: Story = {
         files={['globals.css']}
         footnote="Light only — dark was already in parity at 20 / 30. The outline sibling aliases these, so it moves with them."
         n="Tokens · 4"
-        state="working-tree"
         title="Destructive tertiary re-stepped to match the neutral ladder"
         why="When the neutral steps moved to overlays, destructive stayed put and started reading heavier than the neutral button beside it."
       />
@@ -294,7 +290,6 @@ export const ColourTokens: Story = {
           </>
         }
         n="Tokens · 5"
-        state="working-tree"
         title="Every badge gained a hairline"
         why="A Secondary badge is filled with the same token a hovered row lands on, so without an edge it dissolves into the row."
       />

@@ -205,15 +205,14 @@ export const SizeAndSpacing: Story = {
             PasswordInput carried three <Code>!size-4</Code> and a comment
             explaining why; all three are gone, because the workaround existed
             only because of this rule. The addon now sizes its own decorative
-            glyph, and a nested control sizes its own. Found while building this
-            panel: the diff quoted in DESIGN-SYSTEM-CHANGES.md keeps{' '}
-            <Code>sm</Code> at <Code>size-5</Code>, while the source has it at{' '}
-            <Code>size-4</Code> — the glyph now tracks the field (28/32 → 16px,
-            36/40/44 → 20px). The document is behind the code on that line.
+            glyph, and a nested control sizes its own.{' '}
+            <strong className="font-medium text-ink-body">To fix:</strong>{' '}
+            DESIGN-SYSTEM-CHANGES.md §8 still quotes <Code>sm</Code> at{' '}
+            <Code>size-5</Code>, while the source has <Code>size-4</Code> — the
+            glyph tracks the field (28/32 → 16px, 36/40/44 → 20px, 44 → 24px).
           </>
         }
         n={8}
-        state="working-tree"
         title="InputGroupAddon resized glyphs it did not own"
         why={
           <>
@@ -267,7 +266,6 @@ export const SizeAndSpacing: Story = {
         }
         files={['src/components/Tabs/TabsContent.tsx']}
         n={9}
-        state="committed"
         title="TabsContent — the inactive panel came back as an empty box"
         why={
           <>
@@ -308,7 +306,6 @@ export const SizeAndSpacing: Story = {
           </>
         }
         n={10}
-        state="working-tree"
         title="A field label as loud as the hint beneath it"
         why="Label and helper both resolved to --ink-secondary; only weight separated them. A hint as loud as the label it belongs to stops being subordinate to it."
       />
@@ -402,7 +399,6 @@ export const SizeAndSpacing: Story = {
           </>
         }
         n={15}
-        state="working-tree"
         title="Tooltip — the arrow put the gap off the 4px scale"
         why="The arrow is now 8×4, putting the tip exactly 4px from the trigger, so all three numbers sit on the grid."
       />

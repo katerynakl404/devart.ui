@@ -124,9 +124,9 @@ the groups are the reading order.
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
 | Fixed | `Card` / `ghost` | `bg-bg` named a token this branch deleted — now `bg-transparent`, the intended surface |
 | New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§63) |
-| Size | `TableHead` | `width="fit"` — a column sized by its content, replacing five hand-set widths (§64) |
+| Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§64) |
 | Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§65) |
-| Size | `TableHead` | `h-9` — the header stopped changing height when sorting turned off (§67) |
+| Size | `TableHead` | fixed 36px — a selection checkbox no longer makes the header 2px taller than the table next to it (§67) |
 | Size | `PageHeader` | the back control's hover pill ran under the title and overhung the page's left rail (§68) |
 | Size | `TableRow` | `nested` — 8px for a child row, lifted out of one table's local override (§66) |
 
@@ -2168,34 +2168,65 @@ not one of those actions.
 **Both products.** New component, no call sites. Insightis has the same row in
 CSS; this is where it becomes a part.
 
-## 64. `TableHead` — a column that reserves width cannot give it back
+## 64. `TableHead` — a column width is a share, not a size
 
 `src/components/Table/TableHead.tsx`
 
 ```ts
-width?: 'auto' | 'fit'   // default 'auto'
+width?: 'auto' | 'control' | 'actions' | 'sm' | 'md' | 'lg'   // default 'auto'
 ```
+
+| | |
+|---|---|
+| `auto` | no width — takes whatever is left. The reading column. |
+| `control` | 48px. A checkbox or a single toggle. |
+| `actions` | 112px. The row's trailing cluster, matching `TableActionsCell`. |
+| `sm` | 12% — a toggle with its label, a short flag. |
+| `md` | 16% — a connector mark and a word, a status badge, a timestamp. |
+| `lg` | 20% — a count with a disclosure, or text with a control beside it. |
 
 The connections table set five column widths by hand — `w-12`, `w-48`,
 `w-44`, `w-52`, `w-28` — because the component had nothing to say about
-width, so the page said it. Each of those is a **reservation**: the Data source
-column held 192px for a connector mark and one word, Last check held 208px for
-a badge, and the Name column — the only one where truncation costs the reader
-anything — lived on what was left over. None of them could hand the difference
-back when the window narrowed.
+width, so the page said it. Each of those is a **reservation**: Data source held
+192px for a connector mark and one word, Last check held 208px for a badge, and
+the Name column — the only one where truncation costs the reader anything —
+lived on what was left over. None of them narrowed when the window did.
 
-`fit` is `w-0`: the column asks for nothing and the table's auto layout
-answers with its content width, so the slack goes to the `auto` columns where
-the reading is. Asking for zero is how a table column says "size me by what is
-in me"; it leans on the `whitespace-nowrap` the header already had.
+`sm`/`md`/`lg` are **shares of the table, not sizes**, and that distinction
+is the whole reason this ladder is allowed to exist where a pixel ladder is
+not: 16% narrows when the table narrows, `w-48` does not. `control` and
+`actions` stay in pixels because a checkbox and a row's action cluster each
+have exactly one correct size and gain nothing from more.
 
-There is deliberately **no ladder of fixed widths**. `sm`/`md`/`lg` would
-be the same reservation under nicer names, and the next table would still reach
-for `className="w-52"` the moment its content did not match the rung.
+### The version of this that was wrong, and what it taught
 
-One thing this only half-solves: a `fit` head is overruled by a body cell that
-sets a width of its own, so the page's `TableActionsCell className="w-28"`
-had to go with it. Worth stating in `Table.md` rather than discovering twice.
+This first shipped as `width: 'auto' | 'fit'`, where `fit` was `w-0` — "ask
+for nothing and the table's auto layout answers with your content width". The
+argument was right; the mechanism was not. Measured on the page:
+
+- Tables that load, filter or paginate **must** be `layout="fixed"` — it is
+  the standing rule in `Table.md`, and it exists because under `auto` the
+  columns visibly jump between the empty state, the loading `colSpan` row and
+  every page of data. The connections table filters, so it is `fixed`.
+- Under `fixed`, the specified widths **are** the algorithm. Content sizes
+  nothing, so `w-0` means zero: four columns collapsed to their 32px of
+  padding and the Name column took 975 of 1150px.
+- `min-width` on a `th` is **ignored outright** under `fixed` — verified at
+  three table widths, where columns with `width:5%; min-width:144px` rendered
+  46px. So "a percentage with a pixel floor under it" is a floor that never
+  holds, and the floor has to be the scroll container's own `min-width`
+  instead: one number, in one place, from which every percentage column
+  inherits a sensible minimum.
+
+A **share** is what the original argument was reaching for. A share is not a
+reservation; it shrinks. The percentages are set from measured content at the
+narrowest the table is allowed to be — a 58rem container gives 12% ≈ 111px,
+16% ≈ 148px, 20% ≈ 186px, against columns whose widest content measured 102,
+142 and 157px.
+
+One thing to know: a `th`'s width is overruled by a body cell that sets one of
+its own, so the page's `TableActionsCell className="w-28"` had to go with the
+hand-set heads. Stated in `Table.md` rather than discovered twice.
 
 **Both products.** Additive; every existing column keeps `auto`, which is what
 it had.
@@ -2272,32 +2303,42 @@ recorded in the prod migration report
 (`Insightis/reports/2026-09-19-prod-interaction-states-migration.md`) — zero
 visual delta, since the only rows carrying it today already had the 8px.
 
-## 67. `TableHead` — the header measured itself by what was in it
+## 67. `TableHead` — a checkbox made the header 2px taller
 
 `src/components/Table/TableHead.tsx`
 
 ```diff
-+ 'h-9',   // 36px, fixed
+- 'px-4 py-2.5 align-middle',
++ 'h-9 px-4 py-0 align-middle',
 ```
 
-The header row changed height when a search stopped matching.
+Measured across the three concepts on one screen: the header row is **36.5px**
+in a table with no selection column and **38.5px** in one with it. The
+selection checkbox is an 18px control, the labels sit on a 16px line, and
+padding adds to whichever is taller — so two tables in the same product have
+two header heights for a reason that has nothing to do with the header.
 
-A sortable head renders an `inline-flex` button; a plain one renders a text
-node. An inline-level box sits on the **baseline**, so the line box around it
-reserves descender space that bare text never uses — the same header came out
-about 4px taller with sorting than without. Tables that turn sorting off when
-there is nothing to sort (correctly: a sort control that cannot reorder
-anything is a control that lies) therefore resized their own header the moment
-the table emptied, and the whole list below it moved.
+**`h-9` alone does not fix it.** On a table cell `height` behaves as a
+minimum, so 20px of padding around an 18px control still wins. The padding has
+to yield: at `py-0` the cell is exactly 36px and `align-middle` centres
+whatever is in it, which leaves a 16px label at the same 10px from the top it
+had before. The label does not move; the extra 2px under a checkbox goes.
 
-36px is not a new number: it is what the non-sortable header already was, and
-what the kit's `table.tbl th` computes to — `.625rem` of padding around a
-16px line. A fixed height is safe here and only here, because a header never
-wraps: `whitespace-nowrap` is two lines below it. `TableCell` keeps taking
-its height from its content, which is §51.
+36px is also what the kit's `table.tbl th` computes to — `.625rem` of padding
+around a 16px line — so this is the height the header always meant to be. A
+fixed height is safe here and **only** here: a header never wraps
+(`whitespace-nowrap` is two lines below) and nothing in one is taller than the
+control that caused this. `TableCell` keeps its padding and still grows with
+its content, which is §51 — a body row has to be able to hold two lines, a
+header does not.
 
-**Both products.** The taller, sortable header is the one that changes — by
-~4px, to the height it has always had without sorting.
+> An earlier draft of this section blamed the sortable head's `inline-flex`
+> button and claimed the header shrank when a search stopped matching. Both
+> were wrong, and measuring said so: filled and empty both read 38.5px, because
+> the checkbox sets the floor either way. The fix that shipped is the one the
+> measurement pointed at, not the one the theory did.
+
+**Both products.** Only headers that carry a control change, and only by 2px.
 
 ## 68. `PageHeader` — the back control's pill overhung the page
 
@@ -2759,6 +2800,7 @@ gate that should have caught this and is worth re-running against a fresh `dist`
 | **`Card variant="ghost"`** | Closed. The variant stays — it is the dashed "browse more" tile, as `Card.stories.tsx` always said; the surface is `bg-transparent` and is now written that way; `DropZone` is a separate component, not a rename of this one. The docs fix has landed: `Card.md` now describes the tile. |
 | **Row density** | Still ~44px — web density. A desktop app runs 32–36px and fits half again as many rows. A system-level decision, not a page one. |
 | **`TextArea` at the limit** | The counter is always neutral. Whether it should signal at the boundary — and whether that is an error or only a warning — is undecided. |
+| **A subtree cannot opt back into light** | `globals.css` defines the light tokens on `:root` alone and the dark ones under `.dark`, so a subtree can be made dark inside a light app — a class is all the cascade needs — but **not the reverse**. Anything that wants to read as separate from the app (the prototype's review bar, a preview of light chrome inside a dark tool, an embedded document) therefore works in one direction only. The fix is one line — mirror the light block onto `:root, .light` — but it doubles a token block, so it is a decision, not a tidy-up. Referenced from `connections/page.jsx` and `workspaces/page.jsx`. |
 
 ## Raised by the kit ↔ Storybook audit
 

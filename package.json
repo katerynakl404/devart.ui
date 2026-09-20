@@ -33,6 +33,7 @@
     "format-and-lint:fix": "biome check . --write",
     "changeset": "changeset",
     "check-changeset": "node scripts/check-changeset.mjs",
+    "check-stories": "node scripts/check-story-coverage.mjs",
     "smoke": "node scripts/smoke/verify-consumer.mjs",
     "version-packages": "changeset version",
     "storybook": "storybook dev -p 6006",

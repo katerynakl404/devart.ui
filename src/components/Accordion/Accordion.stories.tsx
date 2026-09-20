@@ -96,32 +96,3 @@ export const Disabled: Story = {
     </Accordion>
   ),
 };
-
-/**
- * Dark theme — every state the component ships, on one dark surface. Tokens
- * are pure CSS cascade, so a scoped `.dark` re-themes the whole subtree with
- * no provider and no props.
- */
-export const DarkTheme = {
-  render: (args, ctx) => {
-    const cells: [string, Story][] = [
-      ['Single Collapsible', SingleCollapsible],
-      ['Multiple', Multiple],
-      ['Disabled', Disabled],
-    ];
-    return (
-      <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
-        {cells.map(([name, story]) => (
-          <section className="flex flex-col gap-2" key={name}>
-            <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
-              {name}
-            </span>
-            {story.render
-              ? story.render({ ...args, ...story.args } as never, ctx)
-              : null}
-          </section>
-        ))}
-      </div>
-    );
-  },
-} as Story;

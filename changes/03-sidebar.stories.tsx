@@ -167,9 +167,12 @@ function Shell({
           <Sidebar collapsible="icon">
             {children}
             {footer ? (
-              // Production overrides the component's own `p-2` with
-              // `px-2.5 pt-2 pb-2.5` — 10 at the sides and the bottom, 8 top.
-              <SidebarFooter className="px-2.5 pt-2 pb-2.5">
+              // Production's `px-2.5 pt-2 pb-2.5` — 10 at the sides and the
+              // bottom, 8 on top — is an expanded-state number. In the 48px
+              // collapsed rail it leaves 28px for a row the component forces to
+              // 32, and the avatar is cut; collapsed, the footer falls back to
+              // the component's own `p-2`: 8 + 32 + 8 = 48.
+              <SidebarFooter className="px-2.5 pt-2 pb-2.5 group-data-[collapsible=icon]:px-2">
                 {footerRow === 'menu-button' ? (
                   <AccountMenuRow labelClassName={accountClassName} />
                 ) : (
@@ -276,8 +279,16 @@ function AccountMenuRow({ labelClassName }: { labelClassName?: string }) {
       <SidebarMenuItem>
         <SidebarMenuButton className={labelClassName} size="lg">
           <span className="size-7 shrink-0 rounded-full bg-brand-primary/25" />
-          <span className="truncate">katerynak</span>
-          <ChevronsUpDown className="ms-auto size-4 shrink-0" />
+          {/* The component hides only `> span:last-child`, and here the last
+              child is the chevron — deliberately, so an avatar-led row is not
+              blanked. The consequence is that this row must hide its own label
+              and trailing control, or the collapsed 32px box holds
+              avatar + text + chevron and `justify-center` pushes the avatar out
+              under `overflow-hidden`. */}
+          <span className="truncate group-data-[collapsible=icon]:hidden">
+            katerynak
+          </span>
+          <ChevronsUpDown className="ms-auto size-4 shrink-0 group-data-[collapsible=icon]:hidden" />
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
@@ -326,21 +337,18 @@ export const SidebarUnderTwoShells: Story = {
           <>
             Why this is a library defect and not a page defect: the component
             became unsafe by default. Nothing errors — a consumer who has not
-            read the docstring gets a broken rail.{' '}
+            read the docstring gets a broken rail. The hairlines are x = 8
+            (amber) and x = 16 (teal); 16 is the line production aligns to.{' '}
             <strong className="font-medium text-ink-body">
-              Read the After panel against the hairlines before accepting it:
+              Two things still to settle:
             </strong>{' '}
-            the mark now sits on 16, and the navigation icons below it sit on 8.
-            16 is the right line — measured on the live Insightis rail — but the
-            navigation does not reach it, so this case is half a fix until §23
-            lands. And the inset must live in exactly one slot: production's
-            brand row owns <Code>pl-4</Code> with the header on <Code>p-0</Code>
-            , so a consumer composed that way inherits 32 from this change
-            rather than 16.
+            the navigation itself sits on 8 until §23 lands, and the inset must
+            live in exactly one slot — production's brand row owns{' '}
+            <Code>pl-4</Code> with the header on <Code>p-0</Code>, so a consumer
+            composed that way inherits 32 from this change rather than 16.
           </>
         }
         n={11}
-        state="working-tree"
         title="SidebarHeader lost its horizontal inset"
         why="The inset was removed on the theory that rows inside would carry their own. Pages lay that row out by hand, so the inset simply stopped existing."
       />
@@ -412,7 +420,6 @@ export const SidebarUnderTwoShells: Story = {
           </>
         }
         n={12}
-        state="working-tree"
         title="Two shells from the same elements"
         why="One library serves a web app, where the product mark belongs in the rail because a browser tab is no place for it, and a desktop app that owns a window bar and puts the mark and the collapse control there. The shapes differ by composition and by one self-deciding number, not by a variant."
       />
@@ -485,7 +492,6 @@ export const SidebarUnderTwoShells: Story = {
           </>
         }
         n={13}
-        state="working-tree"
         title="SidebarMenuButton rendered tooltips with no styling at all"
         why="The component imported Tooltip from @radix-ui/react-tooltip — the raw primitives — instead of from the package's own Tooltip."
       />
@@ -531,18 +537,13 @@ export const SidebarUnderTwoShells: Story = {
             32px box and centring was meaningless. The label is hidden through{' '}
             <Code>&gt; span:last-child</Code> — the selector chosen for what it
             does not match, so an avatar-led footer row is left alone rather
-            than blanked.{' '}
-            <strong className="font-medium text-ink-body">
-              One number in the write-up does not hold here:
-            </strong>{' '}
-            DESIGN-SYSTEM-CHANGES.md says every mark centres at 24. Measured in
-            this panel it is 16 — the 32px button is pinned to the left of a
-            57px rail, because the column has no inset of its own. It becomes 24
-            with §23 and not before.
+            than blanked. Every mark centres at 24 — 8 of column inset plus half
+            of the 32px box — which holds only with §23's inset and the 48px
+            collapsed rail; at the old 57px width the same button sat 8 from the
+            left and 16 from the right.
           </>
         }
         n={14}
-        state="working-tree"
         title="SidebarMenuButton — a 32px box its own padding did not fit"
         why="Collapsed, the button is forced to 32×32 while the consumer keeps px-2, leaving 16px of usable width."
       />
@@ -693,17 +694,14 @@ export const SidebarUnderTwoShells: Story = {
             them may. <Code>.design-sync/sb-reference</Code> shows 8 for both
             and no gutter; measured against production, that snapshot is stale.{' '}
             <strong className="font-medium text-ink-body">
-              Why the catalog never showed this:
+              Also to fix — the catalog hides this:
             </strong>{' '}
             <Code>Components/Sidebar → RowStates</Code> renders its rows inside
             a hand-built box with <Code>p-2</Code>, and each row adds{' '}
-            <Code>px-2</Code> of its own — measured there, the fill starts at 8
-            and the icon at 16, which is production's geometry supplied by the
-            story rather than by the library. The states themselves are the
-            component's own <Code>hover:bg-state-hover</Code> in both places;
-            what the story adds is the gutter. A story that supplies what the
-            component is missing certifies a component that is still wrong in a
-            real shell — which is the one thing this section exists to catch.
+            <Code>px-2</Code> of its own, so the fill measures 8 from the edge
+            and the icon 16 — production's geometry supplied by the story rather
+            than by the library. That story should drop its own padding, or it
+            will keep certifying a rail that is wrong in a real shell.
           </>
         }
         n={23}

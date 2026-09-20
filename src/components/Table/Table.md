@@ -29,10 +29,10 @@ metrics is cards.
 <Table layout="fixed">
   <TableHeader>
     <TableRow>
-      <TableHead className="w-1/2">Source</TableHead>
-      <TableHead className="w-32">Status</TableHead>
-      <TableHead className="w-32 text-right">Rows</TableHead>
-      <TableHead className="w-12"><span className="sr-only">Actions</span></TableHead>
+      <TableHead>Source</TableHead>
+      <TableHead width="md">Status</TableHead>
+      <TableHead width="md" className="text-right">Rows</TableHead>
+      <TableHead width="actions"><span className="sr-only">Actions</span></TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
@@ -62,15 +62,39 @@ table defect there is. Row height comes from that padding; do not add `h-*`.
 **Use `layout="fixed"` for anything that loads, paginates or filters**, and give
 each `TableHead` in the first row a width. The default `auto` layout re-measures
 every column from its content, so the columns visibly jump between the empty
-state, the loading `colSpan` row, and each page of data. Give one column the
-slack (`w-1/2`, or no width) and pin the rest. Cells truncate with an ellipsis
-under `fixed`, so a long value can never blow its column open.
+state, the loading `colSpan` row, and each page of data. Cells truncate with an
+ellipsis under `fixed`, so a long value can never blow its column open.
+
+**Widths come from `TableHead`'s `width` prop, never a `w-*` class.**
+
+```jsx
+<TableHead width="control"><Checkbox /></TableHead>
+<TableHead>Name</TableHead>              {/* auto — takes the slack */}
+<TableHead width="md">Data source</TableHead>
+<TableHead width="lg">Workspaces</TableHead>
+<TableHead width="actions" className="text-right">Actions</TableHead>
+```
+
+`sm` (12%), `md` (16%) and `lg` (20%) are **shares of the table, not sizes**,
+and that is the point: under `fixed` a specified width is the entire algorithm,
+content sizes nothing, and **`min-width` on a `th` is ignored** — so a pixel
+width can never narrow with the window and a pixel floor never holds. A
+percentage does both. `control` (48px) and `actions` (112px) stay in pixels
+because a checkbox and a row's action cluster each have one correct size.
+
+Give exactly one column `auto`: the one holding the reading, where truncation
+costs the reader something. The **floor** is the scroll container's own
+`min-width` — one number, from which every percentage column inherits a
+sensible minimum, instead of one number per column.
+
+A `th`'s width is overruled by a body cell that sets one of its own, so do not
+put `w-*` on a `TableCell` or `TableActionsCell` either.
 
 **Row actions belong in `TableActionsCell`**, never a hand-rolled `TableCell`.
 It is a fixed 48px, right-aligned, and fades its buttons in on row hover or
 keyboard focus *without* reflowing, because the width is reserved either way.
 Mounting actions on hover instead makes the table jump under the pointer. Pair
-it with a `<TableHead className="w-12">` carrying an `sr-only` label. Size row
+it with a `<TableHead width="actions">` carrying an `sr-only` label. Size row
 actions `2xs` — a 24px box around a 14px glyph, one step below the shared
 Button/IconButton ladder. `reveal={false}` keeps them visible at rest.
 
@@ -126,7 +150,7 @@ the same shape, and the header checkbox is where it usually goes wrong:
 const allSelected = selected.length === rows.length;
 const someSelected = selected.length > 0 && !allSelected;
 
-<TableHead className="w-12">
+<TableHead width="control">
   <Checkbox
     aria-label="Select all invoices"
     checked={allSelected ? true : someSelected ? 'indeterminate' : false}

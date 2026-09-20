@@ -24,12 +24,20 @@ content below scrolls; see the Sidebar doc for the surrounding shape.
 - The title truncates, so a long name shortens instead of pushing the actions
   off the row.
 
-## Two details that are deliberate
+## Three details that are deliberate
 
-The back arrow is a **20px glyph**, not the 16px used inside dense controls: it
-sits beside a `title24`, and a 16px arrow reads as a stray icon rather than the
-page's own control.
+The back arrow is a **24px glyph** in a 36px box, not the 16px used inside dense
+controls: it sits beside a `title24`, and a small arrow reads as a stray icon
+rather than the page's own control.
 
-The arrow is **8px from the title** while everything else in the row is 12px
-apart. The arrow belongs to the title rather than being a sibling of it, and the
-tighter gap is what says so.
+Its **box sits 6px from the title** (the glyph, 12px) while everything else in
+the row is 12px apart. The arrow belongs to the title rather than being a
+sibling of it, and the tighter gap is what says so.
+
+**The box starts on the header's own inset** — it is not pulled outward to put
+the *glyph* on that line. It was, once, on the principle that a tertiary control
+is measured by its glyph rather than by the box its hover state happens to
+paint. That holds for a control with no surface; this one has one, and a painted
+pill starting 6px left of the search field and the table below it broke the
+page's left edge every time the pointer crossed the arrow. **Align by the glyph
+only while there is no box; align by the box as soon as the box can be seen.**

@@ -26,7 +26,11 @@ import { ConnectorLogo } from '../ConnectorLogo';
 const dataSourceCardVariants = cva(
   cn(
     'group/ds-card relative flex flex-col items-center justify-center text-center',
-    'h-32 gap-2 p-4',
+    // `w-full`, because a tile is a grid item and a bare `button` is
+    // width-auto: outside a grid it shrinks to its own label, and the revealed
+    // Connect action — which is wider than a connector name — then overflows
+    // the tile it is supposed to sit inside.
+    'h-32 w-full gap-2 p-4',
     'rounded-lg border border-stroke bg-surface-card',
     'shadow-rest',
     'transition-[box-shadow,border-color,transform] duration-base',
@@ -120,6 +124,11 @@ function DataSourceCard({
         aria-hidden
         className={cn(
           'absolute inset-0 flex items-center justify-center rounded-[inherit]',
+          // The action keeps the tile's own 16px gutter. Without it the button
+          // reaches the tile's edges on the narrow steps of the catalog grid
+          // (`sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6`), and a control
+          // touching the border of the surface it sits on reads as clipped.
+          'px-4',
           'bg-ds-card-scrim',
           'pointer-events-none opacity-0',
           'transition-opacity duration-slow',
@@ -149,7 +158,9 @@ function DataSourceCard({
 /** The "popular" flame, inlined so the tile carries no icon dependency. */
 function FlameMark() {
   return (
-    <svg fill="currentColor" viewBox="0 0 24 24">
+    // The wrapper already carries `aria-hidden`; repeating it here is what
+    // tells the linter the mark is decorative rather than an unlabelled image.
+    <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
       <path d="M12 2c.7 3.2-1.2 4.6-2.5 6C8 9.6 7 11 7 13.3 7 16.9 9.9 20 13 20s5-2.6 5-6c0-2.4-1.3-4.3-2.6-5.7-.5 1-1.2 1.6-1.9 1.9.4-2.9-.6-6-1.5-8.2Z" />
     </svg>
   );

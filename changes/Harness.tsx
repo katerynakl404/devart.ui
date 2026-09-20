@@ -2,35 +2,26 @@ import type { ReactNode } from 'react';
 import { cn } from '../src/lib/utils';
 
 /**
- * Where a change currently lives, so a reviewer knows what they are looking at.
+ * What kind of thing the case is — marked only when it changes how the panels
+ * should be read. Git state is deliberately not one of these: whether a file is
+ * committed is a question the client answers, and putting it on a design review
+ * only invites the reader to think about branches instead of pixels.
  *
- * - `working-tree` — edited but not committed; the Storybook preview is the
- *   only place it can be seen at all.
- * - `committed`    — already in this branch's history, not yet in the corporate
- *   repository or in either product's `ds-bundle` copy.
- * - `docs-only`    — a recipe written down, no code change.
- * - `proposed`     — not made anywhere yet. The After half is the proposal,
- *   simulated from outside the component, so the decision can be taken while
- *   looking at it rather than at a description of it.
+ * - `docs-only`            — a recipe written down, no code change.
+ * - `proposed`             — not made anywhere yet; the After half is the
+ *   proposal, simulated from outside the component.
+ * - `not-a-library-change` — the defect is real but does not live in this
+ *   package, so there is nothing here to accept or reject.
  */
-export type ChangeState =
-  | 'working-tree'
-  | 'committed'
-  | 'docs-only'
-  | 'proposed'
-  | 'not-a-library-change';
+export type ChangeState = 'docs-only' | 'proposed' | 'not-a-library-change';
 
 const STATE_LABEL: Record<ChangeState, string> = {
-  'working-tree': 'Working tree — uncommitted',
-  committed: 'Committed — not yet propagated',
   'docs-only': 'Documentation only',
   proposed: 'Proposed — not made yet',
-  'not-a-library-change': 'Not a library change — misattributed',
+  'not-a-library-change': 'Not a library change',
 };
 
 const STATE_CLASS: Record<ChangeState, string> = {
-  'working-tree': 'border-fb-attention/40 bg-fb-attention/15 text-ink-body',
-  committed: 'border-fb-green/40 bg-fb-green/15 text-ink-body',
   'docs-only': 'border-stroke bg-surface-chips text-ink-secondary',
   proposed: 'border-brand-primary/40 bg-brand-primary/10 text-ink-body',
   'not-a-library-change': 'border-fb-red/40 bg-fb-red/10 text-ink-body',
@@ -117,12 +108,14 @@ export interface ChangeCaseProps {
   title: string;
   /** Source paths the change touches, repo-relative. */
   files?: string[];
-  state: ChangeState;
+  /** Marked only when the kind of case changes how to read it. */
+  state?: ChangeState;
   /** Why the old state was wrong — one or two sentences, not a changelog. */
   why: ReactNode;
   /**
-   * How the *Before* half is produced. Two kinds, and the difference matters to
-   * a reviewer: a token override or a frozen class string reproduces the old
+   * How the *Before* half is produced. The baseline is always the developer
+   * storybook — the published catalog — never an earlier draft of this page.
+   * Two kinds: a token override or a frozen class string reproduces the old
    * rendering exactly, while a hand-built replica only stands in for it.
    */
   beforeSource?: ReactNode;
@@ -162,14 +155,16 @@ export function ChangeCase({
             §{n}
           </span>
           <h3 className="font-semibold text-base text-ink-primary">{title}</h3>
-          <span
-            className={cn(
-              'rounded-full border px-2 py-0.5 text-xxs',
-              STATE_CLASS[state]
-            )}
-          >
-            {STATE_LABEL[state]}
-          </span>
+          {state ? (
+            <span
+              className={cn(
+                'rounded-full border px-2 py-0.5 text-xxs',
+                STATE_CLASS[state]
+              )}
+            >
+              {STATE_LABEL[state]}
+            </span>
+          ) : null}
         </div>
         {files?.length ? (
           <div className="flex flex-wrap gap-x-3 gap-y-1">
