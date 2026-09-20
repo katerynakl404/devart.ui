@@ -26,9 +26,12 @@ content below scrolls; see the Sidebar doc for the surrounding shape.
 
 ## Three details that are deliberate
 
-The back arrow is a **24px glyph** in a 36px box, not the 16px used inside dense
-controls: it sits beside a `title24`, and a small arrow reads as a stray icon
-rather than the page's own control.
+The back control is a **tertiary button and measures as one**: a 32px box with
+a 16px glyph, the same as `Button size="sm"`. That matters beyond looks — it is
+what keeps a header the same height whether or not a screen has a back arrow,
+so the page does not slide between two screens one step apart in a flow. An
+earlier version used a 36px box with a forced 24px glyph, and cost exactly that
+4px.
 
 Its **box sits 6px from the title** (the glyph, 12px) while everything else in
 the row is 12px apart. The arrow belongs to the title rather than being a

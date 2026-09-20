@@ -35,9 +35,11 @@ export interface PageHeaderProps
  *
  * Two details are what make it read as one unit rather than three parts:
  *
- * - **The back arrow is a 24px glyph**, not the 16px used inside dense
- *   controls. It sits beside a `title24`, and a 16px arrow reads as a stray
- *   icon rather than the page's own control.
+ * - **The back control is a tertiary button**, and measures as one: a 32px box
+ *   with a 16px glyph, the same as `Button size="sm"`. That matters beyond
+ *   looks — it is what keeps a header the same height whether or not a screen
+ *   has a back arrow, so the page does not slide between two screens one step
+ *   apart in a flow.
  * - **The arrow's box sits 6px from the title** (its glyph, 12px), while
  *   everything else in the row is 12px apart. The arrow belongs to the title —
  *   it is not a sibling of it, and the tighter gap is what says so.
@@ -71,8 +73,12 @@ function PageHeader({
             rendered 26px wide around a 24px glyph — no inset left, and a
             hover pill the same size as the icon.
 
-            `md` rather than `sm`: a 24px glyph needs a 36px box to read as a
-            pill rather than as a frame.
+            It is a tertiary button and takes a tertiary button's metrics —
+            `sm`, so a 32px box with the component's own 16px glyph, no size
+            override. An earlier version used `md` with a forced 24px glyph, on
+            the reasoning that a large arrow suits a `title24`; the cost was a
+            36px control in a row whose other members are 32px, which made the
+            whole header 4px taller on any screen that had a back arrow.
 
             NO negative inset. There was one — `-ms-1.5 -me-1.5` — on the
             principle that a tertiary control is measured by its glyph, not by
@@ -101,10 +107,10 @@ function PageHeader({
             aria-label={backLabel}
             className="me-0.5 shrink-0"
             onClick={onBack}
-            size="md"
+            size="sm"
             variant="tertiary"
           >
-            <ArrowLeft className="!size-6" />
+            <ArrowLeft />
           </IconButton>
         ) : null}
         <Typography

@@ -93,7 +93,7 @@ const ROWS: Row[] = [
     page: '2. Size and spacing',
   },
   {
-    n: '49',
+    n: '47',
     area: 'Button, IconButton',
     change: 'a bigger button grew its box, not its label',
     page: '2. Size and spacing',
@@ -201,25 +201,25 @@ const ROWS: Row[] = [
     page: '6. Colour tokens',
   },
   {
-    n: '51',
+    n: '49',
     area: 'TableCell',
     change: 'a cell that could not grow, under a comment saying it could',
     page: '7. The table',
   },
   {
-    n: '64',
+    n: '61',
     area: 'TableHead',
     change: 'a column width is a share, not a size',
     page: '7. The table',
   },
   {
-    n: '66',
+    n: '63',
     area: 'TableRow',
     change: 'nesting was a number one table owned',
     page: '7. The table',
   },
   {
-    n: '59',
+    n: '57',
     area: 'TableCell',
     change: "the row's pressed fill belonged to whatever was pressed",
     page: '7. The table',
@@ -231,7 +231,7 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: '41',
+    n: '40',
     area: 'Badge',
     change: 'the hairline is the base, not a second variant',
     page: '8. The badge',
@@ -265,14 +265,15 @@ const ROWS: Row[] = [
 
 /** Documented but not rendered yet, so the gap is visible rather than implied. */
 const UNCOVERED: [string, string][] = [
-  ['Fields', '34, 37, 50, 54, 61 — InputGroup, TextArea, InputGroupAction'],
-  ['Overlays and menus', '24, 28, 30, 32, 38, 42, 52, 58'],
-  ['Sidebar', '33, 43, 48'],
+  ['Fields', '34, 36, 37, 48, 52, 59'],
+  ['Overlays and menus', '24, 28, 29, 30, 32, 38, 41, 50, 56, 66'],
+  ['Sidebar', '33, 42, 46'],
+  ['New components', '43, 53, 54, 55, 60'],
+  ['Table and badge', '25, 27, 64'],
   [
-    'New components',
-    '44, 55, 56, 57, 63 — StepperIndicator, Link, StatTile, CodeBlock, MetaRow',
+    'Build, tokens and the rest',
+    '3, 5, 7a, 21, 22, 31, 35, 39, 44, 45, 51, 58, 62, 65',
   ],
-  ['Left over', '31, 36, 40, 47, 60, 65, 67, 68'],
 ];
 
 /**
@@ -360,9 +361,9 @@ export const Overview: Story = {
           Documented, not yet rendered
         </h3>
         <p>
-          <Code>DESIGN-SYSTEM-CHANGES.md</Code> runs to §68. The table above
-          covers {ROWS.length} entries; these are the rest, grouped by the page
-          they would belong to:
+          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 67 sections, §1 to §66
+          plus §7a. The table above renders 26 of them; these are the other 41,
+          grouped by the page they would belong to:
         </p>
         <ul className="flex flex-col gap-1 text-ink-secondary text-xs">
           {UNCOVERED.map(([group, list]) => (

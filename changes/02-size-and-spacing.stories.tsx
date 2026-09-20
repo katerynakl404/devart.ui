@@ -202,7 +202,7 @@ function TabsDemo({ children }: { children: ReactNode }) {
 }
 
 /**
- * §49 across the whole ladder. `old` reapplies the class string each step used
+ * §47 across the whole ladder. `old` reapplies the class string each step used
  * to carry — the padding, the label step and the glyph — through `className`,
  * which twMerge resolves in favour of the last class in the group.
  */
@@ -520,7 +520,7 @@ export const SizeAndSpacing: Story = {
             the text button.
           </>
         }
-        n={49}
+        n={47}
         title="A bigger button grew its box, not its label"
         why="lg and xl widened the control while the label stayed 14px and the glyph 16px, so a 44px xl read as an oversized md — a small label in a lot of air."
       />

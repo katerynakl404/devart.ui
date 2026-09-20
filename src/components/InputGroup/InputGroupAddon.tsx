@@ -25,7 +25,7 @@ const inputGroupAddonVariants = cva(
        placeholder weight reads as disabled.
 
        (The kit puts the leading glyph on `--ink-secondary`, one step darker.
-       This is a deliberate step lighter — see DESIGN-SYSTEM-CHANGES §52.) */
+       This is a deliberate step lighter — see DESIGN-SYSTEM-CHANGES §50.) */
     '[&>svg]:text-ink-inactive',
     glyphStroke,
 

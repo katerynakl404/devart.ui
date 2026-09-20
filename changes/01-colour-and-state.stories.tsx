@@ -396,7 +396,7 @@ export const ColourAndState: Story = {
             below the text they sat next to and never answered the pointer.
             <br />
             <br />
-            Both are now <Code>InputGroupAction</Code> — §54's part for exactly
+            Both are now <Code>InputGroupAction</Code> — §52's part for exactly
             this. The second half of the fix is the one nothing on screen shows:
             an <Code>&lt;svg&gt;</Code> carrying an <Code>aria-label</Code> and
             a click handler is not a control to a screen reader, and now each is
