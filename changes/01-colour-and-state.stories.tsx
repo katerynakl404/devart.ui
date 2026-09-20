@@ -1,9 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { composeStories } from '@storybook/react-vite';
-import { ChevronsUpDown, Info, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, Info, Trash2, X } from 'lucide-react';
 import type { CSSProperties } from 'react';
+import * as AutocompleteStories from '../src/components/Autocomplete/Autocomplete.stories';
 import { Button } from '../src/components/Button';
 import { IconButton } from '../src/components/IconButton';
+import {
+  InputGroup,
+  InputGroupAction,
+  InputGroupAddon,
+  InputGroupInput,
+} from '../src/components/InputGroup';
 import * as TableStories from '../src/components/Table/Table.stories';
 import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
 
@@ -13,6 +20,8 @@ import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
  * with it.
  */
 const { SortableHeader } = composeStories(TableStories);
+const { WithSelection: AutocompleteWithSelection } =
+  composeStories(AutocompleteStories);
 
 const meta = {
   title: 'Proposed changes/1. Colour and state',
@@ -66,8 +75,8 @@ export const ColourAndState: Story = {
     <ChangePage
       intro={
         <>
-          Six changes where the wrong colour — or no colour at all — was what a
-          user saw. Each panel renders live: hover and press where the case is
+          Seven changes where the wrong colour — or no colour at all — was what
+          a user saw. Each panel renders live: hover and press where the case is
           about a state, and the instruction says which.
         </>
       }
@@ -338,6 +347,69 @@ export const ColourAndState: Story = {
         n={7}
         title="The sort glyph did not hover with its label"
         why="Hover moved only the words to ink-body while the chevrons stayed inactive, so a header read as two controls — one that answers the pointer and one that ignores it."
+      />
+
+      <ChangeCase
+        after={
+          <div className="w-72">
+            <InputGroup inputId="ac-after" label="City">
+              <InputGroupInput
+                defaultValue="Berlin"
+                placeholder="Pick a city"
+              />
+              <InputGroupAddon align="inline-end" className="gap-0.5">
+                <InputGroupAction aria-label="Clear">
+                  <X aria-hidden />
+                </InputGroupAction>
+                <InputGroupAction aria-label="Open">
+                  <ChevronDown aria-hidden />
+                </InputGroupAction>
+              </InputGroupAddon>
+            </InputGroup>
+          </div>
+        }
+        afterNote="ink-icon at rest, ink-icon-hover on hover — and a real button"
+        before={
+          <TryIt action="Hover the ✕ and the chevron — neither changes colour">
+            <div className="w-72">
+              <AutocompleteWithSelection />
+            </div>
+          </TryIt>
+        }
+        beforeNote="both glyphs at ink-inactive, the placeholder step"
+        beforeSource={
+          <>
+            the catalog's own{' '}
+            <Code>Components/Autocomplete → WithSelection</Code>, composed
+            rather than rebuilt — this is the component as the branch has it.
+            The After half is a replica: the same field shell with{' '}
+            <Code>InputGroupAction</Code> in place of the two{' '}
+            <Code>IconButton asChild</Code>.
+          </>
+        }
+        files={['src/components/Autocomplete/index.tsx']}
+        footnote={
+          <>
+            <Code>asChild</Code> makes <Code>IconButton</Code> render its child
+            instead of a button, so what lands in the addon is a bare{' '}
+            <Code>&lt;svg&gt;</Code>. The addon's own rules read that literally:{' '}
+            <Code>[&amp;&gt;svg]:text-ink-inactive</Code> is the{' '}
+            <em>decorative</em> glyph rule — placeholder ink — while{' '}
+            <Code>[&amp;&gt;button]:text-ink-secondary</Code> and its hover step
+            match nothing. Two clickable controls therefore paint one step below
+            the text they sit next to and never answer the pointer.{' '}
+            <strong className="font-medium text-ink-body">To fix:</strong> swap
+            both for <Code>InputGroupAction</Code> — §54's part for exactly this
+            — which also puts a real <Code>&lt;button&gt;</Code> under the
+            aria-label. An <Code>&lt;svg&gt;</Code> carrying{' '}
+            <Code>aria-label</Code> and a click handler is not a control to a
+            screen reader.
+          </>
+        }
+        n={26}
+        state="proposed"
+        title="Autocomplete — the clear and the chevron paint as placeholders"
+        why="Both are clickable, and both render at ink-inactive with no hover: the addon's decorative-glyph rule matches them because asChild leaves an svg where a button should be."
       />
     </ChangePage>
   ),

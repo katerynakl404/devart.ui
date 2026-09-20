@@ -115,8 +115,12 @@ function PageHeader({
         >
           {title}
         </Typography>
+        {/* `ms-2` on top of the cluster's `gap-1` puts the badge 12px from the
+            title — the same gap the rest of the row uses. The 4px inside the
+            cluster belongs to the arrow, which is part of the title; a badge is
+            a separate object sitting next to it and reads as glued on at 4px. */}
         {badge ? (
-          <span className="flex shrink-0 items-center">{badge}</span>
+          <span className="ms-2 flex shrink-0 items-center">{badge}</span>
         ) : null}
       </div>
 

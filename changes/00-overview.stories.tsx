@@ -258,8 +258,10 @@ export const Overview: Story = {
         </h3>
         <p>
           The <em>After</em> half is always the live component as this branch
-          has it. The <em>Before</em> half is produced one of three ways, and
-          each case says which under the comparison:
+          has it. A case with nothing to compare against — §17 and §18, which
+          are components that did not exist — renders that half alone. Where
+          there is a <em>Before</em>, it is produced one of three ways, and each
+          case says which under the comparison:
         </p>
         <ul className="flex list-disc flex-col gap-2 ps-5">
           <li>
@@ -272,8 +274,8 @@ export const Overview: Story = {
               The old class string, reapplied.
             </strong>{' '}
             twMerge keeps the last class in a group, so passing the old one
-            through <Code>className</Code> restores the old rendering — §1, §5,
-            §8, §11, §12, §14.
+            through <Code>className</Code> restores the old rendering — §1, §8,
+            §11, §12, §14.
           </li>
           <li>
             <strong className="font-medium">A replica.</strong> Where the old

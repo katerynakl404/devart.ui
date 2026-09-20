@@ -2,8 +2,10 @@ import * as TabsPrimitive from '@radix-ui/react-tabs';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { composeStories } from '@storybook/react-vite';
-import { Info } from 'lucide-react';
+import { Info, Trash2 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Button } from '../src/components/Button';
+import { IconButton } from '../src/components/IconButton';
 import * as InputGroupStories from '../src/components/InputGroup/InputGroup.stories';
 import * as PasswordInputStories from '../src/components/PasswordInput/PasswordInput.stories';
 import {
@@ -119,6 +121,29 @@ function Labelled({ children, label }: { children: ReactNode; label: string }) {
   );
 }
 
+/**
+ * The size ladder as it stood before §49 — `git show HEAD~:…/Button/index.tsx`.
+ * Padding grew 12 → 16 → 20 above `md` while the label stayed `text-sm` and the
+ * glyph `size-4`; the gap was 6px at every step, `xs` included.
+ */
+const BUTTON_LADDER = [
+  { size: 'xs', was: 'gap-1.5 px-2 text-xs [&_svg]:size-3.5' },
+  { size: 'sm', was: 'gap-1.5 px-3 text-sm [&_svg]:size-4' },
+  { size: 'md', was: 'gap-1.5 px-3 text-sm [&_svg]:size-4' },
+  { size: 'lg', was: 'gap-1.5 px-4 text-sm [&_svg]:size-4' },
+  { size: 'xl', was: 'gap-1.5 px-5 text-sm [&_svg]:size-4' },
+] as const;
+
+/** The same, for the icon-only control: the box never moved, the glyph did. */
+const ICON_LADDER = [
+  { size: '2xs', was: '[&_svg]:size-3.5' },
+  { size: 'xs', was: '[&_svg]:size-3.5' },
+  { size: 'sm', was: '[&_svg]:size-4' },
+  { size: 'md', was: '[&_svg]:size-4' },
+  { size: 'lg', was: '[&_svg]:size-4' },
+  { size: 'xl', was: '[&_svg]:size-4' },
+] as const;
+
 /** The bubble classes `TooltipContent` carries, minus the arrow under review. */
 const TOOLTIP_BUBBLE_CLASSES =
   'z-50 w-max max-w-72 whitespace-normal rounded-md bg-ink-primary px-2 py-1 text-left text-surface-card text-xs';
@@ -170,11 +195,48 @@ function TabsDemo({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * §49 across the whole ladder. `old` reapplies the class string each step used
+ * to carry — the padding, the label step and the glyph — through `className`,
+ * which twMerge resolves in favour of the last class in the group.
+ */
+function SizeLadder({ old }: { old?: boolean }) {
+  return (
+    <div className="flex flex-col gap-5">
+      <Labelled label="Button">
+        <div className="flex flex-wrap items-end gap-3">
+          {BUTTON_LADDER.map(({ size, was }) => (
+            <Button className={old ? was : undefined} key={size} size={size}>
+              <Trash2 />
+              Delete
+            </Button>
+          ))}
+        </div>
+      </Labelled>
+      <Labelled label="IconButton — the same box ladder, icon only">
+        <div className="flex flex-wrap items-end gap-3">
+          {ICON_LADDER.map(({ size, was }) => (
+            <IconButton
+              aria-label={`Delete (${size})`}
+              className={old ? was : undefined}
+              key={size}
+              size={size}
+              variant="secondary"
+            >
+              <Trash2 />
+            </IconButton>
+          ))}
+        </div>
+      </Labelled>
+    </div>
+  );
+}
+
 export const SizeAndSpacing: Story = {
   name: 'Size and spacing',
   render: () => (
     <ChangePage
-      intro="Four cases where a rule reached further than it owned, a box came back that should have stayed away, or a gap landed off the 4px scale."
+      intro="Five cases where a rule reached further than it owned, a box came back that should have stayed away, or a control grew in the wrong direction."
       title="Size and spacing"
     >
       <ChangeCase
@@ -401,6 +463,47 @@ export const SizeAndSpacing: Story = {
         n={15}
         title="Tooltip — the arrow put the gap off the 4px scale"
         why="The arrow is now 8×4, putting the tip exactly 4px from the trigger, so all three numbers sit on the grid."
+      />
+
+      <ChangeCase
+        after={<SizeLadder />}
+        afterNote="padding 8/12/12/12/12 · label 12/14/14/16/16 · glyph 14/16/16/20/20"
+        before={<SizeLadder old />}
+        beforeNote="padding 8/12/12/16/20 · label 12/14/14/14/14 · glyph 14/16/16/16/16"
+        beforeSource={
+          <>
+            the old class strings, reapplied through <Code>className</Code> —{' '}
+            <Code>gap-1.5</Code> at every step, <Code>px-4 text-sm</Code> at{' '}
+            <Code>lg</Code>, <Code>px-5 text-sm</Code> at <Code>xl</Code>, and
+            the 16px glyph above <Code>md</Code>. twMerge keeps the last class
+            in a group, so this is the old rendering and not an approximation.
+          </>
+        }
+        files={[
+          'src/components/Button/index.tsx',
+          'src/components/IconButton/index.tsx',
+        ]}
+        footnote={
+          <>
+            The two systems disagreed about what a bigger control is. The kit
+            holds the inset at 12px from <Code>sm</Code> upward and grows the{' '}
+            <em>label</em> — 14 → 16; the package held the label at 14 and grew
+            the <em>padding</em> — 12 → 16 → 20. Both make a wider control; only
+            one makes a more prominent one. Heights matched at all five steps,
+            which is why this survived the first pass. The gap moved with it:
+            6px everywhere, now 8 with 4 at <Code>xs</Code>, the kit's numbers.
+            The ladder stops at 20px rather than following the kit's 24px{' '}
+            <Code>--icon-xl</Code> — on a 44px control a 24px glyph outgrows its
+            box. <strong className="font-medium text-ink-body">To fix:</strong>{' '}
+            the comment over the size map in <Code>Button/index.tsx</Code> still
+            describes the ladder it replaced — "8/12/12/16/20" and a glyph "16px
+            everywhere" — and the Summary row in DESIGN-SYSTEM-CHANGES.md still
+            ends the glyph ladder at 24.
+          </>
+        }
+        n={49}
+        title="A bigger button grew its box, not its label"
+        why="lg and xl widened the control while the label stayed 14px and the glyph 16px, so a 44px xl read as an oversized md — a small label in a lot of air."
       />
     </ChangePage>
   ),

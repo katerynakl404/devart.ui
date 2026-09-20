@@ -56,32 +56,14 @@ export const NewInTheSystem: Story = {
           />
         }
         afterNote="badge slot — inside the title cluster"
-        before={
-          <PageHeader
-            actions={
-              <div className="flex items-center gap-3">
-                <Badge
-                  leftSlot={<ConnectorLogo connector="DB2" size="xs" />}
-                  variant="secondary"
-                >
-                  DB2
-                </Badge>
-                <Button size="sm">Save</Button>
-              </div>
-            }
-            className="w-full"
-            onBack={() => undefined}
-            title="Connect to DB2"
-          />
-        }
-        beforeNote="the badge in actions, at the far edge"
-        beforeSource="the same component with the badge passed through `actions`, which is where it had to go before the slot existed."
         files={['src/components/PageHeader/index.tsx']}
         footnote={
           <>
-            The badge renders right after the <Code>h1</Code> at the same{' '}
-            <Code>gap-2</Code> the back arrow uses. The mark in both panels is
-            the monogram: DB2 is not in the 23-logo pack, and §18 is where that
+            The badge renders right after the <Code>h1</Code>, 12px from it —
+            the gap the rest of the row uses. The 4px inside the title cluster
+            belongs to the back arrow, which is part of the title; a badge is a
+            separate object and at 4px reads as glued on. The mark is the
+            monogram: DB2 is not in the 23-logo pack, and §18 is where that
             fallback is the subject.{' '}
             <strong className="font-medium text-ink-body">To fix:</strong>{' '}
             DESIGN-SYSTEM-CHANGES.md §17 passes <Code>size="2xs"</Code> to
