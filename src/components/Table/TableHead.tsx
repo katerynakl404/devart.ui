@@ -134,9 +134,13 @@ function TableHead({
         // `whitespace-nowrap` is right below — and nothing in one is taller
         // than the 18px control that caused this.
         //
-        // `TableCell` keeps its padding and still grows with its content (§48):
+        // `TableCell` keeps its padding and still grows with its content (§44):
         // a body row has to be able to hold two lines, a header does not.
         'h-9 px-4 py-0 align-middle',
+        // The header tightens with the body — 28px against 36. **Draft**, with
+        // `Table density="compact"`. A header that keeps its height over a
+        // tightened body stops reading as that body's header.
+        '[[data-density=compact]_&]:h-7',
         'whitespace-nowrap text-left',
         width === 'control' && 'w-12',
         width === 'actions' && 'w-28',

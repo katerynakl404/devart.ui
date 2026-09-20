@@ -63,7 +63,7 @@ const ROWS: Row[] = [
     page: '1. Colour and state',
   },
   {
-    n: '26',
+    n: '24',
     area: 'Autocomplete',
     change: 'the clear and the chevron paint as placeholders',
     page: '1. Colour and state',
@@ -93,7 +93,7 @@ const ROWS: Row[] = [
     page: '2. Size and spacing',
   },
   {
-    n: '46',
+    n: '42',
     area: 'Button, IconButton',
     change: 'a bigger button grew its box, not its label',
     page: '2. Size and spacing',
@@ -201,25 +201,25 @@ const ROWS: Row[] = [
     page: '6. Colour tokens',
   },
   {
-    n: '48',
+    n: '44',
     area: 'TableCell',
     change: 'a cell that could not grow, under a comment saying it could',
     page: '7. The table',
   },
   {
-    n: '60',
+    n: '56',
     area: 'TableHead',
     change: 'a column width is a share, not a size',
     page: '7. The table',
   },
   {
-    n: '62',
+    n: '58',
     area: 'TableRow',
     change: 'nesting was a number one table owned',
     page: '7. The table',
   },
   {
-    n: '56',
+    n: '52',
     area: 'TableCell',
     change: "the row's pressed fill belonged to whatever was pressed",
     page: '7. The table',
@@ -231,43 +231,43 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: '39',
+    n: '35',
     area: 'Badge',
     change: 'the hairline is the base, not a second variant',
     page: '8. The badge',
   },
   {
-    n: '51',
+    n: '47',
     area: 'InputGroupAction',
     change: 'an icon docked in a field is not an icon button',
     page: '9. The fields',
   },
   {
-    n: '58',
+    n: '54',
     area: 'InputGroup',
     change: 'two insets on one edge',
     page: '9. The fields',
   },
   {
-    n: '47',
+    n: '43',
     area: 'TextArea',
     change: 'the counter row had a slot nothing could fill',
     page: '9. The fields',
   },
   {
-    n: '36',
+    n: '32',
     area: 'TextArea',
     change: 'the counter is one ink step too loud',
     page: '9. The fields',
   },
   {
-    n: '33',
+    n: '30',
     area: 'InputGroup',
     change: 'the search clear button is a recipe, not a part',
     page: '9. The fields',
   },
   {
-    n: '35',
+    n: '31',
     area: 'Datepicker',
     change: 'one bespoke focus ring, not three missing states',
     page: '9. The fields',
@@ -288,11 +288,12 @@ const ROWS: Row[] = [
 
 /** Documented but not rendered yet, so the gap is visible rather than implied. */
 const UNCOVERED: [string, string][] = [
-  ['Overlays and menus', '24, 27, 28, 29, 31, 37, 40, 49, 55, 65'],
-  ['Sidebar', '32, 41, 45'],
-  ['New components', '42, 52, 53, 54, 59'],
-  ['Table', '25, 63'],
-  ['Tokens and the rest', '3, 5, 7a, 30, 34, 38, 43, 44, 50, 57, 61, 64'],
+  ['Overlays and menus', '25, 26, 28, 33, 36, 45, 51, 61'],
+  ['Sidebar', '29, 37, 41'],
+  ['New components', '38, 48, 49, 50, 55'],
+  ['Table', '3, 59, 62'],
+  ['Cards, links and the rest', '5, 7a, 27, 34, 40, 46, 53, 57, 60'],
+  ['Build — nothing to render', '21, 22, 39'],
 ];
 
 /**
@@ -380,7 +381,7 @@ export const Overview: Story = {
           Documented, not yet rendered
         </h3>
         <p>
-          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §65
+          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §61
           plus §7a. The table above renders 32 of them as cases and lists §21
           and §22 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:

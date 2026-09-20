@@ -396,7 +396,7 @@ export const ColourAndState: Story = {
             below the text they sat next to and never answered the pointer.
             <br />
             <br />
-            Both are now <Code>InputGroupAction</Code> — §51's part for exactly
+            Both are now <Code>InputGroupAction</Code> — §47's part for exactly
             this. The second half of the fix is the one nothing on screen shows:
             an <Code>&lt;svg&gt;</Code> carrying an <Code>aria-label</Code> and
             a click handler is not a control to a screen reader, and now each is
@@ -407,7 +407,7 @@ export const ColourAndState: Story = {
             ✕ still clears without opening it.
           </>
         }
-        n={26}
+        n={24}
         title="Autocomplete — the clear and the chevron painted as placeholders"
         why="Both are clickable, and both rendered at ink-inactive with no hover: the addon's decorative-glyph rule matched them, because asChild left an svg where a button should be."
       />

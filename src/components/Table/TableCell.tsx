@@ -18,6 +18,11 @@ function TableCell({ className, ...props }: ComponentProps<'td'>) {
         // tighten at all. Horizontal padding does not change; indentation of
         // the first cell belongs to the consumer.
         'group-data-[nested]/row:py-2',
+        // `density="compact"` on the table — 6px instead of 10. **Draft.**
+        // Stamped on the table and read here for the same reason `layout` is:
+        // the row's air is a decision about the whole table, and a cell that
+        // took its own would let two columns disagree.
+        '[[data-density=compact]_&]:py-1.5',
         // Positioning context for a row link. A navigable row is one real
         // anchor in one cell, stretched over the row with `after:absolute
         // after:inset-0` — see Table.md. The anchor needs a positioned

@@ -65,6 +65,21 @@ every column from its content, so the columns visibly jump between the empty
 state, the loading `colSpan` row, and each page of data. Cells truncate with an
 ellipsis under `fixed`, so a long value can never blow its column open.
 
+**`density` — draft.**
+
+```jsx
+<Table layout="fixed" density="compact">
+```
+
+`comfortable` (the default) is 10px above and below a cell, which is what both
+products have today. `compact` is 6px, and the header tightens with it, 36px
+to 28. Nothing else moves: same type, same controls.
+
+It is opt-in because density is a property of the screen's job rather than of
+the component. A settings table with six rows gains nothing; a list of forty
+connections that its audience *scans* gains four more rows on screen. Marked
+draft until a screen ships on it.
+
 **Widths come from `TableHead`'s `width` prop, never a `w-*` class.**
 
 ```jsx

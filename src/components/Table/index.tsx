@@ -27,12 +27,26 @@ interface TableProps extends ComponentProps<'table'> {
    * can be in. Prefer it for anything that loads, paginates or filters.
    */
   layout?: 'auto' | 'fixed';
+  /**
+   * How much vertical air a row gets. **Draft** — see Table.md.
+   *
+   * `comfortable` (the default) is 10px above and below, which is what every
+   * table in both products has today and what the reference computes to.
+   *
+   * `compact` is 6px, for a list its audience *scans* rather than reads.
+   * Nothing else changes: the same type, the same controls, the same header.
+   * It is opt-in because density is a property of the screen's job, not of the
+   * component — a settings table with six rows gains nothing from it, and a
+   * list of forty connections gains four more rows on screen.
+   */
+  density?: 'comfortable' | 'compact';
 }
 
 function Table({
   className,
   wrapperClassName,
   layout = 'auto',
+  density = 'comfortable',
   ...props
 }: TableProps) {
   return (
@@ -48,6 +62,7 @@ function Table({
       <table
         data-slot="table"
         data-layout={layout}
+        data-density={density === 'compact' ? 'compact' : undefined}
         className={cn(
           'caption-bottom text-sm',
           // A fixed table fills the frame; an auto table is allowed to outgrow
