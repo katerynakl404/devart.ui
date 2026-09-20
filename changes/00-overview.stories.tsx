@@ -13,105 +13,131 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 interface Row {
+  /** Section number in DESIGN-SYSTEM-CHANGES.md, or the kind of entry. */
   n: string;
   area: string;
+  /**
+   * One line, and it says the same thing the case on the page says. A row that
+   * paraphrases its own case is a second description of one change, and the
+   * two drift.
+   */
   change: string;
-  /** Which page shows it, or `—` when there is nothing to render. */
+  /** The page that renders it, or `—` when there is nothing to render. */
   page: string;
 }
 
-/** Every row of the Summary table in DESIGN-SYSTEM-CHANGES.md, in its order. */
+/**
+ * One row per case that exists, in page order. Nothing here is aspirational:
+ * if a row names a page, that page renders it today.
+ */
 const ROWS: Row[] = [
   {
     n: '1',
     area: 'Button, IconButton',
-    change: 'destructiveOutline label is red, not neutral',
+    change: 'destructiveOutline — a neutral label under a red border',
     page: '1. Colour and state',
   },
   {
     n: '2',
     area: 'globals.css',
-    change: 'dark destructive border re-stepped so hover raises contrast',
+    change: 'dark destructive border — hover made the control less visible',
     page: '1. Colour and state',
   },
   {
     n: '4',
     area: 'Autocomplete',
-    change: 'selected and highlighted no longer paint the same',
+    change: 'selected and highlighted painted the same',
     page: '1. Colour and state',
   },
   {
     n: '6',
-    area: 'new tokens --ink-icon',
+    area: 'globals.css, constants.ts',
     change:
-      'the colour of a standalone glyph — absent from the kit, and both values already exist in the ink ladder',
+      'no token for a standalone icon — new --ink-icon / --ink-icon-hover',
     page: '1. Colour and state',
   },
   {
     n: '7',
     area: 'TableHead',
-    change:
-      'the sort glyph hovers with its label instead of sitting out the interaction; no press state',
+    change: 'the sort glyph did not hover with its label',
+    page: '1. Colour and state',
+  },
+  {
+    n: '26',
+    area: 'Autocomplete',
+    change: 'the clear and the chevron paint as placeholders',
     page: '1. Colour and state',
   },
   {
     n: '8',
     area: 'InputGroupAddon',
-    change: '[&_svg] → [&>svg] — stops resizing glyphs it does not own',
+    change: 'the addon resized glyphs it did not own',
     page: '2. Size and spacing',
   },
   {
     n: '9',
     area: 'TabsContent',
-    change: 'inactive panel no longer returns as an empty box',
+    change: 'the inactive panel came back as an empty box',
     page: '2. Size and spacing',
   },
   {
     n: '10',
     area: 'InputGroup, TextArea',
-    change: 'field label Secondary → Body, so the hint is subordinate',
+    change: 'a field label as loud as the hint beneath it',
     page: '2. Size and spacing',
   },
   {
     n: '15',
     area: 'Tooltip',
-    change: 'arrow 8×4, putting the visible gap on the 4px scale',
+    change: 'the arrow put the gap off the 4px scale',
+    page: '2. Size and spacing',
+  },
+  {
+    n: '49',
+    area: 'Button, IconButton',
+    change: 'a bigger button grew its box, not its label',
     page: '2. Size and spacing',
   },
   {
     n: '11',
-    area: 'SidebarHeader',
-    change: 'horizontal inset restored',
+    area: 'SidebarHeader, SidebarBrand',
+    change: 'the header lost its horizontal inset',
     page: '3. The sidebar under two shells',
   },
   {
     n: '12',
     area: 'SidebarHeader',
-    change: 'empty:pb-0 tells the two shells apart',
+    change: 'two shells from the same elements',
     page: '3. The sidebar under two shells',
   },
   {
     n: '13',
     area: 'SidebarMenuButton',
-    change: "tooltips through the package's own Tooltip",
+    change: 'the rail rendered tooltips with no styling at all',
     page: '3. The sidebar under two shells',
   },
   {
     n: '14',
     area: 'SidebarMenuButton',
-    change: 'collapsed box fixed — every mark centres at 24',
+    change: 'a 32px box its own padding did not fit',
     page: '3. The sidebar under two shells',
   },
   {
     n: '16',
     area: 'Sidebar.md',
-    change: 'collapsing may not remove the only way to expand',
+    change: 'collapsing could remove the only way to expand',
+    page: '3. The sidebar under two shells',
+  },
+  {
+    n: '23',
+    area: 'SidebarContent',
+    change: 'the navigation column is missing the inset production has',
     page: '3. The sidebar under two shells',
   },
   {
     n: '17',
     area: 'PageHeader',
-    change: 'new component, plus a badge slot inside the title cluster',
+    change: 'new component, plus a badge that belongs to the title',
     page: '4. New in the system',
   },
   {
@@ -123,7 +149,7 @@ const ROWS: Row[] = [
   {
     n: '19',
     area: 'TextArea',
-    change: 'character counter',
+    change: 'a character counter, which pages were writing by hand',
     page: '4. New in the system',
   },
   {
@@ -135,22 +161,98 @@ const ROWS: Row[] = [
   {
     n: 'Docs',
     area: 'Table.md',
-    change:
-      'the empty state lives inside the table, and always carries an action',
+    change: 'where an empty state goes, and what it must carry',
     page: '5. Documented recipes',
   },
   {
     n: 'Docs',
     area: 'Switch.md',
-    change: 'sm in a table or dense row, default in forms and settings',
+    change: 'which switch size goes where',
     page: '5. Documented recipes',
   },
   {
     n: 'Docs',
     area: 'InputGroup.md',
-    change:
-      'the trailing action is InputGroupAction, not an IconButton — recipe rewritten',
+    change: 'where the clear button goes — InputGroupAction, not an IconButton',
     page: '5. Documented recipes',
+  },
+  {
+    n: 'Tokens',
+    area: '--state-*, --tbl-row-*',
+    change: 'interaction states became relative overlays',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: '--state-overlay, --tint-*',
+    change: 'the state ladder, painted',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: '--brand-300',
+    change: 'retuned into the wash — #5DA0A8 → #46A6B9',
+    page: '6. Colour tokens',
+  },
+  {
+    n: 'Tokens',
+    area: 'destructiveTertiary',
+    change: 'destructive tertiary re-stepped to match the neutral ladder',
+    page: '6. Colour tokens',
+  },
+  {
+    n: '51',
+    area: 'TableCell',
+    change: 'a cell that could not grow, under a comment saying it could',
+    page: '7. The table',
+  },
+  {
+    n: '64',
+    area: 'TableHead',
+    change: 'a column width is a share, not a size',
+    page: '7. The table',
+  },
+  {
+    n: '66',
+    area: 'TableRow',
+    change: 'nesting was a number one table owned',
+    page: '7. The table',
+  },
+  {
+    n: '59',
+    area: 'TableCell',
+    change: "the row's pressed fill belonged to whatever was pressed",
+    page: '7. The table',
+  },
+  {
+    n: 'new',
+    area: 'TableActionsCell',
+    change: 'row actions as a part, not a shape each page re-derives',
+    page: '7. The table',
+  },
+  {
+    n: '41',
+    area: 'Badge',
+    change: 'the hairline is the base, not a second variant',
+    page: '8. The badge',
+  },
+  {
+    n: '62',
+    area: 'Badge',
+    change: 'the gap and the glyph did not step with the size',
+    page: '8. The badge',
+  },
+  {
+    n: '45',
+    area: 'Badge',
+    change: 'a status that had to become a control to carry a tooltip',
+    page: '8. The badge',
+  },
+  {
+    n: '27',
+    area: 'Badge',
+    change: 'a small badge rounds one step too far',
+    page: '8. The badge',
   },
   {
     n: '21',
@@ -164,119 +266,46 @@ const ROWS: Row[] = [
     change: 'one command, and a gate for silent CSS gaps',
     page: '—',
   },
-  // Not in DESIGN-SYSTEM-CHANGES.md: found by reading §11 against a ruler in
-  // this very section, which is the whole point of having it.
+];
+
+/** Documented but not rendered yet, so the gap is visible rather than implied. */
+const UNCOVERED: [string, string][] = [
+  ['Fields', '34, 37, 50, 54, 61 — InputGroup, TextArea, InputGroupAction'],
+  ['Overlays and menus', '24, 28, 30, 32, 38, 42, 52, 58'],
+  ['Sidebar', '33, 43, 48'],
+  [
+    'New components',
+    '44, 55, 56, 57, 63 — StepperIndicator, Link, StatTile, CodeBlock, MetaRow',
+  ],
+  ['Left over', '31, 36, 39, 40, 47, 60, 65, 67, 68'],
+];
+
+/** Open questions. Each one changes what gets built, so none is rhetorical. */
+const DECISIONS: { q: string; detail: string }[] = [
   {
-    n: '23',
-    area: 'SidebarContent',
-    change:
-      'the nav column is missing production’s px-2 — icons on 8 instead of 16, row fill with no gutter',
-    page: '3. The sidebar under two shells',
+    q: '§51 — keep the table cell as it is, or put it back?',
+    detail:
+      'The cell went from a clipped 12px line at an 8px inset to wrapping 14px text at 16px. It arrived on 17 Sep with the earlier audit, not from a request. Reverting is one line in TableCell.tsx, plus this row and its case.',
   },
   {
-    n: '51',
-    area: 'TableCell',
-    change:
-      'the cell wraps, so a row grows with its content instead of pushing the table past the card',
-    page: '7. The table',
+    q: '§27 — should size="sm" carry its own radius?',
+    detail:
+      'The After half passes rounded="sm" at the call site. The kit says a 20px chip is 4px, so every call site has to remember it — unless the size variant sets it.',
   },
   {
-    n: '64',
-    area: 'TableHead',
-    change:
-      'width — a column is a share of the table, not five hand-set pixel widths',
-    page: '7. The table',
+    q: '§26 — land InputGroupAction in Autocomplete?',
+    detail:
+      'Its clear and chevron are IconButton asChild, so a bare <svg> reaches the addon: placeholder ink, no hover, and no real button under the aria-label. The fix is the part §54 added, but it changes markup the menu trigger wraps.',
   },
   {
-    n: '66',
-    area: 'TableRow',
-    change:
-      'nested — 8px for a child row, lifted out of one table’s local override',
-    page: '7. The table',
+    q: 'Badge tooltip needs a TooltipProvider, and nothing says so',
+    detail:
+      'A page that adds tooltip to a status gets a thrown error unless the app already mounts one at its root. Either Badge renders its own provider, or Badge.md states the requirement.',
   },
   {
-    n: '59',
-    area: 'TableCell',
-    change:
-      'the pressed fill belongs to whatever was pressed, not always to the row',
-    page: '7. The table',
-  },
-  {
-    n: 'new',
-    area: 'TableActionsCell',
-    change:
-      'row actions as a part — right-aligned, revealed on hover, kept on focus',
-    page: '7. The table',
-  },
-  {
-    n: '49',
-    area: 'Button, IconButton',
-    change:
-      'lg and xl grow the label and the glyph instead of the padding — one 14/16/16/20/20 ladder',
-    page: '2. Size and spacing',
-  },
-  {
-    n: '26',
-    area: 'Autocomplete',
-    change:
-      'the clear and the chevron paint as placeholder glyphs and never answer the pointer',
-    page: '1. Colour and state',
-  },
-  {
-    n: '41',
-    area: 'Badge',
-    change:
-      'the hairline is the base, not a second variant — a chip keeps its shape on a surface its fill matches',
-    page: '8. The badge',
-  },
-  {
-    n: '62',
-    area: 'Badge',
-    change:
-      'the gap and the glyph step with the size; a flat 8px gap was wider than the chip’s own inset',
-    page: '8. The badge',
-  },
-  {
-    n: '45',
-    area: 'Badge',
-    change:
-      'tooltip — a status carries one without becoming a <button> in the tab order',
-    page: '8. The badge',
-  },
-  {
-    n: '27',
-    area: 'Badge',
-    change: 'a 20px chip rounds one step too far — 6px where the kit says 4',
-    page: '8. The badge',
-  },
-  // Not numbered in DESIGN-SYSTEM-CHANGES.md: the interaction-state work
-  // carries its own changeset, `interaction-states-relative-overlays.md`.
-  {
-    n: 'Tokens',
-    area: '--state-*, --tbl-row-*',
-    change:
-      'interaction states became relative overlays — one base per theme, four strengths, so states composite instead of replacing',
-    page: '6. Colour tokens',
-  },
-  {
-    n: 'Tokens',
-    area: '--brand-300',
-    change: 'retuned into the interaction wash — #5DA0A8 → #46A6B9',
-    page: '6. Colour tokens',
-  },
-  {
-    n: 'Tokens',
-    area: '--badge-border',
-    change:
-      'every badge gained a hairline mixed from currentColor, so a Secondary chip does not dissolve into a hovered row',
-    page: '6. Colour tokens',
-  },
-  {
-    n: 'Tokens',
-    area: 'destructiveTertiary',
-    change:
-      'light hover/press re-stepped to hold parity with the neutral ladder',
-    page: '6. Colour tokens',
+    q: '§39 — delete --font-size-compact?',
+    detail:
+      'The 13px token is declared and exposed as text-compact with zero call sites, and the kit files 13 under "not on the scale". Left in place it will be used.',
   },
 ];
 
@@ -286,12 +315,11 @@ export const Overview: Story = {
     <ChangePage
       intro={
         <>
-          Every row of the Summary table in{' '}
-          <Code>DESIGN-SYSTEM-CHANGES.md</Code>, and where to look at it. A
-          change is reviewed by eye here before it is reviewed in a diff:
-          Storybook is this package's only verification surface — there are no
-          unit tests, and a class naming a token that does not exist compiles to
-          nothing rather than to an error.
+          Every case this section renders, and where to look at it. A change is
+          reviewed by eye here before it is reviewed in a diff: Storybook is
+          this package's only verification surface — there are no unit tests,
+          and a class naming a token that does not exist compiles to nothing
+          rather than to an error.
         </>
       }
       title="What changed, and where to look"
@@ -310,7 +338,7 @@ export const Overview: Story = {
             {ROWS.map((row) => (
               <tr
                 className="border-stroke border-b last:border-b-0"
-                key={`${row.n}-${row.area}`}
+                key={`${row.n}-${row.area}-${row.change}`}
               >
                 <td className="px-3 py-2 text-ink-inactive tabular-nums">
                   {row.n}
@@ -327,6 +355,46 @@ export const Overview: Story = {
           </tbody>
         </table>
       </div>
+
+      <section className="flex max-w-[72ch] flex-col gap-3">
+        <h3 className="font-semibold text-base text-ink-primary">
+          Needs a decision
+        </h3>
+        <p className="text-ink-body text-sm leading-5">
+          Each of these changes what gets built next, so none of them is
+          rhetorical.
+        </p>
+        <ul className="flex flex-col gap-3">
+          {DECISIONS.map((d) => (
+            <li
+              className="rounded-md border border-fb-attention/35 bg-fb-attention/5 px-3 py-2"
+              key={d.q}
+            >
+              <p className="font-medium text-ink-primary text-sm">{d.q}</p>
+              <p className="mt-1 text-ink-body text-xs leading-5">{d.detail}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="flex max-w-[72ch] flex-col gap-3 text-ink-body text-sm leading-5">
+        <h3 className="font-semibold text-base text-ink-primary">
+          Documented, not yet rendered
+        </h3>
+        <p>
+          <Code>DESIGN-SYSTEM-CHANGES.md</Code> runs to §68. The table above
+          covers {ROWS.length} entries; these are the rest, grouped by the page
+          they would belong to:
+        </p>
+        <ul className="flex flex-col gap-1 text-ink-secondary text-xs">
+          {UNCOVERED.map(([group, list]) => (
+            <li key={group}>
+              <span className="font-medium text-ink-body">{group}</span> — §
+              {list}
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section className="flex max-w-[72ch] flex-col gap-3 text-ink-body text-sm leading-5">
         <h3 className="font-semibold text-base text-ink-primary">
@@ -349,9 +417,10 @@ export const Overview: Story = {
             <strong className="font-medium">
               The old class string, reapplied.
             </strong>{' '}
-            twMerge keeps the last class in a group, so passing the old one
-            through <Code>className</Code> restores the old rendering — §1, §8,
-            §11, §12, §14.
+            twMerge keeps the last class in a group, so passing the published
+            catalog's own string through <Code>className</Code> restores its
+            rendering. Those strings come from{' '}
+            <Code>git show upstream/master:…</Code>, never from this document.
           </li>
           <li>
             <strong className="font-medium">A replica.</strong> Where the old

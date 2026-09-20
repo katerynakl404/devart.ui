@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CSSProperties, ReactNode } from 'react';
-import { Badge } from '../src/components/Badge';
 import { Button } from '../src/components/Button';
 import { ChangeCase, ChangePage, Code } from './Harness';
 
@@ -246,52 +245,6 @@ export const ColourTokens: Story = {
         n="Tokens · 4"
         title="Destructive tertiary re-stepped to match the neutral ladder"
         why="When the neutral steps moved to overlays, destructive stayed put and started reading heavier than the neutral button beside it."
-      />
-
-      <ChangeCase
-        after={
-          <div className="flex flex-col gap-2 rounded-md bg-surface-card2 p-3">
-            <span className="text-ink-secondary text-xxs">
-              on a hovered / selected row
-            </span>
-            <div className="flex gap-2">
-              <Badge variant="secondary">Built-in</Badge>
-              <Badge variant="primary">Active</Badge>
-              <Badge variant="attention">Pending</Badge>
-            </div>
-          </div>
-        }
-        afterNote="--badge-border — a hairline mixed from currentColor"
-        before={
-          <div className="flex flex-col gap-2 rounded-md bg-surface-card2 p-3">
-            <span className="text-ink-secondary text-xxs">
-              on a hovered / selected row
-            </span>
-            <div className="flex gap-2">
-              <Badge className="!border-transparent" variant="secondary">
-                Built-in
-              </Badge>
-              <Badge className="!border-transparent" variant="primary">
-                Active
-              </Badge>
-              <Badge className="!border-transparent" variant="attention">
-                Pending
-              </Badge>
-            </div>
-          </div>
-        }
-        beforeNote="no border — Secondary dissolves into the row"
-        beforeSource="the live badges with the new hairline forced back to transparent."
-        files={['globals.css', 'src/components/Badge/index.tsx']}
-        footnote={
-          <>
-            Mixed from <Code>currentColor</Code> at 25%, so each variant gets
-            its own edge and none needs a border token.
-          </>
-        }
-        n="Tokens · 5"
-        title="Every badge gained a hairline"
-        why="A Secondary badge is filled with the same token a hovered row lands on, so without an edge it dissolves into the row."
       />
     </ChangePage>
   ),
