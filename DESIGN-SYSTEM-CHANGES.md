@@ -41,17 +41,17 @@ the groups are the reading order.
 |---|---|
 | **Connections — the list** (Devart LinkAI, DW-10365) | 1, 3, 6, 7, 17, 18, 20 |
 | **Connections — the create/edit form** | 4, 5, 8, 9, 10, 19 |
-| **Connections — round 4, "everything from the library"** (2026-09-19) | 40 – 44, 46, 48, 50, 52 – 65 |
-| **Two shells: a desktop window bar and a web sidebar** | 11 – 16, 42 |
+| **Connections — round 4, "everything from the library"** (2026-09-19) | 39 – 43, 45, 47, 49, 51 – 64 |
+| **Two shells: a desktop window bar and a web sidebar** | 11 – 16, 41 |
 | **Interaction states, found by auditing production** | 2, 7a, 25 |
-| **Kit ↔ Storybook audit** (no feature — a component-by-component sweep) | 23 – 39 |
-| **Build and tooling** | 21, 22, 44 |
+| **Kit ↔ Storybook audit** (no feature — a component-by-component sweep) | 23 – 38 |
+| **Build and tooling** | 21, 22, 43 |
 | **Documentation** | the "Documentation that was missing or wrong" block, 41 (`Badge.md`) |
 
 **New components added, all rounds:** `PageHeader` (§17), `ConnectorLogo`
-(§18), `StatusView.EmptyStateIllustration` (§20), `StepperIndicator` (§43),
-`DropdownMenuRow` (§50), `InputGroupAction` (§52), `Link` (§53),
-`StatTile` (§54), `CodeBlock` (§55), `MetaRow` (§60).
+(§18), `StatusView.EmptyStateIllustration` (§20), `StepperIndicator` (§42),
+`DropdownMenuRow` (§49), `InputGroupAction` (§51), `Link` (§52),
+`StatTile` (§53), `CodeBlock` (§54), `MetaRow` (§59).
 
 ---
 
@@ -93,11 +93,11 @@ the groups are the reading order.
 | Kit gap | `InputGroup` | the clear-button reveal ships as a story recipe, not as a prop |
 | Kit gap | `Datepicker` | the one focus ring in the package that is not the shared recipe |
 | Kit gap | `TextArea` | counter ink one step too loud |
-| Fixed | `Button`, `IconButton`, `Input`, `InputGroup`, `TextArea` | §47 — one ladder per axis, canonical table at the top of §47: button padding 8/12/12/16/20 (the field holds 12 from `sm`), gap 4/6/8/8/8, label 12/14/14/16/16, glyph 14/16/16/20/20 |
-| Fixed | `Table` | §49 — the cell wraps, so a row grows with its content; the clamp is scoped to layout="fixed" |
-| Fixed | `Typography` | `label16` — the rung the `lg` control ladder needs (§35, capped in §51) |
+| Fixed | `Button`, `IconButton`, `Input`, `InputGroup`, `TextArea` | §46 — one ladder per axis, canonical table at the top of §46: button padding 8/12/12/16/20 (the field holds 12 from `sm`), gap 4/6/8/8/8, label 12/14/14/16/16, glyph 14/16/16/20/20 |
+| Fixed | `Table` | §48 — the cell wraps, so a row grows with its content; the clamp is scoped to layout="fixed" |
+| Fixed | `Typography` | `label16` — the rung the `lg` control ladder needs (§34, capped in §50) |
 | Fixed | `InputGroupAddon` | leading glyph takes the placeholder ink; a docked control lifts to Text/Body on hover |
-| **Build** | `gen-classlist.mjs` | the library’s whole glyph surface was absent from the bundle vocabulary (§51) |
+| **Build** | `gen-classlist.mjs` | the library’s whole glyph surface was absent from the bundle vocabulary (§50) |
 | Kit gap | `StepSlider` | dot colour, dot size, width and hit area all off the kit s own numbers |
 | Kit gap | `Badge` | `--badge-border` shipped — the hairline is the base of every variant |
 | Colour | `PopoverContent` | closed state holds its faded-out frame instead of snapping back |
@@ -120,14 +120,14 @@ the groups are the reading order.
 | Kit gap | `Toggle` | `ghost` is `Button`'s removed variant under another name |
 | Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
-| Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§66) |
+| Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§65) |
 | Fixed | `Card` / `ghost` | `bg-bg` named a token this branch deleted — now `bg-transparent`, the intended surface |
-| New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§60) |
-| Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§61) |
-| Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§62) |
-| Size | `TableHead` | fixed 36px — a selection checkbox no longer makes the header 2px taller than the table next to it (§64) |
-| Size | `PageHeader` | the back control's hover pill ran under the title and overhung the page's left rail (§65) |
-| Size | `TableRow` | `nested` — 8px for a child row, lifted out of one table's local override (§63) |
+| New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§59) |
+| Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§60) |
+| Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§61) |
+| Size | `TableHead` | fixed 36px — a selection checkbox no longer makes the header 2px taller than the table next to it (§63) |
+| Size | `PageHeader` | the back control's hover pill ran under the title and overhung the page's left rail (§64) |
+| Size | `TableRow` | `nested` — 8px for a child row, lifted out of one table's local override (§62) |
 
 ---
 
@@ -457,7 +457,7 @@ the addon (correct), while the toggle fell back to whatever the nested
 The two ends of the field still disagreed, just less visibly.
 
 The ladder is only shared once the size is passed **to the button** rather than
-written on the icon (§51): a class on the glyph loses to the addon's child
+written on the icon (§50): a class on the glyph loses to the addon's child
 selector in one direction and to the IconButton's own descendant selector in the
 other, so the icon's own `className` was never going to decide anything.
 
@@ -714,7 +714,7 @@ own answer, which is how two products drift apart without either being "wrong".
   always called it that, and `CardIcon variant="ghost"` is its centred dashed
   icon well, which is not the anatomy of a drop target. A dashed edge in this
   system means *nothing here yet*; sometimes that empty thing accepts a drop and
-  sometimes you click it. `Card.md` now says so, and `DropZone` (§39) is the
+  sometimes you click it. `Card.md` now says so, and `DropZone` (§38) is the
   component that owns the drop case.
 - **`Table.md` — the empty state.** The doc asked for "a single row with
   `colSpan` and `h-24 text-center`" and stopped, so every page improvised. Now
@@ -851,20 +851,20 @@ written down nowhere — that is the coverage audit that follows.
 | 1 | `Accordion` | `#accordion` | ⚠ kit calls open/close *"instant … no CSS transition"*; the package animates (`accordion-up/down`). Ratify or revert — Open questions |
 | 2 | `Autocomplete` | `#autocomplete` | ✅ highlighted = `State/Hover`, selected distinct (§4) · ⚠ `aria-disabled:opacity-50` (§26) |
 | 3 | `Avatar` | `#avatar` | ✅ deliberate divergence: kit says `--brand-primary`, package uses `--avatar-bg` because brand lifts on dark and white initials fell to 3.94:1. In `theme-contrast.md` |
-| 4 | `Badge` | `#badge` | ✅ hairline now the base (§23 → shipped in §40) · ⚠ §27 `sm` radius 6px where the kit renders 4px · glyph 16→14px *undoc.* |
+| 4 | `Badge` | `#badge` | ✅ hairline now the base (§23 → shipped in §39) · the `sm` radius is in the archive · glyph 16→14px *undoc.* |
 | 5 | `Banner` | `#banner` | ⚠ kit agrees **one** gradient (`.banner-grad`, `--grad-teal-dark`); package ships four (`horizontalWide`, `diagonalAiry`, `diagonalFade`, `horizontalSlab`). Geometry matches — icon 60→40px at `sm`, radius 12px |
-| 6 | `Button` | `#button` | ✅ §47 **fixed** — `lg`/`xl` now hold 12px padding and grow the label to 16/18; gap 8, glyph 20/24 · ⚠ §31 `tertiaryBrand` still missing |
-| 7 | `Card` | `#card` | ⚠ §39 `Card.md` redefines `ghost` as a drop target · hover/press deliberately removed (§5) · kit's focus + disabled still ⚠ *to define* |
+| 6 | `Button` | `#button` | ✅ §46 **fixed** — `lg`/`xl` now hold 12px padding and grow the label to 16/18; gap 8, glyph 20/24 · ⚠ §30 `tertiaryBrand` still missing |
+| 7 | `Card` | `#card` | ⚠ §38 `Card.md` redefines `ghost` as a drop target · hover/press deliberately removed (§5) · kit's focus + disabled still ⚠ *to define* |
 | 8 | `Checkbox` | `#checkbox` | ✅ hover, neutral focus ring, 10×2 indeterminate bar, `aria-invalid` error, `opacity-disabled` — all five |
 | 9 | `CircularProgress` | `#circularprogress` | ✅ size 40, stroke 2.5, track `--surface-page`, indicator brand |
 | 10 | `Collapsible` | `#collapsible` | ✅ pure Radix re-export on both sides; nothing to diverge |
-| 11 | `Datepicker` | `#datepicker` | ⚠ §36 the one focus ring in the package that is not the shared recipe · §26 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
+| 11 | `Datepicker` | `#datepicker` | ⚠ §35 the one focus ring in the package that is not the shared recipe · §26 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
 | 12 | `DropdownMenu` | `#dropdown` | ✅ 6/12 padding, 8px gap, 16px glyph @1.75, 4-inside-8 radius, disabled = ink only · radius, disabled recipe, focus removal and `portalContainer` all *undoc.* |
 | 13 | `File` | `#file` | ✅ 4/8 padding, card surface, medium name, interactive hover/press/focus · all of it *undoc.* |
-| 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §47 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
-| 15 | `Input` | `#input` | ✅ §47 **fixed** — padding, field text and glyph now match at all five steps |
-| 16 | `InputGroup` | `#inputgroup` | ✅ §47 **fixed** — padding, `sm` text 12→14, addon glyph and the 4px `xs` gap · ⚠ §34 clear button is still a story recipe |
-| 17 | `Modal` | `#modal` | ✅ 360/480/576 sizes, 14px radius (§29 retracted), `min-h-0` body, scrim token · footer divider *undoc.* |
+| 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §46 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
+| 15 | `Input` | `#input` | ✅ §46 **fixed** — padding, field text and glyph now match at all five steps |
+| 16 | `InputGroup` | `#inputgroup` | ✅ §46 **fixed** — padding, `sm` text 12→14, addon glyph and the 4px `xs` gap · ⚠ §33 clear button is still a story recipe |
+| 17 | `Modal` | `#modal` | ✅ 360/480/576 sizes, 14px radius (§28 retracted), `min-h-0` body, scrim token · footer divider *undoc.* |
 | 18 | `Pagination` | `#pagination` | ✅ active = Button `primary`, other pages `secondary`, nav = IconButton `secondary` |
 | 19 | `PasswordInput` | `#passwordinput` | ✅ delegates to InputGroup, toggle sits in the field's trailing slot · `Eye`/`EyeOff` were inverted and are now fixed — *undoc.* |
 | 20 | `Popover` | `#popover` | ✅ §24 **retracted** — the kit’s base `.pop` is `--surface-page` too; I measured a composed variant by mistake |
@@ -874,24 +874,24 @@ written down nowhere — that is the coverage audit that follows.
 | 24 | `ScrollShadow` | `#scrollshadow` | ✅ size 40 / offset 0 / orientation / visibility; the gradient tracks the surface |
 | 25 | `SegmentedControl` | `#segctrl` | ✅ sm 20 / md 32, container tokens, all five states · type 11→12 and 13→14 is the agreed scale winning over the kit's own numbers · new `rounded` axis *undoc.* · list is `inline-flex` where the kit is `width:100%` |
 | 26 | `Separator` | `#separator` | ✅ three variants × two orientations · kit's `muted` still ⚠ *optional* |
-| 27 | `Sheet` | `#sheet` | ⚠ §30 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
-| 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §33 no menu badge / counter · §26 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§11–16) |
+| 27 | `Sheet` | `#sheet` | ⚠ §29 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
+| 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §32 no menu badge / counter · §26 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§11–16) |
 | 29 | `Skeleton` | `#skeleton` | ✅ shimmer is the default, pulse and none opt-in, radius `md` |
 | 30 | `Spinner` | `#spinner` | ✅ stroke 2.5 — the kit's value, changed on this branch, *undoc.* |
 | 31 | `StatusView` | `#statusview` | ✅ ladder re-scaled to 32/40/56 circles and 16/24/32 padding, `neutral` halo fixed, `EmptyStateIllustration` (§20) · the rescale is *undoc.* |
-| 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §45 |
+| 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §44 |
 | 33 | `Stepper` | `#stepper` | ✅ headless on both sides; the consumer styles it |
 | 34 | `Switch` | `#switch` | ✅ 36×20 / 28×16, `--switch-off-bg` pair, 44×44 hit area, neutral ring, `opacity-disabled` · label ink + disabled treatment *undoc.* |
-| 35 | `Table` | `#table` | ✅ 10/16 padding, 12px header, selection holds under the pointer (§25) · §49 **fixed** — the cell wraps again, so the row height follows its content |
-| 36 | `Tabs` | `#tabs` | ⚠ §32 no flush tabset, so two bottom rules stack · underline, hover, focus and disabled match · kit's counter/badge still ⚠ *to define* |
-| 37 | `TextArea` | `#textarea` | ✅ §47 **fixed** — padding at four steps and font at three · ⚠ §37 counter ink still `--ink-secondary` |
+| 35 | `Table` | `#table` | ✅ 10/16 padding, 12px header, selection holds under the pointer (§25) · §48 **fixed** — the cell wraps again, so the row height follows its content |
+| 36 | `Tabs` | `#tabs` | ⚠ §31 no flush tabset, so two bottom rules stack · underline, hover, focus and disabled match · kit's counter/badge still ⚠ *to define* |
+| 37 | `TextArea` | `#textarea` | ✅ §46 **fixed** — padding at four steps and font at three · ⚠ §36 counter ink still `--ink-secondary` |
 | 38 | `Timeline` | — | — no kit section |
-| 39 | `Toast` | `#toast` | ⚠ §38 close button off the `2xs` rung · stack gap 8 vs 10 · §28 width **mostly retracted** — a stacked kit toast is 360px, Sonner’s is 356px |
-| 40 | `Toggle` | `#chip` | ⚠ §39 `ghost` is `Button`'s removed variant under another name · the kit's chip hover also shifts text to `--ink-primary`; the package only fills |
+| 39 | `Toast` | `#toast` | ⚠ §37 close button off the `2xs` rung · stack gap 8 vs 10 · §27 width **mostly retracted** — a stacked kit toast is 360px, Sonner’s is 356px |
+| 40 | `Toggle` | `#chip` | ⚠ §38 `ghost` is `Button`'s removed variant under another name · the kit's chip hover also shifts text to `--ink-primary`; the package only fills |
 | 41 | `ToggleGroup` | `#chip` | ⚠ the kit specifies the count as part of the chip (`.chip-n` — 11px tabular-nums, `--ink-inactive`, 70% `--ink-highlight` when active); the package renders it in a story |
 | 42 | `Tooltip` | `#tooltip` | ✅ 288px ceiling with `w-max`, 8×4 arrow, Surface/Card ink (§15) |
 | 43 | `TruncatedTitleTooltip` | `#truncated` | ✅ default side is now `top` as the kit states, and it inherits Tooltip's surface instead of re-declaring `max-w-52` — *undoc.* |
-| 44 | `Typography` | `#typography` | ✅ §35 **fixed** — `body18`, `label16`, `label18` added; the named scale and the control ladder now agree |
+| 44 | `Typography` | `#typography` | ✅ §34 **fixed** — `body18`, `label16`, `label18` added; the named scale and the control ladder now agree |
 
 **Fourteen components need work** — 4, 5, 6, 7, 11, 16, 20, 23, 27, 28, 32, 36,
 37, 39, 40, 41, 44, which is seventeen rows and fourteen distinct components once
@@ -908,21 +908,20 @@ its prose, because on three of these the prose and the stylesheet disagree and
 
 | § | The package says | The kit says |
 |---|---|---|
-| 27 | `sm: 'h-5 px-1.5 text-xs [&_svg]:size-3.5'` — radius comes from the default `rounded: 'md'` = **6px**<br>`Badge/index.tsx:43`, `:51` | `.badge-sm{height:1.25rem;padding:0 .375rem;font-size:var(--ts-label-m-size);border-radius:.25rem}` — **4px**<br>`kit-theme.css:1001` |
-| 31 | `tertiary: cn('border-transparent bg-transparent text-ink-body', 'hover:bg-state-hover', …)` — one tertiary, neutral label<br>`Button/index.tsx:57`, `IconButton/index.tsx:48` | `.btn-tertiary.is-brand{color:var(--brand-primary)}`<br>`.btn-tertiary.is-brand:hover{background:var(--state-hover);color:var(--brand-hover)}`<br>`.btn-tertiary.is-brand:active{…color:var(--brand-press)}` — a second tertiary whose *label* moves<br>`kit-theme.css`, `#button` (kit html 513) |
-| 30 | `right: cn('inset-y-0 right-0', 'h-full w-3/4 sm:max-w-sm', /* no border */)`<br>`Sheet/index.tsx:122`<br>…while `top` has `border-b`, `bottom` `border-t`, `left` `border-r` | *"Right · right (default) · `border-l` · slide-from-right"*<br>kit html `#sheet` (2731), side-variants block |
-| 32 | `'inline-flex items-center gap-2 border-stroke border-b'` — unconditional<br>`Tabs/TabsList.tsx:17` | `.tabset.var-flush{border-bottom:none}`<br>`kit-theme.css:1206` |
-| 33 | no `SidebarMenuBadge` — the string `MenuBadge` does not occur in `src/components/Sidebar/` | `.sbx-nav-item .nav-badge{margin-left:auto;background:color-mix(in srgb,var(--brand-primary) var(--tint-15),transparent);color:var(--brand-primary);font-size:var(--ts-label-s-size);padding:1px 6px;border-radius:var(--radius-full);font-variant-numeric:tabular-nums}`<br>`kit-theme.css`, `#sidebar` (1986) |
+| 30 | `tertiary: cn('border-transparent bg-transparent text-ink-body', 'hover:bg-state-hover', …)` — one tertiary, neutral label<br>`Button/index.tsx:57`, `IconButton/index.tsx:48` | `.btn-tertiary.is-brand{color:var(--brand-primary)}`<br>`.btn-tertiary.is-brand:hover{background:var(--state-hover);color:var(--brand-hover)}`<br>`.btn-tertiary.is-brand:active{…color:var(--brand-press)}` — a second tertiary whose *label* moves<br>`kit-theme.css`, `#button` (kit html 513) |
+| 29 | `right: cn('inset-y-0 right-0', 'h-full w-3/4 sm:max-w-sm', /* no border */)`<br>`Sheet/index.tsx:122`<br>…while `top` has `border-b`, `bottom` `border-t`, `left` `border-r` | *"Right · right (default) · `border-l` · slide-from-right"*<br>kit html `#sheet` (2731), side-variants block |
+| 31 | `'inline-flex items-center gap-2 border-stroke border-b'` — unconditional<br>`Tabs/TabsList.tsx:17` | `.tabset.var-flush{border-bottom:none}`<br>`kit-theme.css:1206` |
+| 32 | no `SidebarMenuBadge` — the string `MenuBadge` does not occur in `src/components/Sidebar/` | `.sbx-nav-item .nav-badge{margin-left:auto;background:color-mix(in srgb,var(--brand-primary) var(--tint-15),transparent);color:var(--brand-primary);font-size:var(--ts-label-s-size);padding:1px 6px;border-radius:var(--radius-full);font-variant-numeric:tabular-nums}`<br>`kit-theme.css`, `#sidebar` (1986) |
 | 26 | `'disabled:opacity-50'`, `'aria-disabled:opacity-50'` — `SidebarMenuButton.tsx:59,61`<br>`'aria-disabled:opacity-50'` — `Autocomplete/OptionItem.tsx:52`<br>`'…aria-disabled:opacity-50'` ×2 and `'text-ink-secondary opacity-50'` — `Datepicker/Calendar.tsx:70,75,158` | *"opacity:`--opacity-disabled` (.65) + pointer-events:none — same recipe as Switch / Checkbox / Button"*, stated under `#checkbox`, `#switch`, `#segctrl`, `#tabs`. `--opacity-disabled` is `.65`, not `.5` |
-| 34 | `className="group-has-[input:placeholder-shown]/input-group:hidden"` — in a **story**<br>`InputGroup/InputGroup.stories.tsx:210`; `InputGroup/index.tsx` has no `clearable` | `.igrp .igrp-clear{display:none}`<br>`.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear{display:inline-flex}` — in the **component's own stylesheet**<br>`kit-theme.css:2462-2463` |
-| 36 | `'group-data-[focused=true]/day:ring-[3px]'`<br>`'group-data-[focused=true]/day:ring-focus-ring-brand/50'` — 3px at 50%, no gap<br>`Datepicker/CalendarDayButton.tsx:74-75` | *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring `focusRing` in `src/lib/utils.ts` now exists to enforce<br>kit html `#datepicker` (3004), day-cell state table |
-| 37 | `textColor="secondary"` → `--ink-secondary`<br>`TextArea/index.tsx:256` | `.ta-count{text-align:right;font-size:var(--ts-body-s-size);color:var(--ink-inactive);margin-top:.25rem}`<br>`kit-theme.css:1087` — everything else (12px, right-aligned, 4px above) already matches |
-| 38 | `variant="transparent" size="sm"` + the `mt-0.5 text-ink-body` those force<br>`Toast/ToastMessage/index.tsx:100-101` | `.toast-x` is enumerated on the **24px `2xs` rung** — *"the row kebab, `.toast-x`, `.sht-x`"*. `Sheet/index.tsx:186` already took it (`variant="tertiary" size="2xs"`) |
-| 39 | `ghost: cn('border-transparent bg-transparent text-ink-body','hover:bg-state-hover active:bg-state-pressed', …)`<br>`Toggle/index.tsx:63` | the same recipe is `Button`'s **`tertiary`**; `Button.md:9` says *"There is **no `ghost`** — use `tertiary`"*. The kit's chip itself is `.chip{height:1.75rem;border-radius:var(--radius-full);border:1px solid var(--stroke-border);background:var(--surface-card);color:var(--ink-body)}` — `kit-theme.css:2706` |
-| 39 | `Card.md:14-15`: *"a dashed edge means a drop target, so `ghost` is for an area that **receives something**"* | `Card.stories.tsx:98`: *"Ghost — dashed 'browse more' tile."* — **both are ours**; the doc contradicts the story, and the story is right |
+| 33 | `className="group-has-[input:placeholder-shown]/input-group:hidden"` — in a **story**<br>`InputGroup/InputGroup.stories.tsx:210`; `InputGroup/index.tsx` has no `clearable` | `.igrp .igrp-clear{display:none}`<br>`.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear{display:inline-flex}` — in the **component's own stylesheet**<br>`kit-theme.css:2462-2463` |
+| 35 | `'group-data-[focused=true]/day:ring-[3px]'`<br>`'group-data-[focused=true]/day:ring-focus-ring-brand/50'` — 3px at 50%, no gap<br>`Datepicker/CalendarDayButton.tsx:74-75` | *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring `focusRing` in `src/lib/utils.ts` now exists to enforce<br>kit html `#datepicker` (3004), day-cell state table |
+| 36 | `textColor="secondary"` → `--ink-secondary`<br>`TextArea/index.tsx:256` | `.ta-count{text-align:right;font-size:var(--ts-body-s-size);color:var(--ink-inactive);margin-top:.25rem}`<br>`kit-theme.css:1087` — everything else (12px, right-aligned, 4px above) already matches |
+| 37 | `variant="transparent" size="sm"` + the `mt-0.5 text-ink-body` those force<br>`Toast/ToastMessage/index.tsx:100-101` | `.toast-x` is enumerated on the **24px `2xs` rung** — *"the row kebab, `.toast-x`, `.sht-x`"*. `Sheet/index.tsx:186` already took it (`variant="tertiary" size="2xs"`) |
+| 38 | `ghost: cn('border-transparent bg-transparent text-ink-body','hover:bg-state-hover active:bg-state-pressed', …)`<br>`Toggle/index.tsx:63` | the same recipe is `Button`'s **`tertiary`**; `Button.md:9` says *"There is **no `ghost`** — use `tertiary`"*. The kit's chip itself is `.chip{height:1.75rem;border-radius:var(--radius-full);border:1px solid var(--stroke-border);background:var(--surface-card);color:var(--ink-body)}` — `kit-theme.css:2706` |
+| 38 | `Card.md:14-15`: *"a dashed edge means a drop target, so `ghost` is for an area that **receives something**"* | `Card.stories.tsx:98`: *"Ghost — dashed 'browse more' tile."* — **both are ours**; the doc contradicts the story, and the story is right |
 | — | count rendered in a story: `{option.count}` in a plain `<span>`<br>`ToggleGroup/ToggleGroup.stories.tsx:273` | `.chip-n{font-size:var(--ts-label-m-size);color:var(--ink-inactive);font-variant-numeric:tabular-nums}`<br>`.chip.is-active .chip-n{color:color-mix(in srgb,var(--ink-highlight) var(--tint-70),transparent)}`<br>`kit-theme.css:2713-2714` — part of the component |
-| 35 | `body16`, `body14`, `body12` · `label14`, `label12`, `label10`<br>`Typography/index.tsx:60-67` | the nineteen include **Body XL 18/28**, **Label 2XL 18/28**, **Label XL 16/24** — kit html `#typography` (311), *"UI text — the 19 named styles"* |
-| 45 | track `bg-surface-chips` · dot `size-1` (4px) `bg-ink-secondary` · `w-20` (80px) · hit ring `before:-inset-2` (20×20)<br>`StepSlider/index.tsx:18, 56, 32, 60` | `.stps{height:1.25rem;padding:0 2px;background:var(--surface-card2);gap:.5rem;flex:none}`<br>`.stps-dot{width:6px;height:6px;background:var(--ink-inactive)}`<br>`kit-theme.css:1132, 1140` — and the kit derives its width from content rather than fixing it |
+| 34 | `body16`, `body14`, `body12` · `label14`, `label12`, `label10`<br>`Typography/index.tsx:60-67` | the nineteen include **Body XL 18/28**, **Label 2XL 18/28**, **Label XL 16/24** — kit html `#typography` (311), *"UI text — the 19 named styles"* |
+| 44 | track `bg-surface-chips` · dot `size-1` (4px) `bg-ink-secondary` · `w-20` (80px) · hit ring `before:-inset-2` (20×20)<br>`StepSlider/index.tsx:18, 56, 32, 60` | `.stps{height:1.25rem;padding:0 2px;background:var(--surface-card2);gap:.5rem;flex:none}`<br>`.stps-dot{width:6px;height:6px;background:var(--ink-inactive)}`<br>`kit-theme.css:1132, 1140` — and the kit derives its width from content rather than fixing it |
 | — | five variants: `default` + `horizontalWide` + `diagonalAiry` + `diagonalFade` + `horizontalSlab`, each repeated across five cva maps<br>`Banner/index.tsx:75-78, 102-105, 115-118, 130-133, 152-155` | one: `.banner-grad{background:var(--grad-teal-dark);border:none}` — `kit-theme.css:1307`, with the comment at `:277` *"override `--grad-teal-dark` per-instance to swap the fill"*. The kit's answer to "four gradients" is one variant and an instance override |
 
 ### Two entries above were wrong, and quoting both sides is what exposed them
@@ -936,7 +935,7 @@ the two *composed* variants (`.sbx-pop{background:var(--surface-card)…}`,
 the wrong one. Those variants are app-level compositions, not the primitive.
 `PopoverContent.tsx:31` is correct as written.
 
-**§28 `Toast` width — mostly retracted.** `.toast{min-width:280px;max-width:600px}`
+**§27 `Toast` width — mostly retracted.** `.toast{min-width:280px;max-width:600px}`
 (`kit-theme.css:2596`) is the standalone toast. In the stacking context the kit
 constrains it: `.toast-stack{…width:min(360px,calc(100vw - 3rem))}` and
 `.toast-stack .toast{width:100%}` (`:2594-2595`). So a stacked kit toast is
@@ -1046,15 +1045,7 @@ The Datepicker's third case is different and should not simply be swapped: it is
 the outside-month day, which the kit specifies as `text content-secondary` with
 no opacity at all.
 
-## 27. `Badge size="sm"` rounds one step too far
-
-`rounded` defaults to `md` (6px) for every badge size. The kit's small chip
-renders at **4px** — measured, `border-radius: 4px`, height 20px. A 20px chip at
-a 6px radius reads softer than the 28px chip above it, which is the wrong way
-round. A `{ size: 'sm', rounded: 'md' }` compound variant dropping to `rounded`
-is the same one-line fix `IconButton` already uses for its two smallest boxes.
-
-## 28. `Toast` has no width, so Sonner's does
+## 27. `Toast` has no width, so Sonner's does
 
 `src/components/Toast/Toaster.tsx`
 
@@ -1072,7 +1063,7 @@ to `ToastMessage`.
 Same file, same reason: the kit's stack gap is `.625rem` (10px, measured); the
 package passes `gap={8}`.
 
-## 29. `Modal`'s dialog radius · **Retracted — it was already right**
+## 28. `Modal`'s dialog radius · **Retracted — it was already right**
 
 Filed as "`rounded-2xl` is a stock 16px radius off the `--radius-*` scale". Wrong
 on both halves, and worth keeping as a worked example of how to misread this
@@ -1085,10 +1076,10 @@ tokens (`sm/DEFAULT/md/lg/xl`) as the whole scale instead of checking the preset
 which is the one place that decides what a utility resolves to.
 
 The lesson generalises: in this package a Tailwind utility name tells you nothing
-about whether it is tokenized. `rounded-2xl` is; `bg-bg` is not (§39). Only
+about whether it is tokenized. `rounded-2xl` is; `bg-bg` is not (§38). Only
 `tailwind-preset.ts` and `THEME_COLORS` are evidence.
 
-## 30. `Sheet` — the default side is the one without a border
+## 29. `Sheet` — the default side is the one without a border
 
 `src/components/Sheet/index.tsx`, `sheetVariants`
 
@@ -1104,7 +1095,7 @@ The kit lists all four: *"Right · right (default) · `border-l` · slide-from-r
 with no edge against the scrim. It is a one-token omission that reads as a
 rendering bug on a light theme, where panel and page are both near-white.
 
-## 31. `tertiaryBrand` — a brand label on the neutral tertiary pill
+## 30. `tertiaryBrand` — a brand label on the neutral tertiary pill
 
 `src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
 
@@ -1127,7 +1118,7 @@ This is the mirror of `destructiveTertiary`, which the package already has (§1'
 sibling). Both are tertiary ghosts that recolour the label only; shipping one and
 not the other is why pages keep hand-rolling a `text-brand-primary` button.
 
-## 32. `Tabs` — no flush tabset, so two rules stack
+## 31. `Tabs` — no flush tabset, so two rules stack
 
 `src/components/Tabs/TabsList.tsx`
 
@@ -1143,7 +1134,7 @@ on the right, inside a row that already draws its own hairline. *"Without it the
 two rules stack into a 2px edge."* The DS Connections tab row is the shipped
 case. A `bordered` boolean variant on `TabsList` covers it.
 
-## 33. `Sidebar` — no badge or counter on a nav row
+## 32. `Sidebar` — no badge or counter on a nav row
 
 The kit's row has one, fully specified:
 
@@ -1165,7 +1156,7 @@ one. Every tint it needs is already in the package (`bg-brand-primary/15`,
 assembly, not new tokens — but without it each product invents its own, and the
 numeral alignment (`tabular-nums`) is the detail everyone forgets.
 
-## 34. `InputGroup` — the search clear button is a recipe, not a part
+## 33. `InputGroup` — the search clear button is a recipe, not a part
 
 The kit reveals the × only when there is something to clear:
 
@@ -1190,7 +1181,7 @@ The classes are load-bearing and easy to get subtly wrong — the rule needs a
 `placeholder` on the input to key off, and a search field without one silently
 keeps the button on. That trap belongs in the `.md`, and is not there yet.
 
-## 35. `Typography` — three of the agreed nineteen are missing · **Fixed in §47**
+## 34. `Typography` — three of the agreed nineteen are missing · **Fixed in §46**
 
 `src/components/Typography/index.tsx`
 
@@ -1226,7 +1217,7 @@ separately makes the claim true again.
 > `Body XL` and `Label 2XL` are both 18/28 and both on the list of nineteen. The
 > kit contradicts itself. `Label XL` (16/24) is unaffected and can be added now.
 
-## 36. `Datepicker` — one bespoke focus ring, not three missing states
+## 35. `Datepicker` — one bespoke focus ring, not three missing states
 
 **Mostly retracted.** Filed as "no hover, no today, no disabled" after reading
 `CalendarDayButton.tsx` alone. The per-day classes do not live there — they live
@@ -1263,7 +1254,7 @@ interaction.
 hover is a token (`bg-state-hover`), that line is the last piece of the day cell
 that a third theme would not reach.
 
-## 37. `TextArea` counter — one ink step too loud
+## 36. `TextArea` counter — one ink step too loud
 
 `src/components/TextArea/index.tsx`
 
@@ -1280,7 +1271,7 @@ content*. `--ink-secondary` is the hint's own colour; §10 moved the label up
 precisely so the hint would be subordinate, and the counter should sit below the
 hint, not beside it.
 
-## 38. The toast close button is off the 24px ladder
+## 37. The toast close button is off the 24px ladder
 
 `src/components/Toast/ToastMessage/index.tsx`
 
@@ -1314,7 +1305,7 @@ in place it does not merely duplicate, it **masks**: the next regression in the
 library would look fine on the page carrying the override and ship broken to the
 one without it.
 
-## 39. `ghost` — one name, two component families, one wrong doc
+## 38. `ghost` — one name, two component families, one wrong doc
 
 `Button`'s `ghost` was removed this cycle in favour of `tertiary`, and
 `Button.md` says so outright: *"There is **no `ghost`** — use `tertiary`."* The
@@ -1441,7 +1432,7 @@ rather than against the source, produced the first result worth recording:
 | inactive tab panel returns as an empty box | **stale** — `data-[state=inactive]:!hidden` is in the bundle (§9 landed) |
 | card press state flashing | **stale** — `outline` carries neither state (§5 landed) |
 | dark `destructiveOutline` border | **stale** — and now *contradicting* the library, which re-stepped to Red-500 → Red-400 (§2) |
-| closed `Popover` stays painted | **real** — §41 below |
+| closed `Popover` stays painted | **real** — §40 below |
 
 **Seven of eight bridges were dead code**, and the last of them had drifted into
 actively overriding a fix that had already shipped. That is the failure mode the
@@ -1476,11 +1467,11 @@ day it was written.
 **New props this round:** `Badge.flat`, `TextArea.hintText`,
 `DropdownMenuItem variant="accent"`, `AccordionItem variant="standalone"`.
 
-**New components this round: six** — `StepperIndicator` (§43),
-`DropdownMenuRow` (§50), `InputGroupAction` (§52), `Link` (§53),
-`StatTile` (§54) and `CodeBlock` (§55).
+**New components this round: six** — `StepperIndicator` (§42),
+`DropdownMenuRow` (§49), `InputGroupAction` (§51), `Link` (§52),
+`StatTile` (§53) and `CodeBlock` (§54).
 
-## 40. `Badge` — the hairline is the base, not a second variant
+## 39. `Badge` — the hairline is the base, not a second variant
 
 `globals.css`, `src/lib/constants.ts`, `src/components/Badge/index.tsx`
 
@@ -1523,7 +1514,7 @@ per-product value. Every existing call site gains a hairline it did not have;
 none loses a fill or changes size — `border` was already in the base class, so
 the box model is untouched.
 
-## 41. `PopoverContent` — a closed panel stayed painted
+## 40. `PopoverContent` — a closed panel stayed painted
 
 `src/components/Popover/PopoverContent.tsx`
 
@@ -1560,7 +1551,7 @@ open or opening. The same pattern (`animate-out` with no fill mode) is on
 `DropdownMenuContent`, `TooltipContent` and `SheetContent`; none of them was
 reported, so they are left alone and noted here rather than changed blind.
 
-## 42. `Sidebar` — the fixed panel was pinned to the viewport
+## 41. `Sidebar` — the fixed panel was pinned to the viewport
 
 `src/components/Sidebar/index.tsx`
 
@@ -1593,7 +1584,7 @@ the §9-class check the constraint at the top of this file asks for, and it come
 out clean: one product is fixed, the other is unaffected, because the removed
 declaration was redundant in the case that still works.
 
-## 43. New — `StepperIndicator`
+## 42. New — `StepperIndicator`
 
 `src/components/Stepper/StepperIndicator.tsx`
 
@@ -1646,7 +1637,7 @@ as not-yet-reached. TypeScript catches it in the library; it cannot in a `.jsx`
 prototype, which is an argument for the rail living in the library and not on
 the page.
 
-## 44. Build — `bg-surface-card/85` is a class that compiles to nothing
+## 43. Build — `bg-surface-card/85` is a class that compiles to nothing
 
 `.design-sync/gen-classlist.mjs`
 
@@ -1665,7 +1656,7 @@ decision about bundle size rather than a defect: the useful shape is probably a
 short list of steps the system actually uses. Recorded so the next person who
 finds a silently unpainted element has somewhere to look.
 
-## 46. `SidebarMenu` — nav rows 4px apart where the kit says 2
+## 45. `SidebarMenu` — nav rows 4px apart where the kit says 2
 
 *Numbered 48: 47 and 49 are taken by entries under Open questions. This file
 is being written from two sides; if a number collides, the heading text is the
@@ -1703,7 +1694,7 @@ a 2px difference in a list of seven is what you actually see.
 built from `.sbx-nav`, which is already at 2px, so this moves the package
 towards what that product ships rather than away from it.
 
-## 48. `TextArea` — the counter row had a slot nothing could fill
+## 47. `TextArea` — the counter row had a slot nothing could fill
 
 *Numbered 50: 47 and 49 are taken by entries under Open questions.*
 
@@ -1739,7 +1730,7 @@ type. That ordering is the reason it is one slot and not two.
 **Both products.** Additive; a `TextArea` without `hintText` renders exactly as
 before. Any field with a limit and a caveat stops hand-building the row.
 
-## 50. `DropdownMenu` — a menu had no way to say "this row is the action"
+## 49. `DropdownMenu` — a menu had no way to say "this row is the action"
 
 *Numbered 52: 47, 49 and 51 are taken by entries under Open questions.*
 
@@ -1798,11 +1789,11 @@ menu is a promise that the row does something.
 `DropdownMenuRow` is new surface area. Insightis gets, as components, two things
 its own CSS already has as `.mi` + `--ink-highlight` and `.cl-model-opt`.
 
-## 52. `InputGroupAction` — an icon docked in a field is not an icon button
+## 51. `InputGroupAction` — an icon docked in a field is not an icon button
 
 `src/components/InputGroup/InputGroupAction.tsx` (new part)
 
-§34 recorded that the search clear button was "a recipe, not a part". Every page
+§33 recorded that the search clear button was "a recipe, not a part". Every page
 therefore built it, and every page built it out of the nearest control on the
 ladder — `IconButton size="2xs" variant="tertiary"`. That is the right 24px box
 and two wrong things: a **14px** glyph where the field's own step is 16, and a
@@ -1834,7 +1825,7 @@ the kit's value is a step short of it. Worth settling, one way, in one place.
 **Both products.** A new part, no existing call site. Insightis' own `.igrp-act`
 is the same shape, so this gives it a component where it has CSS.
 
-## 53. New — `Link`
+## 52. New — `Link`
 
 `src/components/Link/index.tsx`
 
@@ -1864,7 +1855,7 @@ button in its place.
 **Both products.** New surface area; nothing to break. Insightis gets, as a
 component, what it has as a class.
 
-## 54. New — `StatTile`
+## 53. New — `StatTile`
 
 `src/components/StatTile/index.tsx`
 
@@ -1889,7 +1880,7 @@ Sizes are the two rungs the other padded surfaces use — `sm` 16px inset, `md`
 
 **Both products.** New component, no call sites.
 
-## 55. New — `CodeBlock`
+## 54. New — `CodeBlock`
 
 `src/components/CodeBlock/index.tsx`
 
@@ -1910,7 +1901,7 @@ doing nothing. Any product that ships an offline or `file://` surface hits this.
 
 **Both products.** New component, no call sites.
 
-## 56. `AccordionItem` — an item that is its own surface
+## 55. `AccordionItem` — an item that is its own surface
 
 `src/components/Accordion/AccordionItem.tsx`
 
@@ -1929,7 +1920,7 @@ has one layout and the page needs two.
 
 **Both products.** Additive; every existing item keeps the divider.
 
-## 57. `TableCell` — pressed belonged to whatever was pressed
+## 56. `TableCell` — pressed belonged to whatever was pressed
 
 `src/components/Table/TableCell.tsx`
 
@@ -1955,7 +1946,7 @@ the press that was lying about what had been pressed.
 **Both products.** Strictly narrows when the fill paints; no row loses a state
 it should have had.
 
-## 58. `StatusView` — the illustration is a pack, not a rule — **revised**
+## 57. `StatusView` — the illustration is a pack, not a rule — **revised**
 
 `src/components/StatusView/index.tsx`
 
@@ -1981,7 +1972,7 @@ magnifier as the whole picture, and it still stands.
 Every colour is a token, so both re-theme with the page and neither needs a dark
 variant.
 
-## 59. `InputGroup` — two insets on one edge
+## 58. `InputGroup` — two insets on one edge
 
 `src/components/InputGroup/index.tsx`, `src/components/InputGroup/InputGroupAction.tsx`
 
@@ -2020,9 +2011,9 @@ second place to get it wrong, and it would be wrong silently — the only sympto
 is a few pixels.
 
 **Both products.** It fires only when an `InputGroupAction` is present, and that
-part is new in §52, so no existing field changes.
+part is new in §51, so no existing field changes.
 
-## 60. New — `MetaRow`
+## 59. New — `MetaRow`
 
 `src/components/MetaRow/index.tsx`
 
@@ -2066,7 +2057,7 @@ not one of those actions.
 **Both products.** New component, no call sites. Insightis has the same row in
 CSS; this is where it becomes a part.
 
-## 61. `TableHead` — a column width is a share, not a size
+## 60. `TableHead` — a column width is a share, not a size
 
 `src/components/Table/TableHead.tsx`
 
@@ -2129,7 +2120,7 @@ hand-set heads. Stated in `Table.md` rather than discovered twice.
 **Both products.** Additive; every existing column keeps `auto`, which is what
 it had.
 
-## 62. `Link` — `font-[inherit]` silently deleted the weight
+## 61. `Link` — `font-[inherit]` silently deleted the weight
 
 `src/components/Link/index.tsx`
 
@@ -2138,7 +2129,7 @@ it had.
 + 'font-medium text-[length:inherit] leading-[inherit]'
 ```
 
-Every link in the product rendered at **400**. The kit's `.link` is 500, §53
+Every link in the product rendered at **400**. The kit's `.link` is 500, §52
 specified 500, the class list contained `font-medium`, and the computed style
 still said 400.
 
@@ -2158,7 +2149,7 @@ symptom is a prop that has no effect, which is the hardest kind to see.
 **Both products.** Restores the specified weight; nothing that reads correct
 today changes.
 
-## 63. `TableRow` — nesting was a number one table owned
+## 62. `TableRow` — nesting was a number one table owned
 
 `src/components/Table/TableRow.tsx`, `src/components/Table/TableCell.tsx`
 
@@ -2201,7 +2192,7 @@ recorded in the prod migration report
 (`Insightis/reports/2026-09-19-prod-interaction-states-migration.md`) — zero
 visual delta, since the only rows carrying it today already had the 8px.
 
-## 64. `TableHead` — a checkbox made the header 2px taller
+## 63. `TableHead` — a checkbox made the header 2px taller
 
 `src/components/Table/TableHead.tsx`
 
@@ -2227,7 +2218,7 @@ around a 16px line — so this is the height the header always meant to be. A
 fixed height is safe here and **only** here: a header never wraps
 (`whitespace-nowrap` is two lines below) and nothing in one is taller than the
 control that caused this. `TableCell` keeps its padding and still grows with
-its content, which is §49 — a body row has to be able to hold two lines, a
+its content, which is §48 — a body row has to be able to hold two lines, a
 header does not.
 
 > An earlier draft of this section blamed the sortable head's `inline-flex`
@@ -2238,7 +2229,7 @@ header does not.
 
 **Both products.** Only headers that carry a control change, and only by 2px.
 
-## 65. `PageHeader` — the back control's pill overhung the page
+## 64. `PageHeader` — the back control's pill overhung the page
 
 `src/components/PageHeader/index.tsx`
 
@@ -2275,7 +2266,7 @@ box; align by the box as soon as the box can be seen.**
 **Both products.** Every page title with a back arrow moves its arrow 6px
 inward; nothing else in the row moves.
 
-## 66. `DropdownMenu` — a link may open a menu · **DRAFT**
+## 65. `DropdownMenu` — a link may open a menu · **DRAFT**
 
 `src/components/DropdownMenu/DropdownMenu.md`, `changes/Harness.tsx`
 
@@ -2307,13 +2298,13 @@ decision".
   component override — and `ScrollShadow` also paints edge shadows the container
   does not want. Left on the page.
 - **`DropdownMenuContent` / `TooltipContent` / `SheetContent` exit animations.**
-  Same missing fill mode as §41, no reported symptom. Changing three more
+  Same missing fill mode as §40, no reported symptom. Changing three more
   floating surfaces on the strength of one measurement is how a fix becomes a
   regression.
-- **`Badge size="sm"` radius (§27).** Still open, still one compound variant.
+- **`Badge size="sm"` radius.** Archived — the request against `Badge` was the hairline, and this was never part of it.
   Out of scope for a round that was about where components come from.
 
-## 45. `StepSlider` — four measurements against a spec that argues for each one
+## 44. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
 colliding with it.*
@@ -2352,7 +2343,7 @@ at a dot changes nothing.
 expands 8px around a 4px dot — 20×20, under WCAG 2.5.8's 24×24. The kit reaches
 24 by insetting 4px around a **16px slot**, not around the mark: *"the slot plus
 an invisible `::before` ring clears 24×24 on both axes without changing layout."*
-Same trick as `.swt::before`, which the package did implement correctly (§34 of
+Same trick as `.swt::before`, which the package did implement correctly (§33 of
 the kit's Switch entry, `-inset-x-1 -inset-y-3`). The gap is that the dot here is
 the mark, not the slot — the constant-slot layer the kit describes was not built,
 which is also why the width came out at 80px instead of 68px.
@@ -2367,7 +2358,7 @@ None of these are visible in the published Storybook, which predates the
 component's current form; all four were read off the kit's rendered CSS and the
 package source side by side.
 
-## 47. The size ladder — the package grows the box, the kit grows the type · **Fixed**
+## 46. The size ladder — the package grows the box, the kit grows the type · **Fixed**
 
 **The canonical ladder. Four sources carry this table and they must agree:** this
 file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
@@ -2408,7 +2399,7 @@ all five steps, in all four components. Nothing else about `lg` and `xl` does.
 
 > **Amended (label).** 18px was taken out again after review — too large for a
 > control label at any step. `xl` sits at 16px, the same rung as `lg`, in the
-> package *and* in `kit-theme.css`. See §51.
+> package *and* in `kit-theme.css`. See §50.
 >
 > **Amended 2026-09-20 (padding) — the ❌ moved to the other column.** This
 > section read the kit as the reference and marked the package's 16/20 as the
@@ -2478,7 +2469,7 @@ edge leaves the icon nearer the border than the text it introduces. It cost the
 one thing this section exists to restore: `Button` `xs` stayed at 8, so a field
 and a button beside it stopped sharing an edge at exactly that step — and it
 left the package as the only one of four sources carrying 6. Settled at 8. See
-§51, "The 28px field tightens to a 6px edge".
+§50, "The 28px field tightens to a 6px edge".
 
 Field text, which the shell padding says nothing about: `sm` 12 → **14px**,
 `lg` and `xl` 14 → **16px**. The `sm` step is a correction in its own right —
@@ -2527,7 +2518,7 @@ hand. Each now carries a comment naming the ladder it belongs to, which is the
 only guard available: nothing in the build compares them, and a fourth component
 adopting a glyph size would have no scale to read.
 
-### This is why §35 exists
+### This is why §34 exists
 
 The three `textStyle` rungs missing from `Typography` are **Label XL (16/24)**,
 **Label 2XL (18/28)** and **Body XL (18/28)** — and this section is what they are
@@ -2548,19 +2539,19 @@ The kit's model, applied. `lg` and `xl` hold their padding at 12px and grow the
 label, the field text and the glyph instead; `InputGroup`'s `sm` field text is
 corrected from 12 to 14; the `xs` addon gap tightens to 4px through a compound
 variant; and `Typography` gains `body18`, `label16` and `label18` — the three
-rungs this ladder needs, which closes §35 along with it.
+rungs this ladder needs, which closes §34 along with it.
 
 | | before | after |
 |---|---|---|
 | `Button` / `IconButton` padding | `lg` 16, `xl` 20 | both **12** |
-| `Button` label | `lg` 14, `xl` 14 | **16**, **16** (18 reverted — §51) |
+| `Button` label | `lg` 14, `xl` 14 | **16**, **16** (18 reverted — §50) |
 | `Button` gap | 6 everywhere | **8**, tightening to **4** at `xs` |
 | glyph, all three ladders | 14/16/16/16/16 and 16/16/20/20/20 | **14/16/16/20/20** |
 | `InputGroup` padding | `lg` 16, `xl` 20 | both **12** |
 | `InputGroup` field text | 12/12/14/14/14 | **12/14/14/16/16** |
 | `TextArea` padding y/x | 8·8 / 8·12 / 8·12 / 10·16 / 12·20 | **4·8 / 6·12 / 8·12 / 8·12 / 10·12** |
 | `TextArea` font | 12/12/14/14/14 | **12/14/14/16/16** |
-| `Typography.textStyle` | 18 styles + `display` | **19** + `display` — `label16` only (§51) |
+| `Typography.textStyle` | 18 styles + `display` | **19** + `display` — `label16` only (§50) |
 
 `.changeset/size-ladder-kit-alignment.md` carries the per-step detail and the
 breaking-change note. It is a **major**: an `xl` button gets narrower and its
@@ -2578,7 +2569,7 @@ non-conformance: `px-5` on a 44px control beside a 14px label — a label unchan
 since `sm` — reads as loose rather than large. Growing the content is the only
 thing that makes a five-step ladder legible at a glance.
 
-## 49. `TableCell` — a row that could not grow, under a comment saying it could
+## 48. `TableCell` — a row that could not grow, under a comment saying it could
 
 `src/components/Table/TableCell.tsx`, `.design-sync/gen-classlist.mjs`
 
@@ -2646,9 +2637,9 @@ Two ways back, and the second is the better one: `layout="fixed"` on the table,
 or `truncate` on the specific cells that should clamp — which is what the kit
 does, and it keeps the decision beside the column it applies to.
 
-## 51. The icon surface — a ladder the bundle never compiled, and three decisions on top of it
+## 50. The icon surface — a ladder the bundle never compiled, and three decisions on top of it
 
-Four changes that arrived together while the size ladder (§47) was being
+Four changes that arrived together while the size ladder (§46) was being
 reviewed by eye. Three are design decisions taken at the screen; the fourth is
 the reason none of them would have shipped.
 
@@ -2724,7 +2715,7 @@ the argument that at 28px tall with a 14px glyph an 8px edge leaves the icon
 nearer the border than the text it introduces.
 
 It cost more than it bought. `Button` `xs` stayed at 8px, so at that one step a
-field and a button beside it no longer lined up — the property §47 exists to
+field and a button beside it no longer lined up — the property §46 exists to
 restore — and the package was then the only one of four sources carrying 6:
 `kit-theme.css` (`.field.is-xs{padding:0 .5rem}`), the UX audit's table and the
 prod-migration report all say 8. Settled in that direction. `xs` is 8px, and the
@@ -2773,7 +2764,7 @@ either side until the design answers:
 | | |
 |---|---|
 | **`--tbl-row-pressed`** | Prose says neutral, `--tint-6` of `--ink-primary`. CSS says `color-mix(in srgb, #07807E 4%, transparent)` — brand teal, off the tint scale. See §25. |
-| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §35. |
+| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §34. |
 | **Sidebar active ink** | The row table says active is *"`Text/Body` (no brand colour)"*; the Collapsed row two lines down says *"(active = teal icon)"*. The package follows the first. |
 
 Eight more are the kit's own ⚠ markers — agreed to be *needed*, never specified,

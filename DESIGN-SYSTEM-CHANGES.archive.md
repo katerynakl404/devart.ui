@@ -134,3 +134,20 @@ belongs to the badge.
 
 **Both products.** Only `sm` changes (4px gap, 12px glyph); `md` and up keep
 the 8px gap they already had, and no height or inset moves.
+
+## Badge — the `sm` radius
+
+*Numbered §27 when it was in the change log.*
+
+**Why it is here:** it was never asked for. The kit does say `.badge-sm` is 4px
+where the package renders 6, but the request against `Badge` was the hairline
+and nothing else, and a finding filed among changes reads as one. No code was
+ever changed for it.
+
+## 27. `Badge size="sm"` rounds one step too far
+
+`rounded` defaults to `md` (6px) for every badge size. The kit's small chip
+renders at **4px** — measured, `border-radius: 4px`, height 20px. A 20px chip at
+a 6px radius reads softer than the 28px chip above it, which is the wrong way
+round. A `{ size: 'sm', rounded: 'md' }` compound variant dropping to `rounded`
+is the same one-line fix `IconButton` already uses for its two smallest boxes.

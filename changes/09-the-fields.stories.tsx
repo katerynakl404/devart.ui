@@ -78,7 +78,7 @@ export const TheFields: Story = {
             , composed.
           </>
         }
-        n={52}
+        n={51}
         title="An icon docked in a field is not an icon button"
         why="There was no part for a field's trailing control, so every page reached for the icon button one step down the ladder and got a glyph one size small under a pill the field did not need."
       />
@@ -139,7 +139,7 @@ export const TheFields: Story = {
             markup already says.
           </>
         }
-        n={59}
+        n={58}
         title="Two insets on one edge"
         why="The shell's padding and the docked control's own box both claimed the trailing edge, so the ✕ sat twice as far in as the glyph facing it."
       />
@@ -196,7 +196,7 @@ export const TheFields: Story = {
             caveat is standing advice, an error is about what you just typed.
           </>
         }
-        n={48}
+        n={47}
         title="The counter row had a slot nothing could fill"
         why="The row existed, the space existed, and the only thing that could go in it was an error — so a page with a caveat to show threw the row away and built its own."
       />
@@ -255,7 +255,7 @@ export const TheFields: Story = {
             the counter should sit below the hint, not beside it.
           </>
         }
-        n={37}
+        n={36}
         state="proposed"
         title="The counter is one ink step too loud"
         why="It shares --ink-secondary with the hint, so two things of different weight read as one line of the same voice."
@@ -285,7 +285,7 @@ export const TheFields: Story = {
             goes.
           </>
         }
-        n={34}
+        n={33}
         state="not-a-library-change"
         title="The search clear button is a recipe, not a part"
         why="The behaviour is fully specified and reachable — as a documented story, not as a prop. Recorded so the next page does not re-invent it."
@@ -316,7 +316,7 @@ export const TheFields: Story = {
             and the calendar day is the one control that does not.
           </>
         }
-        n={36}
+        n={35}
         state="proposed"
         title="One bespoke focus ring, not three missing states"
         why="Filed after reading one file, and three quarters of it was wrong. The quarter that is not: a calendar day focuses differently from every other control in the package."

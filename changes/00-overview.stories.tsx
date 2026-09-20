@@ -93,7 +93,7 @@ const ROWS: Row[] = [
     page: '2. Size and spacing',
   },
   {
-    n: '47',
+    n: '46',
     area: 'Button, IconButton',
     change: 'a bigger button grew its box, not its label',
     page: '2. Size and spacing',
@@ -201,25 +201,25 @@ const ROWS: Row[] = [
     page: '6. Colour tokens',
   },
   {
-    n: '49',
+    n: '48',
     area: 'TableCell',
     change: 'a cell that could not grow, under a comment saying it could',
     page: '7. The table',
   },
   {
-    n: '61',
+    n: '60',
     area: 'TableHead',
     change: 'a column width is a share, not a size',
     page: '7. The table',
   },
   {
-    n: '63',
+    n: '62',
     area: 'TableRow',
     change: 'nesting was a number one table owned',
     page: '7. The table',
   },
   {
-    n: '57',
+    n: '56',
     area: 'TableCell',
     change: "the row's pressed fill belonged to whatever was pressed",
     page: '7. The table',
@@ -231,43 +231,43 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: '40',
+    n: '39',
     area: 'Badge',
     change: 'the hairline is the base, not a second variant',
     page: '8. The badge',
   },
   {
-    n: '52',
+    n: '51',
     area: 'InputGroupAction',
     change: 'an icon docked in a field is not an icon button',
     page: '9. The fields',
   },
   {
-    n: '59',
+    n: '58',
     area: 'InputGroup',
     change: 'two insets on one edge',
     page: '9. The fields',
   },
   {
-    n: '48',
+    n: '47',
     area: 'TextArea',
     change: 'the counter row had a slot nothing could fill',
     page: '9. The fields',
   },
   {
-    n: '37',
+    n: '36',
     area: 'TextArea',
     change: 'the counter is one ink step too loud',
     page: '9. The fields',
   },
   {
-    n: '34',
+    n: '33',
     area: 'InputGroup',
     change: 'the search clear button is a recipe, not a part',
     page: '9. The fields',
   },
   {
-    n: '36',
+    n: '35',
     area: 'Datepicker',
     change: 'one bespoke focus ring, not three missing states',
     page: '9. The fields',
@@ -288,11 +288,11 @@ const ROWS: Row[] = [
 
 /** Documented but not rendered yet, so the gap is visible rather than implied. */
 const UNCOVERED: [string, string][] = [
-  ['Overlays and menus', '24, 28, 29, 30, 32, 38, 41, 50, 56, 66'],
-  ['Sidebar', '33, 42, 46'],
-  ['New components', '43, 53, 54, 55, 60'],
-  ['Table and badge', '25, 27, 64'],
-  ['Tokens and the rest', '3, 5, 7a, 31, 35, 39, 44, 45, 51, 58, 62, 65'],
+  ['Overlays and menus', '24, 27, 28, 29, 31, 37, 40, 49, 55, 65'],
+  ['Sidebar', '32, 41, 45'],
+  ['New components', '42, 52, 53, 54, 59'],
+  ['Table', '25, 63'],
+  ['Tokens and the rest', '3, 5, 7a, 30, 34, 38, 43, 44, 50, 57, 61, 64'],
 ];
 
 /**
@@ -380,7 +380,7 @@ export const Overview: Story = {
           Documented, not yet rendered
         </h3>
         <p>
-          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 67 sections, §1 to §66
+          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §65
           plus §7a. The table above renders 32 of them as cases and lists §21
           and §22 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:
