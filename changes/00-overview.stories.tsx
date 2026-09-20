@@ -270,10 +270,7 @@ const UNCOVERED: [string, string][] = [
   ['Sidebar', '33, 42, 46'],
   ['New components', '43, 53, 54, 55, 60'],
   ['Table and badge', '25, 27, 64'],
-  [
-    'Build, tokens and the rest',
-    '3, 5, 7a, 21, 22, 31, 35, 39, 44, 45, 51, 58, 62, 65',
-  ],
+  ['Tokens and the rest', '3, 5, 7a, 31, 35, 39, 44, 45, 51, 58, 62, 65'],
 ];
 
 /**
@@ -362,8 +359,9 @@ export const Overview: Story = {
         </h3>
         <p>
           <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 67 sections, §1 to §66
-          plus §7a. The table above renders 26 of them; these are the other 41,
-          grouped by the page they would belong to:
+          plus §7a. The table above renders 26 of them as cases and lists §21
+          and §22 as build changes with nothing to render. These are the other
+          39, grouped by the page they would belong to:
         </p>
         <ul className="flex flex-col gap-1 text-ink-secondary text-xs">
           {UNCOVERED.map(([group, list]) => (
