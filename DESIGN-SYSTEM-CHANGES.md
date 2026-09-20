@@ -93,7 +93,7 @@ the groups are the reading order.
 | Kit gap | `InputGroup` | the clear-button reveal ships as a story recipe, not as a prop |
 | Kit gap | `Datepicker` | the one focus ring in the package that is not the shared recipe |
 | Kit gap | `TextArea` | counter ink one step too loud |
-| Fixed | `Button`, `IconButton`, `Input`, `InputGroup`, `TextArea` | §49 — `lg`/`xl` now grow the type and the glyph, not the padding; one 14/16/16/20/24 glyph ladder |
+| Fixed | `Button`, `IconButton`, `Input`, `InputGroup`, `TextArea` | §49 — one ladder per axis, canonical table at the top of §49: button padding 8/12/12/16/20 (the field holds 12 from `sm`), gap 4/6/8/8/8, label 12/14/14/16/16, glyph 14/16/16/20/20 |
 | Fixed | `Table` | §51 — the cell wraps, so a row grows with its content; the clamp is scoped to layout="fixed" |
 | Fixed | `Typography` | `label16` — the rung the `lg` control ladder needs (§35, capped in §53) |
 | Fixed | `InputGroupAddon` | leading glyph takes the placeholder ink; a docked control lifts to Text/Body on hover |
@@ -2481,12 +2481,20 @@ all five steps, in all four components. Nothing else about `lg` and `xl` does.
 | xs | 28px | `.5rem` = 8 | `px-2` = 8 ✅ | Label M — 12 | `text-xs` = 12 ✅ |
 | sm | 32px | `.75rem` = 12 | `px-3` = 12 ✅ | Label L — 14 | `text-sm` = 14 ✅ |
 | md | 36px | `.75rem` = 12 | `px-3` = 12 ✅ | Label L — 14 | `text-sm` = 14 ✅ |
-| **lg** | 40px | `.75rem` = **12** | `px-4` = **16** ❌ | Label XL — **16** | `text-sm` = **14** ❌ |
-| **xl** | 44px | `.75rem` = **12** | `px-5` = **20** ❌ | Label 2XL — **18** | `text-sm` = **14** ❌ |
+| **lg** | 40px | `.75rem` = **12** ❌ | `px-4` = **16** | Label XL — **16** | `text-sm` = **14** ❌ |
+| **xl** | 44px | `.75rem` = **12** ❌ | `px-5` = **20** | Label 2XL — **18** | `text-sm` = **14** ❌ |
 
-> **Amended.** 18px was taken out again after review — too large for a control
-> label at any step. `xl` now sits at 16px, the same rung as `lg`, in the
+> **Amended (label).** 18px was taken out again after review — too large for a
+> control label at any step. `xl` sits at 16px, the same rung as `lg`, in the
 > package *and* in `kit-theme.css`. See §53.
+>
+> **Amended 2026-09-20 (padding) — the ❌ moved to the other column.** This
+> section read the kit as the reference and marked the package's 16/20 as the
+> defect. It is the other way round: the UX audit's tables (#15, #36) are the
+> spec, they say 8/12/12/16/20, and `kit-theme.css` was the copy that had not
+> caught up — every `.btn` step from `sm` up carried `padding: 0 .75rem`. The
+> kit now carries 16 and 20, and the paragraph below about "what a bigger button
+> means" is kept only as the record of the wrong reading.
 
 Gap too: `.btn{gap:.5rem}` = 8px, tightening to `.25rem` = 4px at `xs`. The
 package is `gap-1.5` = 6px at every size.
@@ -2499,12 +2507,16 @@ package is `gap-1.5` = 6px at every size.
 > `.field.is-sm`, `.igrp.is-sm .igrp-input` (glyph → text) and
 > `.igrp.is-sm .igrp-add` (between two addon children).
 
-**The two systems disagree about what "a bigger button" means.** The kit holds
+~~**The two systems disagree about what "a bigger button" means.** The kit holds
 the horizontal inset at 12px from `sm` upward and lets the *label* grow —
 14 → 16 → 18. The package holds the label at 14px and lets the *padding* grow —
 12 → 16 → 20. Both produce a wider control; only one produces a more prominent
-one. A 44px `xl` button in the package is a 14px label in a lot of air, which is
-what an oversized `md` looks like, not what an `xl` looks like.
+one.~~
+
+**Struck 2026-09-20.** It is not either/or: a bigger control grows **both**. The
+padding opens to 16 and 20 *and* the label steps to 16, which is what the
+canonical table at the top of this section says. The reading above came from
+treating `kit-theme.css` as the reference when the audit report is.
 
 ### `InputGroup` / `Input`
 
@@ -2537,12 +2549,14 @@ instead of three. That is a structural difference from the kit, not a
 discrepancy — the rendered result is what has to match, and now does at four of
 five steps.
 
-The fifth is a decision taken at the screen: **`xs` is 6px in the package
-against the kit's 8px.** At 28px tall with a 14px glyph, an 8px edge leaves the
-icon nearer the border than the text it introduces. It is the one half-step on
-this ladder, which the conventions allow inside a control. `Button` `xs` stays
-at 8px, so at that single step a field and a button beside it no longer share an
-edge — worth settling in one direction rather than leaving `xs` as the exception.
+~~The fifth is a decision taken at the screen: **`xs` is 6px in the package
+against the kit's 8px.**~~ **Reverted 2026-09-20 — `xs` is 8px and the ladder
+has no half-steps.** The argument was that at 28px tall with a 14px glyph an 8px
+edge leaves the icon nearer the border than the text it introduces. It cost the
+one thing this section exists to restore: `Button` `xs` stayed at 8, so a field
+and a button beside it stopped sharing an edge at exactly that step — and it
+left the package as the only one of four sources carrying 6. Settled at 8. See
+§53, "The 28px field tightens to a 6px edge".
 
 Field text, which the shell padding says nothing about: `sm` 12 → **14px**,
 `lg` and `xl` 14 → **16px**. The `sm` step is a correction in its own right —

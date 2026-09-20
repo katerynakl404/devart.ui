@@ -222,6 +222,33 @@ const ROWS: Row[] = [
       'the clear and the chevron paint as placeholder glyphs and never answer the pointer',
     page: '1. Colour and state',
   },
+  {
+    n: '41',
+    area: 'Badge',
+    change:
+      'the hairline is the base, not a second variant — a chip keeps its shape on a surface its fill matches',
+    page: '8. The badge',
+  },
+  {
+    n: '62',
+    area: 'Badge',
+    change:
+      'the gap and the glyph step with the size; a flat 8px gap was wider than the chip’s own inset',
+    page: '8. The badge',
+  },
+  {
+    n: '45',
+    area: 'Badge',
+    change:
+      'tooltip — a status carries one without becoming a <button> in the tab order',
+    page: '8. The badge',
+  },
+  {
+    n: '27',
+    area: 'Badge',
+    change: 'a 20px chip rounds one step too far — 6px where the kit says 4',
+    page: '8. The badge',
+  },
   // Not numbered in DESIGN-SYSTEM-CHANGES.md: the interaction-state work
   // carries its own changeset, `interaction-states-relative-overlays.md`.
   {

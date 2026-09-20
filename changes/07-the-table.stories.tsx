@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { composeStories } from '@storybook/react-vite';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Button } from '../src/components/Button';
+import { Checkbox } from '../src/components/Checkbox';
+import { IconButton } from '../src/components/IconButton';
 import {
   Table,
   TableActionsCell,
@@ -118,6 +121,71 @@ function NestedTable({ old }: { old?: boolean }) {
   );
 }
 
+/**
+ * Every one of the five `width` values in one table — a checkbox column, two
+ * shares, an auto column and a row-action cluster. `old` swaps the prop for
+ * the pixel widths a page had to write before it existed.
+ */
+function WidthTable({ old }: { old?: boolean }) {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead
+            className={old ? 'w-[40px]' : undefined}
+            width={old ? undefined : 'control'}
+          >
+            <Checkbox aria-label="Select all" />
+          </TableHead>
+          <TableHead
+            className={old ? 'w-[180px]' : undefined}
+            width={old ? undefined : 'md'}
+          >
+            Source
+          </TableHead>
+          <TableHead>Note</TableHead>
+          <TableHead
+            className={old ? 'w-[110px]' : undefined}
+            width={old ? undefined : 'sm'}
+          >
+            Status
+          </TableHead>
+          <TableHead
+            className={old ? 'w-[96px]' : undefined}
+            width={old ? undefined : 'actions'}
+          >
+            <span className="sr-only">Actions</span>
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {ROWS.map((row) => (
+          <TableRow data-interactive key={row.id}>
+            <TableCell>
+              <Checkbox aria-label={`Select ${row.name}`} />
+            </TableCell>
+            <TableCell>{row.name}</TableCell>
+            <TableCell>{row.note}</TableCell>
+            <TableCell>{row.status}</TableCell>
+            <TableActionsCell>
+              <IconButton aria-label="Edit" size="2xs" variant="tertiary">
+                <Pencil />
+              </IconButton>
+              <IconButton
+                aria-label="Delete"
+                size="2xs"
+                variant="destructiveTertiary"
+              >
+                <Trash2 />
+              </IconButton>
+            </TableActionsCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
 function PressTable({ old }: { old?: boolean }) {
   return (
     <Table>
@@ -191,39 +259,24 @@ export const TheTable: Story = {
       <ChangeCase
         after={
           <div className="flex flex-col gap-2">
-            <NoteTable widths />
+            <WidthTable />
             <p className="text-ink-secondary text-xs">
-              <Code>width="md"</Code> · auto · <Code>width="sm"</Code>
+              <Code>control</Code> · <Code>md</Code> · auto · <Code>sm</Code> ·{' '}
+              <Code>actions</Code>
             </p>
           </div>
         }
-        afterNote="width — control 48 · sm 12% · md 16% · lg 20% · actions 112"
+        afterNote="control 48 · md 16% · auto · sm 12% · actions 112"
         before={
           <div className="flex flex-col gap-2">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[180px]">Source</TableHead>
-                  <TableHead>Note</TableHead>
-                  <TableHead className="w-[110px]">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {ROWS.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.note}</TableCell>
-                    <TableCell>{row.status}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <WidthTable old />
             <p className="text-ink-secondary text-xs">
-              <Code>w-[180px]</Code> · auto · <Code>w-[110px]</Code>
+              <Code>w-[40px]</Code> · <Code>w-[180px]</Code> · auto ·{' '}
+              <Code>w-[110px]</Code> · <Code>w-[96px]</Code>
             </p>
           </div>
         }
-        beforeNote="a pixel width per column, set by the page"
+        beforeNote="a pixel width per column, five numbers set by the page"
         beforeSource="a consumer's own hand-set widths — the published TableHead has no width prop, so this is what a page had to write."
         files={['src/components/Table/TableHead.tsx']}
         footnote={
