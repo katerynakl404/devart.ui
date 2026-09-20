@@ -109,7 +109,11 @@ function MetaRow({
           <TooltipTrigger asChild>
             <IconButton
               aria-label={clearLabel}
-              size="2xs"
+              /* `sm`, the same rung the row's action buttons sit on. They end
+                 up side by side at the row's right edge, and two controls on
+                 one line at two different box sizes read as a control and an
+                 afterthought — which is not what leaving a selection is. */
+              size="sm"
               variant="tertiary"
               /* Last in the row and outside `MetaRow.End`: leaving is not one
                  of the actions that act on the selection, it is the way out of
@@ -124,10 +128,16 @@ function MetaRow({
                  This was `last:ms-auto`, meant as "only if nothing else took
                  the edge". It is not that: `:last-child` is true whenever the
                  ✕ is last in the row, which is always. The condition has to
-                 look at what comes BEFORE it, so it is a sibling selector —
-                 and then the ✕ sits at the row's own gap from the actions it
-                 belongs beside. */
-              className="ms-auto [[data-slot=meta-row-end]+&]:ms-0"
+                 look at what comes BEFORE it, so it is a sibling selector.
+
+                 Beside the actions it also gives back half the row's gap. The
+                 row spaces its MEMBERS 12px apart — the count, the link, the
+                 action cluster — but the ✕ is not another member out at the
+                 edge, it belongs to the cluster it follows. At 12px (plus the
+                 button's own inset, so ~17px to the eye) it read as stranded;
+                 at 8px it reads as the end of that group without collapsing
+                 into it the way the cluster's own 4px would. */
+              className="ms-auto [[data-slot=meta-row-end]+&]:-ms-1"
               onClick={onClear}
             >
               <X />

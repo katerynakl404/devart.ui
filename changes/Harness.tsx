@@ -165,8 +165,11 @@ export function ChangeCase({
     <section className="flex flex-col gap-3 border-stroke border-b pb-8 last:border-b-0">
       <header className="flex flex-col gap-1.5">
         <div className="flex flex-wrap items-center gap-2">
+          {/* `§` belongs to a number. A case that carries a word instead —
+              `new`, `archived`, a document's name — is not a section of
+              DESIGN-SYSTEM-CHANGES.md, and prefixing it claims it is. */}
           <span className="font-semibold text-ink-inactive text-sm tabular-nums">
-            §{n}
+            {typeof n === 'number' || /^\d/.test(String(n)) ? `§${n}` : n}
           </span>
           <h3 className="font-semibold text-base text-ink-primary">{title}</h3>
           {state ? (

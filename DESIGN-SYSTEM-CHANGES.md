@@ -100,7 +100,6 @@ the groups are the reading order.
 | **Build** | `gen-classlist.mjs` | the library’s whole glyph surface was absent from the bundle vocabulary (§53) |
 | Kit gap | `StepSlider` | dot colour, dot size, width and hit area all off the kit s own numbers |
 | Kit gap | `Badge` | `--badge-border` shipped — the hairline is the base of every variant |
-| New | `Badge` | `tooltip` — a status carries a tooltip without becoming a `<button>` |
 | Colour | `PopoverContent` | closed state holds its faded-out frame instead of snapping back |
 | Size | `Sidebar` | fixed panel takes its height from `inset-y-0`, not `h-svh` |
 | New | `StepperIndicator` | new component — the rail the headless `Stepper` never shipped |
@@ -118,7 +117,6 @@ the groups are the reading order.
 | Size | `AccordionItem` | `standalone` — an item that is its own surface |
 | Colour | `TableCell` | the row's pressed fill belongs to whatever was pressed |
 | Revised | `StatusView` | the illustration is a replaceable pack of two, not one artwork |
-| Size | `Badge` | gap and glyph step with the size; a flat 8px gap beat the 6px inset |
 | Kit gap | `Toggle` | `ghost` is `Button`'s removed variant under another name |
 | Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
@@ -1457,7 +1455,6 @@ day it was written.
 | Area | Component | Change |
 |---|---|---|
 | Kit gap | `Badge` | `--badge-border` shipped; the hairline is the base of every variant, `flat` is the opt-out |
-| New | `Badge` | `tooltip` prop — a status carries a tooltip without becoming a `<button>` |
 | Colour | `PopoverContent` | closed state gets `fill-mode-forwards`, so it stops snapping back to full opacity |
 | Size | `Sidebar` | fixed panel takes its height from `inset-y-0`, not from `h-svh` |
 | New | **`StepperIndicator`** | the visual rail the headless `Stepper` never shipped |
@@ -1475,9 +1472,8 @@ day it was written.
 | Size | `AccordionItem` | `variant="standalone"` drops the divider for one card per section |
 | Colour | `TableCell` | pressed guarded against `button:active` and an open menu inside the row |
 | Revised | `StatusView` | `EmptySearchIllustration` added — the pack is two, and the slot was always open |
-| Size | `Badge` | `gap` and `[&_svg]` moved into the size ladder — 4px/12px at `sm`, not 8px/14px |
 
-**New props this round:** `Badge.tooltip`, `Badge.flat`, `TextArea.hintText`,
+**New props this round:** `Badge.flat`, `TextArea.hintText`,
 `DropdownMenuItem variant="accent"`, `AccordionItem variant="standalone"`.
 
 **New components this round: six** — `StepperIndicator` (§44),
@@ -1649,36 +1645,6 @@ upcoming step label had been inheriting its parent's colour rather than reading
 as not-yet-reached. TypeScript catches it in the library; it cannot in a `.jsx`
 prototype, which is an argument for the rail living in the library and not on
 the page.
-
-## 45. `Badge` — a status that is not a control
-
-`src/components/Badge/index.tsx`
-
-```ts
-tooltip?: ReactNode;
-tooltipSide?: 'top' | 'right' | 'bottom' | 'left';  // default 'top'
-```
-
-A badge has no action. Its only behaviour is a tooltip, and until now the system
-gave it no way to have one — so the page wrapped it:
-
-```jsx
-<TooltipTrigger asChild>
-  <button type="button" className="flex rounded-full">{pill}</button>
-</TooltipTrigger>
-```
-
-That gives a read-only status `role="button"`, a press state from the theme, a
-pointer cursor, and a promise of an action it does not keep. It also introduced
-a layout bug the page had to comment around: a default `<button>` is a block
-container with its own line box, 22.6px around a 20px pill, so the pill moved
-~1px vertically every time the state changed.
-
-With `tooltip` the trigger is the badge itself — `tabIndex={0}` for keyboard
-reach and nothing else. No wrapper, no role, no line box.
-
-**Both products.** Additive. A badge with no `tooltip` renders exactly as
-before, down to the DOM.
 
 ## 46. Build — `bg-surface-card/85` is a class that compiles to nothing
 
@@ -2055,57 +2021,6 @@ is a few pixels.
 
 **Both products.** It fires only when an `InputGroupAction` is present, and that
 part is new in §54, so no existing field changes.
-
-## 62. `Badge` — the gap and the glyph did not step with the size
-
-`src/components/Badge/index.tsx`
-
-Reported as "this does not render like a design-system component", and the
-measurement says why. At `sm`:
-
-| | ours | kit |
-|---|---|---|
-| height | 20px | 20px ✓ |
-| horizontal inset | 6px | 6px ✓ |
-| **gap, glyph → label** | **8px** | **4px** |
-| **glyph** | **14px** | **12px** |
-
-`gap-2` sat in the shared base, so every size got 8px. At `sm` that makes the
-space *inside* the chip wider than the chip's own distance to its edge — 8
-against 6 — and a pill whose interior gap beats its inset reads as an icon and
-a label in a box rather than as one chip. That is the whole of the report.
-
-The kit sets both per size and writes the reason for the glyph next to it:
-
-```css
-.badge         { gap:.5rem;  height:1.75rem }              /* 8px · 28px */
-.badge-sm      { gap:.25rem; height:1.25rem; padding:0 .375rem }
-.badge .b-ic    { width:var(--icon-xs) }                   /* 14px */
-.badge-sm .b-ic { width:12px }
-/* "A 14px glyph in a 20px pill leaves 3px of air — step down" */
-```
-
-```diff
-- 'inline-flex items-center gap-2 border border-badge-border',
-+ 'inline-flex items-center border border-badge-border',
-...
--   xs: 'h-5 px-2 text-xs [&_svg]:size-3',
--   sm: 'h-5 px-1.5 text-xs [&_svg]:size-3.5',
--   md: 'h-7 px-2.5 text-xs [&_svg]:size-3.5',
-+   xs: 'h-5 gap-1 px-2 text-xs [&_svg]:size-3',
-+   sm: 'h-5 gap-1 px-1.5 text-xs [&_svg]:size-3',
-+   md: 'h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5',
-```
-
-**How it hid.** The page had been passing `<I.Alert size={12} />` into the
-badge's `leftSlot` — the right value, arrived at by eye — and
-`[&_svg]:size-3.5` overrode it to 14 every time. A consumer correcting a
-component by hand and silently losing is the failure this file exists to catch;
-the size attribute is gone from the pages now, because inside a badge the glyph
-belongs to the badge.
-
-**Both products.** Only `sm` changes (4px gap, 12px glyph); `md` and up keep
-the 8px gap they already had, and no height or inset moves.
 
 ## 63. New — `MetaRow`
 

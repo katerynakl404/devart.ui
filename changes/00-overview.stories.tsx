@@ -237,13 +237,13 @@ const ROWS: Row[] = [
     page: '8. The badge',
   },
   {
-    n: '62',
+    n: 'Archived',
     area: 'Badge',
     change: 'the gap and the glyph did not step with the size — not requested',
     page: '8. The badge',
   },
   {
-    n: '45',
+    n: 'Archived',
     area: 'Badge',
     change:
       'a status that had to become a control to carry a tooltip — not requested',
@@ -283,7 +283,7 @@ const DECISIONS: { q: string; detail: string }[] = [
   {
     q: 'Badge — revert the two changes nobody asked for?',
     detail:
-      'The request was the hairline. The stepping gap and glyph (§62) and the tooltip prop (§45) landed in the same commit, cf21296, and are neither reverted nor confirmed. Both are on page 8; either can come out on its own.',
+      'The request was the hairline. The stepping gap and glyph and the tooltip prop landed in the same commit, cf21296. Both are out of DESIGN-SYSTEM-CHANGES.md and into the archive, but the code still has them — neither reverted nor confirmed. Both are on page 8; either can come out on its own.',
   },
 ];
 

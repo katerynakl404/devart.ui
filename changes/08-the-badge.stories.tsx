@@ -194,7 +194,7 @@ export const TheBadge: Story = {
               16px glyph leaves 2px above and below it.
             </>
           }
-          n={62}
+          n="Archived"
           title="The gap and the glyph did not step with the size — not requested"
           why="Everything about a badge scaled except the two things inside it, so the smallest chip carried the largest proportions."
         />
@@ -260,7 +260,7 @@ export const TheBadge: Story = {
               carries the failure reason and the exact time.
             </>
           }
-          n={45}
+          n="Archived"
           title="A status that had to become a control to carry a tooltip — not requested"
           why="There was no tooltip prop, so every page that needed one wrapped the badge in a button — a control that does nothing, in the tab order, announced as clickable."
         />
