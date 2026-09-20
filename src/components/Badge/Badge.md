@@ -49,6 +49,11 @@ only behaviour is a tooltip, and the component owns that:
 </Badge>
 ```
 
+`tooltip` needs a `TooltipProvider` above it, the same as every other tooltip
+in the package — an app mounts one at its root. Without it the badge throws
+rather than rendering without a tooltip, so a page that adds `tooltip` to a
+status inside an unwrapped subtree goes blank.
+
 `tooltip` makes the badge itself the trigger — reachable by keyboard through
 `tabIndex`, with no `role="button"` promising an action it does not keep. A
 badge wrapped in a bare `<button>` announces "button" to a screen reader and

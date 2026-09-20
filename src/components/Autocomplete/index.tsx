@@ -12,9 +12,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '../DropdownMenu';
-import { IconButton } from '../IconButton';
 import {
   InputGroup,
+  InputGroupAction,
   InputGroupAddon,
   InputGroupInput,
   type InputGroupProps,
@@ -244,12 +244,26 @@ export function Autocomplete<
               <InputGroupAddon align="inline-end" className="gap-0.5">
                 {endAddon}
 
+                {/* `InputGroupAction`, not an `IconButton asChild`.
+
+                    `asChild` made the IconButton render its child, so what
+                    landed in the addon was a bare `<svg>` — and the addon's
+                    rules read that literally. `[&>svg]:text-ink-inactive` is
+                    the DECORATIVE glyph rule, so both controls painted at the
+                    placeholder step, while `[&>button]:text-ink-secondary` and
+                    its hover step matched nothing at all. Two clickable things,
+                    one step below the text beside them, neither answering the
+                    pointer.
+
+                    The second half is worse and invisible: an `<svg>` carrying
+                    an `aria-label` and a click handler is not a control to a
+                    screen reader. `InputGroupAction` is a real `<button>`, on
+                    the `--ink-icon` / `--ink-icon-hover` pair the system keeps
+                    for a glyph with no surface. */}
                 {showClear && (
-                  <IconButton
+                  <InputGroupAction
                     {...getClearProps()}
                     aria-label={clearLabel}
-                    variant="transparent"
-                    asChild
                     className={cn(
                       'opacity-0',
                       'transition-opacity',
@@ -259,14 +273,12 @@ export function Autocomplete<
                     )}
                   >
                     <X />
-                  </IconButton>
+                  </InputGroupAction>
                 )}
 
-                <IconButton
+                <InputGroupAction
                   {...getPopupIndicatorProps()}
                   aria-label={popupIndicatorLabel}
-                  variant="transparent"
-                  asChild
                 >
                   <ChevronDown
                     className={cn(
@@ -275,7 +287,7 @@ export function Autocomplete<
                       open && 'rotate-180'
                     )}
                   />
-                </IconButton>
+                </InputGroupAction>
               </InputGroupAddon>
             </InputGroup>
           </div>

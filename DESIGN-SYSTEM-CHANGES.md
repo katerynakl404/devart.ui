@@ -275,7 +275,6 @@ fill, it is an `IconButton` and should be one.
 
 A label plus a standalone glyph — the case §6 exists for.
 
-
 ## 7a. Interaction states were absolute colours, and two of them were the same colour
 
 `globals.css`, `src/lib/constants.ts`, `src/components/Table/TableCell.tsx`
@@ -1298,23 +1297,6 @@ comment saying so. `Toast` did not:
 `transparent` has no box, so it has no hover pill and no press state; `size="sm"`
 is 32px, off the rung; `mt-0.5` and `text-ink-body` are the bespoke corrections
 that having neither forces. Matching `Sheet` deletes all three.
-
-## 39. `--font-size-compact` is a token for a size the scale calls drift
-
-`globals.css` — `--font-size-compact: 0.8125rem` (13px), exposed as `text-compact`.
-
-Zero call sites in `src/`. The kit's type section lists `13` under *"Не на шкалі"*
-with a stated migration direction of 13→14, which means the package is right to
-avoid it — the comments in `InputGroupInput` and `textAreaVariants` ("13px is off
-the agreed eight-size scale") are correct and now have a citation.
-
-That leaves a token whose only effect is to make the off-scale size reachable as
-a first-class utility. It should be removed, or it will be used, and the comments
-explaining why 13px was refused will read as arbitrary next to a `text-compact`
-that ships.
-
-The same is not true of `--font-size-xxs` (10px), which is Label S / Overline and
-is used.
 
 ---
 
@@ -2463,7 +2445,6 @@ The button opens out at `lg` and `xl`; the field family — `Input`,
 `InputGroup`, `Autocomplete`, `TextArea` — holds 12px and does not. They share
 an edge at `xs`, `sm` and `md`, which is every step the product uses. The gap
 has three steps, not two. There are no half-steps.
-
 
 Missed on the first pass, and it is the largest single divergence in this audit.
 I checked heights and stopped, because `insightis-audit-implementation.md` states

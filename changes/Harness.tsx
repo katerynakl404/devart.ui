@@ -12,19 +12,33 @@ import { cn } from '../src/lib/utils';
  *   proposal, simulated from outside the component.
  * - `not-a-library-change` — the defect is real but does not live in this
  *   package, so there is nothing here to accept or reject.
+ * - `draft`                — built and working, but it exists to serve ONE
+ *   design concept that has not been chosen. If that concept is dropped the
+ *   variant goes with it, so nothing should be built on it meanwhile. This is
+ *   not the same as `proposed`: a proposal has not been made, a draft has —
+ *   what is undecided is whether it gets to stay.
  */
-export type ChangeState = 'docs-only' | 'proposed' | 'not-a-library-change';
+export type ChangeState =
+  | 'docs-only'
+  | 'proposed'
+  | 'not-a-library-change'
+  | 'draft';
 
 const STATE_LABEL: Record<ChangeState, string> = {
   'docs-only': 'Documentation only',
   proposed: 'Proposed — not made yet',
   'not-a-library-change': 'Not a library change',
+  draft: 'Draft — tied to an unchosen concept',
 };
 
 const STATE_CLASS: Record<ChangeState, string> = {
   'docs-only': 'border-stroke bg-surface-chips text-ink-secondary',
   proposed: 'border-brand-primary/40 bg-brand-primary/10 text-ink-body',
   'not-a-library-change': 'border-fb-red/40 bg-fb-red/10 text-ink-body',
+  /* Attention, not brand: a draft is something to come back to, and the
+     attention tokens are what this system already uses for "needs a decision"
+     (the Workspaces warning, the unconfigured badge). */
+  draft: 'border-fb-attention/40 bg-fb-attention/10 text-ink-body',
 };
 
 /** A caps micro-label — the same step the component stories use. */

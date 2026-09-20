@@ -7,7 +7,6 @@ import { Button } from '../src/components/Button';
 import { IconButton } from '../src/components/IconButton';
 import {
   InputGroup,
-  InputGroupAction,
   InputGroupAddon,
   InputGroupInput,
 } from '../src/components/InputGroup';
@@ -351,40 +350,37 @@ export const ColourAndState: Story = {
 
       <ChangeCase
         after={
-          <div className="w-72">
-            <InputGroup inputId="ac-after" label="City">
-              <InputGroupInput
-                defaultValue="Berlin"
-                placeholder="Pick a city"
-              />
-              <InputGroupAddon align="inline-end" className="gap-0.5">
-                <InputGroupAction aria-label="Clear">
-                  <X aria-hidden />
-                </InputGroupAction>
-                <InputGroupAction aria-label="Open">
-                  <ChevronDown aria-hidden />
-                </InputGroupAction>
-              </InputGroupAddon>
-            </InputGroup>
-          </div>
+          <TryIt action="Hover the ✕ and the chevron — both answer the pointer">
+            <div className="w-72">
+              <AutocompleteWithSelection />
+            </div>
+          </TryIt>
         }
-        afterNote="ink-icon at rest, ink-icon-hover on hover — and a real button"
+        afterNote="ink-icon → ink-icon-hover, and a real <button> under each"
         before={
           <TryIt action="Hover the ✕ and the chevron — neither changes colour">
             <div className="w-72">
-              <AutocompleteWithSelection />
+              <InputGroup inputId="ac-before" label="City">
+                <InputGroupInput defaultValue="London" readOnly />
+                <InputGroupAddon align="inline-end" className="gap-0.5">
+                  <X />
+                  <ChevronDown />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
           </TryIt>
         }
         beforeNote="both glyphs at ink-inactive, the placeholder step"
         beforeSource={
           <>
-            the catalog's own{' '}
+            a replica, and it has to be: the old markup was{' '}
+            <Code>IconButton asChild</Code>, which is structure rather than a
+            class, so no <Code>className</Code> brings it back. What the replica
+            reproduces is the thing that mattered — a bare{' '}
+            <Code>&lt;svg&gt;</Code> as the addon's direct child. The After half
+            is the catalog's own{' '}
             <Code>Components/Autocomplete → WithSelection</Code>, composed
-            rather than rebuilt — this is the component as the branch has it.
-            The After half is a replica: the same field shell with{' '}
-            <Code>InputGroupAction</Code> in place of the two{' '}
-            <Code>IconButton asChild</Code>.
+            rather than rebuilt.
           </>
         }
         files={['src/components/Autocomplete/index.tsx']}
@@ -396,20 +392,24 @@ export const ColourAndState: Story = {
             <Code>[&amp;&gt;svg]:text-ink-inactive</Code> is the{' '}
             <em>decorative</em> glyph rule — placeholder ink — while{' '}
             <Code>[&amp;&gt;button]:text-ink-secondary</Code> and its hover step
-            match nothing. Two clickable controls therefore paint one step below
-            the text they sit next to and never answer the pointer.{' '}
-            <strong className="font-medium text-ink-body">To fix:</strong> swap
-            both for <Code>InputGroupAction</Code> — §54's part for exactly this
-            — which also puts a real <Code>&lt;button&gt;</Code> under the
-            aria-label. An <Code>&lt;svg&gt;</Code> carrying{' '}
-            <Code>aria-label</Code> and a click handler is not a control to a
-            screen reader.
+            match nothing. Two clickable controls therefore painted one step
+            below the text they sat next to and never answered the pointer.
+            <br />
+            <br />
+            Both are now <Code>InputGroupAction</Code> — §54's part for exactly
+            this. The second half of the fix is the one nothing on screen shows:
+            an <Code>&lt;svg&gt;</Code> carrying an <Code>aria-label</Code> and
+            a click handler is not a control to a screen reader, and now each is
+            a real <Code>&lt;button&gt;</Code>. Measured after the swap: two
+            buttons, 24px, <Code>rgb(90 106 128)</Code> —{' '}
+            <Code>--ink-icon</Code> — and no bare <Code>svg</Code> left as a
+            direct child of the addon. The chevron still opens the menu and the
+            ✕ still clears without opening it.
           </>
         }
         n={26}
-        state="proposed"
-        title="Autocomplete — the clear and the chevron paint as placeholders"
-        why="Both are clickable, and both render at ink-inactive with no hover: the addon's decorative-glyph rule matches them because asChild leaves an svg where a button should be."
+        title="Autocomplete — the clear and the chevron painted as placeholders"
+        why="Both are clickable, and both rendered at ink-inactive with no hover: the addon's decorative-glyph rule matched them, because asChild left an svg where a button should be."
       />
     </ChangePage>
   ),

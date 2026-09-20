@@ -277,35 +277,18 @@ const UNCOVERED: [string, string][] = [
     'New components',
     '44, 55, 56, 57, 63 — StepperIndicator, Link, StatTile, CodeBlock, MetaRow',
   ],
-  ['Left over', '31, 36, 39, 40, 47, 60, 65, 67, 68'],
+  ['Left over', '31, 36, 40, 47, 60, 65, 67, 68'],
 ];
 
-/** Open questions. Each one changes what gets built, so none is rhetorical. */
+/**
+ * Open questions, and only those. A question that has been answered leaves this
+ * list — it is not a log.
+ */
 const DECISIONS: { q: string; detail: string }[] = [
   {
-    q: '§51 — keep the table cell as it is, or put it back?',
+    q: '§27 — who decides a small badge\u2019s corner?',
     detail:
-      'The cell went from a clipped 12px line at an 8px inset to wrapping 14px text at 16px. It arrived on 17 Sep with the earlier audit, not from a request. Reverting is one line in TableCell.tsx, plus this row and its case.',
-  },
-  {
-    q: '§27 — should size="sm" carry its own radius?',
-    detail:
-      'The After half passes rounded="sm" at the call site. The kit says a 20px chip is 4px, so every call site has to remember it — unless the size variant sets it.',
-  },
-  {
-    q: '§26 — land InputGroupAction in Autocomplete?',
-    detail:
-      'Its clear and chevron are IconButton asChild, so a bare <svg> reaches the addon: placeholder ink, no hover, and no real button under the aria-label. The fix is the part §54 added, but it changes markup the menu trigger wraps.',
-  },
-  {
-    q: 'Badge tooltip needs a TooltipProvider, and nothing says so',
-    detail:
-      'A page that adds tooltip to a status gets a thrown error unless the app already mounts one at its root. Either Badge renders its own provider, or Badge.md states the requirement.',
-  },
-  {
-    q: '§39 — delete --font-size-compact?',
-    detail:
-      'The 13px token is declared and exposed as text-compact with zero call sites, and the kit files 13 under "not on the scale". Left in place it will be used.',
+      'Every badge takes rounded="md" (6px) whatever its size, so a 20px sm chip carries the same corner as a 32px lg one. The kit is explicit: .badge-sm is 4px. The wrinkle is that size and rounded are separate variants, so size="sm" cannot quietly set a radius without fighting an explicit rounded — three ways out, and the third is the only one with no cost: leave it to the call site as today, make a compound variant fire when rounded is left at its default (which also swallows an explicit rounded="md"), or give Badge a rounded="auto" that resolves per size and make it the default.',
   },
 ];
 
@@ -361,8 +344,8 @@ export const Overview: Story = {
           Needs a decision
         </h3>
         <p className="text-ink-body text-sm leading-5">
-          Each of these changes what gets built next, so none of them is
-          rhetorical.
+          Answered questions leave this list rather than staying in it with a
+          verdict attached — the section is what is open, not what was asked.
         </p>
         <ul className="flex flex-col gap-3">
           {DECISIONS.map((d) => (
