@@ -237,6 +237,42 @@ const ROWS: Row[] = [
     page: '8. The badge',
   },
   {
+    n: '52',
+    area: 'InputGroupAction',
+    change: 'an icon docked in a field is not an icon button',
+    page: '9. The fields',
+  },
+  {
+    n: '59',
+    area: 'InputGroup',
+    change: 'two insets on one edge',
+    page: '9. The fields',
+  },
+  {
+    n: '48',
+    area: 'TextArea',
+    change: 'the counter row had a slot nothing could fill',
+    page: '9. The fields',
+  },
+  {
+    n: '37',
+    area: 'TextArea',
+    change: 'the counter is one ink step too loud',
+    page: '9. The fields',
+  },
+  {
+    n: '34',
+    area: 'InputGroup',
+    change: 'the search clear button is a recipe, not a part',
+    page: '9. The fields',
+  },
+  {
+    n: '36',
+    area: 'Datepicker',
+    change: 'one bespoke focus ring, not three missing states',
+    page: '9. The fields',
+  },
+  {
     n: '21',
     area: 'gen-classlist.mjs',
     change: 'empty:* enumerated, or the rule in §12 is never compiled',
@@ -252,7 +288,6 @@ const ROWS: Row[] = [
 
 /** Documented but not rendered yet, so the gap is visible rather than implied. */
 const UNCOVERED: [string, string][] = [
-  ['Fields', '34, 36, 37, 48, 52, 59'],
   ['Overlays and menus', '24, 28, 29, 30, 32, 38, 41, 50, 56, 66'],
   ['Sidebar', '33, 42, 46'],
   ['New components', '43, 53, 54, 55, 60'],
@@ -346,7 +381,7 @@ export const Overview: Story = {
         </h3>
         <p>
           <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 67 sections, §1 to §66
-          plus §7a. The table above renders 26 of them as cases and lists §21
+          plus §7a. The table above renders 32 of them as cases and lists §21
           and §22 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:
         </p>
