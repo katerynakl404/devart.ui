@@ -173,6 +173,55 @@ const ROWS: Row[] = [
       'the nav column is missing production’s px-2 — icons on 8 instead of 16, row fill with no gutter',
     page: '3. The sidebar under two shells',
   },
+  {
+    n: '51',
+    area: 'TableCell',
+    change:
+      'the cell wraps, so a row grows with its content instead of pushing the table past the card',
+    page: '7. The table',
+  },
+  {
+    n: '64',
+    area: 'TableHead',
+    change:
+      'width — a column is a share of the table, not five hand-set pixel widths',
+    page: '7. The table',
+  },
+  {
+    n: '66',
+    area: 'TableRow',
+    change:
+      'nested — 8px for a child row, lifted out of one table’s local override',
+    page: '7. The table',
+  },
+  {
+    n: '59',
+    area: 'TableCell',
+    change:
+      'the pressed fill belongs to whatever was pressed, not always to the row',
+    page: '7. The table',
+  },
+  {
+    n: 'new',
+    area: 'TableActionsCell',
+    change:
+      'row actions as a part — right-aligned, revealed on hover, kept on focus',
+    page: '7. The table',
+  },
+  {
+    n: '49',
+    area: 'Button, IconButton',
+    change:
+      'lg and xl grow the label and the glyph instead of the padding — one 14/16/16/20/20 ladder',
+    page: '2. Size and spacing',
+  },
+  {
+    n: '26',
+    area: 'Autocomplete',
+    change:
+      'the clear and the chevron paint as placeholder glyphs and never answer the pointer',
+    page: '1. Colour and state',
+  },
   // Not numbered in DESIGN-SYSTEM-CHANGES.md: the interaction-state work
   // carries its own changeset, `interaction-states-relative-overlays.md`.
   {
