@@ -122,6 +122,7 @@ the groups are the reading order.
 | Kit gap | `Toggle` | `ghost` is `Button`'s removed variant under another name |
 | Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
+| Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§69) |
 | Fixed | `Card` / `ghost` | `bg-bg` named a token this branch deleted — now `bg-transparent`, the intended surface |
 | New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§63) |
 | Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§64) |
@@ -2358,6 +2359,31 @@ box; align by the box as soon as the box can be seen.**
 
 **Both products.** Every page title with a back arrow moves its arrow 6px
 inward; nothing else in the row moves.
+
+## 69. `DropdownMenu` — a link may open a menu · **DRAFT**
+
+`src/components/DropdownMenu/DropdownMenu.md`, `changes/Harness.tsx`
+
+**Nothing in the library changed.** `DropdownMenuTrigger asChild` already
+accepts any child and `Link` already inherits its font-size from the line it
+sits in. What is new is the statement that this is allowed, and the two rules
+that go with it — one menu whatever the handle, and the state glyph outside the
+trigger, because it marks the row rather than the destination.
+
+**Why it is marked draft.** It is written down for one of three design concepts
+for the Connections list. The concept that keeps a Workspaces *column* hangs
+the menu off a disclosure control and has no use for this; the concept that
+carries the answer as a sentence under the connection's name has no other
+handle that fits. If that concept is not chosen the section goes and nothing
+else moves, so nothing should be built on it meanwhile.
+
+The storybook harness gained a `draft` state for exactly this
+(`changes/Harness.tsx`), distinct from `proposed`: a proposal has not been
+made yet, a draft has — what is undecided is whether it gets to stay. It paints
+on the attention tokens, which is what this system already uses for "needs a
+decision".
+
+**Both products.** Documentation and a storybook state; no component code.
 
 ## What this round did **not** change, and why
 

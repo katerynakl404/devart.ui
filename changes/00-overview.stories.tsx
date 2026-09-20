@@ -239,19 +239,14 @@ const ROWS: Row[] = [
   {
     n: '62',
     area: 'Badge',
-    change: 'the gap and the glyph did not step with the size',
+    change: 'the gap and the glyph did not step with the size — not requested',
     page: '8. The badge',
   },
   {
     n: '45',
     area: 'Badge',
-    change: 'a status that had to become a control to carry a tooltip',
-    page: '8. The badge',
-  },
-  {
-    n: '27',
-    area: 'Badge',
-    change: 'a small badge rounds one step too far',
+    change:
+      'a status that had to become a control to carry a tooltip — not requested',
     page: '8. The badge',
   },
   {
@@ -286,9 +281,9 @@ const UNCOVERED: [string, string][] = [
  */
 const DECISIONS: { q: string; detail: string }[] = [
   {
-    q: '§27 — who decides a small badge\u2019s corner?',
+    q: 'Badge — revert the two changes nobody asked for?',
     detail:
-      'Every badge takes rounded="md" (6px) whatever its size, so a 20px sm chip carries the same corner as a 32px lg one. The kit is explicit: .badge-sm is 4px. The wrinkle is that size and rounded are separate variants, so size="sm" cannot quietly set a radius without fighting an explicit rounded — three ways out, and the third is the only one with no cost: leave it to the call site as today, make a compound variant fire when rounded is left at its default (which also swallows an explicit rounded="md"), or give Badge a rounded="auto" that resolves per size and make it the default.',
+      'The request was the hairline. The stepping gap and glyph (§62) and the tooltip prop (§45) landed in the same commit, cf21296, and are neither reverted nor confirmed. Both are on page 8; either can come out on its own.',
   },
 ];
 

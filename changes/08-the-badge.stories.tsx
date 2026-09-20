@@ -123,7 +123,15 @@ export const TheBadge: Story = {
   render: () => (
     <TooltipProvider>
       <ChangePage
-        intro="Four changes to the one component that appears in every table, every card header and every list row. Each Before half is the published catalog's own class string, reapplied."
+        intro={
+          <>
+            One change was requested — the hairline. The other two arrived in
+            the same commit as it (<Code>cf21296</Code>) and are rendered here
+            because they are in the code, not because anybody asked for them: a
+            review page that hides a real difference is worse than no page. Each
+            Before half is the published catalog's own class string, reapplied.
+          </>
+        }
         title="The badge"
       >
         <ChangeCase
@@ -187,7 +195,7 @@ export const TheBadge: Story = {
             </>
           }
           n={62}
-          title="The gap and the glyph did not step with the size"
+          title="The gap and the glyph did not step with the size — not requested"
           why="Everything about a badge scaled except the two things inside it, so the smallest chip carried the largest proportions."
         />
 
@@ -253,54 +261,8 @@ export const TheBadge: Story = {
             </>
           }
           n={45}
-          title="A status that had to become a control to carry a tooltip"
+          title="A status that had to become a control to carry a tooltip — not requested"
           why="There was no tooltip prop, so every page that needed one wrapped the badge in a button — a control that does nothing, in the tab order, announced as clickable."
-        />
-
-        <ChangeCase
-          after={
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge rounded="sm" size="sm" variant="secondary">
-                Draft
-              </Badge>
-              <Badge rounded="full" size="sm" variant="error">
-                Failed
-              </Badge>
-            </div>
-          }
-          afterNote="rounded-sm at the small step · rounded-full stays available"
-          before={
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge className="rounded-md" size="sm" variant="secondary">
-                Draft
-              </Badge>
-              <Badge rounded="full" size="sm" variant="error">
-                Failed
-              </Badge>
-            </div>
-          }
-          beforeNote="rounded-md — 6px on a 20px chip"
-          beforeSource="the default radius reapplied through `className`. The radius map itself is unchanged; what moved is which step a small badge takes."
-          files={['src/components/Badge/index.tsx']}
-          footnote={
-            <>
-              The kit's <Code>.badge-sm</Code> is{' '}
-              <Code>border-radius: .25rem</Code> — 4px on a 20px chip. At 6px
-              the corner is a third of the chip's own height, which reads as a
-              pill that failed to become one rather than as a square-cornered
-              tag.{' '}
-              <strong className="font-medium text-ink-body">To check:</strong>{' '}
-              this is the one case on this page whose After half is a{' '}
-              <Code>rounded</Code> prop passed at the call site rather than a
-              default the component applies — worth deciding whether{' '}
-              <Code>size="sm"</Code> should carry the radius itself, since every
-              call site currently has to remember it.
-            </>
-          }
-          n={27}
-          state="proposed"
-          title="A small badge rounds one step too far"
-          why="A 20px chip takes the same 6px radius as a 32px one, so the smallest badge is the one whose corners read loudest."
         />
       </ChangePage>
     </TooltipProvider>

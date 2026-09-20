@@ -10,13 +10,13 @@ lands somewhere.
 
 ---
 
-## Archived — §39
+## `--font-size-compact` — a note, never a change
 
-**Why it was taken out:** it does not describe a change this branch makes. It
-is a recommendation about a token that already existed, filed among entries
-that each record something done. The token stays in place for now.
-
-## 39. `--font-size-compact` is a token for a size the scale calls drift
+**Why it is here and not in the change log:** it describes nothing this branch
+does. It is an observation about a token that already existed, written into
+`DESIGN-SYSTEM-CHANGES.md` as though it were a numbered change, which it never
+was. Taken out of there with its number; kept here as the note it always was.
+The token stays in place.
 
 `globals.css` — `--font-size-compact: 0.8125rem` (13px), exposed as `text-compact`.
 

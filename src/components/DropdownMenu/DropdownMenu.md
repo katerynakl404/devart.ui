@@ -86,3 +86,35 @@ the eye catches first.
 Selection lists are the exception: a source picker or a model list already has a
 leading element and expresses a *choice*, not a command, so a second glyph there
 reads as a competing affordance.
+
+## A link may open a menu — **draft**
+
+```jsx
+<DropdownMenuTrigger asChild>
+  <Link>2 workspaces</Link>
+</DropdownMenuTrigger>
+```
+
+The trigger does not have to be a control. Where the menu hangs off a
+**reading** rather than off a column of controls — an answer carried on a line
+under a title, say — a `Link` is the right handle: it has no hit box and no
+size ladder, so it takes the size of the line it sits in, and it does not put a
+control's padding and hover surface inside a cell whose title is already a
+target.
+
+Two rules come with it:
+
+- **One menu, two handles.** The contents do not change with the trigger.
+  Building a second menu beside the first is how the two stop agreeing.
+- **A state glyph stays outside the trigger.** A warning mark belongs to the
+  row it describes, not to the destination of the link; inside, it reads as
+  part of the thing you click.
+- **The label is the same either way.** The reading answers "how many" and the
+  glyph says something needs attention; *which* ones need it is what the menu
+  is for. Spelling the detail out on the line makes a row read as a sentence
+  about a problem instead of a name with a state under it.
+
+**Draft.** This is written down because one design concept needs it, and that
+concept has not been chosen. Nothing in the library changed to allow it —
+`asChild` already accepts any child — so if the concept is dropped this
+section goes and nothing else moves. Do not build on it meanwhile.

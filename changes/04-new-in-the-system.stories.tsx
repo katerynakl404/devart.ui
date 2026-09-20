@@ -1,8 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SearchX } from 'lucide-react';
+import { ChevronRight, SearchX, Settings2, TriangleAlert } from 'lucide-react';
 import { Badge } from '../src/components/Badge';
 import { Button } from '../src/components/Button';
 import { ConnectorLogo } from '../src/components/ConnectorLogo';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRow,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../src/components/DropdownMenu';
+import { Link } from '../src/components/Link';
 import { PageHeader } from '../src/components/PageHeader';
 import {
   EmptyStateIllustration,
@@ -207,6 +216,66 @@ export const NewInTheSystem: Story = {
         n={20}
         title="StatusView — EmptyStateIllustration"
         why="At page scale a lucide glyph in a halo reads as a notification icon rather than an empty region."
+      />
+
+      <ChangeCase
+        after={
+          <div className="flex min-w-0 flex-col gap-0.5">
+            <span className="font-medium text-ink-primary text-sm">
+              Salesforce — EMEA
+            </span>
+            <span className="flex min-w-0 items-center gap-1 text-xs">
+              <TriangleAlert className="size-3 shrink-0 text-fb-attention" />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Link className="min-w-0 truncate">2 workspaces</Link>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-72">
+                  <DropdownMenuRow className="justify-between">
+                    Marketing
+                    <ChevronRight className="size-4 text-ink-icon" />
+                  </DropdownMenuRow>
+                  <DropdownMenuRow className="justify-between">
+                    Data Analyze
+                    <ChevronRight className="size-4 text-ink-icon" />
+                  </DropdownMenuRow>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="accent">
+                    <Settings2 className="size-4" />
+                    Configure Workspace
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </span>
+          </div>
+        }
+        afterNote="Click the link."
+        files={['src/components/DropdownMenu/DropdownMenu.md']}
+        footnote={
+          <>
+            <b>Why it is a draft.</b> It exists to serve one of three design
+            concepts for the Connections list. In the concept that keeps a
+            Workspaces <i>column</i>, the menu hangs off a disclosure control
+            and this variant is not needed; in the one that carries the answer
+            as a sentence under the connection's name, it is the only handle
+            that fits. If that concept is not chosen, this goes with it — so
+            nothing else should be built on it meanwhile.
+            <br />
+            <br />
+            Nothing in the library changes either way:{' '}
+            <Code>DropdownMenuTrigger asChild</Code> already accepts any child,
+            and <Code>Link</Code> already inherits its font-size from the line
+            it sits in — which is what makes it come out at 12px here with no
+            padding at all. What is new is only the statement that this is
+            allowed, and the one rule that goes with it: the state glyph stays{' '}
+            <i>outside</i> the trigger, because it marks the row, not the
+            destination.
+          </>
+        }
+        n="draft"
+        state="draft"
+        title="A menu opened by a Link, not a control"
+        why="A concept with no Workspaces column still has to answer “where is this reachable from”. Under a connection's name that answer is a sentence, and a tertiary button there would put a control's padding and hover surface inside a table cell, under a name that is already a target."
       />
     </ChangePage>
   ),
