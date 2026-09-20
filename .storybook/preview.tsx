@@ -16,6 +16,17 @@ const preview: Preview = {
       },
     },
     backgrounds: { disable: true },
+    // The review section sits above the catalog: what changed is what a
+    // reviewer opens Storybook for, and the components are always one click
+    // away underneath.
+    options: {
+      storySort: {
+        // Alphabetical inside a section, so the numbered review pages sort by
+        // their number instead of by the order Vite happened to load them.
+        method: 'alphabetical',
+        order: ['Proposed changes', 'Foundations', 'Components'],
+      },
+    },
   },
   decorators: [
     withThemeByClassName<ReactRenderer>({

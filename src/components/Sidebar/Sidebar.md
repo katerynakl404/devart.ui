@@ -12,6 +12,7 @@ the heights come out right, and all three are easy to miss.
     <SidebarHeader>…</SidebarHeader>
     <SidebarContent>…</SidebarContent>
     <SidebarFooter>…</SidebarFooter>
+    <SidebarRail />   {/* see "Collapsing" — not optional with collapsible="icon" */}
   </Sidebar>
 
   <SidebarInset className="min-h-0">
@@ -49,6 +50,25 @@ the heights come out right, and all three are easy to miss.
   which is expected, not a bug.
 - `collapsible`: `icon` keeps a narrow rail of icons (the usual choice),
   `offcanvas` slides it away entirely, `none` pins it open.
+
+## Collapsing — the way back must survive the collapse
+
+**A `SidebarTrigger` may not be the only way to expand the sidebar if it hides
+when the sidebar collapses.** The common shape of this bug: the trigger is put in
+`SidebarHeader` next to the product name and given
+`group-data-[collapsible=icon]:hidden` so the header collapses cleanly. Collapse
+the sidebar once and there is no control left on screen that can expand it — the
+only affordance left the screen together with the thing it controls.
+
+There is no expand-on-hover in this package, so one of these has to be true:
+
+- render `SidebarRail` (the edge strip: click or drag the border — the gesture
+  every desktop app has), **or**
+- keep the trigger visible when collapsed, **or**
+- put the trigger outside the sidebar entirely — in a window bar or a page
+  header, where collapsing cannot take it away.
+
+The rail is the cheapest and is what the shell example above uses.
 - `variant`: `sidebar` is flush to the edge; `floating` and `inset` detach the
   panel, and `SidebarInset` then picks up matching margins and a radius.
 - `SidebarContent` is the scrolling region and already carries `min-h-0`; put

@@ -3,13 +3,13 @@
 import { Slot, Slottable } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, glyphStroke } from '../../lib/utils';
 
 import { Spinner } from '../Spinner';
 
 const buttonVariants = cva(
   cn(
-    'inline-flex items-center justify-center gap-1.5',
+    'inline-flex items-center justify-center gap-2',
     'whitespace-nowrap font-medium',
     'cursor-pointer border',
     'transition-all duration-fast',
@@ -23,7 +23,8 @@ const buttonVariants = cva(
     'aria-disabled:cursor-not-allowed',
 
     // Child icon styles
-    '[&_svg]:pointer-events-none [&_svg]:shrink-0'
+    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+    glyphStroke
   ),
   {
     variants: {
@@ -37,12 +38,26 @@ const buttonVariants = cva(
           'disabled:bg-state-disabled disabled:text-ink-inactive'
         ),
         // Card-tone fill with a thin neutral border.
+        //
+        // Hover and press are the PRE-COMPOSITED `--btn-secondary-bg-*` blends,
+        // not `--state-hover` / `--state-pressed`. Those are translucent washes,
+        // and `bg-*` replaces rather than layers: on hover this button would
+        // stop being an opaque chip and show whatever sits behind it, so the
+        // same button changed surface depending on what it was placed on. The
+        // blends end opaque — brand at 5% and 8% over `--surface-card` — so the
+        // chip stays a chip and only deepens.
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
-          'hover:border-btn-secondary-border-hover hover:bg-state-hover',
-          'pressed:bg-state-pressed',
+          'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
+          'pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-btn-secondary-border disabled:bg-state-disabled disabled:text-ink-inactive'
+          // No disabled FILL. `secondary` rests on --surface-card, and
+          // --state-disabled is a different opaque surface — swapping one for
+          // the other reads as a different control rather than as this one
+          // switched off. The border and the inactive label carry the state;
+          // the chip keeps its own surface. (The kit specifies bg
+          // State/Disabled here — deliberate divergence.)
+          'disabled:border-btn-secondary-border disabled:text-ink-inactive'
         ),
         // Brand-bordered, transparent fill (previous Secondary look).
         outline: cn(
@@ -110,11 +125,11 @@ const buttonVariants = cva(
         // - those are the two sizes the product actually uses.
         // Glyph follows the label: 16px everywhere, 14px at xs — the one step
         // where the label also drops.
-        xs: 'h-7 px-2 text-xs [&_svg]:size-3.5',
+        xs: 'h-7 gap-1 px-2 text-xs [&_svg]:size-3.5',
         sm: 'h-8 px-3 text-sm [&_svg]:size-4',
         md: 'h-9 px-3 text-sm [&_svg]:size-4',
-        lg: 'h-10 px-4 text-sm [&_svg]:size-4',
-        xl: 'h-11 px-5 text-sm [&_svg]:size-4',
+        lg: 'h-10 px-3 text-base [&_svg]:size-5',
+        xl: 'h-11 px-3 text-base [&_svg]:size-5',
       },
       align: {
         left: 'justify-start',

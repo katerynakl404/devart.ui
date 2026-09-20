@@ -48,3 +48,41 @@ put `dark` on `<html>` and neither is needed.
 The row's actions cell already lifts its own stacking while a menu is open, so
 the menu is never painted under the next row. Use `align="end"` so the menu
 hangs from the right edge of the kebab rather than overflowing the table.
+
+## Three kinds of row
+
+| | Part | Looks like | Does |
+|---|---|---|---|
+| A reading | `DropdownMenuRow` | item rail, **no hover fill**, no pointer | nothing — it is a label and its own control (switch, badge, counter) |
+| An action | `DropdownMenuItem` | item rail, neutral hover | what its label says |
+| **The** action | `DropdownMenuItem variant="accent"` | brand ink + medium weight, leading glyph | the thing the menu exists to offer |
+
+A hover fill in a menu is a promise that the row does something, so a row that
+does nothing must not have one — that is the whole reason `DropdownMenuRow`
+exists rather than an `Item` with `disabled`, which would also grey the label.
+
+`accent` is for the one row like "Manage connections" or "Choose file":
+
+```jsx
+<DropdownMenuSeparator />
+<DropdownMenuItem variant="accent" onSelect={configure}>
+  <Settings />
+  Configure Workspace
+</DropdownMenuItem>
+```
+
+**Do not put a bordered `Button` in a menu to make an action stand out.** Inside
+the 4px-padded shell its edge lands 4px from the divider — two lines doing the
+same job — and it outweighs the list it belongs to. The distinction a menu uses
+is ink and weight at the same size, on the same rail.
+
+## Every action item takes a leading glyph
+
+16px, `stroke-width: 1.75`, `currentColor` — so a `danger` or `accent` row
+tints label and icon together with no extra rule. A text-only menu makes the
+reader parse every label to find one action; the glyph gives each row a shape
+the eye catches first.
+
+Selection lists are the exception: a source picker or a model list already has a
+leading element and expresses a *choice*, not a command, so a second glyph there
+reads as a competing affordance.

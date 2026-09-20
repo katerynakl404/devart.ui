@@ -32,10 +32,17 @@ function resolve(name, theme, depth = 0) {
   if (!raw) return null;
   const v = raw.replace(/\s+/g, ' ').trim();
   let c = raw.replace(/\s+/g, '');
-  // A tint carries its strength as a --tint-* token rather than a literal, so
-  // substitute those in before matching — otherwise the whole color-mix reads
-  // as unresolved, which looks exactly like a missing token.
-  c = c.replace(/var\((--tint-[\w-]+)\)/g, (_, t) => (ROOT.get(t) || '').trim());
+  // A wash carries its strength as a token, not a literal, and since the state
+  // overlays there are TWO hops: --step-* (per theme — dark needs a larger
+  // percentage to move the same distance against a darker base) which in turn
+  // names a --tint-* step (theme-independent). Substitute repeatedly until the
+  // strength is a literal, or the whole color-mix reads as unresolved — which
+  // on this report looks exactly like a missing token.
+  for (let i = 0; i < 4 && /var\((--(?:tint|step)-[\w-]+)\)/.test(c); i++) {
+    c = c.replace(/var\((--(?:tint|step)-[\w-]+)\)/g, (_, t) =>
+      ((theme === 'dark' && DARK.get(t)) || ROOT.get(t) || '').replace(/\s+/g, '')
+    );
+  }
   let m;
   if ((m = /^var\((--[\w-]+)\)$/.exec(c))) return resolve(m[1], theme, depth + 1);
   if ((m = /^color-mix\(insrgb,hsl\(var\((--[\w-]+)\)\)([\d.]+)%,transparent\)$/.exec(c))) {
@@ -62,16 +69,26 @@ const ratio = (fg, bgRgb) => {
 };
 
 const LADDERS = [
+  // 'selected + hover' is gone with its token: a selected row now keeps its own
+  // surface under the pointer, and the control on it composites on top.
   { name: 'Table row states', bg: '--surface-card',
-    steps: [['hover', '--tbl-row-hover'], ['selected / pressed', '--tbl-row-pressed'], ['selected + hover', '--tbl-row-selected-hover']] },
+    steps: [['hover', '--tbl-row-hover'], ['selected / pressed', '--tbl-row-pressed']] },
   { name: 'Neutral control states', bg: '--surface-card',
     steps: [['hover', '--state-hover'], ['pressed', '--state-pressed']] },
   { name: 'Destructive tertiary', bg: '--surface-card',
     steps: [['hover', '--btn-destructive-tertiary-bg-hover'], ['press', '--btn-destructive-tertiary-bg-press']] },
-  { name: 'Row action hover, ON a hovered row', bg: '--tbl-row-hover',
-    steps: [['neutral, lifted', '--state-pressed'], ['destructive, lifted', '--btn-destructive-tertiary-bg-press']] },
 ];
 const PARITY = [
+  // Not a ladder: a neutral row action and a destructive one are SIBLINGS on the
+  // same row, so they must weigh the same — ordering them and demanding the
+  // second be deeper is meaningless, and the audit used to report exactly that.
+  //
+  // Measured on the hovered row rather than the card, because that is where the
+  // pair is actually seen, and because stacking amplifies their difference
+  // non-linearly: 0.59 dLstar apart over the card becomes 1.38 over the hovered
+  // row on dark. Hence the wider tolerance here than for the card pair.
+  { name: 'row action, neutral vs destructive (on a hovered row)', bg: '--tbl-row-hover',
+    over: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', tol: 1.5 },
   { name: 'neutral vs destructive tertiary hover', bg: '--surface-card', a: '--state-hover', b: '--btn-destructive-tertiary-bg-hover', tol: 0.5 },
   { name: 'neutral vs destructive tertiary press', bg: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', tol: 0.7 },
 ];
@@ -124,9 +141,16 @@ for (const theme of ['light', 'dark']) {
   for (const L of LADDERS) {
     const bgc = resolve(L.bg, theme);
     if (!bgc) { note('  ?  ' + L.name + ': ' + L.bg + ' unresolved'); continue; }
+    // Since the state tokens became relative overlays, a ladder's own ground can
+    // be translucent — `--tbl-row-hover` is a 3% wash, not a colour. Measuring a
+    // step against it raw compares an overlay with an overlay and yields
+    // nonsense (it read 0). Flatten it onto the surface it actually sits on
+    // first, which `L.over` names; without one the ground is taken as opaque.
+    const under = L.over ? resolve(L.over, theme) : null;
+    const ground = under ? flat(bgc, under.rgb) : bgc.rgb;
     const vals = L.steps.map(([label, tok]) => {
       const c = resolve(tok, theme);
-      return { label, tok, d: c ? step(c, bgc.rgb) : null, rgb: c ? flat(c, bgc.rgb).map(Math.round) : null };
+      return { label, tok, d: c ? step(c, ground) : null, rgb: c ? flat(c, ground).map(Math.round) : null };
     });
     console.log('  ' + L.name + '  over ' + L.bg);
     for (const v of vals) console.log('    ' + String(v.d).padStart(6) + '  ' + v.label.padEnd(20) + v.tok);
@@ -144,7 +168,11 @@ for (const theme of ['light', 'dark']) {
   for (const P of PARITY) {
     const bg = resolve(P.bg, theme), A = resolve(P.a, theme), B = resolve(P.b, theme);
     if (!bg || !A || !B) { note('  ?  ' + P.name + ': unresolved'); continue; }
-    const da = step(A, bg.rgb), db = step(B, bg.rgb), diff = +Math.abs(da - db).toFixed(2);
+    // Same flattening as the ladders: a translucent ground has to be composited
+    // onto the surface it sits on before anything is measured against it.
+    const pUnder = P.over ? resolve(P.over, theme) : null;
+    const pGround = pUnder ? flat(bg, pUnder.rgb) : bg.rgb;
+    const da = step(A, pGround), db = step(B, pGround), diff = +Math.abs(da - db).toFixed(2);
     const line = '  parity: ' + P.name.padEnd(42) + da + ' vs ' + db + '  delta ' + diff;
     if (diff > P.tol) note(line + '   off by more than ' + P.tol); else console.log(line);
   }

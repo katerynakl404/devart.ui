@@ -71,7 +71,7 @@ const cardVariants = cva(
         ghost: cn(
           'cursor-pointer items-center justify-center',
           'border border-ink-secondary/35 border-dashed',
-          'bg-bg text-center',
+          'bg-transparent text-center',
           'hover:border-ink-secondary/55 hover:bg-state-hover'
         ),
       },

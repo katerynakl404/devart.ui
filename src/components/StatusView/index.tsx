@@ -77,6 +77,186 @@ const DESCRIPTION_BY_SIZE = {
   lg: 'body14',
 } as const;
 
+/**
+ * The standard empty-state artwork: a crisp top card fading into two ghosts —
+ * the shape of the very list that is missing.
+ *
+ * Deliberately not a magnifier. "Nothing was found" is already said by the
+ * title; a magnifier says it a second time and says nothing about what kind of
+ * thing is absent. Mirroring the list instead makes the state read as "this
+ * area is empty" rather than "an error happened".
+ *
+ * Every colour is a token, so it re-themes with the page and needs no dark
+ * variant. Pass it as `icon` with `withIconHalo={false}`.
+ *
+ * These are a **pack, not a rule**. `StatusView` takes whatever you give its
+ * `icon` slot — a lucide glyph, one of these, or a product's own artwork — and
+ * the system ships two because two are what every list needs: one for "there is
+ * nothing here yet" and one for "your search matched nothing". They are
+ * different states and a single picture cannot say both.
+ */
+const EmptyStateIllustration = ({ className }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    className={cn('h-auto w-[150px] shrink-0', className)}
+    fill="none"
+    viewBox="0 0 150 104"
+  >
+    <g className="[filter:drop-shadow(0_2px_5px_rgb(15_23_42/0.10))]">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="26"
+        rx="8"
+        width="132"
+        x="9"
+        y="4"
+      />
+      <rect
+        className="fill-ink-inactive/55"
+        height="12"
+        rx="4"
+        width="12"
+        x="18"
+        y="11"
+      />
+      <rect
+        className="fill-ink-inactive/35"
+        height="6"
+        rx="3"
+        width="80"
+        x="36"
+        y="14"
+      />
+    </g>
+    <g opacity="0.55">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="26"
+        rx="8"
+        width="132"
+        x="9"
+        y="38"
+      />
+      <rect
+        className="fill-ink-inactive/55"
+        height="12"
+        rx="4"
+        width="12"
+        x="18"
+        y="45"
+      />
+      <rect
+        className="fill-ink-inactive/35"
+        height="6"
+        rx="3"
+        width="64"
+        x="36"
+        y="48"
+      />
+    </g>
+    <g opacity="0.28">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="26"
+        rx="8"
+        width="132"
+        x="9"
+        y="72"
+      />
+      <rect
+        className="fill-ink-inactive/55"
+        height="12"
+        rx="4"
+        width="12"
+        x="18"
+        y="79"
+      />
+      <rect
+        className="fill-ink-inactive/35"
+        height="6"
+        rx="3"
+        width="72"
+        x="36"
+        y="82"
+      />
+    </g>
+  </svg>
+);
+
+/**
+ * Nothing matched the query — as opposed to nothing existing, which is
+ * `EmptyStateIllustration`.
+ *
+ * The difference has to be visible or the pack is one illustration with two
+ * names: this one draws the **search itself** — a field with a query in it —
+ * over rows that have faded out, so it reads as "you asked, and the list came
+ * back empty". The magnifier is part of the depicted field, not a symbol
+ * standing in for "not found"; that is the distinction the list version's note
+ * above is about.
+ */
+const EmptySearchIllustration = ({ className }: { className?: string }) => (
+  <svg
+    aria-hidden="true"
+    className={cn('h-auto w-[150px] shrink-0', className)}
+    fill="none"
+    viewBox="0 0 150 104"
+  >
+    <g className="[filter:drop-shadow(0_2px_5px_rgb(15_23_42/0.10))]">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="28"
+        rx="8"
+        width="132"
+        x="9"
+        y="4"
+      />
+      <circle
+        className="stroke-ink-inactive/60"
+        cx="24"
+        cy="17"
+        r="5"
+        strokeWidth="1.5"
+      />
+      <path
+        className="stroke-ink-inactive/60"
+        d="M27.8 20.8 L31 24"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+      />
+      <rect
+        className="fill-ink-inactive/35"
+        height="6"
+        rx="3"
+        width="52"
+        x="38"
+        y="15"
+      />
+    </g>
+    <g opacity="0.4">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="22"
+        rx="8"
+        width="132"
+        x="9"
+        y="44"
+        strokeDasharray="4 4"
+      />
+    </g>
+    <g opacity="0.2">
+      <rect
+        className="fill-surface-card stroke-stroke"
+        height="22"
+        rx="8"
+        width="132"
+        x="9"
+        y="74"
+        strokeDasharray="4 4"
+      />
+    </g>
+  </svg>
+);
+
 type StatusTone =
   | 'neutral'
   | 'muted'
@@ -219,4 +399,9 @@ const StatusView = ({
 
 StatusView.displayName = 'StatusView';
 
-export { containerVariants, StatusView };
+export {
+  containerVariants,
+  EmptySearchIllustration,
+  EmptyStateIllustration,
+  StatusView,
+};

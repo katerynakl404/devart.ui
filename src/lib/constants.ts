@@ -14,6 +14,8 @@ export const THEME_COLORS = {
     secondary: 'hsl(var(--ink-secondary) / <alpha-value>)',
     inactive: 'hsl(var(--ink-inactive) / <alpha-value>)',
     highlight: 'hsl(var(--ink-highlight) / <alpha-value>)',
+    icon: 'hsl(var(--ink-icon) / <alpha-value>)',
+    'icon-hover': 'hsl(var(--ink-icon-hover) / <alpha-value>)',
   },
   surface: {
     page: 'hsl(var(--surface-page) / <alpha-value>)',
@@ -29,8 +31,9 @@ export const THEME_COLORS = {
   },
   table: {
     'header-bg': 'hsl(var(--tbl-header-bg) / <alpha-value>)',
-    'row-hover': 'hsl(var(--tbl-row-hover) / <alpha-value>)',
-    'row-pressed': 'hsl(var(--tbl-row-pressed) / <alpha-value>)',
+    // Overlays — bare var(), see the note on `state` above.
+    'row-hover': 'var(--tbl-row-hover)',
+    'row-pressed': 'var(--tbl-row-pressed)',
   },
   metrics: {
     'group-band': 'hsl(var(--mx-group-band) / <alpha-value>)',
@@ -39,8 +42,11 @@ export const THEME_COLORS = {
     scrim: 'var(--overlay-scrim)',
   },
   state: {
-    hover: 'hsl(var(--state-hover) / <alpha-value>)',
-    pressed: 'hsl(var(--state-pressed) / <alpha-value>)',
+    // Relative overlays — color-mix() values that carry their own alpha, so
+    // they are passed through bare. Wrapping one in hsl() emits invalid CSS
+    // and the fill vanishes with no error. They also take no /alpha modifier.
+    hover: 'var(--state-hover)',
+    pressed: 'var(--state-pressed)',
     disabled: 'hsl(var(--state-disabled) / <alpha-value>)',
     'focus-ring': 'hsl(var(--state-focus-ring) / <alpha-value>)',
   },
@@ -74,6 +80,7 @@ export const THEME_COLORS = {
     'primary-text': 'hsl(var(--btn-primary-text) / <alpha-value>)',
     // color-mix value — no alpha channel substitution
     'secondary-bg-hover': 'var(--btn-secondary-bg-hover)',
+    'secondary-bg-press': 'var(--btn-secondary-bg-press)',
     'secondary-border': 'hsl(var(--btn-secondary-border) / <alpha-value>)',
     'secondary-bg': 'hsl(var(--btn-secondary-bg) / <alpha-value>)',
     'secondary-border-hover':
@@ -97,6 +104,8 @@ export const THEME_COLORS = {
     'secondary-text': 'hsl(var(--badge-secondary-text) / <alpha-value>)',
     'chip-bg': 'hsl(var(--badge-chip-bg) / <alpha-value>)',
     'chip-text': 'hsl(var(--badge-chip-text) / <alpha-value>)',
+    // The shared hairline — color-mix from currentColor, so no hsl() wrapper
+    border: 'var(--badge-border)',
     // color-mix values (opaque tints) — no alpha channel substitution
     'brand-bg': 'var(--badge-brand-bg)',
     'brand-border': 'var(--badge-brand-border)',
@@ -125,10 +134,9 @@ export const THEME_COLORS = {
     'hover-bg': 'var(--segctrl-btn-hover-bg)',
   },
   tbl: {
-    'row-hover': 'hsl(var(--tbl-row-hover) / <alpha-value>)',
-    'row-pressed': 'hsl(var(--tbl-row-pressed) / <alpha-value>)',
-    // color-mix value — no alpha channel substitution
-    'row-selected-hover': 'var(--tbl-row-selected-hover)',
+    // Overlays — bare var(), see the note on `state` above.
+    'row-hover': 'var(--tbl-row-hover)',
+    'row-pressed': 'var(--tbl-row-pressed)',
   },
   'content-on-solid': 'hsl(var(--content-on-solid) / <alpha-value>)',
   'focus-ring-brand': 'hsl(var(--focus-ring-brand) / <alpha-value>)',
@@ -149,6 +157,9 @@ export const THEME_COLORS = {
   'card-lift-border': 'var(--card-lift-border)',
   plan: {
     'card-featured-border': 'var(--plan-card-featured-border)',
+  },
+  'ds-card': {
+    scrim: 'var(--ds-card-scrim)',
   },
   dropzone: {
     border: 'hsl(var(--dropzone-border) / <alpha-value>)',

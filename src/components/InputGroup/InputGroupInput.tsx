@@ -24,10 +24,10 @@ const inputGroupInputVariants = cva(
         // Type ladder: xs 12 / sm 12 / md-xl 14. 13px is off the agreed
         // eight-size scale; the placeholder now matches the control.
         xs: 'text-xs placeholder:text-xs',
-        sm: 'text-xs placeholder:text-xs',
+        sm: 'text-sm placeholder:text-sm',
         md: 'text-sm placeholder:text-sm',
-        lg: 'text-sm placeholder:text-sm',
-        xl: 'text-sm placeholder:text-sm',
+        lg: 'text-base placeholder:text-base',
+        xl: 'text-base placeholder:text-base',
       },
     },
   }

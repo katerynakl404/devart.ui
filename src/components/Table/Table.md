@@ -79,6 +79,41 @@ hover and press fills on. Selection is either `className="is-selected"` or
 `data-state="selected"`; both paint `--tbl-row-pressed`, a step beyond the hover
 fill in both themes.
 
+### A row that navigates
+
+`data-interactive` paints the states; it does not make the row reachable. A row
+that opens a page is **one real anchor, stretched over the row** — not an
+`onClick` on the `<tr>`, and not a link on the title.
+
+```jsx
+<TableRow data-interactive>
+  <TableCell>
+    <a href={`/connections/${row.id}`} className="after:absolute after:inset-0">
+      {row.name}
+    </a>
+  </TableCell>
+  <TableCell>{row.source}</TableCell>
+  <TableActionsCell>…</TableActionsCell>
+</TableRow>
+```
+
+The anchor is the accessible target — it takes Tab, announces as a link, and
+opens in a new tab on middle-click or ⌘-click. Its `::after` is what makes the
+**whole row** the hit area, so the user aims at the row rather than at the few
+words of the name. `TableCell` is `relative`, which is the positioned ancestor
+that `inset-0` resolves against — a `<tr>` cannot be relied on for that, because
+`position: relative` on a table row is ignored by some engines.
+
+Two things follow from the stretched link:
+
+- **The title is not styled as a link.** It inherits the cell's ink; the row's
+  hover fill is the affordance. A blue underlined name inside a row that is
+  itself clickable advertises two targets where there is one.
+- **Anything else interactive in the row must out-stack the `::after`** — give
+  it `relative` so it sits above the sheet. `TableActionsCell`'s buttons already
+  do. This is also why `TableCell`'s press state is guarded with
+  `:not(:has(a:active))`: pressing a control in the row must not paint the row.
+
 **Numeric columns are `text-right` on both the head and the cell**, or the
 figures drift away from their own label.
 
@@ -129,6 +164,43 @@ into one flat surface.
 
 ## Empty and loading
 
-Both are a single row with `colSpan` covering every column and `h-24
-text-center`. Under `layout="fixed"` the columns hold their widths through the
-transition; under `auto` they snap.
+Both are a single row with `colSpan` covering every column. Under
+`layout="fixed"` the columns hold their widths through the transition; under
+`auto` they snap.
+
+Loading is `h-24 text-center`. **Empty is a `StatusView`** —
+`surface="embedded" tone="transparent"`, with `py-12` on the cell instead of
+`h-24`, because StatusView brings its own padding:
+
+```jsx
+<TableRow>
+  <TableCell className="py-12" colSpan={5}>
+    <StatusView
+      surface="embedded"
+      tone="transparent"
+      size="lg"
+      withIconHalo={false}
+      icon={<EmptyStateIllustration />}
+      title="No connections yet"
+      description="Connect a data source to give AI access to it"
+      actions={<Button size="sm">Create Connection</Button>}
+    />
+  </TableCell>
+</TableRow>
+```
+
+Three things this settles, and all three are easy to get wrong:
+
+- **The empty state lives INSIDE the table.** The header row, the search field
+  and the primary button stay exactly where they were, so the page does not
+  rebuild itself around the absence of rows and the user does not have to
+  re-find the controls when the first row appears.
+- **Two states, not one.** A first run ("nothing here yet") and a filtered miss
+  ("nothing matches *this*") are different problems and need different copy. The
+  filtered one also needs a way to undo the filter.
+- **Both carry an action.** An empty state is never a dead end: it is the one
+  moment when the next step is obvious, so it is spelled out rather than left for
+  the user to find in the toolbar.
+
+Copy: the title is a short phrase with no trailing period; the description is one
+line, centred, also with no period.

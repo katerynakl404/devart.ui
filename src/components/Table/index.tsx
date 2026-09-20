@@ -2,8 +2,8 @@
 
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
-import { TableActionsCell } from './TableActionsCell';
 import type { TableActionsCellProps } from './TableActionsCell';
+import { TableActionsCell } from './TableActionsCell';
 import { TableBody } from './TableBody';
 import { TableCaption } from './TableCaption';
 import { TableCell } from './TableCell';

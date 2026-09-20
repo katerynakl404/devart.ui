@@ -61,7 +61,15 @@ function TooltipContent({
       >
         {children}
         {showArrow && (
+          // 8x4, not Radix's default 10x5. The arrow is drawn INTO the
+          // `sideOffset` gap rather than beside it, so the distance a reader
+          // actually sees is `sideOffset - arrowHeight`. With the stock 5px
+          // arrow that came to 8 - 5 = 3px — and neither 5 nor 3 sits on the
+          // 4px scale. At 4px high the tip lands exactly 4px from the trigger,
+          // so all three numbers are on the grid.
           <TooltipPrimitive.Arrow
+            width={8}
+            height={4}
             className={cn(arrowClassName, 'fill-ink-primary')}
           />
         )}

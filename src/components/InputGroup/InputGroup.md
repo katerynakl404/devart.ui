@@ -25,8 +25,30 @@ row. Prefer `sm` and `md`.
 
 `InputGroupAddon` holds an icon or a short unit. Icons inside it are already
 spaced from the input — do not add your own margin. An addon is decorative: if
-it is interactive (a clear button, a visibility toggle) it needs to be a real
-`IconButton` with an `aria-label`.
+it is interactive (a clear button, a visibility toggle) it takes
+**`InputGroupAction`** with an `aria-label`, never an `IconButton`:
+
+```jsx
+<InputGroupAddon align="inline-end">
+  <InputGroupAction aria-label="Clear search">
+    <X aria-hidden />
+  </InputGroupAction>
+</InputGroupAddon>
+```
+
+No pill, no border, no fill. A control docked in a field is a sub-part of the
+field: the field already owns hover, focus and press, and a second hover surface
+inside it reads as a button sitting in a button. `InputGroupAction` is a 24px
+box around the field's 16px glyph, answering the pointer with colour alone
+(`--ink-icon` → `--ink-icon-hover`), and `InputGroup` swaps its own `px-3` for
+`pe-2` when one is present, so the action adds no margin of its own.
+
+`IconButton size="2xs"` is the same 24px box but a 14px glyph and a hover fill,
+which is why reaching for it here produces a control one step small and one
+surface too many.
+
+Do not size the glyph either — the addon carries the field's step, and anything
+written on the icon loses to it.
 
 ## States
 

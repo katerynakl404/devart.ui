@@ -3,10 +3,10 @@
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
 import { Sheet, SheetContent } from '../Sheet';
+import { SidebarBrand } from './SidebarBrand';
 import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarGroup } from './SidebarGroup';
-import { SidebarBrand } from './SidebarBrand';
 import { SidebarHeader } from './SidebarHeader';
 import { SidebarInset } from './SidebarInset';
 import { SidebarMenu } from './SidebarMenu';
@@ -129,7 +129,15 @@ function Sidebar({
         className={cn(
           'fixed inset-y-0 z-10',
           'hidden lg:flex',
-          'h-svh w-[--sidebar-width]',
+          // Width only. The height comes from `inset-y-0`, which resolves
+          // against whatever containing block this panel has — the viewport on
+          // a web page, and the app shell when one exists. `h-svh` pinned it to
+          // the VIEWPORT unconditionally, so the moment the shell was not the
+          // whole window — a desktop app under its own window bar, a page with
+          // a banner above it, a preview frame — the panel ran past the bottom
+          // edge and took its footer with it. With no transformed ancestor the
+          // two are identical, so nothing changes for the web product.
+          'w-[--sidebar-width]',
           'transition-[left,right,width] duration-base ease-linear',
           side === 'left'
             ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'

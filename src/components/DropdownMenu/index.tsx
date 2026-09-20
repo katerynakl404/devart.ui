@@ -6,6 +6,7 @@ import { DropdownMenuContent } from './DropdownMenuContent';
 import { DropdownMenuItem } from './DropdownMenuItem';
 import { DropdownMenuLabel } from './DropdownMenuLabel';
 import { DropdownMenuRadioItem } from './DropdownMenuRadioItem';
+import { DropdownMenuRow } from './DropdownMenuRow';
 import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 import { DropdownMenuShortcut } from './DropdownMenuShortcut';
 import { DropdownMenuSubContent } from './DropdownMenuSubContent';
@@ -50,6 +51,7 @@ export {
   DropdownMenuPortal,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuRow,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,

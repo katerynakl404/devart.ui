@@ -143,9 +143,7 @@ export const CalendarRange: StoryObj<typeof Calendar> = {
  */
 export const DarkTheme = {
   render: (args, ctx) => {
-    const cells: [string, Story][] = [
-      ['Single', Single],
-    ];
+    const cells: [string, Story][] = [['Single', Single]];
     return (
       <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
         {cells.map(([name, story]) => (
@@ -153,11 +151,9 @@ export const DarkTheme = {
             <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
               {name}
             </span>
-            {story.render ? (
-              story.render({ ...args, ...story.args } as never, ctx)
-            ) : (
-              null
-            )}
+            {story.render
+              ? story.render({ ...args, ...story.args } as never, ctx)
+              : null}
           </section>
         ))}
       </div>

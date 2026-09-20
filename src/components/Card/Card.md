@@ -11,7 +11,16 @@ surface. That is the right starting point for almost everything.
 - `elevated` — shadow instead of a border, and it lifts on hover. Use it only
   when the card is itself clickable.
 - `row` — a horizontal list row rather than a block.
-- `ghost` — no border, no fill; grouping without a visible container.
+- `ghost` — no fill, and a **dashed** 1px border: the "browse more" tile, an
+  empty slot the user clicks to add the thing the grid is full of. Pair it with
+  `CardIcon variant="ghost"`, which is its dashed icon well. A dashed edge here
+  means *nothing here yet*, not *drop something here* — a file drop target is
+  `DropZone`, its own component with its own drag state.
+
+  Do not reach for it as the backdrop of an empty state: a no-results block
+  inside a dashed box invites a click that leads nowhere. An empty state is
+  `StatusView` with `surface="embedded"`; for a plain unframed group, use no
+  card at all.
 
 ## Radius
 

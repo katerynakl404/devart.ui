@@ -14,6 +14,14 @@ function Input({ className, type, ref, ...props }: ComponentProps<'input'>) {
         // none of its own horizontal padding.
         'h-full w-full min-w-0 px-0',
         'bg-transparent',
+
+        // The browser draws its own clear control inside a `type="search"`
+        // field once it holds a value, and it cannot be styled — so a search
+        // field in this system showed two crosses: the native one and the
+        // component's own. The design system owns that affordance (see
+        // InputGroup.md), so the native pair is suppressed.
+        '[&::-webkit-search-cancel-button]:hidden',
+        '[&::-webkit-search-decoration]:hidden',
         // Focus is signalled by the shell's 1px --input-focus border, never by
         // an outer ring — brand colour never visualises form-control focus.
         'focus-visible:outline-none',

@@ -2,6 +2,11 @@
 
 export { Stepper } from './Stepper';
 export type {
+  StepperIndicatorProps,
+  StepperIndicatorStep,
+} from './StepperIndicator';
+export { StepperIndicator } from './StepperIndicator';
+export type {
   StepperApi,
   StepperProps,
   StepRenderer,

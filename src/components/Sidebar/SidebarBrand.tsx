@@ -6,11 +6,11 @@ import { cn } from '../../lib/utils';
  * left, an optional trailing control (a switcher chevron, a collapse button)
  * on the right.
  *
- * It is a fixed 32px row — the same height as a nav row — with a 16px leading
- * inset that lines the mark up with the navigation icons below it, and an 8px
- * trailing inset so a 24px icon button sits flush with the rail edge.
- * `justify-between` is what pins that trailing control to the right without a
- * spacer element.
+ * It is a fixed 32px row — the same height as a nav row. The horizontal insets
+ * that line the mark up with the navigation icons come from `SidebarHeader`, so
+ * this row adds none of its own; nesting one inside the other would otherwise
+ * double them. `justify-between` is what pins the trailing control to the right
+ * without a spacer element.
  *
  * ```jsx
  * <SidebarHeader>
@@ -34,7 +34,7 @@ function SidebarBrand({ className, ref, ...props }: ComponentProps<'div'>) {
       ref={ref}
       data-sidebar="brand"
       className={cn(
-        'flex h-8 min-w-0 items-center justify-between gap-2 ps-4 pe-2',
+        'flex h-8 min-w-0 items-center justify-between gap-2',
         className
       )}
       {...props}

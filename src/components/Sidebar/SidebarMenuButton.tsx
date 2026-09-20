@@ -1,18 +1,38 @@
 import { Slot } from '@radix-ui/react-slot';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@radix-ui/react-tooltip';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
+// The package's own Tooltip, not `@radix-ui/react-tooltip`. Importing the raw
+// primitives here rendered a collapsed rail's labels with no class at all — no
+// dark bubble, no arrow, no portal container — so they read as loose text
+// floating over the page instead of as tooltips.
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 import { useSidebar } from './SidebarProvider';
 
 const sidebarMenuButtonVariants = cva(
   cn(
     'peer/menu-button',
     'group-data-[collapsible=icon]:!size-8 rounded-md',
+
+    // Collapsed, the button is forced to 32x32 — so its own horizontal padding
+    // has to go, or the usable box shrinks to 16px and anything wider than a
+    // 16px icon is clipped by the `overflow-hidden` below. A 28px avatar in the
+    // footer lost its right edge exactly this way. Centring replaces the
+    // alignment the padding used to provide.
+    'group-data-[collapsible=icon]:!px-0',
+    'group-data-[collapsible=icon]:justify-center',
+
+    // …and the label has to go with it, or centring is a no-op: the row stays
+    // "icon + text", overflows its 32px box, and the icon ends up pinned to the
+    // left edge instead of the 24px column. The collapsed rail shows the label
+    // through the tooltip, so hiding it costs nothing.
+    //
+    // `> span:last-child` deliberately — the same selector the truncate rule
+    // below already uses. A nav row is `icon, span`, so the label matches; the
+    // footer row is `avatar, span, chevron`, where the span is NOT the last
+    // child, so an avatar-led row is left alone instead of being blanked.
+    'group-data-[collapsible=icon]:[&>span:last-child]:hidden',
+
     'flex w-full items-center gap-2',
     'text-left font-medium text-sm',
     'overflow-hidden',

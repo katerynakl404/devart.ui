@@ -4,10 +4,20 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 import { cn } from '../../lib/utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
 const badgeVariants = cva(
   cn(
-    'inline-flex items-center gap-2 border',
+    // The hairline is the BASE, not a variant. `--badge-border` mixes from
+    // `currentColor`, so the border is the chip's own hue on every variant, and
+    // a chip stays defined on a surface its fill happens to match — a Secondary
+    // badge is `--surface-card2`, which is also what a hovered or selected
+    // table row lands on. `flat` is the opt-out.
+    // No `gap` here — it steps with the size, below. A flat 8px meant the
+    // space between the glyph and the label was wider than the chip's own 6px
+    // edge inset at `sm`, which is what makes a small pill read as two things
+    // in a box rather than one chip.
+    'inline-flex items-center border border-badge-border',
     // reference: `.badge .b-ic { width:14px; height:14px; flex:none }`
     '[&_svg]:shrink-0',
     'font-medium',
@@ -20,24 +30,28 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        primary:
-          'border-transparent bg-badge-primary-bg text-badge-primary-text',
-        secondary:
-          'border-transparent bg-badge-secondary-bg text-badge-secondary-text',
-        attention: 'border-transparent bg-fb-attention/15 text-fb-attention',
-        success: 'border-transparent bg-fb-green/15 text-fb-green',
-        error: 'border-transparent bg-fb-red/15 text-fb-red-text',
+        primary: 'bg-badge-primary-bg text-badge-primary-text',
+        secondary: 'bg-badge-secondary-bg text-badge-secondary-text',
+        attention: 'bg-fb-attention/15 text-fb-attention',
+        success: 'bg-fb-green/15 text-fb-green',
+        error: 'bg-fb-red/15 text-fb-red-text',
+        // `brand` and `green` are fill choices, not "the bordered ones": they
+        // keep their own opaque border token because their fill is opaque too.
         brand:
           'border-badge-brand-border bg-badge-brand-bg text-badge-brand-text',
         green:
           'border-badge-green-border bg-badge-green-bg text-badge-green-text',
       },
+      // Height, inset, gap and glyph step together. The kit sets the base at
+      // 28px / 8px gap / 14px glyph and `badge-sm` at 20px / 6px inset / 4px
+      // gap / 12px glyph, with the reason written next to it: "a 14px glyph in
+      // a 20px pill leaves 3px of air — step down".
       size: {
-        xs: 'h-5 px-2 text-xs [&_svg]:size-3',
-        sm: 'h-5 px-1.5 text-xs [&_svg]:size-3.5',
-        md: 'h-7 px-2.5 text-xs [&_svg]:size-3.5',
-        lg: 'h-8 px-2.5 text-sm [&_svg]:size-4',
-        xl: 'h-9 px-2.5 text-sm [&_svg]:size-4',
+        xs: 'h-5 gap-1 px-2 text-xs [&_svg]:size-3',
+        sm: 'h-5 gap-1 px-1.5 text-xs [&_svg]:size-3',
+        md: 'h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5',
+        lg: 'h-8 gap-2 px-2.5 text-sm [&_svg]:size-4',
+        xl: 'h-9 gap-2 px-2.5 text-sm [&_svg]:size-4',
       },
       rounded: {
         none: 'rounded-none',
@@ -48,11 +62,16 @@ const badgeVariants = cva(
         xl: 'rounded-xl',
         full: 'rounded-full',
       },
+      flat: {
+        true: 'border-transparent',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'primary',
       size: 'md',
       rounded: 'md',
+      flat: false,
     },
   }
 );
@@ -65,6 +84,19 @@ export interface BadgeProps
   leftSlot?: ReactNode;
   rightSlot?: ReactNode;
   onDelete?: MouseEventHandler<HTMLButtonElement>;
+  /**
+   * Text shown on hover and on keyboard focus.
+   *
+   * A badge is a STATUS, never a control: it carries no action, and a tooltip
+   * is the only behaviour it is allowed to have. Without this prop every page
+   * that wanted the tooltip wrapped the badge in a `<button>` — which gives it
+   * `role="button"`, a press state and a promise of an action it does not
+   * keep. Here the trigger stays the badge itself, made reachable with
+   * `tabIndex` and nothing else.
+   */
+  tooltip?: ReactNode;
+  /** @default 'top' */
+  tooltipSide?: 'top' | 'right' | 'bottom' | 'left';
 }
 
 function Badge({
@@ -73,16 +105,20 @@ function Badge({
   variant,
   size,
   rounded,
+  flat,
   leftSlot,
   rightSlot,
   onDelete,
+  tooltip,
+  tooltipSide = 'top',
   className,
   children,
   ...props
 }: BadgeProps) {
-  return (
+  const badge = (
     <div
-      className={cn(badgeVariants({ variant, rounded, size }), className)}
+      className={cn(badgeVariants({ variant, rounded, size, flat }), className)}
+      tabIndex={tooltip ? 0 : undefined}
       {...props}
     >
       {withDot && (
@@ -116,6 +152,15 @@ function Badge({
         </button>
       )}
     </div>
+  );
+
+  if (!tooltip) return badge;
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{badge}</TooltipTrigger>
+      <TooltipContent side={tooltipSide}>{tooltip}</TooltipContent>
+    </Tooltip>
   );
 }
 

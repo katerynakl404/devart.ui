@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Mail, Search, X } from 'lucide-react';
-import { IconButton } from '../IconButton';
-import { InputGroup, InputGroupAddon, InputGroupInput } from './index';
+import {
+  InputGroup,
+  InputGroupAction,
+  InputGroupAddon,
+  InputGroupInput,
+} from './index';
 
 /**
  * `InputGroup` is the composition wrapper that gives a bare `Input` its bordered
@@ -209,15 +213,13 @@ export const SearchWithClear: Story = {
           align="inline-end"
           className="group-has-[input:placeholder-shown]/input-group:hidden"
         >
-          <IconButton
-            aria-label="Clear search"
-            rounded="sm"
-            size="sm"
-            type="button"
-            variant="tertiary"
-          >
+          {/* `InputGroupAction`, not an `IconButton`: an icon docked in a field
+              has no surface of its own — the field already owns hover, focus
+              and press, so a second filled box inside it reads as a control on
+              top of a control. 24px box, 16px glyph, colour-only hover. */}
+          <InputGroupAction aria-label="Clear search">
             <X aria-hidden />
-          </IconButton>
+          </InputGroupAction>
         </InputGroupAddon>
       </InputGroup>
     </div>
@@ -249,11 +251,9 @@ export const DarkTheme = {
             <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
               {name}
             </span>
-            {story.render ? (
-              story.render({ ...args, ...story.args } as never, ctx)
-            ) : (
-              null
-            )}
+            {story.render
+              ? story.render({ ...args, ...story.args } as never, ctx)
+              : null}
           </section>
         ))}
       </div>

@@ -29,6 +29,24 @@ export const focusRing = cn(
 );
 
 /**
+ * Lucide's default stroke is 2. At the sizes this library actually renders a
+ * glyph — 14 to 20px beside 12 to 16px text — that reads a step heavier than
+ * the text it sits next to, and an icon that out-weights its own label is the
+ * most common way a control starts looking like a toolbar.
+ *
+ * 1.75 is the reference kit's value: it calls it "one step lighter than prod's
+ * 2" and uses it for every menu glyph. The menu row was the only place the
+ * package had picked it up; this is the same value hoisted so the controls
+ * agree.
+ *
+ * Written as a descendant selector so it reaches a glyph the consumer passes
+ * in, which is the whole icon surface — a component never renders the icon
+ * itself. Both forms are enumerated in `gen-classlist.mjs`; without that the
+ * rule exists in Storybook and not in the bundle.
+ */
+export const glyphStroke = '[&_svg]:stroke-[1.75]';
+
+/**
  * Focus indicator for FORM controls — checkbox, radio, switch and friends.
  *
  * Identical geometry to {@link focusRing}, but a neutral ring: brand colour

@@ -103,7 +103,7 @@ function FilterChip({
       {count !== undefined && (
         <span
           className={cn(
-            'tabular-nums text-ink-secondary',
+            'text-ink-secondary tabular-nums',
             'group-data-[state=checked]:text-brand-secondary'
           )}
           data-slot="filter-chip-count"

@@ -16,6 +16,63 @@ chip is `success`, a "Failed" chip is `error`. Do not use `error` for a count or
 <Badge variant="error">Failed</Badge>
 ```
 
+## When a state is a badge and when it is text
+
+This is a product-wide rule, not a per-row choice. A field that is a **state of
+the object** — one value out of a closed set — is a badge in *every* place it
+appears, and the variant carries the severity:
+
+| Meaning | Variant | Example |
+|---|---|---|
+| normal, nothing to do | `secondary` | `Configured`, `3 days ago` |
+| needs an action | `attention` | `Not configured`, `Disabled` |
+| the thing failed | `error` | `Check failed` |
+| explicitly good | `success` | `Connected` |
+
+The trap this rule exists to close: styling the *bad* value as a badge and the
+*good* value as plain text. It looks tidy on one screen and makes the column
+unreadable — the eye learns "a chip means trouble", and then the first neutral
+chip it meets is a false alarm. A column of chips where one is amber scans in a
+single pass; a column where only the amber rows have chips does not.
+
+Anything that is **not** a state — a name, a count, a description — is
+`Typography`, never a badge.
+
+## A badge is never a control
+
+It carries no action, is never a `<button>`, and is never wrapped in one. Its
+only behaviour is a tooltip, and the component owns that:
+
+```jsx
+<Badge variant="secondary" tooltip="Last checked 18 Sep 2026, 14:20">
+  3 days ago
+</Badge>
+```
+
+`tooltip` makes the badge itself the trigger — reachable by keyboard through
+`tabIndex`, with no `role="button"` promising an action it does not keep. A
+badge wrapped in a bare `<button>` announces "button" to a screen reader and
+picks up a press state in the theme; that is the thing this prop replaces.
+
+If a chip really does need to *do* something, it is not a badge. Use
+`Button size="xs"`, or `FilterChips` when it is a filter.
+
+## The hairline
+
+Every badge carries a 1px border in `--badge-border` — `color-mix()` from
+`currentColor`, so the line is the chip's own hue on every variant and no
+variant needs a border token of its own.
+
+It is not decoration. A `secondary` badge is filled with `--surface-card2`,
+which is also where a hovered or selected table row lands, so without the
+hairline the chip dissolves into the row underneath it and every table has to
+put the edge back with a rule of its own. `flat` is the opt-out for a chip on a
+surface it already contrasts with:
+
+```jsx
+<Badge variant="secondary" flat>Draft</Badge>
+```
+
 ## A note on the tints
 
 The feedback variants are alpha tints of the feedback roles

@@ -435,7 +435,9 @@ export const SelectAll: Story = {
             <TableHead className="w-12">
               <Checkbox
                 aria-label="Select all invoices"
-                checked={allSelected ? true : someSelected ? 'indeterminate' : false}
+                checked={
+                  allSelected ? true : someSelected ? 'indeterminate' : false
+                }
                 onCheckedChange={(next) =>
                   setSelected(next === true ? invoices.map((r) => r.id) : [])
                 }
@@ -548,11 +550,9 @@ export const DarkTheme = {
             <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
               {name}
             </span>
-            {story.render ? (
-              story.render({ ...args, ...story.args } as never, ctx)
-            ) : (
-              null
-            )}
+            {story.render
+              ? story.render({ ...args, ...story.args } as never, ctx)
+              : null}
           </section>
         ))}
       </div>

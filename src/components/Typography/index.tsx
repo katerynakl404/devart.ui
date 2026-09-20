@@ -62,6 +62,7 @@ const typographyVariants = cva(null, {
       body12: 'font-normal text-xs',
 
       // Label · 500. xxs carries no paired line-height, so it is set here.
+      label16: 'font-medium text-base',
       label14: 'font-medium text-sm',
       label12: 'font-medium text-xs',
       label10: 'font-medium text-xxs leading-4',

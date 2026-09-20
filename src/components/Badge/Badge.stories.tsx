@@ -127,6 +127,61 @@ export const Removable: Story = {
 };
 
 /**
+ * `flat` drops the hairline.
+ *
+ * The border is the **base**, not a variant: `--badge-border` is a
+ * `color-mix()` from `currentColor`, so the line is the chip's own hue
+ * everywhere and no variant needs a border token of its own. It is not
+ * decoration — a `secondary` badge is filled with `--surface-card2`, which is
+ * also where a hovered or selected table row lands, so without the hairline the
+ * chip dissolves into the row and every table has to put the edge back with a
+ * rule of its own.
+ *
+ * `flat` is therefore an opt-out with one job: a chip on a surface it already
+ * contrasts with, where the second line reads as noise. The two rows below are
+ * the test — scan the lower one against the tinted band and see which chips
+ * keep their shape.
+ */
+export const Flat: Story = {
+  render: () => {
+    const variants = [
+      'primary',
+      'secondary',
+      'attention',
+      'success',
+      'error',
+    ] as const;
+
+    return (
+      <div className="flex flex-col gap-5">
+        {(
+          [
+            ['Bordered — the default', false],
+            ['flat — the opt-out', true],
+          ] as const
+        ).map(([label, isFlat]) => (
+          <div className="flex flex-col gap-2" key={label}>
+            <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
+              {label}
+            </span>
+            {/* The band is `--surface-card2`: the same value `secondary` is
+                filled with, and what a hovered row lands on. It is the surface
+                the hairline exists for. */}
+            <div className="flex flex-wrap items-center gap-2 rounded-lg bg-surface-card2 p-3">
+              {variants.map((variant) => (
+                <Badge flat={isFlat} key={variant} variant={variant}>
+                  {variant}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  },
+};
+
+/**
  * Dark theme. Every token is plain CSS cascade, so a scoped `.dark` re-themes
  * the subtree — no provider, no props, no JS.
  */
@@ -144,6 +199,7 @@ export const DarkTheme = {
       ['With Dot', WithDot],
       ['With Icon', WithIcon],
       ['Removable', Removable],
+      ['Flat', Flat],
     ];
     return (
       <div className="dark grid gap-6 rounded-lg bg-surface-page p-6">
@@ -152,11 +208,9 @@ export const DarkTheme = {
             <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
               {name}
             </span>
-            {story.render ? (
-              story.render({ ...args, ...story.args } as never, ctx)
-            ) : (
-              null
-            )}
+            {story.render
+              ? story.render({ ...args, ...story.args } as never, ctx)
+              : null}
           </section>
         ))}
       </div>

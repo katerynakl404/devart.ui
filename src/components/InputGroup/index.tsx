@@ -4,6 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { type ComponentProps, type ReactNode, useRef } from 'react';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
+import { InputGroupAction } from './InputGroupAction';
 import {
   InputGroupAddon,
   type inputGroupAddonVariants,
@@ -17,7 +18,19 @@ const inputGroupVariants = cva(
     'box-border',
     'relative flex w-full items-center rounded-md',
     'outline-none',
-    'transition-[border,color,box-shadow]'
+    'transition-[border,color,box-shadow]',
+
+    // A trailing action carries the field's edge inset, so the field gives up
+    // its own rather than adding to it. The kit puts the ✕ 8px from the border
+    // in a 24px box around a 16px glyph — 12px of optical air, the same as the
+    // leading glyph opposite it. Left at the size ladder's `px-3` the two
+    // stack and the ✕ sits 24px in, visibly further from the edge than the
+    // search icon across from it.
+    //
+    // A `has-` selector rather than a prop: whether the field has a trailing
+    // action is something the markup already says, and a prop for it is a
+    // second place to get it wrong.
+    'has-[[data-slot=input-group-action]]:pe-2'
   ),
   {
     variants: {
@@ -47,11 +60,16 @@ const inputGroupVariants = cva(
         // The field's horizontal edge, matching Button's ladder at the same
         // size so a button and a field line up. Children inside the shell
         // (input, addons) add none of their own.
-        xs: 'h-7 min-h-7 px-2',
+        // 6px, not 8. The one half-step on this ladder, and the conventions
+        // allow it inside a control: at 28px tall with a 14px glyph, 8px of
+        // edge leaves the icon closer to the border than to the text it
+        // introduces. The kit's .field.is-xs is 8px — this is a deliberate
+        // step tighter, see DESIGN-SYSTEM-CHANGES.
+        xs: 'h-7 min-h-7 px-1.5',
         sm: 'h-8 min-h-8 px-3',
         md: 'h-9 min-h-9 px-3',
-        lg: 'h-10 min-h-10 px-4',
-        xl: 'h-11 min-h-11 px-5',
+        lg: 'h-10 min-h-10 px-3',
+        xl: 'h-11 min-h-11 px-3',
       },
     },
     defaultVariants: {
@@ -111,11 +129,16 @@ function InputGroup({
       }}
     >
       <div className="flex w-full flex-col gap-1">
+        {/* Label is Text/Body, one step above the hint that sits under the
+            field. Both used to be Text/Secondary, so the helper line read exactly
+            as loud as the label that owns it. The hint keeps Text/Secondary —
+            that IS its role, and the step below it (Text/Inactive) means
+            "disabled" — so the label is the one that moves. */}
         {label ? (
           <Typography
             element="label"
             variant="span"
-            textColor="secondary"
+            textColor="body"
             weight="medium"
             className={inputGroupLabelSizeClass[resolvedSize]}
             htmlFor={inputId}
@@ -185,6 +208,7 @@ function InputGroup({
 
 export {
   InputGroup,
+  InputGroupAction,
   InputGroupAddon,
   InputGroupInput,
   type InputGroupProps,

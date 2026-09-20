@@ -3,7 +3,7 @@
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, Ref } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, glyphStroke } from '../../lib/utils';
 import { Spinner } from '../Spinner';
 
 const iconButtonVariants = cva(
@@ -18,7 +18,8 @@ const iconButtonVariants = cva(
     'disabled:cursor-not-allowed',
     'aria-disabled:cursor-not-allowed',
 
-    '[&_svg]:pointer-events-none [&_svg]:shrink-0'
+    '[&_svg]:pointer-events-none [&_svg]:shrink-0',
+    glyphStroke
   ),
   {
     variants: {
@@ -33,10 +34,17 @@ const iconButtonVariants = cva(
         ),
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
-          'hover:border-btn-secondary-border-hover hover:bg-state-hover',
-          'pressed:border-btn-secondary-border pressed:bg-state-pressed',
+          // Opaque blends, not the translucent state washes — see Button.
+          'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
+          'pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-btn-secondary-border disabled:bg-state-disabled disabled:text-ink-inactive'
+          // No disabled FILL. `secondary` rests on --surface-card, and
+          // --state-disabled is a different opaque surface — swapping one for
+          // the other reads as a different control rather than as this one
+          // switched off. The border and the inactive label carry the state;
+          // the chip keeps its own surface. (The kit specifies bg
+          // State/Disabled here — deliberate divergence.)
+          'disabled:border-btn-secondary-border disabled:text-ink-inactive'
         ),
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
@@ -96,8 +104,8 @@ const iconButtonVariants = cva(
         xs: 'size-7 [&_svg]:size-3.5',
         sm: 'size-8 [&_svg]:size-4',
         md: 'size-9 [&_svg]:size-4',
-        lg: 'size-10 [&_svg]:size-4',
-        xl: 'size-11 [&_svg]:size-4',
+        lg: 'size-10 [&_svg]:size-5',
+        xl: 'size-11 [&_svg]:size-5',
       },
       rounded: {
         none: 'rounded-none',

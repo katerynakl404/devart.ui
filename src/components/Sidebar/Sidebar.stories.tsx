@@ -230,7 +230,7 @@ export const InsetVariant: Story = {
  * has only a `min-height`, so it computes to `auto` and silently does nothing.
  */
 export const AppShell: StoryObj<typeof Sidebar> = {
-  args: { collapsible: "icon" },
+  args: { collapsible: 'icon' },
   render: (args) => (
     <SidebarProvider defaultOpen className="h-svh min-h-0 overflow-hidden">
       <Sidebar {...args}>
@@ -341,10 +341,10 @@ function OpenSheetOnMount() {
 }
 
 const SHELL_ROWS = [
-  { name: "Postgres — analytics", status: "Connected", rows: "1.2M" },
-  { name: "Salesforce", status: "Syncing", rows: "480K" },
-  { name: "S3 — raw events", status: "Connected", rows: "8.4M" },
-  { name: "HubSpot", status: "Error", rows: "—" },
+  { name: 'Postgres — analytics', status: 'Connected', rows: '1.2M' },
+  { name: 'Salesforce', status: 'Syncing', rows: '480K' },
+  { name: 'S3 — raw events', status: 'Connected', rows: '8.4M' },
+  { name: 'HubSpot', status: 'Error', rows: '—' },
 ];
 
 /** The connections table both shell stories put in their scroll region. */
@@ -461,11 +461,9 @@ export const DarkTheme = {
             <span className="font-medium text-ink-secondary text-xxs uppercase leading-4 tracking-caps">
               {name}
             </span>
-            {story.render ? (
-              story.render({ ...args, ...story.args } as never, ctx)
-            ) : (
-              null
-            )}
+            {story.render
+              ? story.render({ ...args, ...story.args } as never, ctx)
+              : null}
           </section>
         ))}
       </div>

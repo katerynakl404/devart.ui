@@ -42,11 +42,11 @@ export const textAreaVariants = cva(
       size: {
         // Same horizontal ladder as Button and InputGroup.
         // Type ladder: xs 12 / sm 12 / md-xl 14 - 13px is off the scale.
-        xs: cn('px-2 py-2', 'text-xs placeholder:text-xs'),
-        sm: cn('px-3 py-2', 'text-xs placeholder:text-xs'),
+        xs: cn('px-2 py-1', 'text-xs placeholder:text-xs'),
+        sm: cn('px-3 py-1.5', 'text-sm placeholder:text-sm'),
         md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
-        lg: cn('px-4 py-2.5', 'text-sm placeholder:text-sm'),
-        xl: cn('px-5 py-3', 'text-sm placeholder:text-sm'),
+        lg: cn('px-3 py-2', 'text-base placeholder:text-base'),
+        xl: cn('px-3 py-2.5', 'text-base placeholder:text-base'),
       },
     },
     defaultVariants: {
@@ -70,6 +70,27 @@ export interface TextAreaProps
    * a counter without a limit has nothing to count against.
    */
   showCount?: boolean;
+  /**
+   * Classes for the wrapper holding the label, the field and the counter.
+   *
+   * Size the field from here, not from `className`: `className` lands on the
+   * `textarea` itself, so a width set there shapes the field while the counter
+   * stays aligned to the parent — the counter visibly detaches from the box it
+   * is counting. The field is `w-full` inside this wrapper, so constraining
+   * the wrapper moves the two together.
+   */
+  wrapperClassName?: string;
+  /**
+   * Standing guidance under the field — the left half of the same row the
+   * counter sits in, and it yields that half to `errorText` when the field is
+   * invalid, because an error about what you just typed outranks advice about
+   * what to type.
+   *
+   * It exists because the row already did: without it a field that needs both a
+   * hint and a counter has to hide the counter and rebuild the row by hand,
+   * which is what every consumer with a character limit and a caveat was doing.
+   */
+  hintText?: ReactNode;
 }
 
 const setRef = <T,>(ref: Ref<T> | undefined, value: T | null) => {
@@ -114,6 +135,8 @@ export const TextArea = ({
   isInvalid = false,
   errorText,
   showCount = false,
+  wrapperClassName,
+  hintText,
   maxLength,
   ...props
 }: TextAreaProps) => {
@@ -134,8 +157,7 @@ export const TextArea = ({
   const [uncontrolledCount, setUncontrolledCount] = useState(
     () => String(defaultValue ?? '').length
   );
-  const count =
-    value === undefined ? uncontrolledCount : String(value).length;
+  const count = value === undefined ? uncontrolledCount : String(value).length;
   const hasCount = showCount && typeof maxLength === 'number';
 
   const handleRef = useCallback(
@@ -213,13 +235,15 @@ export const TextArea = ({
   }
 
   return (
-    <div className="flex w-full flex-col gap-1">
+    <div className={cn('flex w-full flex-col gap-1', wrapperClassName)}>
+      {/* Label is Text/Body — see InputGroup: a field label must not sit on the
+          same ink step as the hint underneath it. */}
       {label ? (
         <Typography
           id={errorId}
           element="label"
           variant="span"
-          textColor="secondary"
+          textColor="body"
           weight="medium"
           htmlFor={resolvedId}
           aria-live="polite"
@@ -235,7 +259,7 @@ export const TextArea = ({
           same input, and stacking them would push the next field down by a line
           that is usually empty. The counter never wraps — it is short, and it is
           anchored to the field's right edge, not to the error text. */}
-      {(isInvalid && errorText) || hasCount ? (
+      {(isInvalid && errorText) || hasCount || hintText ? (
         <div className="flex items-start justify-between gap-4">
           {isInvalid && errorText ? (
             <Typography
@@ -245,6 +269,14 @@ export const TextArea = ({
               className="min-w-0 flex-1 font-medium text-fb-red-text text-xs"
             >
               {errorText}
+            </Typography>
+          ) : hintText ? (
+            <Typography
+              variant="span"
+              textColor="secondary"
+              className="min-w-0 flex-1 text-xs"
+            >
+              {hintText}
             </Typography>
           ) : null}
 

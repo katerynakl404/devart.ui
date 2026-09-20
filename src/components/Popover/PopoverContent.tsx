@@ -33,8 +33,18 @@ const PopoverContent = ({
           // which are invisible against a dark card.
           'shadow-overlay-soft',
 
-          // Closed state
+          // Closed state.
+          //
+          // `fill-mode-forwards` is load-bearing, not polish. Radix keeps the
+          // panel mounted until the exit animation reports back, and the
+          // `exit` keyframe carries only a `to` frame: with the default
+          // `fill-mode: none` the panel snaps BACK to full opacity the instant
+          // the 150ms run ends and sits there, fully painted, until the
+          // unmount lands. Open a second popover in that window and two panels
+          // are on screen at once — one of them belonging to a row you have
+          // already left. `forwards` holds the faded-out end frame instead.
           'data-[state=closed]:animate-out',
+          'data-[state=closed]:fill-mode-forwards',
           'data-[state=closed]:fade-out-0',
           'data-[state=closed]:zoom-out-95',
 

@@ -203,6 +203,60 @@ for (const b of ['none', 'sm', '', 'md', 'lg', 'xl', '2xl', '3xl']) {
   add(`blur${b ? `-${b}` : ''}`, `backdrop-blur${b ? `-${b}` : ''}`);
 }
 
+/* Structural variants a component uses to describe ITSELF rather than to be
+   configured. `empty:pb-0` is how SidebarHeader tells the two sidebar shapes
+   apart: a header with a brand row is spaced off the navigation, an empty one
+   is pure top inset. Without the class enumerated here the rule is never
+   compiled and the component silently keeps the padding — which is exactly the
+   failure mode this list creates, so anything relying on a variant must be
+   added deliberately. */
+add('empty:pb-0', 'empty:pt-0', 'empty:hidden');
+
+/* The table's truncation clamp. A cell wraps by default so the row grows with
+   its content; only a `layout="fixed"` table clamps, because there the column
+   widths come from the first row and never re-measure. The scope is a
+   descendant selector on the `data-layout` the table stamps, which is an
+   arbitrary variant — nothing in the enumeration generates it, so all three
+   have to be listed by hand or a fixed-layout table silently stops truncating. */
+add(
+  '[[data-layout=fixed]_&]:overflow-hidden',
+  '[[data-layout=fixed]_&]:text-ellipsis',
+  '[[data-layout=fixed]_&]:whitespace-nowrap'
+);
+
+/* Glyph sizing and glyph colour, both written as child/descendant selectors on
+   the control rather than on the icon. Nothing else in this file produces an
+   `svg`-scoped class, so the entire icon surface of the library was absent
+   from the bundle's vocabulary: Button, IconButton, Badge, File and
+   InputGroupAddon all size their glyph this way, and in the bundle none of
+   those rules existed. Storybook compiles from source and showed the ladder
+   working, which is why it stayed invisible.
+
+   The ladder is 14/16/16/20/20 — `size-3.5` / `size-4` / `size-5` — plus the
+   `size-3` and `size-6` steps other components use, and the stroke weight the
+   menu row asks for. */
+for (const step of ['3', '3.5', '4', '5', '6', '7', '8']) {
+  add(`[&>svg]:size-${step}`, `[&_svg]:size-${step}`);
+}
+add(
+  '[&>svg]:text-ink-inactive',
+  '[&>button]:text-ink-secondary',
+  '[&>button]:transition-colors',
+  '[&>button:hover]:text-ink-body',
+  '[&_svg]:pointer-events-none',
+  '[&_svg]:shrink-0',
+  '[&>svg]:shrink-0',
+  '[&_svg]:stroke-[1.75]',
+  /* The stretched row link (Table.md): one anchor covers the row via a
+     pseudo-element, so the row is the hit area while the anchor stays the
+     accessible target. */
+  'after:absolute',
+  'after:inset-0',
+  'relative',
+  '[&::-webkit-search-cancel-button]:hidden',
+  '[&::-webkit-search-decoration]:hidden'
+);
+
 const dir = path.join(root, '.design-sync/.cache');
 fs.mkdirSync(dir, { recursive: true });
 const uniq = [...new Set(out)];
