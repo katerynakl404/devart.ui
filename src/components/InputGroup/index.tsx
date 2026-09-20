@@ -65,7 +65,7 @@ const inputGroupVariants = cva(
         // edge leaves the icon closer to the border than to the text it
         // introduces. The kit's .field.is-xs is 8px — this is a deliberate
         // step tighter, see DESIGN-SYSTEM-CHANGES.
-        xs: 'h-7 min-h-7 px-1.5',
+        xs: 'h-7 min-h-7 px-2',
         sm: 'h-8 min-h-8 px-3',
         md: 'h-9 min-h-9 px-3',
         lg: 'h-10 min-h-10 px-3',

@@ -2446,6 +2446,25 @@ package source side by side.
 
 ## 49. The size ladder — the package grows the box, the kit grows the type · **Fixed**
 
+**The canonical ladder. Four sources carry this table and they must agree:** this
+file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
+`Insightis/reports/2026-09-19-prod-interaction-states-migration.md` and
+`Insightis/pages/kit-theme.css`. The package is the implementation of it.
+
+| step | height | button padding | field padding | gap | label | glyph |
+|---|---|---|---|---|---|---|
+| xs | 28 | 8 | 8 | 4 | 12 | 14 |
+| sm | 32 | 12 | 12 | 6 | 14 | 16 |
+| md | 36 | 12 | 12 | 8 | 14 | 16 |
+| lg | 40 | **16** | 12 | 8 | 16 | 20 |
+| xl | 44 | **20** | 12 | 8 | 16 | 20 |
+
+The button opens out at `lg` and `xl`; the field family — `Input`,
+`InputGroup`, `Autocomplete`, `TextArea` — holds 12px and does not. They share
+an edge at `xs`, `sm` and `md`, which is every step the product uses. The gap
+has three steps, not two. There are no half-steps.
+
+
 Missed on the first pass, and it is the largest single divergence in this audit.
 I checked heights and stopped, because `insightis-audit-implementation.md` states
 the padding ladder as settled — *"`Button`, `InputGroup` and `TextArea` horizontal
@@ -2762,18 +2781,18 @@ is the same specificity trap as the glyph sizes above.
 section: `.igrp .igrp-add` puts the leading glyph on `--ink-secondary`, one step
 darker than the placeholder. Recorded here rather than silently absorbed.
 
-### The 28px field tightens to a 6px edge
+### The 28px field tightens to a 6px edge — **reverted 2026-09-20**
 
-`InputGroup` `xs` moves from 8px to **6px**, the only half-step on the ladder.
-The conventions allow one inside a control, and this is the case they describe:
-at 28px tall with a 14px glyph, an 8px edge leaves the icon nearer the border
-than the text it introduces.
+`InputGroup` `xs` moved from 8px to 6px, the only half-step on the ladder, on
+the argument that at 28px tall with a 14px glyph an 8px edge leaves the icon
+nearer the border than the text it introduces.
 
-Two things follow, and both are deliberate rather than overlooked. It is a step
-tighter than the reference (`.field.is-xs{padding:0 .5rem}`). And **`Button`
-`xs` stays at 8px**, so at that one step a field and a button beside it no
-longer line up — which is the property §49 was restoring. Worth settling in one
-direction or the other rather than leaving `xs` as the exception.
+It cost more than it bought. `Button` `xs` stayed at 8px, so at that one step a
+field and a button beside it no longer lined up — the property §49 exists to
+restore — and the package was then the only one of four sources carrying 6:
+`kit-theme.css` (`.field.is-xs{padding:0 .5rem}`), the UX audit's table and the
+prod-migration report all say 8. Settled in that direction. `xs` is 8px, and the
+ladder has no half-steps.
 
 ### The whole icon surface was missing from the bundle's vocabulary
 
