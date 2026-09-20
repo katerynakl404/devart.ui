@@ -45,8 +45,8 @@ export const textAreaVariants = cva(
         xs: cn('px-2 py-1', 'text-xs placeholder:text-xs'),
         sm: cn('px-3 py-1.5', 'text-sm placeholder:text-sm'),
         md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
-        lg: cn('px-3 py-2', 'text-base placeholder:text-base'),
-        xl: cn('px-3 py-2.5', 'text-base placeholder:text-base'),
+        lg: cn('px-4 py-2', 'text-base placeholder:text-base'),
+        xl: cn('px-5 py-2.5', 'text-base placeholder:text-base'),
       },
     },
     defaultVariants: {

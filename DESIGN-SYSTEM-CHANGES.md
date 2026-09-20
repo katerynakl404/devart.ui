@@ -2472,6 +2472,14 @@ all five steps, in all four components. Nothing else about `lg` and `xl` does.
 Gap too: `.btn{gap:.5rem}` = 8px, tightening to `.25rem` = 4px at `xs`. The
 package is `gap-1.5` = 6px at every size.
 
+> **Revised 2026-09-20 — the gap ladder has three steps, not two: 4 / 6 / 8 / 8 / 8.**
+> 8px reads loose at 32px against a 14px label, and `sm` is the step the product
+> uses most — so the published package's flat 6px was right *there* and wrong
+> everywhere else. `.btn-sm` now carries `gap:.375rem` in the kit, `sm` carries
+> `gap-1.5` in the package, and the field ladder takes the same step:
+> `.field.is-sm`, `.igrp.is-sm .igrp-input` (glyph → text) and
+> `.igrp.is-sm .igrp-add` (between two addon children).
+
 **The two systems disagree about what "a bigger button" means.** The kit holds
 the horizontal inset at 12px from `sm` upward and lets the *label* grow —
 14 → 16 → 18. The package holds the label at 14px and lets the *padding* grow —

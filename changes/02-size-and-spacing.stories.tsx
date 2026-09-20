@@ -122,26 +122,32 @@ function Labelled({ children, label }: { children: ReactNode; label: string }) {
 }
 
 /**
- * The size ladder as it stood before §49 — `git show HEAD~:…/Button/index.tsx`.
- * Padding grew 12 → 16 → 20 above `md` while the label stayed `text-sm` and the
- * glyph `size-4`; the gap was 6px at every step, `xs` included.
+ * The ladder the published catalog ships, verbatim from
+ * `git show upstream/master:src/components/Button/index.tsx` — base `gap-1.5`
+ * over a size map whose only moving part is the height. Padding is `px-2.5` at
+ * all five steps, the label steps once at `xs`, and the glyph steps once at
+ * `xs` too — down to 12px, below the 14 the row-action rung is locked at.
  */
 const BUTTON_LADDER = [
-  { size: 'xs', was: 'gap-1.5 px-2 text-xs [&_svg]:size-3.5' },
-  { size: 'sm', was: 'gap-1.5 px-3 text-sm [&_svg]:size-4' },
-  { size: 'md', was: 'gap-1.5 px-3 text-sm [&_svg]:size-4' },
-  { size: 'lg', was: 'gap-1.5 px-4 text-sm [&_svg]:size-4' },
-  { size: 'xl', was: 'gap-1.5 px-5 text-sm [&_svg]:size-4' },
+  { size: 'xs', was: 'gap-1.5 px-2.5 text-xs [&_svg]:size-3' },
+  { size: 'sm', was: 'gap-1.5 px-2.5 text-sm [&_svg]:size-4' },
+  { size: 'md', was: 'gap-1.5 px-2.5 text-sm [&_svg]:size-4' },
+  { size: 'lg', was: 'gap-1.5 px-2.5 text-sm [&_svg]:size-4' },
+  { size: 'xl', was: 'gap-1.5 px-2.5 text-sm [&_svg]:size-4' },
 ] as const;
 
-/** The same, for the icon-only control: the box never moved, the glyph did. */
+/**
+ * The same for the icon-only control, from the same commit. Its box ladder was
+ * already right; the glyph inside it was on no ladder at all — 16 at `2xs`,
+ * then 12 at the `xs` one step above it, then 16, then 20 three times.
+ */
 const ICON_LADDER = [
-  { size: '2xs', was: '[&_svg]:size-3.5' },
-  { size: 'xs', was: '[&_svg]:size-3.5' },
+  { size: '2xs', was: '[&_svg]:size-4' },
+  { size: 'xs', was: '[&_svg]:size-3' },
   { size: 'sm', was: '[&_svg]:size-4' },
-  { size: 'md', was: '[&_svg]:size-4' },
-  { size: 'lg', was: '[&_svg]:size-4' },
-  { size: 'xl', was: '[&_svg]:size-4' },
+  { size: 'md', was: '[&_svg]:size-5' },
+  { size: 'lg', was: '[&_svg]:size-5' },
+  { size: 'xl', was: '[&_svg]:size-5' },
 ] as const;
 
 /** The bubble classes `TooltipContent` carries, minus the arrow under review. */
@@ -467,16 +473,17 @@ export const SizeAndSpacing: Story = {
 
       <ChangeCase
         after={<SizeLadder />}
-        afterNote="padding 8/12/12/12/12 · label 12/14/14/16/16 · glyph 14/16/16/20/20"
+        afterNote="padding 8/12/12/16/20 · gap 4/6/8/8/8 · label 12/14/14/16/16 · glyph 14/16/16/20/20"
         before={<SizeLadder old />}
-        beforeNote="padding 8/12/12/16/20 · label 12/14/14/14/14 · glyph 14/16/16/16/16"
+        beforeNote="padding 10 flat · gap 6 flat · label 12/14/14/14/14 · glyph 12/16/16/16/16"
         beforeSource={
           <>
-            the old class strings, reapplied through <Code>className</Code> —{' '}
-            <Code>gap-1.5</Code> at every step, <Code>px-4 text-sm</Code> at{' '}
-            <Code>lg</Code>, <Code>px-5 text-sm</Code> at <Code>xl</Code>, and
-            the 16px glyph above <Code>md</Code>. twMerge keeps the last class
-            in a group, so this is the old rendering and not an approximation.
+            the published catalog's own class strings, reapplied through{' '}
+            <Code>className</Code> — <Code>gap-1.5 px-2.5</Code> at every step,
+            read out of <Code>git show upstream/master:…/Button/index.tsx</Code>
+            . twMerge keeps the last class in a group, so the Before half is
+            what the developer storybook renders today, not an approximation of
+            it.
           </>
         }
         files={[
@@ -485,20 +492,30 @@ export const SizeAndSpacing: Story = {
         ]}
         footnote={
           <>
-            The two systems disagreed about what a bigger control is. The kit
-            holds the inset at 12px from <Code>sm</Code> upward and grows the{' '}
-            <em>label</em> — 14 → 16; the package held the label at 14 and grew
-            the <em>padding</em> — 12 → 16 → 20. Both make a wider control; only
-            one makes a more prominent one. Heights matched at all five steps,
-            which is why this survived the first pass. The gap moved with it:
-            6px everywhere, now 8 with 4 at <Code>xs</Code>, the kit's numbers.
-            The ladder stops at 20px rather than following the kit's 24px{' '}
-            <Code>--icon-xl</Code> — on a 44px control a 24px glyph outgrows its
-            box. <strong className="font-medium text-ink-body">To fix:</strong>{' '}
-            the comment over the size map in <Code>Button/index.tsx</Code> still
-            describes the ladder it replaced — "8/12/12/16/20" and a glyph "16px
-            everywhere" — and the Summary row in DESIGN-SYSTEM-CHANGES.md still
-            ends the glyph ladder at 24.
+            Only the height was on a ladder. Padding was <Code>px-2.5</Code> —
+            10px — at all five steps, so a 44px control was as tight as a 28px
+            one and neither sat on the 4px grid, which is why this survived the
+            first pass: the heights were right. The ladder is the UX audit's, 8
+            / 12 / 12 / 16 / 20, with 12 repeating at <Code>sm</Code> and{' '}
+            <Code>md</Code> because those are the two steps the product actually
+            uses — the sizes people see stay on one rail and only the rare large
+            ones open up. Fields take the identical ladder, so a button and an
+            input of the same size share one edge.
+            <br />
+            <br />
+            The other two ladders both plateau, and both plateaus are the point.
+            The <strong className="font-medium text-ink-body">gap</strong> is 4
+            / 6 / 8 / 8 / 8: the published package shipped a flat 6px, which was
+            right at <Code>sm</Code> — the step the product uses most, where 8px
+            reads loose against a 14px label — and wrong everywhere else. The{' '}
+            <strong className="font-medium text-ink-body">glyph</strong> is 14 /
+            16 / 16 / 20 / 20, repeating at both ends: 16 across <Code>sm</Code>{' '}
+            and <Code>md</Code>, 20 across <Code>lg</Code> and <Code>xl</Code>.
+            Nothing takes the kit's 24px <Code>--icon-xl</Code>: on a 44px
+            control a glyph that size outgrows its box. The icon-only control
+            had no glyph ladder at all — 16 at <Code>2xs</Code>, 12 at the{' '}
+            <Code>xs</Code> one step above it — and now carries the same one as
+            the text button.
           </>
         }
         n={49}

@@ -62,8 +62,8 @@ const inputGroupAddonVariants = cva(
 
          `xl` repeats `lg` at 20px rather than taking the kit's 24px: a 24px
          glyph in a 44px field reads as an icon that outgrew its control, and
-         it dwarfs the 18px text beside it. The ladder now repeats at both
-         ends — 16 across sm/md, 20 across lg/xl. */
+         it dwarfs the text beside it. The ladder repeats at both ends — 16
+         across sm/md, 20 across lg/xl. */
       size: {
         xs: '[&>svg]:size-3.5',
         sm: '[&>svg]:size-4',
@@ -97,12 +97,18 @@ const inputGroupAddonVariants = cva(
       },
     },
     compoundVariants: [
-      /* The 28px field tightens its glyph gap to 4px. At that height a 14px
-         icon with 8px of air each side is most of the remaining width, which
-         is why the kit gives .field.is-xs its own gap rather than one value
-         for the whole ladder. */
-      { size: 'xs', align: 'inline-start', class: 'me-1' },
-      { size: 'xs', align: 'inline-end', class: 'ms-1' },
+      /* The glyph gap has three steps, not one: 4 / 6 / 8 / 8 / 8, the same
+         ladder Button carries.
+
+         The 28px field tightens to 4px because at that height a 14px icon with
+         8px of air each side is most of the remaining width — which is why the
+         kit gives .field.is-xs its own gap rather than one value for the whole
+         ladder. The 32px step sits at 6: it is the size the product uses most,
+         and 8px there reads loose against a 14px label. */
+      { size: 'xs', align: 'inline-start', class: 'me-1 gap-1' },
+      { size: 'xs', align: 'inline-end', class: 'ms-1 gap-1' },
+      { size: 'sm', align: 'inline-start', class: 'me-1.5 gap-1.5' },
+      { size: 'sm', align: 'inline-end', class: 'ms-1.5 gap-1.5' },
     ],
     defaultVariants: {
       align: 'inline-start',

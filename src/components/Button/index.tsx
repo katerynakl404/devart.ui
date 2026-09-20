@@ -119,17 +119,37 @@ const buttonVariants = cva(
         ),
       },
       size: {
-        // Padding ladder pairs with the height: 8/12/12/16/20. Input, TextArea
-        // and Selector take the identical ladder, so a button and a field of
-        // the same size share one edge. 12px repeats at sm and md deliberately
-        // - those are the two sizes the product actually uses.
-        // Glyph follows the label: 16px everywhere, 14px at xs — the one step
-        // where the label also drops.
+        // Four ladders, and only the first one is flat:
+        //
+        //   padding   8  / 12 / 12 / 16 / 20
+        //   gap       4  /  6 /  8 /  8 /  8
+        //   label    12  / 14 / 14 / 16 / 16
+        //   glyph    14  / 16 / 16 / 20 / 20
+        //
+        // The padding ladder is the UX audit's (#15, #36) and it is the spec:
+        // 12px repeats at sm and md because those are the two sizes the
+        // product actually uses, and only the rare large steps open up. Input,
+        // TextArea and Selector take the identical ladder, so a button and a
+        // field of the same size share one edge.
+        //
+        // The glyph holds 16 from sm through lg. 20px at lg made the icon the
+        // loudest thing in a 40px control, next to a 16px label; only xl, where
+        // the box is 44, carries it.
+        //
+        // The glyph repeats at both ends the way the label does — 16 across
+        // sm and md, 20 across lg and xl. The kit's 24px `--icon-xl` is taken
+        // by nothing: in a 44px control it outgrows its own box.
+        //
+        // The gap is the one axis with three steps rather than two. 8px is the
+        // kit's `.btn` value and holds from `md` up; `xs` tightens to 4,
+        // because at 28px a 14px glyph with 8px either side is most of the
+        // remaining width; and `sm` sits at 6 — the step the product uses most
+        // and the one the published package shipped at every size.
         xs: 'h-7 gap-1 px-2 text-xs [&_svg]:size-3.5',
-        sm: 'h-8 px-3 text-sm [&_svg]:size-4',
+        sm: 'h-8 gap-1.5 px-3 text-sm [&_svg]:size-4',
         md: 'h-9 px-3 text-sm [&_svg]:size-4',
-        lg: 'h-10 px-3 text-base [&_svg]:size-5',
-        xl: 'h-11 px-3 text-base [&_svg]:size-5',
+        lg: 'h-10 px-4 text-base [&_svg]:size-5',
+        xl: 'h-11 px-5 text-base [&_svg]:size-5',
       },
       align: {
         left: 'justify-start',
