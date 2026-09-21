@@ -3,7 +3,7 @@ The line above a list: what the list holds, and what can be done to a selection.
 ```jsx
 <MetaRow onClear={() => setSelected([])}>
   <MetaRow.Count>3 selected</MetaRow.Count>
-  <Link>Select all</Link>
+  <LinkButton>Select all</LinkButton>
   <MetaRow.End>
     <Button size="sm" variant="destructiveTertiary" leftSlot={<Trash2 />}>
       Delete
@@ -53,7 +53,7 @@ rather than three controls that happen to be on a line.
 
 - **`MetaRow.Count`** — the reading. `Text/Secondary`, regular weight, never
   wraps. "5 connections", "3 selected", "1 connection" (mind the singular).
-- **A `Link` beside it** — the action that belongs to the count, and the reason
+- **A `LinkButton` beside it** — the action that belongs to the count, and the reason
   the default layout clusters them: "10 conversations · Select all" reads as one
   thing, where two edge-anchored items read as two. It toggles *Select all* →
   *Deselect all* when the selection reaches the total.

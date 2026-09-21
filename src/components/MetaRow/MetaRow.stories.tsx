@@ -3,7 +3,7 @@ import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../Button';
 import { Card } from '../Card';
-import { Link } from '../Link';
+import { LinkButton } from '../LinkButton';
 import { MetaRow } from './index';
 
 const meta = {
@@ -23,7 +23,7 @@ export const Default: Story = {
   render: (args) => (
     <MetaRow {...args}>
       <MetaRow.Count>5 connections</MetaRow.Count>
-      <Link>Select all</Link>
+      <LinkButton>Select all</LinkButton>
     </MetaRow>
   ),
 };
@@ -33,7 +33,7 @@ export const WithSelection: Story = {
   render: (args) => (
     <MetaRow {...args}>
       <MetaRow.Count>3 selected</MetaRow.Count>
-      <Link>Deselect all</Link>
+      <LinkButton>Deselect all</LinkButton>
       <MetaRow.End>
         <Button size="sm" variant="destructiveTertiary" leftSlot={<Trash2 />}>
           Delete
@@ -53,7 +53,7 @@ export const AboveAList: Story = {
       <div className="flex w-full max-w-2xl flex-col gap-1">
         <MetaRow>
           <MetaRow.Count>3 connections</MetaRow.Count>
-          <Link>Select all</Link>
+          <LinkButton>Select all</LinkButton>
         </MetaRow>
         <Card variant="outline" className="gap-0 p-0">
           {['DB2', 'PostgreSQL', 'Salesforce'].map((n) => (
@@ -76,7 +76,7 @@ export const Split: Story = {
   render: (args) => (
     <MetaRow {...args} className="w-full max-w-2xl">
       <MetaRow.Count>12 conversations</MetaRow.Count>
-      <Link>Deselect all</Link>
+      <LinkButton>Deselect all</LinkButton>
     </MetaRow>
   ),
 };
@@ -92,9 +92,9 @@ export const StableHeight: Story = {
       <div className="flex w-full max-w-2xl flex-col gap-1">
         <MetaRow>
           <MetaRow.Count>{on ? '2 selected' : '5 connections'}</MetaRow.Count>
-          <Link onClick={() => setOn((v) => !v)}>
+          <LinkButton onClick={() => setOn((v) => !v)}>
             {on ? 'Deselect all' : 'Select all'}
-          </Link>
+          </LinkButton>
           {on ? (
             <MetaRow.End>
               <Button

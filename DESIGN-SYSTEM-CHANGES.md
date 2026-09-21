@@ -1386,7 +1386,7 @@ further from the border than the glyph opposite it.
 
 Used by `Autocomplete` (§63) and by the search field's clear button (§29).
 
-## 47. New — `Link` · **DRAFT**
+## 47. New — `LinkButton` · **DRAFT**
 
 `src/components/Link/index.tsx`
 
@@ -1415,6 +1415,17 @@ button in its place.
 
 **Both products.** New surface area; nothing to break. Insightis gets, as a
 component, what it has as a class.
+
+**Named `LinkButton`, not `Link`.** It renders an `<a>` but it is a control in
+the kit’s sense — it has hover, focus and disabled states and is often not
+navigation at all (“Select all”). A bare `Link` in a React codebase reads as the
+router’s.
+
+**Two variants.** `standalone` (default) carries no rule until hover — in a
+column of row actions a permanent underline reads as a table of contents.
+`inline` is for a link inside a sentence, where nothing else marks it: the rule
+is always there at **25% of the ink**, and hover brings it to full strength
+rather than adding it. Measured: `color(srgb … / 0.25)`, thickness 1px.
 
 ## 48. New — `StatTile` · **DRAFT**
 

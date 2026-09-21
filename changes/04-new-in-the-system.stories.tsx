@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../src/components/DropdownMenu';
-import { Link } from '../src/components/Link';
+import { LinkButton } from '../src/components/LinkButton';
 import { PageHeader } from '../src/components/PageHeader';
 import {
   EmptyStateIllustration,
@@ -228,7 +228,9 @@ export const NewInTheSystem: Story = {
               <TriangleAlert className="size-3 shrink-0 text-fb-attention" />
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Link className="min-w-0 truncate">2 workspaces</Link>
+                  <LinkButton className="min-w-0 truncate">
+                    2 workspaces
+                  </LinkButton>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-72">
                   <DropdownMenuRow className="justify-between">
@@ -264,9 +266,9 @@ export const NewInTheSystem: Story = {
             <br />
             Nothing in the library changes either way:{' '}
             <Code>DropdownMenuTrigger asChild</Code> already accepts any child,
-            and <Code>Link</Code> already inherits its font-size from the line
-            it sits in — which is what makes it come out at 12px here with no
-            padding at all. What is new is only the statement that this is
+            and <Code>LinkButton</Code> already inherits its font-size from the
+            line it sits in — which is what makes it come out at 12px here with
+            no padding at all. What is new is only the statement that this is
             allowed, and the one rule that goes with it: the state glyph stays{' '}
             <i>outside</i> the trigger, because it marks the row, not the
             destination.
@@ -274,7 +276,7 @@ export const NewInTheSystem: Story = {
         }
         n="draft"
         state="draft"
-        title="A menu opened by a Link, not a control"
+        title="A menu opened by a LinkButton, not a control"
         why="A concept with no Workspaces column still has to answer “where is this reachable from”. Under a connection's name that answer is a sentence, and a tertiary button there would put a control's padding and hover surface inside a table cell, under a name that is already a target."
       />
     </ChangePage>

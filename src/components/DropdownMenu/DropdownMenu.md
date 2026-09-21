@@ -91,13 +91,13 @@ reads as a competing affordance.
 
 ```jsx
 <DropdownMenuTrigger asChild>
-  <Link>2 workspaces</Link>
+  <LinkButton>2 workspaces</LinkButton>
 </DropdownMenuTrigger>
 ```
 
 The trigger does not have to be a control. Where the menu hangs off a
 **reading** rather than off a column of controls — an answer carried on a line
-under a title, say — a `Link` is the right handle: it has no hit box and no
+under a title, say — a `LinkButton` is the right handle: it has no hit box and no
 size ladder, so it takes the size of the line it sits in, and it does not put a
 control's padding and hover surface inside a cell whose title is already a
 target.
