@@ -5,12 +5,6 @@ every one was found the same way: by assembling a real screen out of real
 components. In Storybook a component stands alone. On a page it stands next to
 others, and that is where states, sizes and colours drift apart.
 
-This file replaces `CHANGES-from-connections.md`, `CHANGES-round-2-ux-review.md`
-and `CHANGES-round-3-two-shells.md`, which recorded the same work in three
-passes. Merging them removed three contradictions where a later pass had revised
-an earlier one without amending it — those are marked **Revised** below, because
-the reasoning matters more than the final value.
-
 It is kept as its own file rather than inside each component's `.md`: component
 sources are periodically refreshed from upstream, and anything written into them
 is lost on the next sync.
