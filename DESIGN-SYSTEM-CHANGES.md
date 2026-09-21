@@ -2361,6 +2361,25 @@ second mark on the logo was an editorial signal the catalog does not need.
 It also took the last positioned element out of the content layer, which is
 what had made the scrim ordering fragile.
 
+## 68. `Autocomplete` — the clear and the chevron painted as placeholders
+
+`src/components/Autocomplete/index.tsx`
+
+Both controls were `IconButton asChild`, which renders the child instead of a
+button — so what reached the addon was a bare `<svg>`, and the addon’s rules
+read that literally. `[&>svg]:text-ink-inactive` is the DECORATIVE glyph rule,
+while `[&>button]:text-ink-secondary` and its hover step matched nothing at
+all. Two clickable controls painted at the placeholder step and never answered
+the pointer. Measured: `rgb(124 140 162)` — `--ink-inactive`.
+
+Both are `InputGroupAction` now (§47), which is also a real `<button>` under
+the `aria-label`: an `<svg>` with a label and a click handler is not a control
+to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
+`--ink-icon`, and no bare `svg` left as a direct child of the addon.
+
+Separate from §24, which lists Autocomplete for a different defect — its
+disabled option still fades at `opacity-50`.
+
 ## 40. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid

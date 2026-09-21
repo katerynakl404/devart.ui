@@ -407,7 +407,7 @@ export const ColourAndState: Story = {
             ✕ still clears without opening it.
           </>
         }
-        n={24}
+        n={68}
         title="Autocomplete — the clear and the chevron painted as placeholders"
         why="Both are clickable, and both rendered at ink-inactive with no hover: the addon's decorative-glyph rule matched them, because asChild left an svg where a button should be."
       />

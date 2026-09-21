@@ -63,9 +63,9 @@ const ROWS: Row[] = [
     page: '1. Colour and state',
   },
   {
-    n: '24',
+    n: '68',
     area: 'Autocomplete',
-    change: 'the clear and the chevron paint as placeholders',
+    change: 'the clear and the chevron painted as placeholders',
     page: '1. Colour and state',
   },
   {
@@ -400,7 +400,7 @@ export const Overview: Story = {
         </h3>
         <p>
           <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §61
-          plus §7a. The table above renders 35 of them as cases and lists §21
+          plus §7a. The table above renders 39 of them as cases and lists §21
           and §22 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:
         </p>
