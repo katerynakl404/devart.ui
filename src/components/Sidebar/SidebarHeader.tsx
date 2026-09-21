@@ -14,18 +14,9 @@ import { cn } from '../../lib/utils';
  * out with negative margins — `className="-ms-4 -me-2"` — which is the rarer
  * case and, unlike the reverse, fails visibly rather than silently.
  *
- * The two sidebar shapes differ only here, and the element tells them apart by
- * itself. `pb-2` spaces a brand row off the navigation, which is what a web app
- * needs — the browser tab is not a place to put a product mark, so the sidebar
- * carries it. A desktop app already shows the mark in its window bar, so it
- * renders `<SidebarHeader />` with nothing inside, purely for the top inset —
- * and `empty:pb-0` drops the bottom half on its own.
- *
- * Deliberately `:empty` rather than a `variant` prop: there is nothing for a
- * consumer to decide or to get wrong. A header with content is spaced; one
- * without is not. Adding the prop instead would mean every product has to know
- * which shape it is and say so, which is the kind of rule that silently goes
- * unfollowed — exactly how the horizontal inset above got lost once already.
+ * `pb-2` spaces the brand row off the navigation. `empty:pb-0` drops it when
+ * the header has nothing in it, so a sidebar that carries no mark does not keep
+ * a gap where one would have been.
  */
 function SidebarHeader({ className, ref, ...props }: ComponentProps<'div'>) {
   return (

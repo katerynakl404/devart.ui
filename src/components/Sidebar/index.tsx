@@ -133,7 +133,7 @@ function Sidebar({
           // against whatever containing block this panel has — the viewport on
           // a web page, and the app shell when one exists. `h-svh` pinned it to
           // the VIEWPORT unconditionally, so the moment the shell was not the
-          // whole window — a desktop app under its own window bar, a page with
+          // whole window — a page with
           // a banner above it, a preview frame — the panel ran past the bottom
           // edge and took its footer with it. With no transformed ancestor the
           // two are identical, so nothing changes for the web product.

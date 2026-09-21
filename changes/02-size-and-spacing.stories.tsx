@@ -224,7 +224,7 @@ function TabsDemo({ children }: { children: ReactNode }) {
 }
 
 /**
- * §41 across the whole ladder. `old` reapplies the class string each step used
+ * §40 across the whole ladder. `old` reapplies the class string each step used
  * to carry — the padding, the label step and the glyph — through `className`,
  * which twMerge resolves in favour of the last class in the group.
  */
@@ -488,7 +488,7 @@ export const SizeAndSpacing: Story = {
             is what makes the box hug the icon.
           </>
         }
-        n={14}
+        n={13}
         title="Tooltip — the arrow put the gap off the 4px scale"
         why="The arrow is now 8×4, putting the tip exactly 4px from the trigger, so all three numbers sit on the grid."
       />
@@ -542,7 +542,7 @@ export const SizeAndSpacing: Story = {
             the text button.
           </>
         }
-        n={41}
+        n={40}
         title="A bigger button grew its box, not its label"
         why="lg and xl widened the control while the label stayed 14px and the glyph 16px, so a 44px xl read as an oversized md — a small label in a lot of air."
       />
@@ -574,7 +574,7 @@ export const SizeAndSpacing: Story = {
             with it.
           </>
         }
-        n={58}
+        n={57}
         title="The tick and the bar were two different weights"
         why="Switching a checkbox from checked to indeterminate made the mark visibly heavier, because the tick came off the icon ladder and the bar off the spacing scale."
       />

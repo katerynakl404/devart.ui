@@ -45,7 +45,7 @@ the heights come out right, and all three are easy to miss.
 
 ## Layout notes
 
-- The desktop rail mounts at `lg` and above. Below that `Sidebar` renders as a
+- The rail mounts at `lg` and above. Below that `Sidebar` renders as a
   `Sheet`, opened by `SidebarTrigger` — so a narrow preview frame shows no rail,
   which is expected, not a bug.
 - `collapsible`: `icon` keeps a narrow rail of icons (the usual choice),
@@ -62,11 +62,10 @@ only affordance left the screen together with the thing it controls.
 
 There is no expand-on-hover in this package, so one of these has to be true:
 
-- render `SidebarRail` (the edge strip: click or drag the border — the gesture
-  every desktop app has), **or**
+- render `SidebarRail` (the edge strip: click or drag the border), **or**
 - keep the trigger visible when collapsed, **or**
-- put the trigger outside the sidebar entirely — in a window bar or a page
-  header, where collapsing cannot take it away.
+- put the trigger outside the sidebar entirely — in a page header, where
+  collapsing cannot take it away.
 
 The rail is the cheapest and is what the shell example above uses.
 - `variant`: `sidebar` is flush to the edge; `floating` and `inset` detach the

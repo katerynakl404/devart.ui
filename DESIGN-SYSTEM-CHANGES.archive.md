@@ -522,3 +522,41 @@ is a few pixels.
 
 **Both products.** It fires only when an `InputGroupAction` is present, and that
 part is new in §46, so no existing field changes.
+
+## SidebarHeader — the two shells, told apart by `:empty`
+
+*Numbered §11 when it was in the change log.*
+
+**Why it is here:** the library ships one sidebar, the web one. The section
+exists to reconcile it with a desktop shell that puts the product mark in a
+window bar, and that shell is out of scope. `empty:pb-0` stays in the component
+— a header with nothing in it should not keep a gap under nothing — but it is a
+detail of the header, not a second shape.
+
+### As it was written
+
+#### 11. `SidebarHeader` — the two shells, told apart by `:empty`
+
+The desktop shell renders `<SidebarHeader />` with nothing inside, purely for the
+top inset; without the element at all, the first navigation row butted into the
+window bar with **gap = 0**. But with it, `pb-2` was dead space under nothing.
+
+**The mistake, and why it was wrong.** The request — "remove the bottom padding"
+— was made while looking at the desktop shell, and it was applied to the shared
+component. That silently removes the spacing from Insightis too, where the header
+*does* carry a brand row and the padding is what separates it from the
+navigation. A product-specific request applied to a shared component is how one
+product's fix becomes another product's regression.
+
+**Fix:** `empty:pb-0`. The element reads its own content — a header with a brand
+row is spaced off the navigation, an empty one is pure top inset.
+
+Deliberately `:empty` rather than a `variant` prop. A prop means every product
+must know which shape it is and say so, and per §10 a rule a consumer has to
+remember is a rule that eventually is not followed. Here there is nothing to
+decide and nothing to get wrong.
+
+Verified: desktop shell header height 12, `padding-bottom: 0`, gap from window
+bar to first nav row 12. Web shell keeps `pb-2`. Both are in Storybook as
+`Sidebar / ShellShapes` — the only place the two can be compared, and the thing
+that fails visibly if either breaks.

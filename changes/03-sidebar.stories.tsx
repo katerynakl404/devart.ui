@@ -5,12 +5,10 @@ import {
   Files,
   Home,
   LayoutDashboard,
-  PanelLeft,
   Search,
 } from 'lucide-react';
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import { Button } from '../src/components/Button';
-import { IconButton } from '../src/components/IconButton';
 import {
   Sidebar,
   SidebarContent,
@@ -31,7 +29,7 @@ import { cn } from '../src/lib/utils';
 import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
 
 const meta = {
-  title: 'Proposed changes/3. The sidebar under two shells',
+  title: 'Proposed changes/3. The sidebar',
   parameters: {
     layout: 'padded',
     controls: { disable: true },
@@ -80,7 +78,7 @@ function Option({
  * header → nav → scrolling group region → footer, with the footer holding the
  * bottom edge. Every panel in this section uses it, because a rail without its
  * footer has a false vertical and the paddings around the menu are the whole
- * subject of §22.
+ * subject of §21.
  *
  * One product number is deliberately NOT reproduced: the row type step —
  * production runs 13px where the package and the kit are both at 14px. That is
@@ -100,7 +98,7 @@ function Shell({
   open = true,
   windowBar,
 }: {
-  /** §13 only: puts the collapsed padding and the label back on the row. */
+  /** §12 only: puts the collapsed padding and the label back on the row. */
   accountClassName?: string;
   children: ReactNode;
   /** The account footer. Production always has one; only §11 turns it off. */
@@ -108,7 +106,7 @@ function Shell({
   /**
    * Which footer row. `product` is what the live rail renders — a 36px button
    * with a 24px avatar. `menu-button` is the `SidebarMenuButton` recipe, which
-   * §13 needs because that component's collapsed box is its subject.
+   * §12 needs because that component's collapsed box is its subject.
    */
   footerRow?: 'product' | 'menu-button';
   /** Hairlines at x=8 and x=16 — the two candidate alignment lines. */
@@ -121,7 +119,7 @@ function Shell({
   /** Controlled open, for a shell whose collapse control lives outside the rail. */
   onOpenChange?: (open: boolean) => void;
   open?: boolean;
-  /** The desktop app's own window bar, rendered above the rail. */
+  /** A bar above the rail, when the shell has one. */
   windowBar?: ReactNode;
 }) {
   return (
@@ -143,7 +141,7 @@ function Shell({
       {/* `transform-gpu` is load-bearing, not decoration: `Sidebar` is
           `fixed inset-y-0`, and a fixed element resolves against the viewport
           unless an ancestor is transformed. It also keeps the rail below the
-          window bar instead of behind it. Without it a panel escapes its box
+          bar above it instead of behind it. Without it a panel escapes its box
           and covers the page — which is what Components/Sidebar/ShellShapes
           does today, and why two shells cannot be compared side by side. */}
       <div className="relative min-h-0 flex-1 transform-gpu overflow-hidden">
@@ -189,67 +187,6 @@ function Shell({
 }
 
 /**
- * The two shapes the library has to serve, built from the same elements — no
- * `variant` prop on `Sidebar`, nothing for a consumer to declare.
- *
- * **Web** keeps the product mark in the rail, because a browser tab is no place
- * for it, and the collapse control sits in that same brand row.
- *
- * **Desktop** owns a window bar, so the mark and the collapse control belong
- * there; the rail renders `<SidebarHeader />` with nothing inside, purely for
- * the top inset, and `empty:pb-0` drops the bottom half on its own. Because the
- * control lives outside the rail, collapsing can never hide it — which is the
- * dead end §15 is about, solved by composition rather than by a rule.
- */
-function WebShell({ guides }: { guides?: boolean }) {
-  return (
-    <Shell guides={guides} navInset>
-      <SidebarHeader>
-        <div className="flex h-8 items-center justify-between gap-2">
-          <BrandRow className="group-data-[collapsible=icon]:hidden" />
-          <SidebarTrigger />
-        </div>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarNavigationItems items={navigation} />
-      </SidebarContent>
-    </Shell>
-  );
-}
-
-function DesktopShell({ guides }: { guides?: boolean }) {
-  const [open, setOpen] = useState(true);
-  return (
-    <Shell
-      guides={guides}
-      navInset
-      onOpenChange={setOpen}
-      open={open}
-      windowBar={
-        <div className="flex h-9 shrink-0 items-center gap-2 border-stroke border-b bg-surface-card2 px-2">
-          <LayoutDashboard className="size-4 shrink-0 text-brand-primary" />
-          <span className="font-medium text-ink-body text-xs">Connections</span>
-          <IconButton
-            aria-label={open ? 'Collapse sidebar' : 'Expand sidebar'}
-            className="ms-auto"
-            onClick={() => setOpen((v) => !v)}
-            size="2xs"
-            variant="tertiary"
-          >
-            <PanelLeft />
-          </IconButton>
-        </div>
-      }
-    >
-      <SidebarHeader />
-      <SidebarContent>
-        <SidebarNavigationItems items={navigation} />
-      </SidebarContent>
-    </Shell>
-  );
-}
-
-/**
  * The footer account row as production renders it, measured on the live rail:
  * a 36px button with `p-1`, radius 6 and `gap-1.5`, a 24px round avatar and a
  * 12px semibold label — not a `SidebarMenuButton`.
@@ -272,7 +209,7 @@ function AccountRow() {
   );
 }
 
-/** The `SidebarMenuButton` footer recipe — §13's subject, 28px avatar and all. */
+/** The `SidebarMenuButton` footer recipe — §12's subject, 28px avatar and all. */
 function AccountMenuRow({ labelClassName }: { labelClassName?: string }) {
   return (
     <SidebarMenu>
@@ -295,12 +232,12 @@ function AccountMenuRow({ labelClassName }: { labelClassName?: string }) {
   );
 }
 
-export const SidebarUnderTwoShells: Story = {
-  name: 'The sidebar under two shells',
+export const TheSidebar: Story = {
+  name: 'The sidebar',
   render: () => (
     <ChangePage
-      intro="One library, two products: a desktop app that owns a window bar and a web app that does not. Every case here is a place where a change made while looking at one shell would break the other."
-      title="The sidebar under two shells"
+      intro="The web sidebar: the product mark and the collapse control live in the rail, because a browser tab is no place for them."
+      title="The sidebar"
     >
       <ChangeCase
         after={
@@ -342,7 +279,7 @@ export const SidebarUnderTwoShells: Story = {
             <strong className="font-medium text-ink-body">
               Two things still to settle:
             </strong>{' '}
-            the navigation itself sits on 8 until §22 lands, and the inset must
+            the navigation itself sits on 8 until §21 lands, and the inset must
             live in exactly one slot — production's brand row owns{' '}
             <Code>pl-4</Code> with the header on <Code>p-0</Code>, so a consumer
             composed that way inherits 32 from this change rather than 16.
@@ -351,77 +288,6 @@ export const SidebarUnderTwoShells: Story = {
         n={10}
         title="SidebarHeader lost its horizontal inset"
         why="The inset was removed on the theory that rows inside would carry their own. Pages lay that row out by hand, so the inset simply stopped existing."
-      />
-
-      <ChangeCase
-        after={
-          <div className="flex flex-col gap-6">
-            <Option caption="Web — mark and collapse control in the rail">
-              <WebShell />
-            </Option>
-            <Option caption="Desktop — both in the window bar · try collapsing">
-              <DesktopShell />
-            </Option>
-          </div>
-        }
-        afterNote="same elements, two compositions"
-        before={
-          <div className="flex flex-col gap-6">
-            <Option caption="Desktop — dead space under an empty header">
-              <Shell navInset>
-                <SidebarHeader className="empty:!pb-2" />
-                <SidebarContent>
-                  <SidebarNavigationItems items={navigation} />
-                </SidebarContent>
-              </Shell>
-            </Option>
-            <Option caption="Desktop — no header at all: nav butts into the bar">
-              <Shell navInset>
-                <SidebarContent>
-                  <SidebarNavigationItems items={navigation} />
-                </SidebarContent>
-              </Shell>
-            </Option>
-          </div>
-        }
-        beforeNote="the two ways the desktop shape was attempted"
-        beforeSource={
-          <>
-            the live header with <Code>empty:!pb-2</Code> putting the padding
-            back — 20px above Home instead of 12 — and, below it, the shell with
-            the header dropped entirely, where the first row butts into the
-            window bar with gap 0.
-          </>
-        }
-        files={['src/components/Sidebar/SidebarHeader.tsx']}
-        footnote={
-          <>
-            <strong className="font-medium text-ink-body">
-              Element-level, not a sidebar-level variant.
-            </strong>{' '}
-            Nothing in these two panels sets a prop that names the shape: the
-            web shell puts a brand row and a <Code>SidebarTrigger</Code> inside{' '}
-            <Code>SidebarHeader</Code>; the desktop shell renders{' '}
-            <Code>&lt;SidebarHeader /&gt;</Code> empty and keeps the mark and
-            the collapse control in its window bar, driving{' '}
-            <Code>SidebarProvider</Code> through <Code>open</Code> /{' '}
-            <Code>onOpenChange</Code>. The header reads its own content —{' '}
-            <Code>empty:pb-0</Code> — so the one number that differs between the
-            shapes is decided by the element, not by the product. A{' '}
-            <Code>variant</Code> prop would mean every consumer has to know
-            which shape it is and say so, which is the kind of rule that
-            silently goes unfollowed.{' '}
-            <strong className="font-medium text-ink-body">
-              It also settles §15:
-            </strong>{' '}
-            a collapse control that lives in the window bar cannot be hidden by
-            collapsing, so the desktop shell needs no <Code>SidebarRail</Code>{' '}
-            to stay recoverable.
-          </>
-        }
-        n={11}
-        title="Two shells from the same elements"
-        why="One library serves a web app, where the product mark belongs in the rail because a browser tab is no place for it, and a desktop app that owns a window bar and puts the mark and the collapse control there. The shapes differ by composition and by one self-deciding number, not by a variant."
       />
 
       <ChangeCase
@@ -491,7 +357,7 @@ export const SidebarUnderTwoShells: Story = {
             tooltip respects.
           </>
         }
-        n={12}
+        n={11}
         title="SidebarMenuButton rendered tooltips with no styling at all"
         why="The component imported Tooltip from @radix-ui/react-tooltip — the raw primitives — instead of from the package's own Tooltip."
       />
@@ -538,12 +404,12 @@ export const SidebarUnderTwoShells: Story = {
             <Code>&gt; span:last-child</Code> — the selector chosen for what it
             does not match, so an avatar-led footer row is left alone rather
             than blanked. Every mark centres at 24 — 8 of column inset plus half
-            of the 32px box — which holds only with §22's inset and the 48px
+            of the 32px box — which holds only with §21's inset and the 48px
             collapsed rail; at the old 57px width the same button sat 8 from the
             left and 16 from the right.
           </>
         }
-        n={13}
+        n={12}
         title="SidebarMenuButton — a 32px box its own padding did not fit"
         why="Collapsed, the button is forced to 32×32 while the consumer keeps px-2, leaving 16px of usable width."
       />
@@ -599,11 +465,11 @@ export const SidebarUnderTwoShells: Story = {
             New rule in the doc, plus <Code>SidebarRail</Code> in the example: a{' '}
             <Code>SidebarTrigger</Code> may not be the only way back if it hides
             when collapsed. Either render the rail, keep the trigger visible, or
-            move it outside the sidebar entirely — a window bar, a page header —
-            where collapsing cannot take it away.
+            move it outside the sidebar entirely — a page header — where
+            collapsing cannot take it away.
           </>
         }
-        n={15}
+        n={14}
         state="docs-only"
         title="Collapsing could remove the only way to expand"
         why="An app that copied the documented shell inherited a dead end: with collapsible=icon and the trigger hidden when collapsed, nothing on screen can expand the sidebar again."
@@ -622,7 +488,7 @@ export const SidebarUnderTwoShells: Story = {
                 </SidebarContent>
               </Shell>
             </Option>
-            <Option caption="Collapsed — the mark lands on 24, the number §13 claims">
+            <Option caption="Collapsed — the mark lands on 24, the number §12 claims">
               <Shell navInset open={false}>
                 <SidebarHeader />
                 <SidebarContent>
@@ -704,7 +570,7 @@ export const SidebarUnderTwoShells: Story = {
             will keep certifying a rail that is wrong in a real shell.
           </>
         }
-        n={65}
+        n={64}
         title="The navigation column had no gutter"
         why="Nothing between the sidebar edge and the row button supplies a gutter, so the navigation sits on 8 while §10 moved the brand mark to 16 — and the live product puts both on 16 with an 8px gutter."
       />

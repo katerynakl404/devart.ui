@@ -11,15 +11,12 @@ is lost on the next sync.
 
 ## The constraint that shapes all of this
 
-**Two products now share one library.**
+**Two products share one library**, and a change that fixes one and breaks the
+other is not a fix. Section 9 is a worked example of that mistake — made,
+caught, and corrected.
 
-- **AI Connectivity** is a desktop application. It owns a window bar, so the
-  product mark, the name and the collapse control belong there.
-- **Insightis** is a web application. A browser tab is no place for a product
-  mark, so the sidebar carries it.
-
-A change that fixes one and breaks the other is not a fix. Section 9 is a worked
-example of that mistake — made, caught, and corrected.
+The sidebar is the web shape and only that: the product mark, the name and the
+collapse control live in it, because a browser tab is no place for them.
 
 ---
 
@@ -41,61 +38,60 @@ off — nothing should be built on it yet.
 | §8 | `TabsContent` | the inactive panel came back as an empty box |
 | §9 | `InputGroup` | a field label as loud as the hint beneath it |
 | §10 | `SidebarHeader` | lost its horizontal inset |
-| §11 | `SidebarHeader` | the two shells, told apart by `:empty` |
-| §12 | `SidebarMenuButton` | rendered tooltips with no styling at all |
-| §13 | `SidebarMenuButton` | a 32px box its own padding did not fit |
-| §14 | `Tooltip` | the arrow put the gap off the 4px scale |
-| §15 | `Sidebar` | collapsing could remove the only way to expand |
+| §11 | `SidebarMenuButton` | rendered tooltips with no styling at all |
+| §12 | `SidebarMenuButton` | a 32px box its own padding did not fit |
+| §13 | `Tooltip` | the arrow put the gap off the 4px scale |
+| §14 | `Sidebar` | collapsing could remove the only way to expand |
+| §15 | `PageHeader` | a page title with a back arrow was hand-assembled on every page, differently each · **draft** |
 | §16 | `PageHeader` | the title row: back control, h1, badge slot, actions · **draft** |
 | §17 | `ConnectorLogo` | 23 connector marks as data-URIs, with a monogram fallback · **draft** |
-| §18 | `TextArea` | character counter |
-| §19 | `StatusView` | `EmptyStateIllustration` |
-| §20 | `tokens` | a variant that is not enumerated is never compiled |
-| §21 | `Sidebar` | and `pnpm check-bundle-css` |
-| §22 | `Badge` | the hairline is the default, not a second variant |
-| §23 | `Sidebar` | five controls still fade at `opacity-50` |
-| §24 | `Toast` | has no width, so Sonner's does |
-| §25 | `Sheet` | the default side is the one without a border |
-| §26 | `Button` | a brand label on the neutral tertiary pill |
-| §27 | `Tabs` | no flush tabset, so two rules stack |
-| §28 | `Sidebar` | no badge or counter on a nav row |
-| §29 | `InputGroup` | the search clear button is a recipe, not a part |
-| §30 | `Datepicker` | one bespoke focus ring, not three missing states |
-| §31 | `TextArea` | counter — one ink step too loud |
-| §32 | `Toast` | the toast close button is off the 24px ladder |
-| §33 | `tokens` | one of the three "unrelated" ones is not |
-| §34 | `Badge` | the hairline is the base, not a second variant |
-| §35 | `PopoverContent` | a closed panel stayed painted |
-| §36 | `Sidebar` | the fixed panel was pinned to the viewport |
+| §18 | `StatusView` | `EmptyStateIllustration` |
+| §19 | `tokens` | a variant that is not enumerated is never compiled |
+| §20 | `Sidebar` | and `pnpm check-bundle-css` |
+| §21 | `Badge` | the hairline is the default, not a second variant |
+| §22 | `Sidebar` | five controls still fade at `opacity-50` |
+| §23 | `Toast` | has no width, so Sonner's does |
+| §24 | `Sheet` | the default side is the one without a border |
+| §25 | `Button` | a brand label on the neutral tertiary pill · **draft** |
+| §26 | `Tabs` | no flush tabset, so two rules stack |
+| §27 | `Sidebar` | no badge or counter on a nav row |
+| §28 | `InputGroup` | the search clear button is a recipe, not a part |
+| §29 | `Datepicker` | one bespoke focus ring, not three missing states |
+| §30 | `TextArea` | counter — one ink step too loud |
+| §31 | `Toast` | the toast close button is off the 24px ladder |
+| §32 | `tokens` | one of the three "unrelated" ones is not |
+| §33 | `Badge` | the hairline is the base, not a second variant |
+| §34 | `PopoverContent` | a closed panel stayed painted |
+| §35 | `Sidebar` | the fixed panel was pinned to the viewport |
+| §36 | `StepperIndicator` | ships **no rail** — so every consumer draws its own numbered circles out of raw · **draft** |
 | §37 | `StepperIndicator` | the numbered rail the headless Stepper never shipped · **draft** |
-| §38 | `tokens` | build — `bg-surface-card/85` is a class that compiles to nothing |
-| §40 | `SidebarMenu` | nav rows 4px apart where the kit says 2 |
-| §42 | `TextArea` | the counter row had a slot nothing could fill |
-| §44 | `DropdownMenu` | two rows a menu could not draw — an accent action and a reading · **draft** |
+| §39 | `SidebarMenu` | nav rows 4px apart where the kit says 2 |
+| §41 | `TextArea` | the counter row had a slot nothing could fill |
+| §43 | `DropdownMenu` | two kinds of row it could not draw · **draft** |
+| §45 | `InputGroupAction` | the trailing control of a field: · **draft** |
 | §46 | `InputGroupAction` | a field’s trailing control: 24px box, no surface, colour-only hover · **draft** |
 | §47 | `Link` | the kit’s text link, which the package never had · **draft** |
 | §48 | `StatTile` | label / value / caption — one number and what it counts · **draft** |
 | §49 | `CodeBlock` | a snippet and the control that copies it, as one object · **draft** |
-| §50 | `AccordionItem` | an item that is its own surface |
-| §51 | `TableCell` | pressed belonged to whatever was pressed |
-| §52 | `StatusView` | the illustration is a pack, not a rule — **revised** |
+| §50 | `TableCell` | pressed belonged to whatever was pressed |
+| §51 | `StatusView` | the illustration is a pack, not a rule — **revised** |
+| §52 | `MetaRow` | the line above a list — "5 connections · Select all", and the Delete that · **draft** |
 | §53 | `MetaRow` | the line above a list, and the 4px to it, stated once · **draft** |
-| §54 | `TableHead` | a column width is a share, not a size |
-| §55 | `TableRow` | nesting was a number one table owned |
+| §54 | `TableRow` | nesting was a number one table owned |
+| §55 | `DropdownMenu` | a link may open a menu · **draft** |
 | §56 | `DropdownMenu` | a link may open a menu · **draft** |
 | §57 | `Table` | `density` — a compact row step · **draft** |
-| §58 | `Checkbox` | the tick and the bar were two different weights |
-| §59 | `DataSourceCard` | the tile could be narrower than its own action |
-| §60 | `Card` | one elevation recipe instead of two copies |
-| §61 | `Card` | two variants had no box, and one had a shape a card cannot take |
-| §62 | `DataSourceCard` | the popular flame is gone |
-| §63 | `Autocomplete` | the clear and the chevron painted as placeholders |
-| §64 | `Tooltip` | the delay before it opens |
-| §65 | `SidebarContent` | the nav column had no gutter |
-| §39 | `StepSlider` | four measurements against a spec that argues for each one |
-| §41 | `tokens` | the size ladder |
-| §43 | `TableCell` | a row that could not grow, under a comment saying it could |
-| §45 | `tokens` | the icon surface |
+| §58 | `DataSourceCard` | the tile could be narrower than its own action |
+| §59 | `Card` | one elevation recipe instead of two copies |
+| §60 | `Card` | two variants had no box, and one had a shape a card cannot take |
+| §61 | `DataSourceCard` | the popular flame is gone |
+| §62 | `Autocomplete` | the clear and the chevron painted as placeholders |
+| §63 | `Tooltip` | the delay before it opens |
+| §64 | `SidebarContent` | the nav column had no gutter |
+| §38 | `StepSlider` | four measurements against a spec that argues for each one |
+| §40 | `tokens` | the size ladder |
+| §42 | `TableCell` | a row that could not grow, under a comment saying it could |
+| §44 | `DropdownMenu` | two rows a menu could not draw — an accent action and a reading · **draft** |
 
 # Colour and state
 
@@ -339,7 +335,7 @@ the addon (correct), while the toggle fell back to whatever the nested
 The two ends of the field still disagreed, just less visibly.
 
 The ladder is only shared once the size is passed **to the button** rather than
-written on the icon (§45): a class on the glyph loses to the addon's child
+written on the icon (§44): a class on the glyph loses to the addon's child
 selector in one direction and to the IconButton's own descendant selector in the
 other, so the icon's own `className` was never going to decide anything.
 
@@ -374,7 +370,7 @@ clean step of hierarchy with no new token.
 
 ---
 
-# The sidebar under two shells
+# The sidebar
 
 ## 10. `SidebarHeader` lost its horizontal inset
 
@@ -400,33 +396,7 @@ button lines up with the menu edge. `SidebarBrand` drops its own copy so nesting
 does not double it. A row that genuinely needs the edges opts out with `-ms-4
 -me-2` — the rarer case, and one that fails visibly rather than silently.
 
-## 11. `SidebarHeader` — the two shells, told apart by `:empty`
-
-The desktop shell renders `<SidebarHeader />` with nothing inside, purely for the
-top inset; without the element at all, the first navigation row butted into the
-window bar with **gap = 0**. But with it, `pb-2` was dead space under nothing.
-
-**The mistake, and why it was wrong.** The request — "remove the bottom padding"
-— was made while looking at the desktop shell, and it was applied to the shared
-component. That silently removes the spacing from Insightis too, where the header
-*does* carry a brand row and the padding is what separates it from the
-navigation. A product-specific request applied to a shared component is how one
-product's fix becomes another product's regression.
-
-**Fix:** `empty:pb-0`. The element reads its own content — a header with a brand
-row is spaced off the navigation, an empty one is pure top inset.
-
-Deliberately `:empty` rather than a `variant` prop. A prop means every product
-must know which shape it is and say so, and per §10 a rule a consumer has to
-remember is a rule that eventually is not followed. Here there is nothing to
-decide and nothing to get wrong.
-
-Verified: desktop shell header height 12, `padding-bottom: 0`, gap from window
-bar to first nav row 12. Web shell keeps `pb-2`. Both are in Storybook as
-`Sidebar / ShellShapes` — the only place the two can be compared, and the thing
-that fails visibly if either breaks.
-
-## 12. `SidebarMenuButton` rendered tooltips with no styling at all
+## 11. `SidebarMenuButton` rendered tooltips with no styling at all
 
 `src/components/Sidebar/SidebarMenuButton.tsx`
 
@@ -444,7 +414,7 @@ and portal retargeting that every other tooltip respects.
 Not configurable, and should not be: a sidebar tooltip has no reason to look
 unlike every other tooltip in the system.
 
-## 13. `SidebarMenuButton` — a 32px box its own padding did not fit
+## 12. `SidebarMenuButton` — a 32px box its own padding did not fit
 
 The account avatar was visibly clipped on its right side in the collapsed rail.
 
@@ -471,7 +441,7 @@ alone rather than blanked.
 Verified: every mark centres at **24** regardless of its own size — 16px icons,
 the 28px avatar, and the window-bar logo.
 
-## 14. `Tooltip` — the arrow put the gap off the 4px scale
+## 13. `Tooltip` — the arrow put the gap off the 4px scale
 
 `src/components/Tooltip/TooltipContent.tsx`
 
@@ -489,9 +459,9 @@ That half is not fixed in the package because the trigger belongs to the
 consumer, but it is a consequence of a package decision:
 `.design-sync/tailwind-export.css` overrides preflight with `svg { display:
 inline-block }`. That is one of the two reasons a component can behave
-differently in a bundle than in Storybook — see §21.
+differently in a bundle than in Storybook — see §20.
 
-## 15. Collapsing could remove the only way to expand
+## 14. Collapsing could remove the only way to expand
 
 `src/components/Sidebar/Sidebar.md`, shell example
 
@@ -503,14 +473,14 @@ that copied the doc inherited the dead end.
 
 New rule, plus `SidebarRail` in the example: a `SidebarTrigger` may not be the
 only way back if it hides when collapsed. Either render the rail, keep the
-trigger visible, or move it outside the sidebar entirely — a window bar, a page
+trigger visible, or move it outside the sidebar entirely — a page
 header — where collapsing cannot take it away.
 
 ---
 
 # New in the system
 
-## 16. `PageHeader` · **DRAFT**
+## 15. `PageHeader` · **DRAFT**
 
 `src/components/PageHeader/index.tsx`
 
@@ -534,7 +504,7 @@ the arrow uses, for the same reason.
 />
 ```
 
-## 17. `ConnectorLogo` · **DRAFT**
+## 16. `ConnectorLogo` · **DRAFT**
 
 `src/components/ConnectorLogo/` + `scripts/gen-connector-logos.mjs`
 
@@ -547,7 +517,7 @@ mark — so a page never needs to know the slug.
 The pack is deliberately small: it is generated from the app's SVG folder by a
 script, so extending it is a re-run, not a code change.
 
-## 18. `TextArea` character counter
+## 17. `TextArea` character counter
 
 `src/components/TextArea/index.tsx`
 
@@ -566,7 +536,7 @@ There was none, so pages wrote it by hand: "0 characters / 4000 max".
 - Works controlled (measured from `value`, so a programmatic change updates it)
   and uncontrolled (`defaultValue` plus internal state).
 
-## 19. `StatusView` — `EmptyStateIllustration`
+## 18. `StatusView` — `EmptyStateIllustration`
 
 `src/components/StatusView/index.tsx`
 
@@ -595,7 +565,7 @@ own answer, which is how two products drift apart without either being "wrong".
   always called it that, and `CardIcon variant="ghost"` is its centred dashed
   icon well, which is not the anatomy of a drop target. A dashed edge in this
   system means *nothing here yet*; sometimes that empty thing accepts a drop and
-  sometimes you click it. `Card.md` now says so, and `DropZone` (§33) is the
+  sometimes you click it. `Card.md` now says so, and `DropZone` (§32) is the
   component that owns the drop case.
 - **`Table.md` — the empty state.** The doc asked for "a single row with
   `colSpan` and `h-24 text-center`" and stopped, so every page improvised. Now
@@ -625,7 +595,7 @@ own answer, which is how two products drift apart without either being "wrong".
 
 # Build and tooling
 
-## 20. A variant that is not enumerated is never compiled
+## 19. A variant that is not enumerated is never compiled
 
 `.design-sync/gen-classlist.mjs`
 
@@ -637,7 +607,7 @@ produces no rule and no error.
 in the products. `empty:pb-0`, `empty:pt-0` and `empty:hidden` are now
 enumerated.
 
-## 21. `pnpm bundle` and `pnpm check-bundle-css`
+## 20. `pnpm bundle` and `pnpm check-bundle-css`
 
 **`pnpm bundle`** runs the six-command chain that used to be typed by hand. The
 order is load-bearing — `package-build` reads `dist`, so an edit made after
@@ -653,10 +623,10 @@ it; skipping warns if the roster did change.
 Storybook and wrong on a page:
 
 1. Storybook compiles Tailwind from the sources; the bundle compiles from an
-   enumerated class list, so a missing class produces no CSS and no error (§20).
+   enumerated class list, so a missing class produces no CSS and no error (§19).
 2. `tailwind-export.css` overrides preflight with `svg { display: inline-block }`,
    which Storybook does not have. That is what made a tooltip trigger 20px in a
-   bundle and 14px under preflight (§14).
+   bundle and 14px under preflight (§13).
 
 It compiles a second stylesheet with the built components as Tailwind's content
 and diffs the class selectors, letting Tailwind's own extractor decide what is a
@@ -679,21 +649,21 @@ written down nowhere — that is the coverage audit that follows.
 | # | Component | Kit section | Verdict |
 |---|---|---|---|
 | 1 | `Accordion` | `#accordion` | ⚠ kit calls open/close *"instant … no CSS transition"*; the package animates (`accordion-up/down`). Ratify or revert — Open questions |
-| 2 | `Autocomplete` | `#autocomplete` | ✅ highlighted = `State/Hover`, selected distinct (§3) · ⚠ `aria-disabled:opacity-50` (§23) |
+| 2 | `Autocomplete` | `#autocomplete` | ✅ highlighted = `State/Hover`, selected distinct (§3) · ⚠ `aria-disabled:opacity-50` (§22) |
 | 3 | `Avatar` | `#avatar` | ✅ deliberate divergence: kit says `--brand-primary`, package uses `--avatar-bg` because brand lifts on dark and white initials fell to 3.94:1. In `theme-contrast.md` |
-| 4 | `Badge` | `#badge` | ✅ hairline now the base (§22 → shipped in §34) · the `sm` radius is in the archive · glyph 16→14px *undoc.* |
+| 4 | `Badge` | `#badge` | ✅ hairline now the base (§21 → shipped in §33) · the `sm` radius is in the archive · glyph 16→14px *undoc.* |
 | 5 | `Banner` | `#banner` | ⚠ kit agrees **one** gradient (`.banner-grad`, `--grad-teal-dark`); package ships four (`horizontalWide`, `diagonalAiry`, `diagonalFade`, `horizontalSlab`). Geometry matches — icon 60→40px at `sm`, radius 12px |
-| 6 | `Button` | `#button` | ✅ §41 **fixed** — `lg`/`xl` now hold 12px padding and grow the label to 16/18; gap 8, glyph 20/24 · ⚠ §26 `tertiaryBrand` still missing |
-| 7 | `Card` | `#card` | ⚠ §33 `Card.md` redefines `ghost` as a drop target · hover/press deliberately removed (§4) · kit's focus + disabled still ⚠ *to define* |
+| 6 | `Button` | `#button` | ✅ §40 **fixed** — `lg`/`xl` now hold 12px padding and grow the label to 16/18; gap 8, glyph 20/24 · ⚠ §25 `tertiaryBrand` still missing |
+| 7 | `Card` | `#card` | ⚠ §32 `Card.md` redefines `ghost` as a drop target · hover/press deliberately removed (§4) · kit's focus + disabled still ⚠ *to define* |
 | 8 | `Checkbox` | `#checkbox` | ✅ hover, neutral focus ring, 10×2 indeterminate bar, `aria-invalid` error, `opacity-disabled` — all five |
 | 9 | `CircularProgress` | `#circularprogress` | ✅ size 40, stroke 2.5, track `--surface-page`, indicator brand |
 | 10 | `Collapsible` | `#collapsible` | ✅ pure Radix re-export on both sides; nothing to diverge |
-| 11 | `Datepicker` | `#datepicker` | ⚠ §30 the one focus ring in the package that is not the shared recipe · §23 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
+| 11 | `Datepicker` | `#datepicker` | ⚠ §29 the one focus ring in the package that is not the shared recipe · §22 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
 | 12 | `DropdownMenu` | `#dropdown` | ✅ 6/12 padding, 8px gap, 16px glyph @1.75, 4-inside-8 radius, disabled = ink only · radius, disabled recipe, focus removal and `portalContainer` all *undoc.* |
 | 13 | `File` | `#file` | ✅ 4/8 padding, card surface, medium name, interactive hover/press/focus · all of it *undoc.* |
-| 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §41 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
-| 15 | `Input` | `#input` | ✅ §41 **fixed** — padding, field text and glyph now match at all five steps |
-| 16 | `InputGroup` | `#inputgroup` | ✅ §41 **fixed** — padding, `sm` text 12→14, addon glyph and the 4px `xs` gap · ⚠ §29 clear button is still a story recipe |
+| 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §40 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
+| 15 | `Input` | `#input` | ✅ §40 **fixed** — padding, field text and glyph now match at all five steps |
+| 16 | `InputGroup` | `#inputgroup` | ✅ §40 **fixed** — padding, `sm` text 12→14, addon glyph and the 4px `xs` gap · ⚠ §28 clear button is still a story recipe |
 | 17 | `Modal` | `#modal` | ✅ 360/480/576 sizes, 14px radius (filed as a defect, retracted — in the archive), `min-h-0` body, scrim token · footer divider *undoc.* |
 | 18 | `Pagination` | `#pagination` | ✅ active = Button `primary`, other pages `secondary`, nav = IconButton `secondary` |
 | 19 | `PasswordInput` | `#passwordinput` | ✅ delegates to InputGroup, toggle sits in the field's trailing slot · `Eye`/`EyeOff` were inverted and are now fixed — *undoc.* |
@@ -704,24 +674,24 @@ written down nowhere — that is the coverage audit that follows.
 | 24 | `ScrollShadow` | `#scrollshadow` | ✅ size 40 / offset 0 / orientation / visibility; the gradient tracks the surface |
 | 25 | `SegmentedControl` | `#segctrl` | ✅ sm 20 / md 32, container tokens, all five states · type 11→12 and 13→14 is the agreed scale winning over the kit's own numbers · new `rounded` axis *undoc.* · list is `inline-flex` where the kit is `width:100%` |
 | 26 | `Separator` | `#separator` | ✅ three variants × two orientations · kit's `muted` still ⚠ *optional* |
-| 27 | `Sheet` | `#sheet` | ⚠ §25 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
-| 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §28 no menu badge / counter · §23 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§10–16) |
+| 27 | `Sheet` | `#sheet` | ⚠ §24 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
+| 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §27 no menu badge / counter · §22 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§10–16) |
 | 29 | `Skeleton` | `#skeleton` | ✅ shimmer is the default, pulse and none opt-in, radius `md` |
 | 30 | `Spinner` | `#spinner` | ✅ |
-| 31 | `StatusView` | `#statusview` | ✅ ladder re-scaled to 32/40/56 circles and 16/24/32 padding, `neutral` halo fixed, `EmptyStateIllustration` (§19) · the rescale is *undoc.* |
-| 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §39 |
+| 31 | `StatusView` | `#statusview` | ✅ ladder re-scaled to 32/40/56 circles and 16/24/32 padding, `neutral` halo fixed, `EmptyStateIllustration` (§18) · the rescale is *undoc.* |
+| 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §38 |
 | 33 | `Stepper` | `#stepper` | ✅ headless on both sides; the consumer styles it |
 | 34 | `Switch` | `#switch` | ✅ 36×20 / 28×16, `--switch-off-bg` pair, 44×44 hit area, neutral ring, `opacity-disabled` · label ink + disabled treatment *undoc.* |
-| 35 | `Table` | `#table` | ✅ 10/16 padding, 12px header, selection holds under the pointer · §43 **fixed** — the cell wraps again, so the row height follows its content |
-| 36 | `Tabs` | `#tabs` | ⚠ §27 no flush tabset, so two bottom rules stack · underline, hover, focus and disabled match · kit's counter/badge still ⚠ *to define* |
-| 37 | `TextArea` | `#textarea` | ✅ §41 **fixed** — padding at four steps and font at three · ⚠ §31 counter ink still `--ink-secondary` |
+| 35 | `Table` | `#table` | ✅ 10/16 padding, 12px header, selection holds under the pointer · §42 **fixed** — the cell wraps again, so the row height follows its content |
+| 36 | `Tabs` | `#tabs` | ⚠ §26 no flush tabset, so two bottom rules stack · underline, hover, focus and disabled match · kit's counter/badge still ⚠ *to define* |
+| 37 | `TextArea` | `#textarea` | ✅ §40 **fixed** — padding at four steps and font at three · ⚠ §30 counter ink still `--ink-secondary` |
 | 38 | `Timeline` | — | — no kit section |
-| 39 | `Toast` | `#toast` | ⚠ §32 close button off the `2xs` rung · stack gap 8 vs 10 · §24 width **mostly retracted** — a stacked kit toast is 360px, Sonner’s is 356px |
-| 40 | `Toggle` | `#chip` | ⚠ §33 `ghost` is `Button`'s removed variant under another name · the kit's chip hover also shifts text to `--ink-primary`; the package only fills |
+| 39 | `Toast` | `#toast` | ⚠ §31 close button off the `2xs` rung · stack gap 8 vs 10 · §23 width **mostly retracted** — a stacked kit toast is 360px, Sonner’s is 356px |
+| 40 | `Toggle` | `#chip` | ⚠ §32 `ghost` is `Button`'s removed variant under another name · the kit's chip hover also shifts text to `--ink-primary`; the package only fills |
 | 41 | `ToggleGroup` | `#chip` | ⚠ the kit specifies the count as part of the chip (`.chip-n` — 11px tabular-nums, `--ink-inactive`, 70% `--ink-highlight` when active); the package renders it in a story |
-| 42 | `Tooltip` | `#tooltip` | ✅ 288px ceiling with `w-max`, 8×4 arrow, Surface/Card ink (§14) |
+| 42 | `Tooltip` | `#tooltip` | ✅ 288px ceiling with `w-max`, 8×4 arrow, Surface/Card ink (§13) |
 | 43 | `TruncatedTitleTooltip` | `#truncated` | ✅ default side is now `top` as the kit states, and it inherits Tooltip's surface instead of re-declaring `max-w-52` — *undoc.* |
-| 44 | `Typography` | `#typography` | ✅ **fixed in §45** — `label16` added and the 18px rungs taken out again; the named scale and the control ladder now agree |
+| 44 | `Typography` | `#typography` | ✅ **fixed in §44** — `label16` added and the 18px rungs taken out again; the named scale and the control ladder now agree |
 
 **Fourteen components need work** — 4, 5, 6, 7, 11, 16, 20, 23, 27, 28, 32, 36,
 37, 39, 40, 41, 44, which is seventeen rows and fourteen distinct components once
@@ -738,20 +708,20 @@ its prose, because on three of these the prose and the stylesheet disagree and
 
 | § | The package says | The kit says |
 |---|---|---|
-| 26 | `tertiary: cn('border-transparent bg-transparent text-ink-body', 'hover:bg-state-hover', …)` — one tertiary, neutral label<br>`Button/index.tsx:57`, `IconButton/index.tsx:48` | `.btn-tertiary.is-brand{color:var(--brand-primary)}`<br>`.btn-tertiary.is-brand:hover{background:var(--state-hover);color:var(--brand-hover)}`<br>`.btn-tertiary.is-brand:active{…color:var(--brand-press)}` — a second tertiary whose *label* moves<br>`kit-theme.css`, `#button` (kit html 513) |
-| 25 | `right: cn('inset-y-0 right-0', 'h-full w-3/4 sm:max-w-sm', /* no border */)`<br>`Sheet/index.tsx:122`<br>…while `top` has `border-b`, `bottom` `border-t`, `left` `border-r` | *"Right · right (default) · `border-l` · slide-from-right"*<br>kit html `#sheet` (2731), side-variants block |
-| 27 | `'inline-flex items-center gap-2 border-stroke border-b'` — unconditional<br>`Tabs/TabsList.tsx:17` | `.tabset.var-flush{border-bottom:none}`<br>`kit-theme.css:1206` |
-| 28 | no `SidebarMenuBadge` — the string `MenuBadge` does not occur in `src/components/Sidebar/` | `.sbx-nav-item .nav-badge{margin-left:auto;background:color-mix(in srgb,var(--brand-primary) var(--tint-15),transparent);color:var(--brand-primary);font-size:var(--ts-label-s-size);padding:1px 6px;border-radius:var(--radius-full);font-variant-numeric:tabular-nums}`<br>`kit-theme.css`, `#sidebar` (1986) |
-| 23 | `'disabled:opacity-50'`, `'aria-disabled:opacity-50'` — `SidebarMenuButton.tsx:59,61`<br>`'aria-disabled:opacity-50'` — `Autocomplete/OptionItem.tsx:52`<br>`'…aria-disabled:opacity-50'` ×2 and `'text-ink-secondary opacity-50'` — `Datepicker/Calendar.tsx:70,75,158` | *"opacity:`--opacity-disabled` (.65) + pointer-events:none — same recipe as Switch / Checkbox / Button"*, stated under `#checkbox`, `#switch`, `#segctrl`, `#tabs`. `--opacity-disabled` is `.65`, not `.5` |
-| 29 | `className="group-has-[input:placeholder-shown]/input-group:hidden"` — in a **story**<br>`InputGroup/InputGroup.stories.tsx:210`; `InputGroup/index.tsx` has no `clearable` | `.igrp .igrp-clear{display:none}`<br>`.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear{display:inline-flex}` — in the **component's own stylesheet**<br>`kit-theme.css:2462-2463` |
-| 30 | `'group-data-[focused=true]/day:ring-[3px]'`<br>`'group-data-[focused=true]/day:ring-focus-ring-brand/50'` — 3px at 50%, no gap<br>`Datepicker/CalendarDayButton.tsx:74-75` | *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring `focusRing` in `src/lib/utils.ts` now exists to enforce<br>kit html `#datepicker` (3004), day-cell state table |
-| 31 | `textColor="secondary"` → `--ink-secondary`<br>`TextArea/index.tsx:256` | `.ta-count{text-align:right;font-size:var(--ts-body-s-size);color:var(--ink-inactive);margin-top:.25rem}`<br>`kit-theme.css:1087` — everything else (12px, right-aligned, 4px above) already matches |
-| 32 | `variant="transparent" size="sm"` + the `mt-0.5 text-ink-body` those force<br>`Toast/ToastMessage/index.tsx:100-101` | `.toast-x` is enumerated on the **24px `2xs` rung** — *"the row kebab, `.toast-x`, `.sht-x`"*. `Sheet/index.tsx:186` already took it (`variant="tertiary" size="2xs"`) |
-| 33 | `ghost: cn('border-transparent bg-transparent text-ink-body','hover:bg-state-hover active:bg-state-pressed', …)`<br>`Toggle/index.tsx:63` | the same recipe is `Button`'s **`tertiary`**; `Button.md:9` says *"There is **no `ghost`** — use `tertiary`"*. The kit's chip itself is `.chip{height:1.75rem;border-radius:var(--radius-full);border:1px solid var(--stroke-border);background:var(--surface-card);color:var(--ink-body)}` — `kit-theme.css:2706` |
-| 33 | `Card.md:14-15`: *"a dashed edge means a drop target, so `ghost` is for an area that **receives something**"* | `Card.stories.tsx:98`: *"Ghost — dashed 'browse more' tile."* — **both are ours**; the doc contradicts the story, and the story is right |
+| 25 | `tertiary: cn('border-transparent bg-transparent text-ink-body', 'hover:bg-state-hover', …)` — one tertiary, neutral label<br>`Button/index.tsx:57`, `IconButton/index.tsx:48` | `.btn-tertiary.is-brand{color:var(--brand-primary)}`<br>`.btn-tertiary.is-brand:hover{background:var(--state-hover);color:var(--brand-hover)}`<br>`.btn-tertiary.is-brand:active{…color:var(--brand-press)}` — a second tertiary whose *label* moves<br>`kit-theme.css`, `#button` (kit html 513) |
+| 24 | `right: cn('inset-y-0 right-0', 'h-full w-3/4 sm:max-w-sm', /* no border */)`<br>`Sheet/index.tsx:122`<br>…while `top` has `border-b`, `bottom` `border-t`, `left` `border-r` | *"Right · right (default) · `border-l` · slide-from-right"*<br>kit html `#sheet` (2731), side-variants block |
+| 26 | `'inline-flex items-center gap-2 border-stroke border-b'` — unconditional<br>`Tabs/TabsList.tsx:17` | `.tabset.var-flush{border-bottom:none}`<br>`kit-theme.css:1206` |
+| 27 | no `SidebarMenuBadge` — the string `MenuBadge` does not occur in `src/components/Sidebar/` | `.sbx-nav-item .nav-badge{margin-left:auto;background:color-mix(in srgb,var(--brand-primary) var(--tint-15),transparent);color:var(--brand-primary);font-size:var(--ts-label-s-size);padding:1px 6px;border-radius:var(--radius-full);font-variant-numeric:tabular-nums}`<br>`kit-theme.css`, `#sidebar` (1986) |
+| 22 | `'disabled:opacity-50'`, `'aria-disabled:opacity-50'` — `SidebarMenuButton.tsx:59,61`<br>`'aria-disabled:opacity-50'` — `Autocomplete/OptionItem.tsx:52`<br>`'…aria-disabled:opacity-50'` ×2 and `'text-ink-secondary opacity-50'` — `Datepicker/Calendar.tsx:70,75,158` | *"opacity:`--opacity-disabled` (.65) + pointer-events:none — same recipe as Switch / Checkbox / Button"*, stated under `#checkbox`, `#switch`, `#segctrl`, `#tabs`. `--opacity-disabled` is `.65`, not `.5` |
+| 28 | `className="group-has-[input:placeholder-shown]/input-group:hidden"` — in a **story**<br>`InputGroup/InputGroup.stories.tsx:210`; `InputGroup/index.tsx` has no `clearable` | `.igrp .igrp-clear{display:none}`<br>`.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear{display:inline-flex}` — in the **component's own stylesheet**<br>`kit-theme.css:2462-2463` |
+| 29 | `'group-data-[focused=true]/day:ring-[3px]'`<br>`'group-data-[focused=true]/day:ring-focus-ring-brand/50'` — 3px at 50%, no gap<br>`Datepicker/CalendarDayButton.tsx:74-75` | *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring `focusRing` in `src/lib/utils.ts` now exists to enforce<br>kit html `#datepicker` (3004), day-cell state table |
+| 30 | `textColor="secondary"` → `--ink-secondary`<br>`TextArea/index.tsx:256` | `.ta-count{text-align:right;font-size:var(--ts-body-s-size);color:var(--ink-inactive);margin-top:.25rem}`<br>`kit-theme.css:1087` — everything else (12px, right-aligned, 4px above) already matches |
+| 31 | `variant="transparent" size="sm"` + the `mt-0.5 text-ink-body` those force<br>`Toast/ToastMessage/index.tsx:100-101` | `.toast-x` is enumerated on the **24px `2xs` rung** — *"the row kebab, `.toast-x`, `.sht-x`"*. `Sheet/index.tsx:186` already took it (`variant="tertiary" size="2xs"`) |
+| 32 | `ghost: cn('border-transparent bg-transparent text-ink-body','hover:bg-state-hover active:bg-state-pressed', …)`<br>`Toggle/index.tsx:63` | the same recipe is `Button`'s **`tertiary`**; `Button.md:9` says *"There is **no `ghost`** — use `tertiary`"*. The kit's chip itself is `.chip{height:1.75rem;border-radius:var(--radius-full);border:1px solid var(--stroke-border);background:var(--surface-card);color:var(--ink-body)}` — `kit-theme.css:2706` |
+| 32 | `Card.md:14-15`: *"a dashed edge means a drop target, so `ghost` is for an area that **receives something**"* | `Card.stories.tsx:98`: *"Ghost — dashed 'browse more' tile."* — **both are ours**; the doc contradicts the story, and the story is right |
 | — | count rendered in a story: `{option.count}` in a plain `<span>`<br>`ToggleGroup/ToggleGroup.stories.tsx:273` | `.chip-n{font-size:var(--ts-label-m-size);color:var(--ink-inactive);font-variant-numeric:tabular-nums}`<br>`.chip.is-active .chip-n{color:color-mix(in srgb,var(--ink-highlight) var(--tint-70),transparent)}`<br>`kit-theme.css:2713-2714` — part of the component |
-| 33 | `body16`, `body14`, `body12` · `label14`, `label12`, `label10`<br>`Typography/index.tsx:60-67` | the nineteen include **Body XL 18/28**, **Label 2XL 18/28**, **Label XL 16/24** — kit html `#typography` (311), *"UI text — the 19 named styles"* |
-| 39 | track `bg-surface-chips` · dot `size-1` (4px) `bg-ink-secondary` · `w-20` (80px) · hit ring `before:-inset-2` (20×20)<br>`StepSlider/index.tsx:18, 56, 32, 60` | `.stps{height:1.25rem;padding:0 2px;background:var(--surface-card2);gap:.5rem;flex:none}`<br>`.stps-dot{width:6px;height:6px;background:var(--ink-inactive)}`<br>`kit-theme.css:1132, 1140` — and the kit derives its width from content rather than fixing it |
+| 32 | `body16`, `body14`, `body12` · `label14`, `label12`, `label10`<br>`Typography/index.tsx:60-67` | the nineteen include **Body XL 18/28**, **Label 2XL 18/28**, **Label XL 16/24** — kit html `#typography` (311), *"UI text — the 19 named styles"* |
+| 38 | track `bg-surface-chips` · dot `size-1` (4px) `bg-ink-secondary` · `w-20` (80px) · hit ring `before:-inset-2` (20×20)<br>`StepSlider/index.tsx:18, 56, 32, 60` | `.stps{height:1.25rem;padding:0 2px;background:var(--surface-card2);gap:.5rem;flex:none}`<br>`.stps-dot{width:6px;height:6px;background:var(--ink-inactive)}`<br>`kit-theme.css:1132, 1140` — and the kit derives its width from content rather than fixing it |
 | — | five variants: `default` + `horizontalWide` + `diagonalAiry` + `diagonalFade` + `horizontalSlab`, each repeated across five cva maps<br>`Banner/index.tsx:75-78, 102-105, 115-118, 130-133, 152-155` | one: `.banner-grad{background:var(--grad-teal-dark);border:none}` — `kit-theme.css:1307`, with the comment at `:277` *"override `--grad-teal-dark` per-instance to swap the fill"*. The kit's answer to "four gradients" is one variant and an instance override |
 
 ### Two entries above were wrong, and quoting both sides is what exposed them
@@ -765,7 +735,7 @@ the two *composed* variants (`.sbx-pop{background:var(--surface-card)…}`,
 the wrong one. Those variants are app-level compositions, not the primitive.
 `PopoverContent.tsx:31` is correct as written.
 
-**§24 `Toast` width — mostly retracted.** `.toast{min-width:280px;max-width:600px}`
+**§23 `Toast` width — mostly retracted.** `.toast{min-width:280px;max-width:600px}`
 (`kit-theme.css:2596`) is the standalone toast. In the stacking context the kit
 constrains it: `.toast-stack{…width:min(360px,calc(100vw - 3rem))}` and
 `.toast-stack .toast{width:100%}` (`:2594-2595`). So a stacked kit toast is
@@ -777,7 +747,7 @@ Both errors came from reading a rendered page instead of the stylesheet, and
 both were caught the moment the two sides had to be quoted side by side rather
 than summarised.
 
-## 22. `Badge` — the hairline is the default, not a second variant
+## 21. `Badge` — the hairline is the default, not a second variant
 
 `src/components/Badge/index.tsx`
 
@@ -810,7 +780,7 @@ Shape of the fix: add `--badge-border` (Layer 3, `color-mix` from
 into what they actually are — fill choices — with a `flat` variant dropping the
 border.
 
-## 23. Five controls still fade at `opacity-50`
+## 22. Five controls still fade at `opacity-50`
 
 The audit produced one unified disabled recipe — `opacity: var(--opacity-disabled)`
 (0.65) plus `pointer-events: none` — and the kit repeats it under Checkbox,
@@ -832,7 +802,7 @@ The Datepicker's third case is different and should not simply be swapped: it is
 the outside-month day, which the kit specifies as `text content-secondary` with
 no opacity at all.
 
-## 24. `Toast` has no width, so Sonner's does
+## 23. `Toast` has no width, so Sonner's does
 
 `src/components/Toast/Toaster.tsx`
 
@@ -850,7 +820,7 @@ to `ToastMessage`.
 Same file, same reason: the kit's stack gap is `.625rem` (10px, measured); the
 package passes `gap={8}`.
 
-## 25. `Sheet` — the default side is the one without a border
+## 24. `Sheet` — the default side is the one without a border
 
 `src/components/Sheet/index.tsx`, `sheetVariants`
 
@@ -866,7 +836,7 @@ The kit lists all four: *"Right · right (default) · `border-l` · slide-from-r
 with no edge against the scrim. It is a one-token omission that reads as a
 rendering bug on a light theme, where panel and page are both near-white.
 
-## 26. `tertiaryBrand` — a brand label on the neutral tertiary pill · **DRAFT**
+## 25. `tertiaryBrand` — a brand label on the neutral tertiary pill · **DRAFT**
 
 `src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
 
@@ -901,7 +871,7 @@ This is the mirror of `destructiveTertiary`, which the package already has (§1'
 sibling). Both are tertiary ghosts that recolour the label only; shipping one and
 not the other is why pages keep hand-rolling a `text-brand-primary` button.
 
-## 27. `Tabs` — no flush tabset, so two rules stack
+## 26. `Tabs` — no flush tabset, so two rules stack
 
 `src/components/Tabs/TabsList.tsx`
 
@@ -917,7 +887,7 @@ on the right, inside a row that already draws its own hairline. *"Without it the
 two rules stack into a 2px edge."* The DS Connections tab row is the shipped
 case. A `bordered` boolean variant on `TabsList` covers it.
 
-## 28. `Sidebar` — no badge or counter on a nav row
+## 27. `Sidebar` — no badge or counter on a nav row
 
 The kit's row has one, fully specified:
 
@@ -939,7 +909,7 @@ one. Every tint it needs is already in the package (`bg-brand-primary/15`,
 assembly, not new tokens — but without it each product invents its own, and the
 numeral alignment (`tabular-nums`) is the detail everyone forgets.
 
-## 29. `InputGroup` — the search clear button is a recipe, not a part
+## 28. `InputGroup` — the search clear button is a recipe, not a part
 
 The kit reveals the × only when there is something to clear:
 
@@ -964,7 +934,7 @@ The classes are load-bearing and easy to get subtly wrong — the rule needs a
 `placeholder` on the input to key off, and a search field without one silently
 keeps the button on. That trap belongs in the `.md`, and is not there yet.
 
-## 30. `Datepicker` — one bespoke focus ring, not three missing states
+## 29. `Datepicker` — one bespoke focus ring, not three missing states
 
 **Mostly retracted.** Filed as "no hover, no today, no disabled" after reading
 `CalendarDayButton.tsx` alone. The per-day classes do not live there — they live
@@ -994,14 +964,14 @@ group-data-[focused=true]/day:ring-focus-ring-brand/50
 user lives, and it is the one grid where "which cell am I on" is the entire
 interaction.
 
-**`disabled` fades at `opacity-50`** — §23, along with the two month-nav chevrons.
+**`disabled` fades at `opacity-50`** — §22, along with the two month-nav chevrons.
 
 `dark:hover:text-ink-primary` on `CalendarDayButton` is also one of the two
 `dark:`-class holdouts SPEC lists under *Creating a New Theme*. Now that the light
 hover is a token (`bg-state-hover`), that line is the last piece of the day cell
 that a third theme would not reach.
 
-## 31. `TextArea` counter — one ink step too loud
+## 30. `TextArea` counter — one ink step too loud
 
 `src/components/TextArea/index.tsx`
 
@@ -1018,7 +988,7 @@ content*. `--ink-secondary` is the hint's own colour; §9 moved the label up
 precisely so the hint would be subordinate, and the counter should sit below the
 hint, not beside it.
 
-## 32. The toast close button is off the 24px ladder
+## 31. The toast close button is off the 24px ladder
 
 `src/components/Toast/ToastMessage/index.tsx`
 
@@ -1052,7 +1022,7 @@ in place it does not merely duplicate, it **masks**: the next regression in the
 library would look fine on the page carrying the override and ship broken to the
 one without it.
 
-## 33. `ghost` — one of the three "unrelated" ones is not
+## 32. `ghost` — one of the three "unrelated" ones is not
 
 `Button`'s `ghost` was removed in favour of `tertiary`, and the changeset says
 `Card`, `CardIcon` and `Toggle` keep their own **unrelated** `ghost`. Two of
@@ -1074,11 +1044,11 @@ adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
 `Card.md` describes it as a drop target, which is a different component
 (`DropZone`); that line is what needs fixing, not the variant.
 
-## 34. `Badge` — the hairline is the base, not a second variant
+## 33. `Badge` — the hairline is the base, not a second variant
 
 `globals.css`, `src/lib/constants.ts`, `src/components/Badge/index.tsx`
 
-§22 diagnosed this from the kit and stopped at "shape of the fix". This round
+§21 diagnosed this from the kit and stopped at "shape of the fix". This round
 shipped it, because the page could not stop drawing the border by hand until it
 did — `.sync-chip` in `_shared/pages.css` was exactly the kit's rule, written
 out on the consumer:
@@ -1117,7 +1087,7 @@ per-product value. Every existing call site gains a hairline it did not have;
 none loses a fill or changes size — `border` was already in the base class, so
 the box model is untouched.
 
-## 35. `PopoverContent` — a closed panel stayed painted
+## 34. `PopoverContent` — a closed panel stayed painted
 
 `src/components/Popover/PopoverContent.tsx`
 
@@ -1154,7 +1124,7 @@ open or opening. The same pattern (`animate-out` with no fill mode) is on
 `DropdownMenuContent`, `TooltipContent` and `SheetContent`; none of them was
 reported, so they are left alone and noted here rather than changed blind.
 
-## 36. `Sidebar` — the fixed panel was pinned to the viewport
+## 35. `Sidebar` — the fixed panel was pinned to the viewport
 
 `src/components/Sidebar/index.tsx`
 
@@ -1169,12 +1139,10 @@ reported, so they are left alone and noted here rather than changed blind.
 containing block's height. `h-svh` overrode that with the **viewport's** height,
 and the two are the same only while the app shell *is* the viewport.
 
-AI Connectivity is a desktop application: the shell sits under a window bar, and
-the review harness adds a bar above that. `position: fixed` resolves against the
-nearest transformed ancestor, which the shell has (`translateZ(0)`, deliberately
-— without it the sidebar would cover the window bar). So `inset-y-0` was
-correct and `h-svh` was 40px too tall, which slid the account row off the bottom
-edge. The page's answer was an override on a design-system component:
+`position: fixed` resolves against the nearest transformed ancestor, and the
+shell that found this had one (`translateZ(0)`), with a bar above it. So
+`inset-y-0` was correct and `h-svh` was 40px too tall, which slid the account
+row off the bottom edge. The page's answer was an override on a design-system component:
 
 ```css
 .app-viewport div.fixed.inset-y-0 { height: 100%; }
@@ -1187,7 +1155,7 @@ the §8-class check the constraint at the top of this file asks for, and it come
 out clean: one product is fixed, the other is unaffected, because the removed
 declaration was redundant in the case that still works.
 
-## 37. New — `StepperIndicator` · **DRAFT**
+## 36. New — `StepperIndicator` · **DRAFT**
 
 `src/components/Stepper/StepperIndicator.tsx`
 
@@ -1240,7 +1208,7 @@ as not-yet-reached. TypeScript catches it in the library; it cannot in a `.jsx`
 prototype, which is an argument for the rail living in the library and not on
 the page.
 
-## 38. Build — `bg-surface-card/85` is a class that compiles to nothing
+## 37. Build — `bg-surface-card/85` is a class that compiles to nothing
 
 `.design-sync/gen-classlist.mjs`
 
@@ -1250,7 +1218,7 @@ it, the bundle therefore has no rule for it, and the element renders with **no
 background at all** — no error, no warning, nothing in `check-bundle-css`,
 because the class was never asked for.
 
-This is the §20 failure mode on a different axis: §20 was a *variant* that was
+This is the §19 failure mode on a different axis: §19 was a *variant* that was
 not enumerated, this is a *modifier*. `_shared/card-scrim` writes the mix by
 hand for that reason.
 
@@ -1259,7 +1227,7 @@ decision about bundle size rather than a defect: the useful shape is probably a
 short list of steps the system actually uses. Recorded so the next person who
 finds a silently unpainted element has somewhere to look.
 
-## 40. `SidebarMenu` — nav rows 4px apart where the kit says 2
+## 39. `SidebarMenu` — nav rows 4px apart where the kit says 2
 
 `src/components/Sidebar/SidebarMenu.tsx`
 
@@ -1286,18 +1254,18 @@ compounds: seven rows put the account footer 14px lower than the design.
 Worth noting **how this was missed**. Both bundles — the one committed and the
 one rebuilt — carry `gap-1`, so this is not a regression and no rebuild
 introduced it; the value has been wrong since the component was written, and the
-kit↔package audit (§22–40) walked components rather than composed screens, where
+kit↔package audit (§21–40) walked components rather than composed screens, where
 a 2px difference in a list of seven is what you actually see.
 
 **Both products.** The kit is the shared reference — Insightis' own sidebar is
 built from `.sbx-nav`, which is already at 2px, so this moves the package
 towards what that product ships rather than away from it.
 
-## 42. `TextArea` — the counter row had a slot nothing could fill
+## 41. `TextArea` — the counter row had a slot nothing could fill
 
 `src/components/TextArea/index.tsx`
 
-`showCount` (§18) draws the counter into a two-column row whose left half only
+`showCount` (§17) draws the counter into a two-column row whose left half only
 ever held `errorText`. F-25 in the connections PRD wants a standing caveat
 there — *"Do not include passwords, API tokens, or personal data…"* — beside the
 counter, and the component had no way to put it there. So the page turned
@@ -1327,7 +1295,7 @@ type. That ordering is the reason it is one slot and not two.
 **Both products.** Additive; a `TextArea` without `hintText` renders exactly as
 before. Any field with a limit and a caveat stops hand-building the row.
 
-## 44. `DropdownMenu` — two kinds of row it could not draw · **DRAFT**
+## 43. `DropdownMenu` — two kinds of row it could not draw · **DRAFT**
 
 `src/components/DropdownMenu/DropdownMenuItem.tsx`,
 `src/components/DropdownMenu/DropdownMenuRow.tsx` (new)
@@ -1356,7 +1324,7 @@ surface promises the row does something.
 `DropdownMenuLabel` is not this: it is the 10px caps heading that captions a
 group.
 
-## 46. New — `InputGroupAction` · **DRAFT**
+## 45. New — `InputGroupAction` · **DRAFT**
 
 `src/components/InputGroup/InputGroupAction.tsx`
 
@@ -1384,9 +1352,9 @@ rather than a prop, because the markup already says whether there is one.
 Without it the shell's 12px and the action's own box stack, and the ✕ sits
 further from the border than the glyph opposite it.
 
-Used by `Autocomplete` (§63) and by the search field's clear button (§29).
+Used by `Autocomplete` (§62) and by the search field's clear button (§28).
 
-## 47. New — `LinkButton` · **DRAFT**
+## 46. New — `LinkButton` · **DRAFT**
 
 `src/components/Link/index.tsx`
 
@@ -1427,7 +1395,7 @@ column of row actions a permanent underline reads as a table of contents.
 is always there at **25% of the ink**, and hover brings it to full strength
 rather than adding it. Measured: `color(srgb … / 0.25)`, thickness 1px.
 
-## 48. New — `StatTile` · **DRAFT**
+## 47. New — `StatTile` · **DRAFT**
 
 `src/components/StatTile/index.tsx`
 
@@ -1452,7 +1420,7 @@ Sizes are the two rungs the other padded surfaces use — `sm` 16px inset, `md`
 
 **Both products.** New component, no call sites.
 
-## 49. New — `CodeBlock` · **DRAFT**
+## 48. New — `CodeBlock` · **DRAFT**
 
 `src/components/CodeBlock/index.tsx`
 
@@ -1473,7 +1441,7 @@ doing nothing. Any product that ships an offline or `file://` surface hits this.
 
 **Both products.** New component, no call sites.
 
-## 50. `AccordionItem` — an item that is its own surface
+## 49. `AccordionItem` — an item that is its own surface
 
 `src/components/Accordion/AccordionItem.tsx`
 
@@ -1492,7 +1460,7 @@ has one layout and the page needs two.
 
 **Both products.** Additive; every existing item keeps the divider.
 
-## 51. `TableCell` — pressed belonged to whatever was pressed
+## 50. `TableCell` — pressed belonged to whatever was pressed
 
 `src/components/Table/TableCell.tsx`
 
@@ -1518,14 +1486,14 @@ the press that was lying about what had been pressed.
 **Both products.** Strictly narrows when the fill paints; no row loses a state
 it should have had.
 
-## 52. `StatusView` — the illustration is a pack, not a rule — **revised**
+## 51. `StatusView` — the illustration is a pack, not a rule — **revised**
 
 `src/components/StatusView/index.tsx`
 
-§19 added `EmptyStateIllustration` and read as though the system had picked the
+§18 added `EmptyStateIllustration` and read as though the system had picked the
 artwork. It had not, and should not: `StatusView` takes whatever goes in its
 `icon` slot — a lucide glyph, one of these, or a product's own drawing — and
-that was already true before §19.
+that was already true before §18.
 
 What was actually missing is that **one picture cannot say two things**. "There
 is nothing here yet" and "your search matched nothing" are different states, and
@@ -1538,13 +1506,13 @@ no difference. So the pack is two:
 | `EmptySearchIllustration` | a search field with a query in it, over two dashed empty rows |
 
 The magnifier in the second one is **part of the depicted field**, not a symbol
-standing in for "not found" — which is the objection §19 raised against using a
+standing in for "not found" — which is the objection §18 raised against using a
 magnifier as the whole picture, and it still stands.
 
 Every colour is a token, so both re-theme with the page and neither needs a dark
 variant.
 
-## 53. New — `MetaRow` · **DRAFT**
+## 52. New — `MetaRow` · **DRAFT**
 
 `src/components/MetaRow/index.tsx`
 
@@ -1588,7 +1556,7 @@ not one of those actions.
 **Both products.** New component, no call sites. Insightis has the same row in
 CSS; this is where it becomes a part.
 
-## 54. `TableHead` — a column width is a share, not a size
+## 53. `TableHead` — a column width is a share, not a size
 
 `src/components/Table/TableHead.tsx`
 
@@ -1651,7 +1619,7 @@ hand-set heads. Stated in `Table.md` rather than discovered twice.
 **Both products.** Additive; every existing column keeps `auto`, which is what
 it had.
 
-## 55. `TableRow` — nesting was a number one table owned
+## 54. `TableRow` — nesting was a number one table owned
 
 `src/components/Table/TableRow.tsx`, `src/components/Table/TableCell.tsx`
 
@@ -1694,7 +1662,7 @@ recorded in the prod migration report
 (`Insightis/reports/2026-09-19-prod-interaction-states-migration.md`) — zero
 visual delta, since the only rows carrying it today already had the 8px.
 
-## 56. `DropdownMenu` — a link may open a menu · **DRAFT**
+## 55. `DropdownMenu` — a link may open a menu · **DRAFT**
 
 `src/components/DropdownMenu/DropdownMenu.md`, `changes/Harness.tsx`
 
@@ -1719,7 +1687,7 @@ decision".
 
 **Both products.** Documentation and a storybook state; no component code.
 
-## 57. `Table` — `density` · **DRAFT**
+## 56. `Table` — `density` · **DRAFT**
 
 `src/components/Table/index.tsx`, `TableCell.tsx`, `TableHead.tsx`
 
@@ -1741,7 +1709,7 @@ screen is worth more to them than breathing room. Insightis' users are asking
 questions of data and are better served by the comfortable default — which is
 why this is a prop and not a new number for everybody.
 
-**Draft**, for the same reason as §56: it exists for a screen that has not been
+**Draft**, for the same reason as §55: it exists for a screen that has not been
 chosen yet. Nothing changes for any existing table, since `comfortable` is
 what they all render today.
 
@@ -1752,13 +1720,13 @@ what they all render today.
   component override — and `ScrollShadow` also paints edge shadows the container
   does not want. Left on the page.
 - **`DropdownMenuContent` / `TooltipContent` / `SheetContent` exit animations.**
-  Same missing fill mode as §35, no reported symptom. Changing three more
+  Same missing fill mode as §34, no reported symptom. Changing three more
   floating surfaces on the strength of one measurement is how a fix becomes a
   regression.
 - **`Badge size="sm"` radius.** Archived — the request against `Badge` was the hairline, and this was never part of it.
   Out of scope for a round that was about where components come from.
 
-## 58. `Checkbox` — the tick and the bar were two different weights
+## 57. `Checkbox` — the tick and the bar were two different weights
 
 `src/components/Checkbox/Checkbox.tsx`, `Insightis/pages/kit-theme.css`
 
@@ -1789,7 +1757,7 @@ spacing scale, which would make one checkbox heavier than every icon beside it.
 `<svg width="12" stroke-width="3">` and `.cbx.is-indeterminate::before` was
 `height:2px`. Both are 1.5px now.
 
-## 59. `DataSourceCard` — the tile could be narrower than its own action
+## 58. `DataSourceCard` — the tile could be narrower than its own action
 
 `src/components/DataSourceCard/index.tsx`
 
@@ -1823,7 +1791,7 @@ editing a constant.
 > values and a div for the other five. The two do share their lift recipe, and
 > that is the part worth keeping in sync by hand.
 
-## 60. `liftOnHover` — one elevation recipe instead of two copies
+## 59. `liftOnHover` — one elevation recipe instead of two copies
 
 `src/lib/utils.ts`, `src/components/Card/index.tsx`,
 `src/components/DataSourceCard/index.tsx`
@@ -1852,7 +1820,7 @@ its own content reflowing.
 surface, the tile is a `<button>` with a hover scrim and a revealed action — so
 the shared part is a recipe both import, not a base component both extend.
 
-## 61. `Card` — two variants had no box, and one had a shape a card cannot take
+## 60. `Card` — two variants had no box, and one had a shape a card cannot take
 
 `src/components/Card/index.tsx`
 
@@ -1869,7 +1837,7 @@ how much text the card happens to hold, and the 40px sample in the radius story
 showed exactly that. The step was added on this branch, so nothing published
 loses it.
 
-## 62. `DataSourceCard` — the popular flame is gone
+## 61. `DataSourceCard` — the popular flame is gone
 
 `src/components/DataSourceCard/index.tsx`
 
@@ -1880,7 +1848,7 @@ second mark on the logo was an editorial signal the catalog does not need.
 It also took the last positioned element out of the content layer, which is
 what had made the scrim ordering fragile.
 
-## 63. `Autocomplete` — the clear and the chevron painted as placeholders
+## 62. `Autocomplete` — the clear and the chevron painted as placeholders
 
 `src/components/Autocomplete/index.tsx`
 
@@ -1891,15 +1859,15 @@ while `[&>button]:text-ink-secondary` and its hover step matched nothing at
 all. Two clickable controls painted at the placeholder step and never answered
 the pointer. Measured: `rgb(124 140 162)` — `--ink-inactive`.
 
-Both are `InputGroupAction` now (§46), which is also a real `<button>` under
+Both are `InputGroupAction` now (§45), which is also a real `<button>` under
 the `aria-label`: an `<svg>` with a label and a click handler is not a control
 to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
 `--ink-icon`, and no bare `svg` left as a direct child of the addon.
 
-Separate from §23, which lists Autocomplete for a different defect — its
+Separate from §22, which lists Autocomplete for a different defect — its
 disabled option still fades at `opacity-50`.
 
-## 64. `Tooltip` — the delay before it opens
+## 63. `Tooltip` — the delay before it opens
 
 `src/components/Tooltip/index.tsx`
 
@@ -1919,7 +1887,7 @@ Unchanged, and worth knowing: the bubble itself is not a transition but a
 8px slide from the trigger’s side. That 150 is the plugin’s default, not
 `--motion-*`.
 
-## 65. `SidebarContent` — the nav column had no gutter
+## 64. `SidebarContent` — the nav column had no gutter
 
 `src/components/Sidebar/SidebarContent.tsx`
 
@@ -1936,7 +1904,7 @@ rail the library does not draw.
 Measured after: the row fill starts 8px from the edge and the glyph lands on
 16 — the brand mark’s line, and what the product renders.
 
-## 39. `StepSlider` — four measurements against a spec that argues for each one
+## 38. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
 colliding with it.*
@@ -1975,7 +1943,7 @@ at a dot changes nothing.
 expands 8px around a 4px dot — 20×20, under WCAG 2.5.8's 24×24. The kit reaches
 24 by insetting 4px around a **16px slot**, not around the mark: *"the slot plus
 an invisible `::before` ring clears 24×24 on both axes without changing layout."*
-Same trick as `.swt::before`, which the package did implement correctly (§29 of
+Same trick as `.swt::before`, which the package did implement correctly (§28 of
 the kit's Switch entry, `-inset-x-1 -inset-y-3`). The gap is that the dot here is
 the mark, not the slot — the constant-slot layer the kit describes was not built,
 which is also why the width came out at 80px instead of 68px.
@@ -1990,7 +1958,7 @@ None of these are visible in the published Storybook, which predates the
 component's current form; all four were read off the kit's rendered CSS and the
 package source side by side.
 
-## 41. The size ladder
+## 40. The size ladder
 
 **The canonical ladder. Four sources carry this table and must agree:** this
 file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
@@ -2035,7 +2003,7 @@ Field text also moved: `sm` 12 → 14, `lg`/`xl` 14 → 16. The `sm` step is a
 correction in its own right — the earlier "13 → 14" migration rounded it down to
 12, where the kit's `sm` field has always been Body M.
 
-## 43. `TableCell` — a row that could not grow, under a comment saying it could
+## 42. `TableCell` — a row that could not grow, under a comment saying it could
 
 `src/components/Table/TableCell.tsx`, `.design-sync/gen-classlist.mjs`
 
@@ -2095,7 +2063,7 @@ context.
 
 `[[data-layout=fixed]_&]:` is an arbitrary variant. Nothing in
 `gen-classlist.mjs` generates that prefix, so all three classes are listed by
-hand — §20's failure mode exactly: un-enumerated, they compile to nothing in the
+hand — §19's failure mode exactly: un-enumerated, they compile to nothing in the
 `ds-bundle` and a fixed-layout table silently stops truncating, with Storybook
 still showing it working because Storybook compiles from source.
 
@@ -2106,7 +2074,7 @@ Two ways back, and the second is the better one: `layout="fixed"` on the table,
 or `truncate` on the specific cells that should clamp — which is what the kit
 does, and it keeps the decision beside the column it applies to.
 
-## 45. The icon surface
+## 44. The icon surface
 
 Four things, one of which is the reason the other three would not have shipped.
 
@@ -2172,7 +2140,7 @@ enumerated vocabulary generated none of them.
 
 So in the bundle no glyph ladder existed, no shrink guard, no menu stroke
 weight: every icon fell back to whatever `lucide-react` renders, and nothing
-failed. §20 at library scale.
+failed. §19 at library scale.
 
 ## Raised by the kit ↔ Storybook audit
 
@@ -2182,7 +2150,7 @@ either side until the design answers:
 | | |
 |---|---|
 | **`--tbl-row-pressed`** | Prose says neutral, `--tint-6` of `--ink-primary`. CSS says `color-mix(in srgb, #07807E 4%, transparent)` — brand teal, off the tint scale. |
-| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §45. |
+| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §44. |
 | **Sidebar active ink** | The row table says active is *"`Text/Body` (no brand colour)"*; the Collapsed row two lines down says *"(active = teal icon)"*. The package follows the first. |
 
 Eight more are the kit's own ⚠ markers — agreed to be *needed*, never specified,

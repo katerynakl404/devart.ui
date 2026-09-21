@@ -251,7 +251,7 @@ export const TheTable: Story = {
             adds the ellipsis the old rule never had.
           </>
         }
-        n={43}
+        n={42}
         title="A cell that could not grow, under a comment saying it could"
         why="Every cell was one clipped line of 12px text at an 8px inset, so a note column showed its first four words and a table sat tighter than the card it was in."
       />
@@ -291,7 +291,7 @@ export const TheTable: Story = {
             Storybook panel narrower to see which half survives it.
           </>
         }
-        n={54}
+        n={53}
         title="A column width is a share, not a size"
         why="There was no width prop, so every page hand-set pixel widths on the head — five tables, five different numbers for the same column."
       />
@@ -313,7 +313,7 @@ export const TheTable: Story = {
             holds, which the component cannot know.
           </>
         }
-        n={55}
+        n={54}
         title="Nesting was a number one table owned"
         why="A child row is not a row of equal weight, but the only way to say so was a padding override written inside one page."
       />
@@ -353,7 +353,7 @@ export const TheTable: Story = {
             composites on top, which is what the overlay tokens are for.
           </>
         }
-        n={51}
+        n={50}
         title="The row's pressed fill belonged to whatever was pressed"
         why="Pressing a button inside an interactive row painted the entire row, so a row action looked like it was opening the row."
       />

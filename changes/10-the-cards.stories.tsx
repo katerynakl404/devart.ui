@@ -157,7 +157,7 @@ export const TheCards: Story = {
             share the lift recipe, and that is the part kept in sync by hand.
           </>
         }
-        n={59}
+        n={58}
         title="A tile could be narrower than its own action"
         why="The Connect scrim floated over the tile instead of sitting in it, so nothing stopped the grid from making the tile smaller than the button it reveals."
       />
