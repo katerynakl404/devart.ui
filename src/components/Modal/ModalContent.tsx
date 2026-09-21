@@ -98,7 +98,7 @@ export function ModalContent({
         {children}
         <DialogTitleFallback>{props['aria-label']}</DialogTitleFallback>
         {isCloseButtonVisible && (
-          <TooltipProvider delayDuration={200}>
+          <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
                 <ModalClose asChild>

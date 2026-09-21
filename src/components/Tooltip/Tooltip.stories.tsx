@@ -27,7 +27,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider>
         <div className="grid min-h-32 place-items-center">
           <Story />
         </div>

@@ -19,7 +19,7 @@ const meta = {
   argTypes: { size: { control: 'inline-radio', options: ['sm', 'md'] } },
   decorators: [
     (Story) => (
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider>
         <div className="w-full max-w-lg">
           <Story />
         </div>

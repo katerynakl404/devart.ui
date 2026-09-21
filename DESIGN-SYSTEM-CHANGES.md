@@ -1933,6 +1933,26 @@ to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
 Separate from §23, which lists Autocomplete for a different defect — its
 disabled option still fades at `opacity-50`.
 
+## 64. `Tooltip` — the delay before it opens
+
+`src/components/Tooltip/index.tsx`
+
+`TooltipProvider` was a bare re-export of Radix’s, so the delay was whatever
+each call site passed: 200ms in `ModalContent` and three stories, 500ms in the
+sidebar rail, and Radix’s own 700ms anywhere a consumer forgot.
+
+It now defaults to **300ms**, the kit’s value — `[data-tip]` opens on
+`transition: opacity .12s .3s`. At 200 the bubble appears while the pointer is
+still crossing the row; at 700 it reads as never coming.
+
+The three 200s are removed so they take the default. The sidebar keeps 500:
+there the pointer crosses eight icons on the way to one.
+
+Unchanged, and worth knowing: the bubble itself is not a transition but a
+`tailwindcss-animate` keyframe — 150ms `ease`, `fade-in-0 zoom-in-95` plus an
+8px slide from the trigger’s side. That 150 is the plugin’s default, not
+`--motion-*`.
+
 ## 39. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid

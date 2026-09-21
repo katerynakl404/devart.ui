@@ -25,7 +25,7 @@ const meta = {
   // `showStepTooltips` needs a provider; harmless for the stories that leave it off.
   decorators: [
     (Story) => (
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider>
         <Story />
       </TooltipProvider>
     ),
