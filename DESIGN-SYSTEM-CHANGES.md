@@ -2245,6 +2245,65 @@ what they all render today.
 - **`Badge size="sm"` radius.** Archived — the request against `Badge` was the hairline, and this was never part of it.
   Out of scope for a round that was about where components come from.
 
+## 63. `Checkbox` — the tick and the bar were two different weights
+
+`src/components/Checkbox/Checkbox.tsx`, `Insightis/pages/kit-theme.css`
+
+```diff
+- <span className="… h-0.5 w-2.5 …" />   /* 2px */
++ <span className="… h-[1.5px] w-2.5 …" /> /* 1.5px */
+```
+
+The tick is a 12px lucide glyph at `strokeWidth={3}`; in a 24-unit viewBox that
+renders at **1.5px**. The indeterminate mark is not a glyph at all — it is a
+`<span>` — and it took `h-0.5`, the nearest step Tailwind offers, which is
+**2px**. So one control drew its two states at two weights, and switching a
+checkbox from checked to indeterminate made the mark visibly heavier.
+
+1.5 rather than 2, because the tick’s weight is the one the icon system sets:
+it comes from the stroke ladder every other glyph in the package uses, while
+the bar’s 2px came from a spacing scale that has no 1.5 step. `h-[1.5px]` is an
+arbitrary value on purpose — the alternative is to bend the glyph to the
+spacing scale, which would make one checkbox heavier than every icon beside it.
+
+**The kit had the same mismatch**, and for the same reason: its tick is
+`<svg width="12" stroke-width="3">` and `.cbx.is-indeterminate::before` was
+`height:2px`. Both are 1.5px now.
+
+## 64. `DataSourceCard` — the tile could be narrower than its own action
+
+`src/components/DataSourceCard/index.tsx`
+
+The scrim that reveals **Connect** was `absolute inset-0`, and an absolutely
+positioned child contributes nothing to its parent’s intrinsic size. So the
+tile’s minimum width was set by a connector name — “DB2” — while the thing that
+has to fit inside it is a 104px button. On the narrow steps of the catalog grid
+the action reached the tile’s edges, and the first fix was a 16px gutter on the
+scrim, which moved the clipping rather than removing it.
+
+The two layers now stack in one grid cell (`[grid-area:1/1]`) instead of one
+floating over the other, so the action counts:
+
+| | before | after |
+|---|---|---|
+| tile min-content width | the connector name | **122px** = the action + 8px either side |
+| does the grid respect it | — | `min-w-fit`, because Tailwind’s `grid-cols-N` is `minmax(0, 1fr)` and a track may shrink below its item’s min-content |
+| scrim gutter | 16px | **8px**, the kit’s |
+| width above the minimum | `w-full` | `w-full` — unchanged, the grid decides |
+
+Measured in `Components/DataSourceCard → CatalogGrid`. 8px rather than 16 is
+the kit’s number; the minimum is not a number at all any more but the action’s
+own width plus that pair, so a longer `connectLabel` moves it without anybody
+editing a constant.
+
+> **Why this is its own component and not a `Card` variant.** `Card` is a
+> surface: five variants, all of them a box with padding and a border. A
+> catalog tile is a *control* — a `<button>` with a hover scrim, a revealed
+> action, a popular badge and a fixed 8rem height — and putting it behind
+> `Card variant="tile"` would mean `Card` renders a button for one of its six
+> values and a div for the other five. The two do share their lift recipe, and
+> that is the part worth keeping in sync by hand.
+
 ## 40. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid

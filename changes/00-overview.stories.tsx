@@ -273,6 +273,24 @@ const ROWS: Row[] = [
     page: '9. The fields',
   },
   {
+    n: '5',
+    area: 'Card',
+    change: 'an outline card answered the pointer and then did nothing',
+    page: '10. The cards',
+  },
+  {
+    n: '64',
+    area: 'DataSourceCard',
+    change: 'a tile could be narrower than its own action',
+    page: '10. The cards',
+  },
+  {
+    n: '63',
+    area: 'Checkbox',
+    change: 'the tick and the bar were two different weights',
+    page: '2. Size and spacing',
+  },
+  {
     n: '21',
     area: 'gen-classlist.mjs',
     change: 'empty:* enumerated, or the rule in §12 is never compiled',
@@ -292,7 +310,7 @@ const UNCOVERED: [string, string][] = [
   ['Sidebar', '29, 37, 41'],
   ['New components', '38, 48, 49, 50, 55'],
   ['Table', '3, 59, 62'],
-  ['Cards, links and the rest', '5, 7a, 27, 34, 40, 46, 53, 57, 60'],
+  ['Links and the rest', '7a, 27, 34, 40, 46, 53, 57, 60'],
   ['Build — nothing to render', '21, 22, 39'],
 ];
 
@@ -382,7 +400,7 @@ export const Overview: Story = {
         </h3>
         <p>
           <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §61
-          plus §7a. The table above renders 32 of them as cases and lists §21
+          plus §7a. The table above renders 35 of them as cases and lists §21
           and §22 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:
         </p>

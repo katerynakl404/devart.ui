@@ -5,6 +5,7 @@ import { composeStories } from '@storybook/react-vite';
 import { Info, Trash2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Button } from '../src/components/Button';
+import * as CheckboxStories from '../src/components/Checkbox/Checkbox.stories';
 import { IconButton } from '../src/components/IconButton';
 import * as InputGroupStories from '../src/components/InputGroup/InputGroup.stories';
 import * as PasswordInputStories from '../src/components/PasswordInput/PasswordInput.stories';
@@ -60,7 +61,28 @@ const {
   Sizes: InputGroupSizes,
 } = composeStories(InputGroupStories);
 
+const { States: CheckboxStatesStory } = composeStories(CheckboxStories);
+
 const { Sizes: PasswordSizes } = composeStories(PasswordInputStories);
+
+/**
+ * The catalog's own states, with the indeterminate bar's old 2px put back
+ * through a descendant rule when `old` is set. `!` because the component's own
+ * `h-[1.5px]` sits on the element itself, and the two have equal specificity.
+ */
+function CheckboxStates({ old }: { old?: boolean }) {
+  return (
+    <div
+      className={
+        old
+          ? '[&_[data-state=indeterminate]_span[aria-hidden]]:!h-0.5'
+          : undefined
+      }
+    >
+      <CheckboxStatesStory />
+    </div>
+  );
+}
 
 const { WithValue: TextAreaWithValue } = composeStories(TextAreaStories);
 
@@ -523,6 +545,38 @@ export const SizeAndSpacing: Story = {
         n={42}
         title="A bigger button grew its box, not its label"
         why="lg and xl widened the control while the label stayed 14px and the glyph 16px, so a 44px xl read as an oversized md — a small label in a lot of air."
+      />
+
+      <ChangeCase
+        after={<CheckboxStates />}
+        afterNote="both marks 1.5px"
+        before={<CheckboxStates old />}
+        beforeNote="tick 1.5px, bar 2px"
+        beforeSource={
+          <>
+            the bar’s old <Code>h-0.5</Code> put back through{' '}
+            <Code>className</Code> on the indicator, so the panel is the live
+            component with one class changed. Both halves are the catalog’s own{' '}
+            <Code>Components/Checkbox</Code> markup.
+          </>
+        }
+        files={['src/components/Checkbox/Checkbox.tsx']}
+        footnote={
+          <>
+            The tick is a 12px lucide glyph at <Code>strokeWidth={3}</Code>,
+            which in a 24-unit viewBox renders at 1.5px. The indeterminate mark
+            is not a glyph — it is a <Code>&lt;span&gt;</Code> — and it took{' '}
+            <Code>h-0.5</Code>, the nearest step Tailwind offers, which is 2px.
+            One control, two states, two weights. 1.5 wins because that is the
+            weight the icon system sets for every glyph beside it; the 2px came
+            from a spacing scale with no 1.5 step, which is why the fix is an
+            arbitrary value. The kit had the identical mismatch and is fixed
+            with it.
+          </>
+        }
+        n={63}
+        title="The tick and the bar were two different weights"
+        why="Switching a checkbox from checked to indeterminate made the mark visibly heavier, because the tick came off the icon ladder and the bar off the spacing scale."
       />
     </ChangePage>
   ),

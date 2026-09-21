@@ -87,8 +87,8 @@ const checkboxIndicatorVariants = cva(
   {
     variants: {
       size: {
-        // Check mark is a 12x12 stroke-3 glyph; the indeterminate mark is a
-        // 10 x 2 px horizontal bar.
+        // Check mark is a 12x12 stroke-3 glyph, which renders at 1.5px;
+        // the indeterminate bar is 10 x 1.5px, the same weight.
         md: '[&>svg]:size-3',
       },
     },
@@ -159,7 +159,7 @@ function Checkbox({
         />
         <span
           aria-hidden
-          className="hidden h-0.5 w-2.5 rounded-full bg-current group-data-[state=indeterminate]/indicator:block"
+          className="hidden h-[1.5px] w-2.5 rounded-full bg-current group-data-[state=indeterminate]/indicator:block"
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

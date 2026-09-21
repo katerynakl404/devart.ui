@@ -25,12 +25,21 @@ import { ConnectorLogo } from '../ConnectorLogo';
  */
 const dataSourceCardVariants = cva(
   cn(
-    'group/ds-card relative flex flex-col items-center justify-center text-center',
-    // `w-full`, because a tile is a grid item and a bare `button` is
-    // width-auto: outside a grid it shrinks to its own label, and the revealed
-    // Connect action — which is wider than a connector name — then overflows
-    // the tile it is supposed to sit inside.
-    'h-32 w-full gap-2 p-4',
+    'group/ds-card grid text-center',
+    // One cell, two layers: the content and the scrim both sit in `1/1`
+    // rather than the scrim being `absolute`. That is what sets the tile's
+    // minimum width — an absolutely positioned child contributes nothing to
+    // intrinsic size, so the tile used to shrink under the Connect action and
+    // clip it. Stacked, the tile can never be narrower than the action plus
+    // the 8px the scrim keeps either side of it.
+    //
+    // Above that minimum the grid decides: `w-full` fills the track, and the
+    // catalog's own `minmax()` floor takes over.
+    // `min-w-fit` is what makes the stack a floor rather than a suggestion.
+    // Tailwind's `grid-cols-N` is `minmax(0, 1fr)`, which lets a track shrink
+    // below its item's min-content, so the intrinsic minimum alone does not
+    // hold: the tile has to refuse.
+    'h-32 w-full min-w-fit',
     'rounded-lg border border-stroke bg-surface-card',
     'shadow-rest',
     'transition-[box-shadow,border-color,transform] duration-base',
@@ -97,38 +106,39 @@ function DataSourceCard({
       onClick={onConnect}
       {...props}
     >
-      <span className="relative flex shrink-0 items-center justify-center">
-        <ConnectorLogo connector={connector} size="md" />
-        {isPopular ? (
-          // The ring is the card surface, not white: on dark the badge has to
-          // punch out of the mark the same way, and a white ring there would
-          // read as a sticker.
-          <span
-            aria-hidden
-            className={cn(
-              'absolute -top-1 -right-1 flex size-[18px] items-center justify-center',
-              'rounded-full border-[1.5px] border-surface-card bg-surface-card',
-              'text-fb-red [&_svg]:size-3'
-            )}
-          >
-            <FlameMark />
-          </span>
-        ) : null}
-      </span>
+      <span className="flex flex-col items-center justify-center gap-2 p-4 [grid-area:1/1]">
+        <span className="relative flex shrink-0 items-center justify-center">
+          <ConnectorLogo connector={connector} size="md" />
+          {isPopular ? (
+            // The ring is the card surface, not white: on dark the badge has to
+            // punch out of the mark the same way, and a white ring there would
+            // read as a sticker.
+            <span
+              aria-hidden
+              className={cn(
+                'absolute -top-1 -right-1 flex size-[18px] items-center justify-center',
+                'rounded-full border-[1.5px] border-surface-card bg-surface-card',
+                'text-fb-red [&_svg]:size-3'
+              )}
+            >
+              <FlameMark />
+            </span>
+          ) : null}
+        </span>
 
-      <span className="line-clamp-2 text-ink-primary text-sm">{label}</span>
+        <span className="line-clamp-2 text-ink-primary text-sm">{label}</span>
+      </span>
 
       {/* The scrim. `pointer-events-none` at rest so the tile itself stays the
           click target; the sheet only exists to give the action a ground. */}
       <span
         aria-hidden
         className={cn(
-          'absolute inset-0 flex items-center justify-center rounded-[inherit]',
-          // The action keeps the tile's own 16px gutter. Without it the button
-          // reaches the tile's edges on the narrow steps of the catalog grid
-          // (`sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6`), and a control
+          'flex items-center justify-center rounded-[inherit] [grid-area:1/1]',
+          // 8px either side of the action, and this is the pair that decides
+          // the tile's minimum width — see the note on the root. A control
           // touching the border of the surface it sits on reads as clipped.
-          'px-4',
+          'px-2',
           'bg-ds-card-scrim',
           'pointer-events-none opacity-0',
           'transition-opacity duration-slow',
