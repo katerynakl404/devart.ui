@@ -740,7 +740,7 @@ written down nowhere — that is the coverage audit that follows.
 | 27 | `Sheet` | `#sheet` | ⚠ §25 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
 | 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §28 no menu badge / counter · §23 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§10–16) |
 | 29 | `Skeleton` | `#skeleton` | ✅ shimmer is the default, pulse and none opt-in, radius `md` |
-| 30 | `Spinner` | `#spinner` | ✅ stroke 2.5 — the kit's value, changed on this branch, *undoc.* |
+| 30 | `Spinner` | `#spinner` | ✅ |
 | 31 | `StatusView` | `#statusview` | ✅ ladder re-scaled to 32/40/56 circles and 16/24/32 padding, `neutral` halo fixed, `EmptyStateIllustration` (§19) · the rescale is *undoc.* |
 | 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §39 |
 | 33 | `Stepper` | `#stepper` | ✅ headless on both sides; the consumer styles it |
