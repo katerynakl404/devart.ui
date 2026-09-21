@@ -179,35 +179,6 @@ with the direction of the step mirrored because the ground is dark.
 > Red-400 keeps the direction and matches light's proportion. The earlier
 > document still quoted the 400/300 pair; it was wrong at the time of reading.
 
-## 3. Table row hover was not faint — it was not painted at all
-
-`src/lib/constants.ts`
-
-```diff
-- 'row-hover': 'var(--tbl-row-hover)',
-+ 'row-hover': 'hsl(var(--tbl-row-hover) / <alpha-value>)',
-```
-
-Dark defined the token through `color-mix()` — a finished colour. Light defined
-it as an HSL triplet. Exposed as a bare `var()`, light emitted
-`background-color: 210 40% 98%`, which is not a value: the rule was dropped
-whole. The defect was twice diagnosed as "not enough contrast" before anyone
-measured it.
-
-This is the `<alpha-value>` invariant in `SPEC.md` seen from the other side: a
-triplet token **must** be wrapped, a `color-mix()` token must **not** be.
-
-> **Revised — and the more useful half.** The same commit also moved the step
-> itself: hover from `slate-50` to `--state-hover`, pressed a notch further. That
-> part was reverted. It pulled the package away from the Insightis kit, which is
-> what users actually see. Current values are the kit's: `--tbl-row-hover:
-> var(--slate-50)`, `--tbl-row-pressed: var(--surface-card2)` — so a selected row
-> equals the header band in both themes.
->
-> The lesson is the commit, not the colour: **a bug and a taste travelled
-> together**. The bug was real — the hover was not rendering. The taste was not,
-> and it shipped under the bug's justification. Separate them.
-
 ## 4. `Autocomplete` — selected and highlighted painted the same
 
 `src/components/Autocomplete/OptionItem.tsx`
@@ -273,16 +244,21 @@ Both alias Layer-2 roles, so neither needs a `.dark` twin. Exposed as
 Rule: **a standalone interactive icon changes colour only.** If it also needs a
 fill, it is an `IconButton` and should be one.
 
-## 7. `TableHead` sort control had hover but no press
+## 7. `TableHead` — the sort glyph did not hover with its label
 
 `src/components/Table/TableHead.tsx`
 
 ```diff
 - 'transition-colors hover:text-ink-body',
-+ 'transition-colors hover:text-ink-icon-hover active:text-ink-icon-hover',
++ 'group transition-colors hover:text-ink-icon-hover',
 ```
 
-A label plus a standalone glyph — the case §6 exists for.
+The label moved to `--ink-body` on hover and the chevrons stayed at
+`--ink-inactive`, so a header read as two controls. `group` on the button and
+`group-hover:text-ink-icon-hover` on the glyph move them together.
+
+No press state. A sort commits on click and the feedback is the table
+reordering; a press colour on a control with no box reads as a flicker.
 
 ## 7a. Interaction states were absolute colours, and two of them were the same colour
 
@@ -479,10 +455,9 @@ other, so the icon's own `className` was never going to decide anything.
 + 'data-[state=inactive]:!hidden',
 ```
 
-Radix hides the inactive panel with the `hidden` attribute, which is only a
-UA-stylesheet `display:none` — any display class from the consumer (`flex`,
-`grid`) beats it. The panel returned as an empty block and pushed the active one
-down. That was the source of the "extra padding under the tabs".
+Radix hides the inactive panel with the `hidden` attribute — a UA-stylesheet
+`display:none`, which any display class from the consumer (`flex`, `grid`)
+beats. The panel came back as an empty block and pushed the active one down.
 
 ## 10. A field label as loud as the hint beneath it
 
@@ -639,7 +614,7 @@ header — where collapsing cannot take it away.
 
 # New in the system
 
-## 17. `PageHeader`
+## 17. `PageHeader` · **DRAFT**
 
 `src/components/PageHeader/index.tsx`
 
@@ -663,7 +638,7 @@ the arrow uses, for the same reason.
 />
 ```
 
-## 18. `ConnectorLogo`
+## 18. `ConnectorLogo` · **DRAFT**
 
 `src/components/ConnectorLogo/` + `scripts/gen-connector-logos.mjs`
 
@@ -758,15 +733,13 @@ own answer, which is how two products drift apart without either being "wrong".
 
 `.design-sync/gen-classlist.mjs`
 
-`empty:pb-0` (§12) was written into the component and would have done
-**nothing**. The bundle's CSS is compiled from an enumerated vocabulary, not
-scraped from the components, and `empty:` was not in it — no rule, no error,
-header keeps its padding.
+`ds-bundle` — the CSS the products load — is compiled from an enumerated list
+of classes, not scraped from the components. A variant missing from that list
+produces no rule and no error.
 
-Checked before rebuilding rather than after: the variant was absent from the
-generator, from `ds-classlist.txt`, and from the bundle's CSS. `empty:pb-0`,
-`empty:pt-0` and `empty:hidden` are now enumerated, with a comment stating that
-anything relying on a variant must be added deliberately.
+`empty:` was missing, so `empty:pb-0` (§12) worked in Storybook and did nothing
+in the products. `empty:pb-0`, `empty:pt-0` and `empty:hidden` are now
+enumerated.
 
 ## 22. `pnpm bundle` and `pnpm check-bundle-css`
 
@@ -1499,7 +1472,7 @@ the §9-class check the constraint at the top of this file asks for, and it come
 out clean: one product is fixed, the other is unaffected, because the removed
 declaration was redundant in the case that still works.
 
-## 38. New — `StepperIndicator`
+## 38. New — `StepperIndicator` · **DRAFT**
 
 `src/components/Stepper/StepperIndicator.tsx`
 
@@ -1573,10 +1546,6 @@ finds a silently unpainted element has somewhere to look.
 
 ## 41. `SidebarMenu` — nav rows 4px apart where the kit says 2
 
-*Numbered 48: 47 and 49 are taken by entries under Open questions. This file
-is being written from two sides; if a number collides, the heading text is the
-stable reference.*
-
 `src/components/Sidebar/SidebarMenu.tsx`
 
 ```diff
@@ -1611,8 +1580,6 @@ towards what that product ships rather than away from it.
 
 ## 43. `TextArea` — the counter row had a slot nothing could fill
 
-*Numbered 50: 47 and 49 are taken by entries under Open questions.*
-
 `src/components/TextArea/index.tsx`
 
 `showCount` (§19) draws the counter into a two-column row whose left half only
@@ -1645,66 +1612,36 @@ type. That ordering is the reason it is one slot and not two.
 **Both products.** Additive; a `TextArea` without `hintText` renders exactly as
 before. Any field with a limit and a caveat stops hand-building the row.
 
-## 45. `DropdownMenu` — a menu had no way to say "this row is the action"
-
-*Numbered 52: 47, 49 and 51 are taken by entries under Open questions.*
+## 45. `DropdownMenu` — two kinds of row it could not draw · **DRAFT**
 
 `src/components/DropdownMenu/DropdownMenuItem.tsx`,
 `src/components/DropdownMenu/DropdownMenuRow.tsx` (new)
 
-Reported against the shipped product: the workspaces panel was expected to look
-like the composer's **Connections** menu — a short list, a full-bleed divider,
-and *"⚙ Manage Connections"* — and did not.
+A menu could only draw one kind of row: an item that highlights on hover and
+does something when clicked. Two shapes the kit specifies had nowhere to go, so
+pages built them out of a `Popover` instead.
 
-Two parts of that shape were missing from the package, and the panel had been
-built out of a `Popover` to compensate, which meant re-deciding the shell, the
-padding, the item rail and the divider by hand.
-
-### The action row
-
-```ts
-variant: 'default' | 'danger' | 'accent'
-```
+**`variant="accent"`** — the one row in a menu that *is* the action, such as
+"Choose File" or "Manage Connections":
 
 ```
-accent: 'font-medium text-ink-highlight'
-        + the same neutral State/Hover · State/Pressed as every other row
+accent: 'font-medium text-ink-highlight'   // + the same hover/pressed as any row
 ```
 
-The kit specifies this for the Attach menu's "Choose File" and states the reason
-in the same breath: *"`--ink-highlight` brand colour + medium weight — **not** a
-bordered button, so it doesn't dominate the popover or double-up a border
-against the divider; it gets the same padding/breathing room as every row. The
-leading icon + brand colour make it scan instantly as the primary action."*
+Ink and weight, on the same rail as everything else. Not a bordered button: at
+4px of menu padding a second edge lands against the divider and outweighs the
+list it belongs to. `--ink-highlight` is Brand-600 on light and Tertiary-400 on
+dark, so one value holds AA in both.
 
-That is worth spelling out because the obvious correction is the wrong one. The
-row's first version was a plain item and read as a fourth workspace in a list of
-three; the fix attempted here was a bordered `Button secondary`, which inside a
-4px-padded surface puts a second edge 4px from the divider and outweighs the
-list it belongs to. The distinction a menu actually uses is **ink and weight at
-the same size, on the same rail**.
+**`DropdownMenuRow`** — a label with its own control (a switch, a badge, a
+counter) or a plain reading. Same `px-3 py-1.5` as an item, so every label in
+the menu shares one left edge. **No hover fill, no pointer cursor** — a hover
+surface promises the row does something.
 
-`--ink-highlight` is Brand-600 on light and Tertiary-400 on dark, so it holds AA
-in both without a variant-specific value.
+`DropdownMenuLabel` is not this: it is the 10px caps heading that captions a
+group.
 
-### The reading row
-
-`DropdownMenuRow` — a label and its own control (a switch, a badge, a counter),
-or a plain reading, on the item rail: the same `px-3 py-1.5`, so every label in
-the menu shares one left edge. **No hover fill, no pointer cursor.**
-
-The kit names this too — *"a menu may also carry non-item settings rows — a
-label plus its own control, not an activatable `.mi` and therefore with no
-hover surface"* — and the package had nowhere to put it. `DropdownMenuLabel` is
-the Overline section heading (10px, caps, Text/Inactive) that captions a group,
-not a row of content, and `DropdownMenuItem` paints a hover fill, which in a
-menu is a promise that the row does something.
-
-**Both products.** `accent` is a third variant with no existing call site;
-`DropdownMenuRow` is new surface area. Insightis gets, as components, two things
-its own CSS already has as `.mi` + `--ink-highlight` and `.cl-model-opt`.
-
-## 47. `InputGroupAction` — an icon docked in a field is not an icon button
+## 47. `InputGroupAction` — an icon docked in a field is not an icon button · **DRAFT**
 
 `src/components/InputGroup/InputGroupAction.tsx` (new part)
 
@@ -1740,7 +1677,7 @@ the kit's value is a step short of it. Worth settling, one way, in one place.
 **Both products.** A new part, no existing call site. Insightis' own `.igrp-act`
 is the same shape, so this gives it a component where it has CSS.
 
-## 48. New — `Link`
+## 48. New — `Link` · **DRAFT**
 
 `src/components/Link/index.tsx`
 
@@ -1770,7 +1707,7 @@ button in its place.
 **Both products.** New surface area; nothing to break. Insightis gets, as a
 component, what it has as a class.
 
-## 49. New — `StatTile`
+## 49. New — `StatTile` · **DRAFT**
 
 `src/components/StatTile/index.tsx`
 
@@ -1795,7 +1732,7 @@ Sizes are the two rungs the other padded surfaces use — `sm` 16px inset, `md`
 
 **Both products.** New component, no call sites.
 
-## 50. New — `CodeBlock`
+## 50. New — `CodeBlock` · **DRAFT**
 
 `src/components/CodeBlock/index.tsx`
 
@@ -1928,7 +1865,7 @@ is a few pixels.
 **Both products.** It fires only when an `InputGroupAction` is present, and that
 part is new in §47, so no existing field changes.
 
-## 55. New — `MetaRow`
+## 55. New — `MetaRow` · **DRAFT**
 
 `src/components/MetaRow/index.tsx`
 

@@ -298,3 +298,45 @@ separately makes the claim true again.
 > `18px` under *"Не на шкалі"* (not on the scale, migrate upward 18→20) while
 > `Body XL` and `Label 2XL` are both 18/28 and both on the list of nineteen. The
 > kit contradicts itself. `Label XL` (16/24) is unaffected and can be added now.
+
+## Table row hover — "not painted at all"
+
+*Numbered §3 when it was in the change log.*
+
+**Why it is here: it is not true.** `upstream/master` already has
+`'row-hover': 'hsl(var(--tbl-row-hover) / <alpha-value>)'` — the hover works in
+the published catalog. The diff below points the other way, and the direction
+that is real belongs to §7a: the interaction-state work turned the token into a
+`color-mix()`, which has to be exposed as a bare `var()`. So the branch now has
+what this section calls the defect, on purpose.
+
+### As it was written
+
+#### 3. Table row hover was not faint — it was not painted at all
+
+`src/lib/constants.ts`
+
+```diff
+- 'row-hover': 'var(--tbl-row-hover)',
++ 'row-hover': 'hsl(var(--tbl-row-hover) / <alpha-value>)',
+```
+
+Dark defined the token through `color-mix()` — a finished colour. Light defined
+it as an HSL triplet. Exposed as a bare `var()`, light emitted
+`background-color: 210 40% 98%`, which is not a value: the rule was dropped
+whole. The defect was twice diagnosed as "not enough contrast" before anyone
+measured it.
+
+This is the `<alpha-value>` invariant in `SPEC.md` seen from the other side: a
+triplet token **must** be wrapped, a `color-mix()` token must **not** be.
+
+> **Revised — and the more useful half.** The same commit also moved the step
+> itself: hover from `slate-50` to `--state-hover`, pressed a notch further. That
+> part was reverted. It pulled the package away from the Insightis kit, which is
+> what users actually see. Current values are the kit's: `--tbl-row-hover:
+> var(--slate-50)`, `--tbl-row-pressed: var(--surface-card2)` — so a selected row
+> equals the header band in both themes.
+>
+> The lesson is the commit, not the colour: **a bug and a taste travelled
+> together**. The bug was real — the hover was not rendering. The taste was not,
+> and it shipped under the bug's justification. Separate them.
