@@ -77,6 +77,19 @@ const buttonVariants = cva(
           'disabled:bg-transparent disabled:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
+        // Tertiary with a brand label: the pill, the focus ring and the
+        // disabled recipe are the neutral tertiary's, and only the label moves
+        // through the brand ramp. The kit ships it as `.btn-tertiary.is-brand`
+        // for standalone brand text actions — "Test Connection" in a side
+        // panel — where a bordered button would outweigh what it sits next to.
+        tertiaryBrand: cn(
+          'border-transparent bg-transparent text-brand-primary',
+          'hover:bg-state-hover hover:text-brand-hover',
+          'pressed:bg-state-pressed pressed:text-brand-press',
+          'focus-visible:ring-focus-ring-brand',
+          'disabled:bg-transparent disabled:text-ink-inactive',
+          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+        ),
         // Destructive: theme-independent red fill; focus ring is the kit-wide
         // brand teal (red-on-red would be unreadable).
         destructive: cn(

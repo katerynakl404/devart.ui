@@ -61,6 +61,16 @@ const iconButtonVariants = cva(
           'disabled:bg-transparent disabled:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
+        // The same pill as `tertiary`, with a brand glyph. Its label — the
+        // glyph — moves through the brand ramp; the surface does not.
+        tertiaryBrand: cn(
+          'border-transparent bg-transparent text-brand-primary',
+          'hover:bg-state-hover hover:text-brand-hover',
+          'pressed:bg-state-pressed pressed:text-brand-press',
+          'focus-visible:ring-focus-ring-brand',
+          'disabled:bg-transparent disabled:text-ink-inactive',
+          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+        ),
         // Focus ring is the kit-wide brand teal on every variant, destructive
         // included — a red ring on a red control reads as noise.
         destructive: cn(

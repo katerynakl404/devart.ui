@@ -866,7 +866,7 @@ The kit lists all four: *"Right · right (default) · `border-l` · slide-from-r
 with no edge against the scrim. It is a one-token omission that reads as a
 rendering bug on a light theme, where panel and page are both near-white.
 
-## 26. `tertiaryBrand` — a brand label on the neutral tertiary pill
+## 26. `tertiaryBrand` — a brand label on the neutral tertiary pill · **DRAFT**
 
 `src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
 
@@ -878,6 +878,18 @@ The kit ships this as `.btn-tertiary.is-brand`, marked **new**, in four rules:
 .btn-tertiary.is-brand:active   { background: var(--state-pressed); color: var(--brand-press); }
 .btn-tertiary.is-brand:disabled { color: var(--ink-inactive); background: transparent; }
 ```
+
+**Shipped.** `Button` and `IconButton` both carry it:
+
+```
+border-transparent bg-transparent text-brand-primary
+hover:bg-state-hover hover:text-brand-hover
+pressed:bg-state-pressed pressed:text-brand-press
+disabled:bg-transparent disabled:text-ink-inactive
+```
+
+Measured on `Components/Button → Variants`: label `rgb(7 128 126)` =
+`--brand-primary`, surface transparent.
 
 The label moves through the brand ramp; the pill and the focus ring stay the
 plain tertiary recipe. It exists for standalone brand text actions — the
