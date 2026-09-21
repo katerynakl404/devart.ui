@@ -1745,10 +1745,16 @@ what they all render today.
 ```
 
 The tick is a 12px lucide glyph at `strokeWidth={3}`; in a 24-unit viewBox that
-renders at **1.5px**. The indeterminate mark is not a glyph at all — it is a
+renders at **1.5px**. The indeterminate mark was not a glyph at all — it was a
 `<span>` — and it took `h-0.5`, the nearest step Tailwind offers, which is
-**2px**. So one control drew its two states at two weights, and switching a
-checkbox from checked to indeterminate made the mark visibly heavier.
+**2px**. One control, two states, two weights.
+
+Equalising the numbers was not enough: at 1.5px the bar then read **thinner**
+than the tick. A diagonal stroke with a round cap antialiases across more pixels
+than a rectangle of the same height, so the two are only comparable if they go
+through the same renderer. The bar is now drawn as a stroke — same viewBox, same
+`stroke-width: 3`, same cap — with `M2 12h20`, which is 10px long at this size,
+the width the bar always had. (Lucide’s own `Minus` is `M5 12h14` = 7px.)
 
 1.5 rather than 2, because the tick’s weight is the one the icon system sets:
 it comes from the stroke ladder every other glyph in the package uses, while

@@ -157,10 +157,27 @@ function Checkbox({
           className="group-data-[state=indeterminate]/indicator:hidden"
           strokeWidth={3}
         />
-        <span
-          aria-hidden
-          className="hidden h-[1.5px] w-2.5 rounded-full bg-current group-data-[state=indeterminate]/indicator:block"
-        />
+        {/* Drawn the way the tick is drawn, not as a box.
+
+            A 1.5px `<span>` and a 1.5px stroke are the same number and not the
+            same weight: the tick is a diagonal with round caps, which
+            antialiases across more pixels and reads heavier, so the bar looked
+            thinner at equal height. Same viewBox, same stroke-width, same cap
+            — the two marks now go through one renderer.
+
+            `M2 12h20` rather than lucide's `Minus` (`M5 12h14`): 20 of 24 units
+            is 10px at this size, the kit's `.625rem` bar. Lucide's would be 7. */}
+        <svg
+          aria-hidden="true"
+          className="hidden group-data-[state=indeterminate]/indicator:block"
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeWidth={3}
+          viewBox="0 0 24 24"
+        >
+          <path d="M2 12h20" />
+        </svg>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
