@@ -3,7 +3,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Plus } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, liftOnHover } from '../../lib/utils';
 import { Button } from '../Button';
 import { ConnectorLogo } from '../ConnectorLogo';
 
@@ -42,10 +42,7 @@ const dataSourceCardVariants = cva(
     'h-32 w-full min-w-fit',
     'rounded-lg border border-stroke bg-surface-card',
     'shadow-rest',
-    'transition-[box-shadow,border-color,transform] duration-base',
-
-    // Elevation lift, the same recipe `Card` `elevated` uses.
-    'hover:-translate-y-px hover:border-card-lift-border hover:shadow-lift-hover',
+    liftOnHover(),
 
     // The tile is a button, so it takes the shared focus ring.
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand',
@@ -134,7 +131,12 @@ function DataSourceCard({
       <span
         aria-hidden
         className={cn(
-          'flex items-center justify-center rounded-[inherit] [grid-area:1/1]',
+          // `relative`, or the logo shows through it. The mark's wrapper is
+          // positioned (it carries the popular badge), and a positioned element
+          // paints above a static sibling whatever the DOM order — so once the
+          // scrim stopped being `absolute` it went behind the logo while still
+          // covering the name.
+          'relative flex items-center justify-center rounded-[inherit] [grid-area:1/1]',
           // 8px either side of the action, and this is the pair that decides
           // the tile's minimum width — see the note on the root. A control
           // touching the border of the surface it sits on reads as clipped.

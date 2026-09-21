@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, liftOnHover } from '../../lib/utils';
 import { CardContent } from './CardContent';
 import { CardDescription } from './CardDescription';
 import { CardDivider } from './CardDivider';
@@ -65,8 +65,9 @@ const cardVariants = cva(
           'border border-stroke',
           'shadow-rest',
           'text-ink-body',
-          'transition-all duration-base',
-          'hover:-translate-y-0.5 hover:border-card-lift-border hover:shadow-lift-hover'
+          // 2px rather than the tile's 1: the same travel reads smaller on a
+          // bigger box.
+          liftOnHover(2)
         ),
         ghost: cn(
           'cursor-pointer items-center justify-center',

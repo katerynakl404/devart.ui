@@ -2304,6 +2304,35 @@ editing a constant.
 > values and a div for the other five. The two do share their lift recipe, and
 > that is the part worth keeping in sync by hand.
 
+## 65. `liftOnHover` — one elevation recipe instead of two copies
+
+`src/lib/utils.ts`, `src/components/Card/index.tsx`,
+`src/components/DataSourceCard/index.tsx`
+
+The lift — border tints toward brand, shadow grows, box rises — was written out
+twice: once in `Card` `elevated`, once in `DataSourceCard`. Three classes each,
+and two chances to change the shadow in one of them.
+
+```ts
+export const liftOnHover = (distance: 1 | 2 = 1) => cn(
+  'transition-[box-shadow,border-color,transform] duration-base',
+  distance === 1 ? 'hover:-translate-y-px' : 'hover:-translate-y-0.5',
+  'hover:border-card-lift-border hover:shadow-lift-hover'
+);
+```
+
+The distance is a parameter because it is the one part that legitimately
+differs — the kit lifts a catalog tile 1px and a larger card 2px, since the
+same travel reads bigger on a smaller box. Everything else is fixed.
+
+`Card` changed behaviour slightly with it: `transition-all` became the scoped
+list the tile already used. A card that animates every property also animates
+its own content reflowing.
+
+**Not a component.** The two are not the same thing — `Card` is a `<div>`
+surface, the tile is a `<button>` with a hover scrim and a revealed action — so
+the shared part is a recipe both import, not a base component both extend.
+
 ## 40. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid

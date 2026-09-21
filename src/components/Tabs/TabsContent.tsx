@@ -18,7 +18,8 @@ const TabsContent = ({
         // consumer passes (`flex`, `grid`, `block`) outranks it and brings the
         // panel back as an empty box that pushes the active one down. Pin it.
         'data-[state=inactive]:!hidden',
-        'mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
+        // No top margin: the gap to the strip is emitted by TabsList (see there).
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
         className
       )}
       {...props}

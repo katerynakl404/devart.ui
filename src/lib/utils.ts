@@ -59,3 +59,26 @@ export const formFocusRing = cn(
   'focus-visible:ring-offset-surface-card',
   'focus-visible:ring-state-focus-ring'
 );
+
+/**
+ * The elevation lift: what a surface does when the pointer is over something
+ * that will respond to a click.
+ *
+ * Three things move together — the border tints toward brand, the shadow grows,
+ * and the box rises — and they are one gesture, so they belong in one place.
+ * `Card variant="elevated"` and `DataSourceCard` had them written out
+ * separately, which is two chances to change the shadow in one of them.
+ *
+ * The distance is the one part that legitimately differs: the kit lifts a
+ * catalog tile 1px and a larger card 2px, because the same travel reads bigger
+ * on a smaller box. Everything else is fixed.
+ *
+ * The transition is scoped rather than `transition-all`: a card that animates
+ * every property also animates its own content reflowing.
+ */
+export const liftOnHover = (distance: 1 | 2 = 1) =>
+  cn(
+    'transition-[box-shadow,border-color,transform] duration-base',
+    distance === 1 ? 'hover:-translate-y-px' : 'hover:-translate-y-0.5',
+    'hover:border-card-lift-border hover:shadow-lift-hover'
+  );
