@@ -77,8 +77,8 @@ the groups are the reading order.
 | Sidebar | `SidebarBrand` | its own inset removed, so nesting does not double it |
 | Sidebar | `SidebarMenuButton` | tooltips through the package's own `Tooltip`; collapsed box fixed |
 | Sidebar | `Tooltip` | arrow `8x4`, putting the visible gap on the 4px scale |
-| New | `PageHeader` | new component, plus a `badge` slot inside the title cluster |
-| New | `ConnectorLogo` | new component — connector marks as data-URIs |
+| New | `PageHeader` | the title row, with a `badge` slot inside the title cluster |
+| New | `ConnectorLogo` | connector marks as data-URIs |
 | New | `TextArea` | character counter |
 | New | `StatusView` | `EmptyStateIllustration` — the standard empty-state artwork |
 | Docs | `Card.md`, `Table.md`, `Switch.md`, `Sidebar.md` | recipes that every page was otherwise inventing |
@@ -102,18 +102,18 @@ the groups are the reading order.
 | Kit gap | `Badge` | `--badge-border` shipped — the hairline is the base of every variant |
 | Colour | `PopoverContent` | closed state holds its faded-out frame instead of snapping back |
 | Size | `Sidebar` | fixed panel takes its height from `inset-y-0`, not `h-svh` |
-| New | `StepperIndicator` | new component — the rail the headless `Stepper` never shipped |
+| New | `StepperIndicator` | the rail the headless `Stepper` never shipped |
 | Docs | `Badge.md` | when a state is a badge and when it is text |
 | Build | `gen-classlist.mjs` | no opacity modifiers for `bg-surface-card` — `/85` paints nothing |
 | Kit gap | `SidebarMenu` | nav rows sat 4px apart; the kit says 2 |
 | New | `TextArea` | `hintText` — the half of the counter row nothing could fill |
 | Kit gap | `DropdownMenuItem` | `accent` — the one row in a menu that IS the action |
-| Kit gap | **new** `DropdownMenuRow` | a menu row that is a reading, not an action |
-| Kit gap | **new** `InputGroupAction` | a field's trailing icon has no surface of its own |
+| New | `DropdownMenuRow` | a menu row that is a reading, not an action |
+| New | `InputGroupAction` | a field's trailing icon has no surface of its own |
 | Size | `InputGroup` | the field yields its trailing inset instead of stacking with it |
-| New | **new** `Link` | the kit's text link, which the package never had |
-| New | **new** `StatTile` | label / value / caption — one number and what it counts |
-| New | **new** `CodeBlock` | a snippet and the control that copies it, as one object |
+| New | `Link` | the kit's text link, which the package never had |
+| New | `StatTile` | label / value / caption — one number and what it counts |
+| New | `CodeBlock` | a snippet and the control that copies it, as one object |
 | Size | `AccordionItem` | `standalone` — an item that is its own surface |
 | Colour | `TableCell` | the row's pressed fill belongs to whatever was pressed |
 | Revised | `StatusView` | the illustration is a replaceable pack of two, not one artwork |
@@ -121,7 +121,7 @@ the groups are the reading order.
 | Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
 | Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§56) |
-| New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§53) |
+| New | `MetaRow` | the line above a list — and the 4px to it, stated once (§53) |
 | Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§54) |
 | Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§56) |
 | Size | `TableHead` | fixed 36px — a selection checkbox no longer makes the header 2px taller than the table next to it (§58) |
@@ -1108,12 +1108,12 @@ adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
 | Kit gap | `SidebarMenu` | `gap-1` → `gap-0.5` — the kit's nav rows are 2px apart, not 4 |
 | New | `TextArea` | `hintText` — standing guidance beside the character counter |
 | Kit gap | `DropdownMenuItem` | `accent` variant — brand ink + medium weight for a menu's primary action |
-| Kit gap | **new** `DropdownMenuRow` | label + its own control on the item rail, with no hover surface |
-| Kit gap | **new** `InputGroupAction` | 24px box, 16px glyph, no fill — colour-only hover |
+| New | `DropdownMenuRow` | label + its own control on the item rail, with no hover surface |
+| New | `InputGroupAction` | 24px box, 16px glyph, no fill — colour-only hover |
 | Size | `InputGroup` | `has-[…input-group-action]:pe-2` — one inset on that edge, not two |
-| New | **new** `Link` | `--ink-highlight`, medium, size inherited from the text it sits in |
-| New | **new** `StatTile` | overline label · title20/24 value · body12 caption, `tabular-nums` |
-| New | **new** `CodeBlock` | copy inside the block, tick for two seconds, `execCommand` fallback |
+| New | `Link` | `--ink-highlight`, medium, size inherited from the text it sits in |
+| New | `StatTile` | overline label · title20/24 value · body12 caption, `tabular-nums` |
+| New | `CodeBlock` | copy inside the block, tick for two seconds, `execCommand` fallback |
 | Size | `AccordionItem` | `variant="standalone"` drops the divider for one card per section |
 | Colour | `TableCell` | pressed guarded against `button:active` and an open menu inside the row |
 | Revised | `StatusView` | `EmptySearchIllustration` added — the pack is two, and the slot was always open |
