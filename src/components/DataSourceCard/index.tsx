@@ -70,8 +70,6 @@ export interface DataSourceCardProps
   connector: string;
   /** Overrides the visible name. Defaults to `connector`. */
   name?: ReactNode;
-  /** Marks the tile with the "popular" flame. */
-  isPopular?: boolean;
   /** Label on the revealed action. */
   connectLabel?: string;
   onConnect?: () => void;
@@ -87,7 +85,6 @@ function DataSourceCard({
   className,
   connector,
   name,
-  isPopular = false,
   connectLabel = 'Connect',
   onConnect,
   variant,
@@ -104,24 +101,7 @@ function DataSourceCard({
       {...props}
     >
       <span className="flex flex-col items-center justify-center gap-2 p-4 [grid-area:1/1]">
-        <span className="relative flex shrink-0 items-center justify-center">
-          <ConnectorLogo connector={connector} size="md" />
-          {isPopular ? (
-            // The ring is the card surface, not white: on dark the badge has to
-            // punch out of the mark the same way, and a white ring there would
-            // read as a sticker.
-            <span
-              aria-hidden
-              className={cn(
-                'absolute -top-1 -right-1 flex size-[18px] items-center justify-center',
-                'rounded-full border-[1.5px] border-surface-card bg-surface-card',
-                'text-fb-red [&_svg]:size-3'
-              )}
-            >
-              <FlameMark />
-            </span>
-          ) : null}
-        </span>
+        <ConnectorLogo connector={connector} size="md" />
 
         <span className="line-clamp-2 text-ink-primary text-sm">{label}</span>
       </span>
@@ -131,11 +111,10 @@ function DataSourceCard({
       <span
         aria-hidden
         className={cn(
-          // `relative`, or the logo shows through it. The mark's wrapper is
-          // positioned (it carries the popular badge), and a positioned element
-          // paints above a static sibling whatever the DOM order — so once the
-          // scrim stopped being `absolute` it went behind the logo while still
-          // covering the name.
+          // `relative` so the scrim is the layer that wins. Both children sit
+          // in one grid cell, and among positioned siblings the later one
+          // paints on top; a static scrim would fall behind anything in the
+          // content layer that gains a position of its own.
           'relative flex items-center justify-center rounded-[inherit] [grid-area:1/1]',
           // 8px either side of the action, and this is the pair that decides
           // the tile's minimum width — see the note on the root. A control
@@ -164,17 +143,6 @@ function DataSourceCard({
         </Button>
       </span>
     </button>
-  );
-}
-
-/** The "popular" flame, inlined so the tile carries no icon dependency. */
-function FlameMark() {
-  return (
-    // The wrapper already carries `aria-hidden`; repeating it here is what
-    // tells the linter the mark is decorative rather than an unlabelled image.
-    <svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2c.7 3.2-1.2 4.6-2.5 6C8 9.6 7 11 7 13.3 7 16.9 9.9 20 13 20s5-2.6 5-6c0-2.4-1.3-4.3-2.6-5.7-.5 1-1.2 1.6-1.9 1.9.4-2.9-.6-6-1.5-8.2Z" />
-    </svg>
   );
 }
 

@@ -61,6 +61,11 @@ const cardVariants = cva(
           '[&:active:not(:has(button:active)):not(:has([data-state=open]))]:scale-[.99]'
         ),
         elevated: cn(
+          // The same box every other card variant draws. `elevated` and `ghost`
+          // carried no layout and no padding at all, so a card that lifts on
+          // hover was the one a page had to pad itself — and two cards side by
+          // side, one `outline` and one `elevated`, sat on different insets.
+          'flex flex-col gap-3 p-4',
           'bg-surface-card',
           'border border-stroke',
           'shadow-rest',
@@ -70,6 +75,9 @@ const cardVariants = cva(
           liftOnHover(2)
         ),
         ghost: cn(
+          // `items-center justify-center` did nothing here: there was no
+          // `flex` for them to act on.
+          'flex flex-col gap-3 p-4',
           'cursor-pointer items-center justify-center',
           'border border-ink-secondary/35 border-dashed',
           'bg-transparent text-center',
@@ -85,7 +93,9 @@ const cardVariants = cva(
         md: 'rounded-md',
         lg: 'rounded-lg',
         xl: 'rounded-xl',
-        full: 'rounded-full',
+        // No `full`. A pill is a shape for a chip or an avatar — something whose
+        // height is its own — and on a card it turns the corner radius into a
+        // function of how much text the card happens to hold.
       },
       fullWidth: {
         true: 'w-full',

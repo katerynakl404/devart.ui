@@ -143,7 +143,6 @@ export const Rounded: Story = {
           ['md', 'controls — buttons, inputs, menu items'],
           ['lg', 'the Card default — cards, popovers, accordion rows'],
           ['xl', 'banners and large surfaces'],
-          ['full', 'pills and avatars'],
         ] as const
       ).map(([rounded, use]) => (
         <Card {...args} key={rounded} rounded={rounded} className="w-40">

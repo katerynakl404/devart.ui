@@ -2333,6 +2333,34 @@ its own content reflowing.
 surface, the tile is a `<button>` with a hover scrim and a revealed action — so
 the shared part is a recipe both import, not a base component both extend.
 
+## 66. `Card` — two variants had no box, and one had a shape a card cannot take
+
+`src/components/Card/index.tsx`
+
+**Padding.** `secondary` and `outline` draw `flex flex-col gap-3 p-4`.
+`elevated` and `ghost` drew neither layout nor padding — so the card that lifts
+on hover was the one every page had to pad itself, and an `outline` card beside
+an `elevated` one sat on a different inset. Both now carry the same box.
+`ghost` also had `items-center justify-center` with no `flex` for them to act
+on; they work now.
+
+**`rounded="full"` removed.** A pill is a shape for something whose height is
+its own — a chip, an avatar. On a card it makes the corner radius a function of
+how much text the card happens to hold, and the 40px sample in the radius story
+showed exactly that. The step was added on this branch, so nothing published
+loses it.
+
+## 67. `DataSourceCard` — the popular flame is gone
+
+`src/components/DataSourceCard/index.tsx`
+
+The `isPopular` prop, the inlined `FlameMark` and the 18px ring it sat in are
+removed, with the `Popular` story. The tile is a connector and its name; a
+second mark on the logo was an editorial signal the catalog does not need.
+
+It also took the last positioned element out of the content layer, which is
+what had made the scrim ordering fragile.
+
 ## 40. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid

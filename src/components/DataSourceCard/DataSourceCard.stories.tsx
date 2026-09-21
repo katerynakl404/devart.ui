@@ -13,7 +13,6 @@ const meta = {
   tags: ['autodocs'],
   args: {
     connector: 'PostgreSQL',
-    isPopular: false,
     connectLabel: 'Connect',
     onConnect: fn(),
   },
@@ -47,11 +46,6 @@ export const HoverReveal: Story = {
   args: { connector: 'Snowflake' },
 };
 
-/** The flame marks a connector worth trying first. */
-export const Popular: Story = {
-  args: { connector: 'MySQL', isPopular: true },
-};
-
 /** An unknown connector falls back to a monogram — never a broken image. */
 export const UnknownConnector: Story = {
   args: { connector: 'Fabrikam', name: 'Fabrikam DB' },
@@ -71,8 +65,7 @@ export const Disabled: Story = {
 
 /**
  * The catalog as a page renders it — a grid of tiles, only one of which can be
- * hovered at a time. This is the story to read when judging tile density and
- * how loudly the popular flame reads in a crowd.
+ * hovered at a time. This is the story to read when judging tile density.
  */
 export const CatalogGrid: Story = {
   decorators: [
@@ -86,22 +79,17 @@ export const CatalogGrid: Story = {
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
       {(
         [
-          ['PostgreSQL', true],
-          ['MySQL', true],
-          ['Snowflake', false],
-          ['BigQuery', false],
-          ['Oracle', false],
-          ['Redshift', false],
-          ['MongoDB', false],
-          ['Databricks', false],
+          'PostgreSQL',
+          'MySQL',
+          'Snowflake',
+          'BigQuery',
+          'Oracle',
+          'Redshift',
+          'MongoDB',
+          'Databricks',
         ] as const
-      ).map(([connector, isPopular]) => (
-        <DataSourceCard
-          {...args}
-          connector={connector}
-          isPopular={isPopular}
-          key={connector}
-        />
+      ).map((connector) => (
+        <DataSourceCard {...args} connector={connector} key={connector} />
       ))}
     </div>
   ),
