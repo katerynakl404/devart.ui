@@ -121,7 +121,6 @@ the groups are the reading order.
 | Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
 | Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
 | Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§56) |
-| Fixed | `Card` / `ghost` | `bg-bg` named a token this branch deleted — now `bg-transparent`, the intended surface |
 | New | **new** `MetaRow` | the line above a list — and the 4px to it, stated once (§53) |
 | Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§54) |
 | Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§56) |
