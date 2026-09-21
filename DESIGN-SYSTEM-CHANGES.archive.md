@@ -340,3 +340,185 @@ triplet token **must** be wrapped, a `color-mix()` token must **not** be.
 > The lesson is the commit, not the colour: **a bug and a taste travelled
 > together**. The bug was real — the hover was not rendering. The taste was not,
 > and it shipped under the bug's justification. Separate them.
+
+## Link — the weight `font-[inherit]` deleted
+
+*Numbered §57 when it was in the change log.*
+
+**Why it is here:** `Link` is new on this branch. The bug it describes was introduced and fixed inside the branch, so nothing published ever had it: it is a self-correction, not a change anybody outside can see.
+
+### As it was written
+
+#### 57. `Link` — `font-[inherit]` silently deleted the weight
+
+`src/components/Link/index.tsx`
+
+```diff
+- 'font-medium font-[inherit] text-[length:inherit] leading-[inherit]'
++ 'font-medium text-[length:inherit] leading-[inherit]'
+```
+
+Every link in the product rendered at **400**. The kit's `.link` is 500, §48
+specified 500, the class list contained `font-medium`, and the computed style
+still said 400.
+
+`font-[inherit]` was there to inherit the font *family*, alongside the size
+and line-height either side of it. But Tailwind reads `font-[…]` with a
+non-family value as a font-**weight** arbitrary value, so tailwind-merge saw
+two classes in the `font-weight` group and dropped the loser — `font-medium`,
+every time. The class never reached the output.
+
+An anchor inherits its family from its parent anyway, so the class was buying
+nothing and costing the one weight the component is specified to have.
+
+Worth remembering as a shape, not just a fix: **an arbitrary-value class whose
+group you guessed wrong does not error — it deletes its own group-mate.** The
+symptom is a prop that has no effect, which is the hardest kind to see.
+
+**Both products.** Restores the specified weight; nothing that reads correct
+today changes.
+
+
+## TableHead — a checkbox made the header 2px taller
+
+*Numbered §59 when it was in the change log.*
+
+**Why it is here:** The "before" it measures is `px-4 py-2.5`, which is an intermediate state of this branch. The published header is `ps-3 pe-2` with no vertical padding at all, so it was never 2px taller. Self-correction.
+
+### As it was written
+
+#### 59. `TableHead` — a checkbox made the header 2px taller
+
+`src/components/Table/TableHead.tsx`
+
+```diff
+- 'px-4 py-2.5 align-middle',
++ 'h-9 px-4 py-0 align-middle',
+```
+
+Measured across the three concepts on one screen: the header row is **36.5px**
+in a table with no selection column and **38.5px** in one with it. The
+selection checkbox is an 18px control, the labels sit on a 16px line, and
+padding adds to whichever is taller — so two tables in the same product have
+two header heights for a reason that has nothing to do with the header.
+
+**`h-9` alone does not fix it.** On a table cell `height` behaves as a
+minimum, so 20px of padding around an 18px control still wins. The padding has
+to yield: at `py-0` the cell is exactly 36px and `align-middle` centres
+whatever is in it, which leaves a 16px label at the same 10px from the top it
+had before. The label does not move; the extra 2px under a checkbox goes.
+
+36px is also what the kit's `table.tbl th` computes to — `.625rem` of padding
+around a 16px line — so this is the height the header always meant to be. A
+fixed height is safe here and **only** here: a header never wraps
+(`whitespace-nowrap` is two lines below) and nothing in one is taller than the
+control that caused this. `TableCell` keeps its padding and still grows with
+its content, which is §44 — a body row has to be able to hold two lines, a
+header does not.
+
+> An earlier draft of this section blamed the sortable head's `inline-flex`
+> button and claimed the header shrank when a search stopped matching. Both
+> were wrong, and measuring said so: filled and empty both read 38.5px, because
+> the checkbox sets the floor either way. The fix that shipped is the one the
+> measurement pointed at, not the one the theory did.
+
+**Both products.** Only headers that carry a control change, and only by 2px.
+
+
+## PageHeader — the back control’s pill overhung the page
+
+*Numbered §60 when it was in the change log.*
+
+**Why it is here:** `PageHeader` is new on this branch. The negative insets it removes were added inside the branch, so this records a draft being revised rather than a change to the library.
+
+### As it was written
+
+#### 60. `PageHeader` — the back control's pill overhung the page
+
+`src/components/PageHeader/index.tsx`
+
+```diff
+- className="-ms-1.5 -me-1.5 shrink-0"
++ className="me-0.5 shrink-0"
+```
+
+Two separate faults in one class string.
+
+**The end margin was a defect.** `-me-1.5` against the title cluster's 4px gap
+put the box's right edge 2px **inside** the title, so on hover the pill ran
+under the first letter. A small positive margin instead: 6px of clearance for
+the pill, 12px from the glyph to the title — still tighter than the 12px the
+rest of the row is spaced at, which is what says the arrow belongs to the title
+rather than being its neighbour.
+
+**The start margin was a principle that does not survive a surface.**
+`-ms-1.5` pulled the 36px box 6px past the header's inset so that the 24px
+*glyph* landed on the page's content rail. The reasoning — a tertiary control
+is measured by its glyph, not by the box its hover state happens to paint —
+holds for a control with **no** surface. This one has one. The pill appears on
+hover and on focus, and when it did it started 6px left of everything under it:
+the search field, the table and the cards all begin at the header's own inset,
+so the page's left edge visibly broke every time the pointer crossed the arrow.
+
+A glyph sitting inset inside its own control is how every other icon control on
+the page already reads. A painted surface overhanging the rail is not. So the
+box starts on the inset and the glyph sits 6px inside it.
+
+Worth keeping as the general rule: **align by the glyph only when there is no
+box; align by the box as soon as the box can be seen.**
+
+**Both products.** Every page title with a back arrow moves its arrow 6px
+inward; nothing else in the row moves.
+
+## InputGroup — two insets on one edge
+
+*Numbered §53 when it was in the change log.*
+
+**Why it is here:** the 24px it measures only existed once `InputGroupAction`
+did, and that part is new on this branch. The published field has no trailing
+action to stack against, so nothing outside the branch ever had this. The rule
+that came out of it — the shell yielding its trailing inset — belongs to the
+new part and is recorded there.
+
+### As it was written
+
+#### 53. `InputGroup` — two insets on one edge
+
+`src/components/InputGroup/index.tsx`, `src/components/InputGroup/InputGroupAction.tsx`
+
+Reported by eye, and the measurement was worse than it looked:
+
+| | |
+|---|---|
+| the field's own `px-3` | 12px |
+| the margin `InputGroupAction` carried | 8px |
+| centring a 16px glyph in its 24px box | 4px |
+| **✕ to the border** | **24px** |
+
+The search glyph on the other side sits at 12. So the clear button was **twice
+as far in** as the icon opposite it, on the same field.
+
+The kit does not have this problem because its field has no padding at all —
+`.igrp-add { padding: 0 0 0 12px }` supplies the left inset and
+`.igrp-act { margin-right: 8px }` the right, and both glyphs land on 12. Our
+field carries the inset instead, so an action that adds its own stacks with it.
+
+```diff
+  // InputGroup, shared base
++ 'has-[[data-slot=input-group-action]]:pe-2'
+
+  // InputGroupAction
+- 'size-6 me-2 p-0',
++ 'size-6 p-0',
+```
+
+The field **yields** its trailing inset rather than the action adding to it:
+8 + 4 = 12, symmetric with the leading glyph, at every size on the ladder.
+
+A `has-` selector rather than a prop, deliberately. Whether a field has a
+trailing action is something the markup already states; a prop for it is a
+second place to get it wrong, and it would be wrong silently — the only symptom
+is a few pixels.
+
+**Both products.** It fires only when an `InputGroupAction` is present, and that
+part is new in §46, so no existing field changes.

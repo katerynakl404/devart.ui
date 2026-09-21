@@ -98,7 +98,7 @@ export const TheCards: Story = {
             inside this branch — so one line is the whole delta.
           </>
         }
-        n={5}
+        n={4}
         title="An outline card answered the pointer and then did nothing"
         why="The border tint is the affordance of a control. On a surface it is a promise nothing keeps."
       />
@@ -157,7 +157,7 @@ export const TheCards: Story = {
             share the lift recipe, and that is the part kept in sync by hand.
           </>
         }
-        n={64}
+        n={59}
         title="A tile could be narrower than its own action"
         why="The Connect scrim floated over the tile instead of sitting in it, so nothing stopped the grid from making the tile smaller than the button it reveals."
       />

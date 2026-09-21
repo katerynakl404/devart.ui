@@ -42,7 +42,7 @@ const OLD_DARK_DESTRUCTIVE_BORDER = {
   '--btn-outline-destructive-border-hover': 'var(--red-800)',
 } as CSSProperties;
 
-/** §4's two states, frozen as the class strings each side actually carried. */
+/** §3's two states, frozen as the class strings each side actually carried. */
 function OptionRow({
   classes,
   label,
@@ -215,7 +215,7 @@ export const ColourAndState: Story = {
         }
         files={['src/components/Autocomplete/OptionItem.tsx']}
         footnote="Also recorded as #43 in the Insightis UX audit."
-        n={4}
+        n={3}
         title="Autocomplete — selected and highlighted painted the same"
         why={
           <>
@@ -278,7 +278,7 @@ export const ColourAndState: Story = {
             directly, the way the kit does.
           </>
         }
-        n={6}
+        n={5}
         title="No token for a standalone icon — new --ink-icon / --ink-icon-hover"
         why={
           <>
@@ -343,7 +343,7 @@ export const ColourAndState: Story = {
             step ahead of the kit here, not catching up to it.
           </>
         }
-        n={7}
+        n={6}
         title="The sort glyph did not hover with its label"
         why="Hover moved only the words to ink-body while the chevrons stayed inactive, so a header read as two controls — one that answers the pointer and one that ignores it."
       />
@@ -396,7 +396,7 @@ export const ColourAndState: Story = {
             below the text they sat next to and never answered the pointer.
             <br />
             <br />
-            Both are now <Code>InputGroupAction</Code> — §47's part for exactly
+            Both are now <Code>InputGroupAction</Code> — §46's part for exactly
             this. The second half of the fix is the one nothing on screen shows:
             an <Code>&lt;svg&gt;</Code> carrying an <Code>aria-label</Code> and
             a click handler is not a control to a screen reader, and now each is
@@ -407,7 +407,7 @@ export const ColourAndState: Story = {
             ✕ still clears without opening it.
           </>
         }
-        n={68}
+        n={63}
         title="Autocomplete — the clear and the chevron painted as placeholders"
         why="Both are clickable, and both rendered at ink-inactive with no hover: the addon's decorative-glyph rule matched them, because asChild left an svg where a button should be."
       />

@@ -44,116 +44,116 @@ const ROWS: Row[] = [
     page: '1. Colour and state',
   },
   {
-    n: '4',
+    n: '3',
     area: 'Autocomplete',
     change: 'selected and highlighted painted the same',
     page: '1. Colour and state',
   },
   {
-    n: '6',
+    n: '5',
     area: 'globals.css, constants.ts',
     change:
       'no token for a standalone icon — new --ink-icon / --ink-icon-hover',
     page: '1. Colour and state',
   },
   {
-    n: '7',
+    n: '6',
     area: 'TableHead',
     change: 'the sort glyph did not hover with its label',
     page: '1. Colour and state',
   },
   {
-    n: '68',
+    n: '62',
     area: 'Autocomplete',
     change: 'the clear and the chevron painted as placeholders',
     page: '1. Colour and state',
   },
   {
-    n: '8',
+    n: '7',
     area: 'InputGroupAddon',
     change: 'the addon resized glyphs it did not own',
     page: '2. Size and spacing',
   },
   {
-    n: '9',
+    n: '8',
     area: 'TabsContent',
     change: 'the inactive panel came back as an empty box',
     page: '2. Size and spacing',
   },
   {
-    n: '10',
+    n: '9',
     area: 'InputGroup, TextArea',
     change: 'a field label as loud as the hint beneath it',
     page: '2. Size and spacing',
   },
   {
-    n: '15',
+    n: '14',
     area: 'Tooltip',
     change: 'the arrow put the gap off the 4px scale',
     page: '2. Size and spacing',
   },
   {
-    n: '42',
+    n: '41',
     area: 'Button, IconButton',
     change: 'a bigger button grew its box, not its label',
     page: '2. Size and spacing',
   },
   {
-    n: '11',
+    n: '10',
     area: 'SidebarHeader, SidebarBrand',
     change: 'the header lost its horizontal inset',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '12',
+    n: '11',
     area: 'SidebarHeader',
     change: 'two shells from the same elements',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '13',
+    n: '12',
     area: 'SidebarMenuButton',
     change: 'the rail rendered tooltips with no styling at all',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '14',
+    n: '13',
     area: 'SidebarMenuButton',
     change: 'a 32px box its own padding did not fit',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '16',
+    n: '15',
     area: 'Sidebar.md',
     change: 'collapsing could remove the only way to expand',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '23',
+    n: '22',
     area: 'SidebarContent',
     change: 'the navigation column is missing the inset production has',
     page: '3. The sidebar under two shells',
   },
   {
-    n: '17',
+    n: '16',
     area: 'PageHeader',
     change: 'new component, plus a badge that belongs to the title',
     page: '4. New in the system',
   },
   {
-    n: '18',
+    n: '17',
     area: 'ConnectorLogo',
     change: 'new component — connector marks as data-URIs',
     page: '4. New in the system',
   },
   {
-    n: '19',
+    n: '18',
     area: 'TextArea',
     change: 'a character counter, which pages were writing by hand',
     page: '4. New in the system',
   },
   {
-    n: '20',
+    n: '19',
     area: 'StatusView',
     change: 'EmptyStateIllustration — the standard empty-state artwork',
     page: '4. New in the system',
@@ -201,25 +201,25 @@ const ROWS: Row[] = [
     page: '6. Colour tokens',
   },
   {
-    n: '44',
+    n: '43',
     area: 'TableCell',
     change: 'a cell that could not grow, under a comment saying it could',
     page: '7. The table',
   },
   {
-    n: '56',
+    n: '53',
     area: 'TableHead',
     change: 'a column width is a share, not a size',
     page: '7. The table',
   },
   {
-    n: '58',
+    n: '54',
     area: 'TableRow',
     change: 'nesting was a number one table owned',
     page: '7. The table',
   },
   {
-    n: '52',
+    n: '51',
     area: 'TableCell',
     change: "the row's pressed fill belonged to whatever was pressed",
     page: '7. The table',
@@ -231,73 +231,73 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: '35',
+    n: '34',
     area: 'Badge',
     change: 'the hairline is the base, not a second variant',
     page: '8. The badge',
   },
   {
-    n: '47',
+    n: '46',
     area: 'InputGroupAction',
     change: 'an icon docked in a field is not an icon button',
     page: '9. The fields',
   },
   {
-    n: '54',
+    n: '53',
     area: 'InputGroup',
     change: 'two insets on one edge',
     page: '9. The fields',
   },
   {
-    n: '43',
+    n: '42',
     area: 'TextArea',
     change: 'the counter row had a slot nothing could fill',
     page: '9. The fields',
   },
   {
-    n: '32',
+    n: '31',
     area: 'TextArea',
     change: 'the counter is one ink step too loud',
     page: '9. The fields',
   },
   {
-    n: '30',
+    n: '29',
     area: 'InputGroup',
     change: 'the search clear button is a recipe, not a part',
     page: '9. The fields',
   },
   {
-    n: '31',
+    n: '30',
     area: 'Datepicker',
     change: 'one bespoke focus ring, not three missing states',
     page: '9. The fields',
   },
   {
-    n: '5',
+    n: '4',
     area: 'Card',
     change: 'an outline card answered the pointer and then did nothing',
     page: '10. The cards',
   },
   {
-    n: '64',
+    n: '58',
     area: 'DataSourceCard',
     change: 'a tile could be narrower than its own action',
     page: '10. The cards',
   },
   {
-    n: '63',
+    n: '57',
     area: 'Checkbox',
     change: 'the tick and the bar were two different weights',
     page: '2. Size and spacing',
   },
   {
-    n: '21',
+    n: '20',
     area: 'gen-classlist.mjs',
-    change: 'empty:* enumerated, or the rule in §12 is never compiled',
+    change: 'empty:* enumerated, or the rule in §11 is never compiled',
     page: '—',
   },
   {
-    n: '22',
+    n: '21',
     area: 'pnpm bundle, check-bundle-css',
     change: 'one command, and a gate for silent CSS gaps',
     page: '—',
@@ -399,9 +399,9 @@ export const Overview: Story = {
           Documented, not yet rendered
         </h3>
         <p>
-          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §61
-          plus §7a. The table above renders 39 of them as cases and lists §21
-          and §22 as build changes with nothing to render. These are the other
+          <Code>DESIGN-SYSTEM-CHANGES.md</Code> holds 66 sections, §1 to §55
+          plus §6a. The table above renders 39 of them as cases and lists §20
+          and §21 as build changes with nothing to render. These are the other
           39, grouped by the page they would belong to:
         </p>
         <ul className="flex flex-col gap-1 text-ink-secondary text-xs">
@@ -420,7 +420,7 @@ export const Overview: Story = {
         </h3>
         <p>
           The <em>After</em> half is always the live component as this branch
-          has it. A case with nothing to compare against — §17 and §18, which
+          has it. A case with nothing to compare against — §16 and §17, which
           are components that did not exist — renders that half alone. Where
           there is a <em>Before</em>, it is produced one of three ways, and each
           case says which under the comparison:
@@ -444,14 +444,14 @@ export const Overview: Story = {
             <strong className="font-medium">A replica.</strong> Where the old
             markup is unreachable from a prop — an internal component, a class
             on an element the component renders itself — the panel rebuilds it
-            from the class string in the diff. §4 and §7. A replica can drift
+            from the class string in the diff. §3 and §6. A replica can drift
             from what the package once shipped; the other two cannot.
           </li>
         </ul>
         <p>
-          §21 and §22 are build and tooling changes with nothing to render.
-          Their effect is visible only as the absence of a defect: without §21,{' '}
-          <Code>empty:pb-0</Code> in §12 compiles to nothing in the bundle even
+          §20 and §21 are build and tooling changes with nothing to render.
+          Their effect is visible only as the absence of a defect: without §20,{' '}
+          <Code>empty:pb-0</Code> in §11 compiles to nothing in the bundle even
           though it works here — Storybook compiles Tailwind from the sources,
           the bundle from an enumerated class list.
         </p>

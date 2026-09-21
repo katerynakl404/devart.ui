@@ -133,7 +133,7 @@ export const TheBadge: Story = {
             inside a bordered container.
           </>
         }
-        n={35}
+        n={34}
         title="The hairline is the base, not a second variant"
         why="Five variants painted a fill with no edge, so a chip on a surface its fill matched had no shape — and the two that did carry a border looked like a different component."
       />

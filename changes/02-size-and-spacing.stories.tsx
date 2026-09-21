@@ -91,7 +91,7 @@ const TABS_PANEL_CLASSES =
   'mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card';
 
 /**
- * §8 seen across the whole surface the rule touches: every size step, a field
+ * §7 seen across the whole surface the rule touches: every size step, a field
  * with a nested control, and the two states that change the glyph's colour.
  * All of it is the catalog's own stories, composed — the rule is about what a
  * nested control is allowed to keep, so a hand-built field would prove nothing.
@@ -119,7 +119,7 @@ function AddonMatrix() {
 }
 
 /**
- * §10's subject is the label's ink step, so the panel shows the two places a
+ * §9's subject is the label's ink step, so the panel shows the two places a
  * label appears next to a hint: a field and a TextArea with its counter. Both
  * are the catalog's own stories.
  */
@@ -202,7 +202,7 @@ function PanelBody({ label }: { label: string }) {
 }
 
 /**
- * The second tab open, and a marker under the whole block. Both halves of §9
+ * The second tab open, and a marker under the whole block. Both halves of §8
  * need the same frame: the defect is 16px of empty space, which is only legible
  * against something that moves.
  */
@@ -224,7 +224,7 @@ function TabsDemo({ children }: { children: ReactNode }) {
 }
 
 /**
- * §42 across the whole ladder. `old` reapplies the class string each step used
+ * §41 across the whole ladder. `old` reapplies the class string each step used
  * to carry — the padding, the label step and the glyph — through `className`,
  * which twMerge resolves in favour of the last class in the group.
  */
@@ -297,12 +297,12 @@ export const SizeAndSpacing: Story = {
             only because of this rule. The addon now sizes its own decorative
             glyph, and a nested control sizes its own.{' '}
             <strong className="font-medium text-ink-body">To fix:</strong>{' '}
-            DESIGN-SYSTEM-CHANGES.md §8 still quotes <Code>sm</Code> at{' '}
+            DESIGN-SYSTEM-CHANGES.md §7 still quotes <Code>sm</Code> at{' '}
             <Code>size-5</Code>, while the source has <Code>size-4</Code> — the
             glyph tracks the field (28/32 → 16px, 36/40/44 → 20px, 44 → 24px).
           </>
         }
-        n={8}
+        n={7}
         title="InputGroupAddon resized glyphs it did not own"
         why={
           <>
@@ -355,7 +355,7 @@ export const SizeAndSpacing: Story = {
           </>
         }
         files={['src/components/Tabs/TabsContent.tsx']}
-        n={9}
+        n={8}
         title="TabsContent — the inactive panel came back as an empty box"
         why={
           <>
@@ -395,7 +395,7 @@ export const SizeAndSpacing: Story = {
             field is switched off".
           </>
         }
-        n={10}
+        n={9}
         title="A field label as loud as the hint beneath it"
         why="Label and helper both resolved to --ink-secondary; only weight separated them. A hint as loud as the label it belongs to stops being subordinate to it."
       />
@@ -488,7 +488,7 @@ export const SizeAndSpacing: Story = {
             is what makes the box hug the icon.
           </>
         }
-        n={15}
+        n={14}
         title="Tooltip — the arrow put the gap off the 4px scale"
         why="The arrow is now 8×4, putting the tip exactly 4px from the trigger, so all three numbers sit on the grid."
       />
@@ -542,7 +542,7 @@ export const SizeAndSpacing: Story = {
             the text button.
           </>
         }
-        n={42}
+        n={41}
         title="A bigger button grew its box, not its label"
         why="lg and xl widened the control while the label stayed 14px and the glyph 16px, so a 44px xl read as an oversized md — a small label in a lot of air."
       />
@@ -574,7 +574,7 @@ export const SizeAndSpacing: Story = {
             with it.
           </>
         }
-        n={63}
+        n={58}
         title="The tick and the bar were two different weights"
         why="Switching a checkbox from checked to indeterminate made the mark visibly heavier, because the tick came off the icon ladder and the bar off the spacing scale."
       />

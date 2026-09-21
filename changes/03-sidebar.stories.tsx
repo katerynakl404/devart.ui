@@ -80,7 +80,7 @@ function Option({
  * header → nav → scrolling group region → footer, with the footer holding the
  * bottom edge. Every panel in this section uses it, because a rail without its
  * footer has a false vertical and the paddings around the menu are the whole
- * subject of §23.
+ * subject of §22.
  *
  * One product number is deliberately NOT reproduced: the row type step —
  * production runs 13px where the package and the kit are both at 14px. That is
@@ -100,15 +100,15 @@ function Shell({
   open = true,
   windowBar,
 }: {
-  /** §14 only: puts the collapsed padding and the label back on the row. */
+  /** §13 only: puts the collapsed padding and the label back on the row. */
   accountClassName?: string;
   children: ReactNode;
-  /** The account footer. Production always has one; only §12 turns it off. */
+  /** The account footer. Production always has one; only §11 turns it off. */
   footer?: boolean;
   /**
    * Which footer row. `product` is what the live rail renders — a 36px button
    * with a 24px avatar. `menu-button` is the `SidebarMenuButton` recipe, which
-   * §14 needs because that component's collapsed box is its subject.
+   * §13 needs because that component's collapsed box is its subject.
    */
   footerRow?: 'product' | 'menu-button';
   /** Hairlines at x=8 and x=16 — the two candidate alignment lines. */
@@ -199,7 +199,7 @@ function Shell({
  * there; the rail renders `<SidebarHeader />` with nothing inside, purely for
  * the top inset, and `empty:pb-0` drops the bottom half on its own. Because the
  * control lives outside the rail, collapsing can never hide it — which is the
- * dead end §16 is about, solved by composition rather than by a rule.
+ * dead end §15 is about, solved by composition rather than by a rule.
  */
 function WebShell({ guides }: { guides?: boolean }) {
   return (
@@ -272,7 +272,7 @@ function AccountRow() {
   );
 }
 
-/** The `SidebarMenuButton` footer recipe — §14's subject, 28px avatar and all. */
+/** The `SidebarMenuButton` footer recipe — §13's subject, 28px avatar and all. */
 function AccountMenuRow({ labelClassName }: { labelClassName?: string }) {
   return (
     <SidebarMenu>
@@ -342,13 +342,13 @@ export const SidebarUnderTwoShells: Story = {
             <strong className="font-medium text-ink-body">
               Two things still to settle:
             </strong>{' '}
-            the navigation itself sits on 8 until §23 lands, and the inset must
+            the navigation itself sits on 8 until §22 lands, and the inset must
             live in exactly one slot — production's brand row owns{' '}
             <Code>pl-4</Code> with the header on <Code>p-0</Code>, so a consumer
             composed that way inherits 32 from this change rather than 16.
           </>
         }
-        n={11}
+        n={10}
         title="SidebarHeader lost its horizontal inset"
         why="The inset was removed on the theory that rows inside would carry their own. Pages lay that row out by hand, so the inset simply stopped existing."
       />
@@ -412,14 +412,14 @@ export const SidebarUnderTwoShells: Story = {
             which shape it is and say so, which is the kind of rule that
             silently goes unfollowed.{' '}
             <strong className="font-medium text-ink-body">
-              It also settles §16:
+              It also settles §15:
             </strong>{' '}
             a collapse control that lives in the window bar cannot be hidden by
             collapsing, so the desktop shell needs no <Code>SidebarRail</Code>{' '}
             to stay recoverable.
           </>
         }
-        n={12}
+        n={11}
         title="Two shells from the same elements"
         why="One library serves a web app, where the product mark belongs in the rail because a browser tab is no place for it, and a desktop app that owns a window bar and puts the mark and the collapse control there. The shapes differ by composition and by one self-deciding number, not by a variant."
       />
@@ -491,7 +491,7 @@ export const SidebarUnderTwoShells: Story = {
             tooltip respects.
           </>
         }
-        n={13}
+        n={12}
         title="SidebarMenuButton rendered tooltips with no styling at all"
         why="The component imported Tooltip from @radix-ui/react-tooltip — the raw primitives — instead of from the package's own Tooltip."
       />
@@ -538,12 +538,12 @@ export const SidebarUnderTwoShells: Story = {
             <Code>&gt; span:last-child</Code> — the selector chosen for what it
             does not match, so an avatar-led footer row is left alone rather
             than blanked. Every mark centres at 24 — 8 of column inset plus half
-            of the 32px box — which holds only with §23's inset and the 48px
+            of the 32px box — which holds only with §22's inset and the 48px
             collapsed rail; at the old 57px width the same button sat 8 from the
             left and 16 from the right.
           </>
         }
-        n={14}
+        n={13}
         title="SidebarMenuButton — a 32px box its own padding did not fit"
         why="Collapsed, the button is forced to 32×32 while the consumer keeps px-2, leaving 16px of usable width."
       />
@@ -603,7 +603,7 @@ export const SidebarUnderTwoShells: Story = {
             where collapsing cannot take it away.
           </>
         }
-        n={16}
+        n={15}
         state="docs-only"
         title="Collapsing could remove the only way to expand"
         why="An app that copied the documented shell inherited a dead end: with collapsible=icon and the trigger hidden when collapsed, nothing on screen can expand the sidebar again."
@@ -622,7 +622,7 @@ export const SidebarUnderTwoShells: Story = {
                 </SidebarContent>
               </Shell>
             </Option>
-            <Option caption="Collapsed — the mark lands on 24, the number §14 claims">
+            <Option caption="Collapsed — the mark lands on 24, the number §13 claims">
               <Shell navInset open={false}>
                 <SidebarHeader />
                 <SidebarContent>
@@ -662,7 +662,7 @@ export const SidebarUnderTwoShells: Story = {
             <Code>SidebarGroup</Code> and <Code>SidebarMenu</Code> all carry{' '}
             <Code>padding-left: 0</Code> — the only 8px comes from the row
             button's own <Code>px-2</Code>, so the navigation sits on the amber
-            line while §11's header sits on the teal one. The After half applies{' '}
+            line while §10's header sits on the teal one. The After half applies{' '}
             <Code>[&amp;_[data-sidebar=content]]:px-2</Code> from outside —
             nothing in the component is edited to preview it.
           </>
@@ -685,11 +685,11 @@ export const SidebarUnderTwoShells: Story = {
             <Code>SidebarHeader</Code> keeps <Code>p-0 pt-3 pb-2</Code>. So 16
             is the line, and the gutter is real — the package is missing both.{' '}
             <strong className="font-medium text-ink-body">
-              A consequence for §11:
+              A consequence for §10:
             </strong>{' '}
             production zeroes the header's horizontal padding precisely because
             its brand row owns <Code>pl-4</Code>. A consumer composed that way
-            that picks up §11's <Code>ps-4</Code> lands at 32, not 16 — the
+            that picks up §10's <Code>ps-4</Code> lands at 32, not 16 — the
             insets add. Whichever slot ends up owning the inset, only one of
             them may. <Code>.design-sync/sb-reference</Code> shows 8 for both
             and no gutter; measured against production, that snapshot is stale.{' '}
@@ -704,10 +704,10 @@ export const SidebarUnderTwoShells: Story = {
             will keep certifying a rail that is wrong in a real shell.
           </>
         }
-        n={23}
+        n={22}
         state="proposed"
         title="The navigation column is missing the inset production has"
-        why="Nothing between the sidebar edge and the row button supplies a gutter, so the navigation sits on 8 while §11 moved the brand mark to 16 — and the live product puts both on 16 with an 8px gutter."
+        why="Nothing between the sidebar edge and the row button supplies a gutter, so the navigation sits on 8 while §10 moved the brand mark to 16 — and the live product puts both on 16 with an 8px gutter."
       />
     </ChangePage>
   ),

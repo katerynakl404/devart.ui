@@ -72,15 +72,15 @@ export const NewInTheSystem: Story = {
             the gap the rest of the row uses. The 4px inside the title cluster
             belongs to the back arrow, which is part of the title; a badge is a
             separate object and at 4px reads as glued on. The mark is the
-            monogram: DB2 is not in the 23-logo pack, and §18 is where that
+            monogram: DB2 is not in the 23-logo pack, and §17 is where that
             fallback is the subject.{' '}
             <strong className="font-medium text-ink-body">To fix:</strong>{' '}
-            DESIGN-SYSTEM-CHANGES.md §17 passes <Code>size="2xs"</Code> to
+            DESIGN-SYSTEM-CHANGES.md §16 passes <Code>size="2xs"</Code> to
             ConnectorLogo, whose scale is <Code>xs | sm | md | lg</Code> — that
             snippet does not compile.
           </>
         }
-        n={17}
+        n={16}
         title="PageHeader — a badge that belongs to the title"
         why="A badge that names what a form connects to fits neither existing slot: in actions it lands at the right edge and reads as one more control next to Save."
       />
@@ -134,7 +134,7 @@ export const NewInTheSystem: Story = {
             <Code>scripts/gen-connector-logos.mjs</Code>, not a code change.
           </>
         }
-        n={18}
+        n={17}
         title="ConnectorLogo"
         why="There was no component: every page embedded connector marks its own way, and a page never knew which slug the asset folder used."
       />
@@ -173,7 +173,7 @@ export const NewInTheSystem: Story = {
             appears. Works controlled and uncontrolled.
           </>
         }
-        n={19}
+        n={18}
         title="TextArea character counter"
         why="There was none, so pages wrote it by hand — differently each time."
       />
@@ -213,7 +213,7 @@ export const NewInTheSystem: Story = {
             toolbar to check that.
           </>
         }
-        n={20}
+        n={19}
         title="StatusView — EmptyStateIllustration"
         why="At page scale a lucide glyph in a halo reads as a notification icon rather than an empty region."
       />
