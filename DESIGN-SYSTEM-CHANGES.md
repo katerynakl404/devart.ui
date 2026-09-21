@@ -23,106 +23,78 @@ example of that mistake — made, caught, and corrected.
 
 ---
 
-## By feature
+## What changed
 
-The file is one file on purpose — a per-feature file was tried and produced
-three documents recording the same change three times, which is what the
-preamble above is about. What was missing was not separate files but a way in
-from the feature you are working on, so here it is. Section numbers are stable;
-the groups are the reading order.
+One row per section. `draft` means the thing is new and has not been signed
+off — nothing should be built on it yet.
 
-| Feature / occasion | Sections |
-|---|---|
-| **Connections — the list** (Devart LinkAI, DW-10365) | 1, 3, 5, 6, 16, 17, 19 |
-| **Connections — the create/edit form** | 3, 4, 7, 8, 9, 18 |
-| **Connections — round 4, "everything from the library"** (2026-09-19) | 34 – 38, 40, 42, 44, 46 – 59 |
-| **Two shells: a desktop window bar and a web sidebar** | 10 – 15, 36 |
-| **Interaction states, found by auditing production** | 2, 7a, 25 |
-| **Kit ↔ Storybook audit** (no feature — a component-by-component sweep) | 22 – 33 |
-| **Build and tooling** | 20, 21, 38 |
-| **Documentation** | the "Documentation that was missing or wrong" block, 41 (`Badge.md`) |
-
-**New components added, all rounds:** `PageHeader` (§16), `ConnectorLogo`
-(§17), `StatusView.EmptyStateIllustration` (§19), `StepperIndicator` (§37),
-`DropdownMenuRow` (§44), `InputGroupAction` (§46), `Link` (§47),
-`StatTile` (§48), `CodeBlock` (§49), `MetaRow` (§53).
-
----
-
-## Summary
-
-| Area | Component | Change |
+| § | Component | Change |
 |---|---|---|
-| Colour | `Button`, `IconButton` | `destructiveOutline` label is red, not neutral |
-| Colour | `globals.css` | dark destructive border re-stepped so hover *raises* contrast |
-| Colour | `constants.ts` | `--tbl-row-hover` wrapped in `hsl()` — the hover was emitting invalid CSS |
-| Colour | `Autocomplete` | selected and highlighted no longer paint the same |
-| Colour | `Card` / `outline` | the hover border tint is gone — a surface stopped promising an interaction it did not have |
-| Colour | **new tokens** `--ink-icon`, `--ink-icon-hover` | the colour of a standalone glyph |
-| Colour | `TableHead` | sort control gained a press state |
-| Colour | **state tokens** | interaction states became relative overlays — they composite instead of replacing |
-| Colour | **new** `--state-overlay` | one wash base per theme; four percentages shared by both |
-| Colour | **removed** `--tbl-row-selected-hover` | a selected row is no longer repainted on hover |
-| Colour | `Button`, `IconButton` | destructive tertiary re-stepped to hold parity with the neutral ladder |
-| Size | `TabsContent` | inactive panel no longer returns as an empty box |
-| Size | `InputGroupAddon` | `[&_svg]` → `[&>svg]` — stops resizing glyphs it does not own |
-| Size | `InputGroup`, `TextArea` | field label Secondary → Body, so the hint is subordinate |
-| Sidebar | `SidebarHeader` | horizontal inset restored; `empty:pb-0` tells the two shells apart |
-| Sidebar | `SidebarBrand` | its own inset removed, so nesting does not double it |
-| Sidebar | `SidebarMenuButton` | tooltips through the package's own `Tooltip`; collapsed box fixed |
-| Sidebar | `Tooltip` | arrow `8x4`, putting the visible gap on the 4px scale |
-| New | `PageHeader` | the title row, with a `badge` slot inside the title cluster |
-| New | `ConnectorLogo` | connector marks as data-URIs |
-| New | `TextArea` | character counter |
-| New | `StatusView` | `EmptyStateIllustration` — the standard empty-state artwork |
-| Docs | `Card.md`, `Table.md`, `Switch.md`, `Sidebar.md` | recipes that every page was otherwise inventing |
-| Build | `gen-classlist.mjs` | `empty:*` enumerated, or the rule above is never compiled |
-| Build | `pnpm bundle`, `pnpm check-bundle-css` | one command, and a gate for silent CSS gaps |
-| Kit gap | `Sidebar`, `Autocomplete`, `Datepicker` | raw `opacity-50` where the system agreed on `opacity-disabled` |
-| Kit gap | `Toast` | no width band, so Sonner's fixed 356px wins over the kit's 280–600 |
-| Kit gap | `Sheet` | `side="right"` — the default side is the one with no edge border |
-| Kit gap | `Button`, `IconButton` | `tertiaryBrand` — a brand label on the neutral tertiary pill |
-| Kit gap | `Tabs` | no flush tabset, so two bottom rules stack into a 2px edge |
-| Kit gap | `Sidebar` | no menu badge / counter part |
-| Kit gap | `InputGroup` | the clear-button reveal ships as a story recipe, not as a prop |
-| Kit gap | `Datepicker` | the one focus ring in the package that is not the shared recipe |
-| Kit gap | `TextArea` | counter ink one step too loud |
-| Fixed | `Button`, `IconButton`, `Input`, `InputGroup`, `TextArea` | §41 — one ladder per axis, canonical table at the top of §41: button padding 8/12/12/16/20 (the field holds 12 from `sm`), gap 4/6/8/8/8, label 12/14/14/16/16, glyph 14/16/16/20/20 |
-| Fixed | `Table` | §43 — the cell wraps, so a row grows with its content; the clamp is scoped to layout="fixed" |
-| Fixed | `Typography` | `label16` — the rung the `lg` control ladder needs (added in §45, which also capped the scale) |
-| Fixed | `InputGroupAddon` | leading glyph takes the placeholder ink; a docked control lifts to Text/Body on hover |
-| **Build** | `gen-classlist.mjs` | the library’s whole glyph surface was absent from the bundle vocabulary (§45) |
-| Kit gap | `StepSlider` | dot colour, dot size, width and hit area all off the kit s own numbers |
-| Kit gap | `Badge` | `--badge-border` shipped — the hairline is the base of every variant |
-| Colour | `PopoverContent` | closed state holds its faded-out frame instead of snapping back |
-| Size | `Sidebar` | fixed panel takes its height from `inset-y-0`, not `h-svh` |
-| New | `StepperIndicator` | the rail the headless `Stepper` never shipped |
-| Docs | `Badge.md` | when a state is a badge and when it is text |
-| Build | `gen-classlist.mjs` | no opacity modifiers for `bg-surface-card` — `/85` paints nothing |
-| Kit gap | `SidebarMenu` | nav rows sat 4px apart; the kit says 2 |
-| New | `TextArea` | `hintText` — the half of the counter row nothing could fill |
-| Kit gap | `DropdownMenuItem` | `accent` — the one row in a menu that IS the action |
-| New | `DropdownMenuRow` | a menu row that is a reading, not an action |
-| New | `InputGroupAction` | a field's trailing icon has no surface of its own |
-| Size | `InputGroup` | the field yields its trailing inset instead of stacking with it |
-| New | `Link` | the kit's text link, which the package never had |
-| New | `StatTile` | label / value / caption — one number and what it counts |
-| New | `CodeBlock` | a snippet and the control that copies it, as one object |
-| Size | `AccordionItem` | `standalone` — an item that is its own surface |
-| Colour | `TableCell` | the row's pressed fill belongs to whatever was pressed |
-| Revised | `StatusView` | the illustration is a replaceable pack of two, not one artwork |
-| Kit gap | `Toggle` | `ghost` is `Button`'s removed variant under another name |
-| Kit gap | **missing** `DropZone` | its own component in the kit; `--dropzone-*` ships in both themes with zero call sites |
-| Docs | `Card.md` | `ghost` described as the "browse more" tile it is, not as a drop target |
-| Docs | `DropdownMenu.md` | a menu may be opened by a `Link` — **draft**, tied to one unchosen concept (§56) |
-| New | `MetaRow` | the line above a list — and the 4px to it, stated once (§53) |
-| Size | `TableHead` | `width` — column widths are shares of the table, replacing five hand-set pixel widths (§54) |
-| Fixed | `Link` | `font-[inherit]` was read as a weight and deleted `font-medium`; every link rendered at 400 (§56) |
-| Size | `TableHead` | fixed 36px — a selection checkbox no longer makes the header 2px taller than the table next to it (§58) |
-| Size | `PageHeader` | the back control's hover pill ran under the title and overhung the page's left rail (§59) |
-| Size | `TableRow` | `nested` — 8px for a child row, lifted out of one table's local override (§55) |
-
----
+| §1 | `Button` | a neutral label under a red border |
+| §2 | `tokens` | dark destructive border — hover made the control *less* visible |
+| §3 | `Autocomplete` | selected and highlighted painted the same |
+| §4 | `Card` | `outline` — the hover border tint is gone |
+| §5 | `tokens` | no token for a standalone icon — new `--ink-icon` / `--ink-icon-hover` |
+| §6 | `TableHead` | the sort glyph did not hover with its label |
+| §6a | `Table` | interaction states were absolute colours, and two were the same colour |
+| §7 | `InputGroupAddon` | resized glyphs it did not own |
+| §8 | `TabsContent` | the inactive panel came back as an empty box |
+| §9 | `InputGroup` | a field label as loud as the hint beneath it |
+| §10 | `SidebarHeader` | lost its horizontal inset |
+| §11 | `SidebarHeader` | the two shells, told apart by `:empty` |
+| §12 | `SidebarMenuButton` | rendered tooltips with no styling at all |
+| §13 | `SidebarMenuButton` | a 32px box its own padding did not fit |
+| §14 | `Tooltip` | the arrow put the gap off the 4px scale |
+| §15 | `Sidebar` | collapsing could remove the only way to expand |
+| §16 | `PageHeader` | the title row: back control, h1, badge slot, actions · **draft** |
+| §17 | `ConnectorLogo` | 23 connector marks as data-URIs, with a monogram fallback · **draft** |
+| §18 | `TextArea` | character counter |
+| §19 | `StatusView` | `EmptyStateIllustration` |
+| §20 | `tokens` | a variant that is not enumerated is never compiled |
+| §21 | `Sidebar` | and `pnpm check-bundle-css` |
+| §22 | `Badge` | the hairline is the default, not a second variant |
+| §23 | `Sidebar` | five controls still fade at `opacity-50` |
+| §24 | `Toast` | has no width, so Sonner's does |
+| §25 | `Sheet` | the default side is the one without a border |
+| §26 | `Button` | a brand label on the neutral tertiary pill |
+| §27 | `Tabs` | no flush tabset, so two rules stack |
+| §28 | `Sidebar` | no badge or counter on a nav row |
+| §29 | `InputGroup` | the search clear button is a recipe, not a part |
+| §30 | `Datepicker` | one bespoke focus ring, not three missing states |
+| §31 | `TextArea` | counter — one ink step too loud |
+| §32 | `Toast` | the toast close button is off the 24px ladder |
+| §33 | `tokens` | one of the three "unrelated" ones is not |
+| §34 | `Badge` | the hairline is the base, not a second variant |
+| §35 | `PopoverContent` | a closed panel stayed painted |
+| §36 | `Sidebar` | the fixed panel was pinned to the viewport |
+| §37 | `StepperIndicator` | the numbered rail the headless Stepper never shipped · **draft** |
+| §38 | `tokens` | build — `bg-surface-card/85` is a class that compiles to nothing |
+| §40 | `SidebarMenu` | nav rows 4px apart where the kit says 2 |
+| §42 | `TextArea` | the counter row had a slot nothing could fill |
+| §44 | `DropdownMenu` | two rows a menu could not draw — an accent action and a reading · **draft** |
+| §46 | `InputGroupAction` | a field’s trailing control: 24px box, no surface, colour-only hover · **draft** |
+| §47 | `Link` | the kit’s text link, which the package never had · **draft** |
+| §48 | `StatTile` | label / value / caption — one number and what it counts · **draft** |
+| §49 | `CodeBlock` | a snippet and the control that copies it, as one object · **draft** |
+| §50 | `AccordionItem` | an item that is its own surface |
+| §51 | `TableCell` | pressed belonged to whatever was pressed |
+| §52 | `StatusView` | the illustration is a pack, not a rule — **revised** |
+| §53 | `MetaRow` | the line above a list, and the 4px to it, stated once · **draft** |
+| §54 | `TableHead` | a column width is a share, not a size |
+| §55 | `TableRow` | nesting was a number one table owned |
+| §56 | `DropdownMenu` | a link may open a menu · **draft** |
+| §57 | `Table` | `density` — a compact row step · **draft** |
+| §58 | `Checkbox` | the tick and the bar were two different weights |
+| §59 | `DataSourceCard` | the tile could be narrower than its own action |
+| §60 | `Card` | one elevation recipe instead of two copies |
+| §61 | `Card` | two variants had no box, and one had a shape a card cannot take |
+| §62 | `DataSourceCard` | the popular flame is gone |
+| §63 | `Autocomplete` | the clear and the chevron painted as placeholders |
+| §64 | `Tooltip` | the delay before it opens |
+| §39 | `StepSlider` | four measurements against a spec that argues for each one |
+| §41 | `tokens` | the size ladder |
+| §43 | `TableCell` | a row that could not grow, under a comment saying it could |
+| §45 | `tokens` | the icon surface |
 
 # Colour and state
 
@@ -1088,36 +1060,6 @@ the name does not exist and finds it on the sibling meaning what it used to.
 adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
 `Card.md` describes it as a drop target, which is a different component
 (`DropZone`); that line is what needs fixing, not the variant.
-
-## Summary — this round
-
-| Area | Component | Change |
-|---|---|---|
-| Kit gap | `Badge` | `--badge-border` shipped; the hairline is the base of every variant, `flat` is the opt-out |
-| Colour | `PopoverContent` | closed state gets `fill-mode-forwards`, so it stops snapping back to full opacity |
-| Size | `Sidebar` | fixed panel takes its height from `inset-y-0`, not from `h-svh` |
-| New | **`StepperIndicator`** | the visual rail the headless `Stepper` never shipped |
-| Docs | `Badge.md` | when a state is a badge and when it is text — the product-wide rule |
-| Build | `gen-classlist.mjs` | no opacity modifiers for `bg-surface-card`, so `/85` emits nothing |
-| Kit gap | `SidebarMenu` | `gap-1` → `gap-0.5` — the kit's nav rows are 2px apart, not 4 |
-| New | `TextArea` | `hintText` — standing guidance beside the character counter |
-| Kit gap | `DropdownMenuItem` | `accent` variant — brand ink + medium weight for a menu's primary action |
-| New | `DropdownMenuRow` | label + its own control on the item rail, with no hover surface |
-| New | `InputGroupAction` | 24px box, 16px glyph, no fill — colour-only hover |
-| Size | `InputGroup` | `has-[…input-group-action]:pe-2` — one inset on that edge, not two |
-| New | `Link` | `--ink-highlight`, medium, size inherited from the text it sits in |
-| New | `StatTile` | overline label · title20/24 value · body12 caption, `tabular-nums` |
-| New | `CodeBlock` | copy inside the block, tick for two seconds, `execCommand` fallback |
-| Size | `AccordionItem` | `variant="standalone"` drops the divider for one card per section |
-| Colour | `TableCell` | pressed guarded against `button:active` and an open menu inside the row |
-| Revised | `StatusView` | `EmptySearchIllustration` added — the pack is two, and the slot was always open |
-
-**New props this round:** `Badge.flat`, `TextArea.hintText`,
-`DropdownMenuItem variant="accent"`, `AccordionItem variant="standalone"`.
-
-**New components this round: six** — `StepperIndicator` (§37),
-`DropdownMenuRow` (§44), `InputGroupAction` (§46), `Link` (§47),
-`StatTile` (§48) and `CodeBlock` (§49).
 
 ## 34. `Badge` — the hairline is the base, not a second variant
 
