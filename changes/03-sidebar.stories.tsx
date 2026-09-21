@@ -704,9 +704,8 @@ export const SidebarUnderTwoShells: Story = {
             will keep certifying a rail that is wrong in a real shell.
           </>
         }
-        n={22}
-        state="proposed"
-        title="The navigation column is missing the inset production has"
+        n={65}
+        title="The navigation column had no gutter"
         why="Nothing between the sidebar edge and the row button supplies a gutter, so the navigation sits on 8 while §10 moved the brand mark to 16 — and the live product puts both on 16 with an 8px gutter."
       />
     </ChangePage>

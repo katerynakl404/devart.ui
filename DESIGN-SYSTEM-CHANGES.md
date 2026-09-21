@@ -91,6 +91,7 @@ off — nothing should be built on it yet.
 | §62 | `DataSourceCard` | the popular flame is gone |
 | §63 | `Autocomplete` | the clear and the chevron painted as placeholders |
 | §64 | `Tooltip` | the delay before it opens |
+| §65 | `SidebarContent` | the nav column had no gutter |
 | §39 | `StepSlider` | four measurements against a spec that argues for each one |
 | §41 | `tokens` | the size ladder |
 | §43 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -1888,6 +1889,23 @@ Unchanged, and worth knowing: the bubble itself is not a transition but a
 `tailwindcss-animate` keyframe — 150ms `ease`, `fade-in-0 zoom-in-95` plus an
 8px slide from the trigger’s side. That 150 is the plugin’s default, not
 `--motion-*`.
+
+## 65. `SidebarContent` — the nav column had no gutter
+
+`src/components/Sidebar/SidebarContent.tsx`
+
+```diff
+- 'flex min-h-0 flex-1 flex-col gap-2'
++ 'flex min-h-0 flex-1 flex-col gap-2 px-2 pb-4'
+```
+
+Nothing between the sidebar edge and a row button supplied a horizontal inset,
+so the nav sat on 8px while §10 had moved the brand mark to 16. The catalog
+story hid it by giving its own wrapper `p-2`, which meant the story certified a
+rail the library does not draw.
+
+Measured after: the row fill starts 8px from the edge and the glyph lands on
+16 — the brand mark’s line, and what the product renders.
 
 ## 39. `StepSlider` — four measurements against a spec that argues for each one
 
