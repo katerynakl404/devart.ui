@@ -260,56 +260,42 @@ The label moved to `--ink-body` on hover and the chevrons stayed at
 No press state. A sort commits on click and the feedback is the table
 reordering; a press colour on a control with no box reads as a flicker.
 
-## 6a. Interaction states were absolute colours, and two of them were the same colour
+## 6a. Interaction states were absolute colours, and two were the same colour
 
 `globals.css`, `src/lib/constants.ts`, `src/components/Table/TableCell.tsx`
 
-Found by auditing prod (`insightis-app.devart.info`, 2026-09-19) rather than the
-package, but the defect is the package's: the same two tokens collide here.
-
 | theme | `--state-hover` | `--tbl-row-pressed` |
 |---|---|---|
-| light | `slate-100` = **#F1F5F9** | `surface-card2` = slate-100 = **#F1F5F9** |
-| dark | `grey-800` = **#21212C** | `surface-card2` = grey-800 = **#21212C** |
+| light | `slate-100` = **#F1F5F9** | `surface-card2` = **#F1F5F9** |
+| dark | `grey-800` = **#21212C** | `surface-card2` = **#21212C** |
 
-Identical in both themes, so **a control's hover inside a selected row is
-invisible** — it paints the colour already under it. On prod that was ten ⋮
-buttons on one page, each appearing to have no hover at all.
+Identical in both themes, so a control's hover inside a selected row painted the
+colour already under it — invisible. On prod that was ten ⋮ buttons on one page.
 
-**This is not a tuning miss.** Any absolute colour eventually equals the surface
-it lands on, and absolute colours cannot stack — a control can never be "one step
-deeper than whatever is under it", because it has no way to know what that is.
+Not a tuning miss: an absolute colour eventually equals the surface it lands on,
+and absolute colours cannot stack. A control has no way to be "one step deeper
+than whatever is under it".
 
-Each state is now a translucent wash, so states composite. Each theme declares
-**one base and four strengths**; the four state tokens are written once in
-`:root` and read them, so retuning a theme touches no consumer and needs no
-`.dark` copy of a state token.
+Each state is now a translucent wash, so states composite. One base and four
+strengths per theme; the four state tokens read them, so retuning a theme needs
+no `.dark` copy of a state token.
 
-- **`--state-overlay`** — `--brand-300` on light, `--slate-400` on dark. Dark
-  uses a cold neutral because a coloured wash over the near-black card reads as a
-  cast rather than a lift.
-- **Four percentages — 4 / 8 / 8 / 12 — shared by both themes**, written inline.
-  One set serves both because `--slate-400` moves against the near-black card at
-  roughly the rate `--brand-300` moves against white. A base that moved at a
-  different rate would force a second ladder.
-- **`--brand-300` retuned** `#5DA0A8` → `#46A6B9` (190°, 45%), and it had no
-  consumers. The brand ramp drifts from ~194° at its pale end to 179° at
-  `--brand-600`, so washing with the brand *role* lands green; `--tertiary-600`
-  reads minty; the old step had the right hue at 29% saturation, and **a
-  desaturated wash reads dirty, not soft** — that, not strength, is what makes a
-  pale tint look muddy.
-- **`--tbl-row-selected-hover` removed**, with the two `TableCell` utilities that
-  named it. A selected row keeps its own surface under the pointer and the
-  controls on it composite on top; the old token made a row read as *less*
-  selected the moment you touched it.
+- **`--state-overlay`** — `--brand-300` on light, `--slate-400` on dark. A
+  coloured wash over the near-black card reads as a cast, not a lift.
+- **4 / 8 / 8 / 12**, one set for both themes: `--slate-400` moves against the
+  dark card at roughly the rate `--brand-300` moves against white.
+- **`--brand-300` retuned** `#5DA0A8` → `#46A6B9` (190°, 45%), no consumers.
+  The old step had the right hue at 29% saturation, and a desaturated wash reads
+  dirty rather than soft.
+- **`--tbl-row-selected-hover` removed**, with the two `TableCell` utilities
+  that named it. A selected row keeps its surface and controls composite on top;
+  the old token made a row read as *less* selected the moment you touched it.
 
-Rows are deliberately lighter than controls: a row is wide and sits in a stack,
-where a heavy wash turns a list into stripes; a control is small and often sits
-alone. Inside a row the two composite, so a control on a hovered row is always
-the deeper of the pair — which is the entire point.
+Rows are lighter than controls: a row is wide and sits in a stack, where a heavy
+wash turns a list into stripes. Inside a row the two composite, so a control on
+a hovered row is always the deeper of the pair.
 
-Composited over the card and measured from `globals.css`, matching the values the
-prod audit measured independently, to the hex, in both themes:
+Composited over the card, measured from `globals.css`:
 
 | | strength | light | Δ | dark | Δ |
 |---|---|---|---|---|---|
@@ -318,72 +304,16 @@ prod audit measured independently, to the hex, in both themes:
 | control hover | `--tint-8` | `#F0F8F9` | 15 | `#21222A` | 10 |
 | control pressed | `--tint-12` | `#E9F4F7` | 22 | `#262830` | 15 |
 
-**`--tbl-row-pressed` and `--state-hover` share a strength, and that is the
-point rather than the bug it would once have been.** Absolute colours *replace*,
-so equal values meant invisible; overlays *composite*, so a control hovering on
-a selected row lands at 8% over 8% ≈ 15%:
+`--tbl-row-pressed` and `--state-hover` are the same declaration on purpose: a
+control hovering on a selected row lands at 8% over 8% ≈ 15% and reads a clear
+step deeper. A check asserting the four raw values are distinct tests the wrong
+thing.
 
-| | selected row | control hovering on it | step |
-|---|---|---|---|
-| light | `#F0F8F9` | `#E3F1F4` | 13.6 |
-| dark | `#21222A` | `#2A2C36` | 9.2 |
-
-A check asserting the four *raw* token values are distinct therefore tests the
-wrong thing — it reads declarations, and the defect lives in the composite.
-
-**The Tailwind mapping is the part that breaks silently if missed.** The four
-tokens are finished colours carrying their own alpha, so their mapping is now
-bare `var()`. Left wrapped in `hsl(... / <alpha-value>)` the declaration is
-invalid and the fill disappears with no error — the same failure §3 describes
-from the other direction. They also stop accepting an opacity modifier; the
-package had no `bg-state-hover/50`-style call site, and neither did prod.
-
-`--state-disabled` is untouched on purpose: it is a rest surface, never stacked
-on another state, and has to stay an opaque fill.
-
-### What this broke, and what caught it
-
-Moving the neutral ladder moved it **away from its destructive sibling**, which
-had been tuned to match it. The audit caught both halves:
-
-| | neutral | destructive | Δ | tolerance |
-|---|---|---|---|---|
-| light hover | 2.99 | 4.01 | 1.02 | 0.5 |
-| light press | 4.48 | 5.35 | 0.87 | 0.7 |
-
-Light was re-stepped by solving for the target ΔL* rather than by eye: hover
-`--tint-6`→`--tint-4` and press `--tint-8`→`--tint-6`. These alias the outline
-sibling, so it moves with them — keeping the two one control family, which is
-how they were designed.
-
-**Dark needed no change at all, and finding that out cost a round trip.** An
-earlier draft of the migration used a second, heavier ladder on dark, and the
-destructive tokens were re-stepped `--tint-20`→`--tint-30` and
-`--tint-30`→`--tint-40` to chase it. When the design settled on one set of
-percentages for both themes, the neutral ladder came back down and those values
-were suddenly too heavy — the original 20 / 30 had been in parity all along.
-Re-measured, dark press now lands **0.01** apart.
-
-The strengths still differ between neutral and destructive because the **bases**
-differ: the same percentage of a dark red and of a mid teal do not move lightness
-by the same amount. Percentages are shares, not steps — they cannot be copied
-between hues, which is also why the two themes can share one set while the two
-hues cannot.
-
-`theme-audit.mjs` needed fixes of its own before it could say any of this. Its
-ladder model assumed opaque grounds, so measuring against the now-translucent
-`--tbl-row-hover` compared an overlay with an overlay and returned 0. One entry
-was also miscategorised — a neutral and a destructive row action are *siblings*
-that must weigh the same, not two rungs of one ladder, so it moved to the parity
-checks. (Its resolver also had to learn the `--step-*` hop the earlier draft
-introduced, and reported ten tokens as "unresolved" until it did — which on that
-report looks exactly like a missing token. That hop is gone now, but the
-substitution loop stays: it costs nothing and the next indirection will not
-silently read as a missing token.)
-
----
-
-# Size and spacing
+**The Tailwind mapping is the part that fails silently.** A `color-mix()` token
+must be exposed as a bare `var()`; wrapped in `hsl(var(…))` it emits invalid
+CSS and the declaration is dropped whole. The four state keys in
+`src/lib/constants.ts` are bare `var()` for that reason, which also means they
+take no alpha modifier.
 
 ## 7. `InputGroupAddon` resized glyphs it did not own
 
@@ -743,83 +673,34 @@ enumerated.
 
 ## 21. `pnpm bundle` and `pnpm check-bundle-css`
 
-Two gaps made this work slower to verify than the changes warranted.
+**`pnpm bundle`** runs the six-command chain that used to be typed by hand. The
+order is load-bearing — `package-build` reads `dist`, so an edit made after
+`pnpm build` never reached the bundle — and a skipped step does not fail:
+skipping the Storybook build once dropped `FilterChips` from a bundle that
+reported no diagnostics, because the roster comes from the Storybook index.
 
-**The bundle was built by typing six commands in order**, and both halves of that
-failed in practice. A skipped step does not fail: skipping the Storybook build
-once dropped `FilterChips` from a bundle that reported zero diagnostics, because
-the roster is read from the Storybook index and not from `dist`. The order is
-load-bearing too — `package-build` reads `dist`, so an edit made after `pnpm
-build` already ran never reaches the bundle. A second team working from another
-checkout could not find how to run it at all.
+It decides the Storybook step itself, by diffing the component directories
+against what the last bundle holds. `--storybook` / `--no-storybook` override
+it; skipping warns if the roster did change.
 
-`pnpm bundle` runs the chain and decides the Storybook step for itself, by
-diffing the component directories against what the last bundle holds — the only
-step that depends on the roster. A styling fix therefore skips the slowest step
-instead of paying for it. `--storybook` / `--no-storybook` override the decision,
-and the skip warns when the roster did change.
+**`pnpm check-bundle-css`** catches the two ways a component looks right in
+Storybook and wrong on a page:
 
-**`pnpm check-bundle-css`** addresses the reason a component can look right in
-Storybook and wrong on a page. There are exactly two:
+1. Storybook compiles Tailwind from the sources; the bundle compiles from an
+   enumerated class list, so a missing class produces no CSS and no error (§20).
+2. `tailwind-export.css` overrides preflight with `svg { display: inline-block }`,
+   which Storybook does not have. That is what made a tooltip trigger 20px in a
+   bundle and 14px under preflight (§14).
 
-1. **The CSS is not the same CSS.** Storybook compiles Tailwind from the source
-   files, so every class a component writes gets a rule. The bundle compiles from
-   the enumerated list, so a class it missed produces no CSS silently — §20 is a
-   live example.
-2. **The base layer differs on purpose.** `tailwind-export.css` overrides
-   preflight with `svg { display: inline-block }`, which Storybook does not have.
-   That is what made the tooltip trigger 20px in a bundle and 14px under
-   preflight (§14).
+It compiles a second stylesheet with the built components as Tailwind's content
+and diffs the class selectors, letting Tailwind's own extractor decide what is a
+class — a regex first attempt produced 163 false positives from import
+specifiers and `data-slot` values. One-directional: the vocabulary is
+deliberately wider than what components use.
 
-The check compiles a second stylesheet with the built components as Tailwind's
-content and diffs the class selectors against the bundle, letting Tailwind's own
-extractor decide what counts as a class — a regex first attempt produced 163
-false positives from import specifiers and `data-slot` values. It is also
-one-directional: the vocabulary is deliberately wider than what components use,
-so "shipped but unused" is expected and not reported.
-
-It narrows the gap rather than closing it — a class assembled at runtime from a
-variable is in no compiled text for any extractor to find. The pixel comparison
-in `.ds-sync/storybook/compare.mjs` is what closes that part, and has not been
-run yet.
-
----
-
-# Kit ↔ Storybook audit
-
-Everything above was found by building a screen. This section was found the
-other way round: by walking the published Storybook
-(`devart-ui-react-a83534.gitlabpages.devart.com`) component by component against
-the agreed reference kit (`Insightis/insightis-preview-kit.html`), and reading
-the kit's *rendered* CSS rather than its prose wherever the two could disagree.
-
-**What the published Storybook actually is.** It is built from
-`origin/master` — `81a8b0f`, the corporate `devart/components/devart.ui.react`
-repository — and generated 2026-09-17T14:14Z. Identified by fingerprint, not by
-assumption: it still has the `Ghost` button variant, a neutral
-`destructiveOutline` label, no `--ink-icon`, no `--tint-*` scale, no
-`destructiveTertiary`, and an `IconButton` `Sizes` story that renders 28→44 with
-12/16/20px glyphs. That is the package **before** this branch.
-
-So the Storybook ↔ kit difference splits in three, and only the third is new
-work:
-
-| | |
-|---|---|
-| **A** | changed on this branch **and** written down — 1–22 above, plus the changesets |
-| **B** | changed on this branch and **written down nowhere** — the coverage audit below |
-| **C** | never changed anywhere — the kit gaps, 23–39 |
-
-Group **A** is not repeated here. Group **C** comes first, then **B**.
-
-The kit was read as *rendered CSS*, not as prose, wherever the two could
-disagree — which turned out to matter: the kit contradicts itself in three
-places (listed under Open questions), and four of my own first-pass findings
-were wrong against the current tree and are marked **Retracted** below rather
-than deleted, because the wrong reading is the instructive part.
-
-The items are ordered the way the rest of this file is: colour and state, then
-size, then what is simply absent.
+A class assembled at runtime from a variable is in no compiled text, so this
+narrows the gap rather than closing it. The pixel comparison in
+`.ds-sync/storybook/compare.mjs` is what would close it.
 
 ## The matrix — every component in the Storybook, against the kit
 
@@ -1193,141 +1074,27 @@ in place it does not merely duplicate, it **masks**: the next regression in the
 library would look fine on the page carrying the override and ship broken to the
 one without it.
 
-## 33. `ghost` — one name, two component families, one wrong doc
+## 33. `ghost` — one of the three "unrelated" ones is not
 
-`Button`'s `ghost` was removed this cycle in favour of `tertiary`, and
-`Button.md` says so outright: *"There is **no `ghost`** — use `tertiary`."* The
-changeset records the removal and then adds a clearing sentence:
-
-> `Card`, `CardIcon` and `Toggle` keep their own **unrelated** `ghost` variants.
-
-One of those three is not unrelated. The other two are, and belong exactly where
-they are.
-
-### `Toggle.ghost` is the removed variant under another name
-
-Its off-state, class for class:
+`Button`'s `ghost` was removed in favour of `tertiary`, and the changeset says
+`Card`, `CardIcon` and `Toggle` keep their own **unrelated** `ghost`. Two of
+those are unrelated. `Toggle`'s is the removed variant under another name:
 
 | | |
 |---|---|
-| `Button` `tertiary` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `pressed:bg-state-pressed` · `disabled:bg-transparent disabled:text-ink-inactive` |
-| `Toggle` `ghost` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `active:bg-state-pressed` · `disabled:bg-transparent disabled:text-ink-inactive` |
+| `Button` `tertiary` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `pressed:bg-state-pressed` |
+| `Toggle` `ghost` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `active:bg-state-pressed` |
 
-The only difference is `active:` where `Button` uses `pressed:` — the same
-oversight the audit already fixed on `destructiveTertiary`. `Toggle` is a
-button-shaped control on the same variant scale (`outline`, `stroke`, `ghost`,
-`badge`), so a consumer reading `Button.md` is told the name does not exist and
-then finds it on the sibling component, meaning what it used to mean. Rename it
-to `tertiary` and switch `active:` → `pressed:`.
+Class for class the same, except `active:` where `Button` uses `pressed:`.
+`Toggle` sits on the same variant scale, so a consumer reads in `Button.md` that
+the name does not exist and finds it on the sibling meaning what it used to.
 
-(`Toggle`'s `ghost` and `badge` share that off-state verbatim and differ only in
-the on-state chip. Unlike `Button`'s two these are **not** duplicates — worth a
-line in the `.md`, because it looks like the defect that justified the removal.)
+**To do:** rename to `tertiary`, switch `active:` → `pressed:`.
 
-### `Card.ghost` stays — and `Card.md` is what says otherwise
-
-`Card.ghost` is the dashed **"browse more" / add-new tile**: an empty slot the
-user clicks to add the thing the surrounding grid is full of. `CardIcon.ghost`
-is its icon well — `mx-auto mb-3 size-10 rounded-full`, dashed, an 18px glyph
-centred above the label. The two are one pattern, and it is a *placeholder*, not
-a target.
-
-`Card.stories.tsx` says so in as many words — *"Ghost — dashed 'browse more'
-tile."* `Card.md` says the opposite:
-
-> `ghost` — no fill, and a **dashed** 1px border. The dash is the point: in this
-> system a dashed edge means a drop target, so `ghost` is for an area that
-> **receives something**, not for "a card without chrome".
-
-That sentence is wrong, and it is load-bearing wrong: it redefines the variant by
-its border rather than its job, and then spends a paragraph forbidding the uses
-that follow from the redefinition. It is also the reason this audit initially
-proposed deleting the variant in favour of a `DropZone` — the doc had already
-made the conflation, and I repeated it. A dashed edge in this system means
-*"nothing here yet"*; sometimes that empty thing accepts a drop, and sometimes
-you click it. The dash is the emptiness, not the drop.
-
-Fix the prose, keep the variant. Story and implementation already agree; the
-`.md` is the outlier.
-
-### `Card.ghost` was painting a token this branch deleted — **fixed**
-
-```diff
-  ghost: cn(
-    'cursor-pointer items-center justify-center',
-    'border border-ink-secondary/35 border-dashed',
--   'bg-bg text-center',
-+   'bg-transparent text-center',
-    'hover:border-ink-secondary/55 hover:bg-state-hover'
-  ),
-```
-
-`--bg` was removed from `globals.css` on this branch and `THEME_COLORS` has no
-`bg` key, so `bg-bg` named nothing: the class generated no CSS and the tile
-rendered with no background at all — silently, with nothing failing. This is the
-invariant SPEC states in so many words ("A class naming a key absent from
-`THEME_COLORS` generates no CSS. A typo in a token name is invisible").
-
-Transparent is the intended surface, so the fix is also the correct value rather
-than a restoration: a placeholder tile sits on whatever the grid sits on, and
-pinning it to a surface token would break the moment the grid moved from
-`--surface-page` to a card. The rendered result is unchanged from what shipped —
-`bg-bg` was already painting nothing — so this closes a latent trap rather than
-altering a pixel. Had `--bg` still existed, the same line would have been an
-actual regression.
-
-In neither the report nor any changeset before this entry.
-
-### `DropZone` is a separate, genuinely missing component
-
-Unrelated to `Card.ghost`, and worth separating precisely because the doc above
-ran them together. The kit ships **DropZone** as its own component, with an
-anatomy no card variant has — upload icon inline with the title, a helper line,
-a **Browse Files** button — and three specified states:
-
-| State | Kit |
-|---|---|
-| Rest | dashed `Stroke/Border` on `Surface/Card2`, icon `Text/Secondary` |
-| Hover / focus | border + icon tint toward `Brand/Primary`, faint brand wash |
-| Drag over | solid `Brand/Primary` border + `State/Hover` fill |
-
-The package already carries its tokens — `--dropzone-border`,
-`--dropzone-border-active`, `--dropzone-bg-active`, declared in both themes and
-exposed through `THEME_COLORS` as `dropzone.*`. **Nothing in `src/components/`
-reads any of them.** That is the drift failure mode SPEC names outright, and the
-same one `.changeset/theme-contrast.md` caught on `--tbl-header-bg`: a token with
-no call site is a token nobody is checking.
-
----
-
-# Connections — round 4 (UX review, 2026-09-19)
-
-The review that produced this round asked one question of the whole page:
-**does anything on it come from somewhere other than the library?** The answer
-was thirteen blocks in `_shared/pages.css` — eight labelled BRIDGE (a library
-defect patched on the page) and five labelled PAGE — plus a hand-built step
-rail, a hand-built tooltip trigger and a hand-built character counter.
-
-Checking them one at a time, against the *compiled* bundle in a running browser
-rather than against the source, produced the first result worth recording:
-
-| Bridge | Verdict |
-|---|---|
-| row-hover utility not generated | **stale** — the named-group compound is in the bundle (§20 landed) |
-| `--ink-icon` / `--ink-icon-hover` missing | **stale** — both tokens are in the bundle (§5 landed) |
-| `InputGroupAddon` resizing nested glyphs | **stale** — `[&>svg]` and the 16/20 ladder are in the bundle (§7 landed) |
-| field label as loud as its hint | **stale** — `InputGroup` renders the fixed ink (§9 landed) |
-| inactive tab panel returns as an empty box | **stale** — `data-[state=inactive]:!hidden` is in the bundle (§8 landed) |
-| card press state flashing | **stale** — `outline` carries neither state (§4 landed) |
-| dark `destructiveOutline` border | **stale** — and now *contradicting* the library, which re-stepped to Red-500 → Red-400 (§2) |
-| closed `Popover` stays painted | **real** — §35 below |
-
-**Seven of eight bridges were dead code**, and the last of them had drifted into
-actively overriding a fix that had already shipped. That is the failure mode the
-end of this file warns about, observed: a bridge does not merely duplicate, it
-masks. The rule that follows is not "write fewer bridges" but **"verify against
-the compiled artefact, not the source"** — every one of these was correct on the
-day it was written.
+`Card.ghost` stays: it is the dashed "browse more" tile — an empty slot that
+adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
+`Card.md` describes it as a drop target, which is a different component
+(`DropZone`); that line is what needs fixing, not the variant.
 
 ## Summary — this round
 
@@ -2221,12 +1988,12 @@ None of these are visible in the published Storybook, which predates the
 component's current form; all four were read off the kit's rendered CSS and the
 package source side by side.
 
-## 41. The size ladder — the package grows the box, the kit grows the type · **Fixed**
+## 41. The size ladder
 
-**The canonical ladder. Four sources carry this table and they must agree:** this
+**The canonical ladder. Four sources carry this table and must agree:** this
 file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
 `Insightis/reports/2026-09-19-prod-interaction-states-migration.md` and
-`Insightis/pages/kit-theme.css`. The package is the implementation of it.
+`Insightis/pages/kit-theme.css`.
 
 | step | height | button padding | field padding | gap | label | glyph |
 |---|---|---|---|---|---|---|
@@ -2237,200 +2004,34 @@ file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
 | xl | 44 | **20** | 12 | 8 | 16 | 20 |
 
 The button opens out at `lg` and `xl`; the field family — `Input`,
-`InputGroup`, `Autocomplete`, `TextArea` — holds 12px and does not. They share
-an edge at `xs`, `sm` and `md`, which is every step the product uses. The gap
-has three steps, not two. There are no half-steps.
+`InputGroup`, `Autocomplete`, `TextArea` — holds 12px. They share an edge at
+`xs`, `sm` and `md`, which is every step the product uses. The gap has three
+steps, not two. No half-steps.
 
-Missed on the first pass, and it is the largest single divergence in this audit.
-I checked heights and stopped, because `insightis-audit-implementation.md` states
-the padding ladder as settled — *"`Button`, `InputGroup` and `TextArea` horizontal
-padding now follows one ladder (8/12/12/16/20 for xs/sm/md/lg/xl)"* — and I took
-the changeset's word for it instead of measuring the kit. The heights do match,
-all five steps, in all four components. Nothing else about `lg` and `xl` does.
+### What the package had
 
-### `Button`
-
-`kit-theme.css` `.btn`, `.btn-xs` … `.btn-xl` · `src/components/Button/index.tsx:112-118`
-
-| size | height | padding — kit | padding — package | label — kit | label — package |
-|---|---|---|---|---|---|
-| xs | 28px | `.5rem` = 8 | `px-2` = 8 ✅ | Label M — 12 | `text-xs` = 12 ✅ |
-| sm | 32px | `.75rem` = 12 | `px-3` = 12 ✅ | Label L — 14 | `text-sm` = 14 ✅ |
-| md | 36px | `.75rem` = 12 | `px-3` = 12 ✅ | Label L — 14 | `text-sm` = 14 ✅ |
-| **lg** | 40px | `.75rem` = **12** ❌ | `px-4` = **16** | Label XL — **16** | `text-sm` = **14** ❌ |
-| **xl** | 44px | `.75rem` = **12** ❌ | `px-5` = **20** | Label 2XL — **18** | `text-sm` = **14** ❌ |
-
-> **Amended (label).** 18px was taken out again after review — too large for a
-> control label at any step. `xl` sits at 16px, the same rung as `lg`, in the
-> package *and* in `kit-theme.css`. See §45.
->
-> **Amended 2026-09-20 (padding) — the ❌ moved to the other column.** This
-> section read the kit as the reference and marked the package's 16/20 as the
-> defect. It is the other way round: the UX audit's tables (#15, #36) are the
-> spec, they say 8/12/12/16/20, and `kit-theme.css` was the copy that had not
-> caught up — every `.btn` step from `sm` up carried `padding: 0 .75rem`. The
-> kit now carries 16 and 20, and the paragraph below about "what a bigger button
-> means" is kept only as the record of the wrong reading.
-
-Gap too: `.btn{gap:.5rem}` = 8px, tightening to `.25rem` = 4px at `xs`. The
-package is `gap-1.5` = 6px at every size.
-
-> **Revised 2026-09-20 — the gap ladder has three steps, not two: 4 / 6 / 8 / 8 / 8.**
-> 8px reads loose at 32px against a 14px label, and `sm` is the step the product
-> uses most — so the published package's flat 6px was right *there* and wrong
-> everywhere else. `.btn-sm` now carries `gap:.375rem` in the kit, `sm` carries
-> `gap-1.5` in the package, and the field ladder takes the same step:
-> `.field.is-sm`, `.igrp.is-sm .igrp-input` (glyph → text) and
-> `.igrp.is-sm .igrp-add` (between two addon children).
-
-~~**The two systems disagree about what "a bigger button" means.** The kit holds
-the horizontal inset at 12px from `sm` upward and lets the *label* grow —
-14 → 16 → 18. The package holds the label at 14px and lets the *padding* grow —
-12 → 16 → 20. Both produce a wider control; only one produces a more prominent
-one.~~
-
-**Struck 2026-09-20.** It is not either/or: a bigger control grows **both**. The
-padding opens to 16 and 20 *and* the label steps to 16, which is what the
-canonical table at the top of this section says. The reading above came from
-treating `kit-theme.css` as the reference when the audit report is.
-
-### `InputGroup` / `Input`
-
-`kit-theme.css` `.field`, `.field.is-*`, `.igrp`, `.igrp-add`, `.igrp-input` ·
-`src/components/InputGroup/index.tsx`
-
-**Measured, not read.** An earlier draft took these numbers from `.field` and
-presented them as the InputGroup's. They are not the same component: the kit has
-two field implementations, and they put the edge in different places.
-
-| | shell padding | where the inset actually lives |
+| | was | is |
 |---|---|---|
-| `.field` — the plain Input | 8 / 12 / 12 / 12 / 12 | on the shell |
-| `.igrp` — the composite | **0 at every step** | on the parts: `.igrp-add{padding-left:12px}`, `.igrp-input{padding:0 12px 0 8px}` |
+| `Button` padding | `px-2.5` = 10 at every step | 8 / 12 / 12 / 16 / 20 |
+| `Button` gap | `gap-1.5` = 6 at every step | 4 / 6 / 8 / 8 / 8 |
+| `Button` label | 12 at `xs`, 14 above it | 12 / 14 / 14 / 16 / 16 |
+| `Button` glyph | 12 at `xs`, 16 above it | 14 / 16 / 16 / 20 / 20 |
+| `IconButton` glyph | 16 / 12 / 16 / 20 / 20 / 20 for `2xs`…`xl` | 14 / 14 / 16 / 16 / 20 / 20 |
 
-So the only comparable number is the one a reader sees — the distance from the
-field's border to its first glyph. Measured in the rendered kit:
+Only the height was on a ladder. `IconButton` had no glyph ladder at all: 12px
+at `xs`, one step *below* the 16px it gave `2xs`.
 
-| size | height | edge → glyph | glyph | trailing action → edge |
-|---|---|---|---|---|
-| xs | 28 | **8** | 14 | 4 |
-| sm | 32 | 12 | 16 | 8 |
-| md | 36 | 12 | 16 | 8 |
-| lg | 40 | 12 | 20 | 8 |
-| xl | 44 | 12 | 20 | 8 |
+### The field is built differently from the kit, deliberately
 
-The package reaches the same edges by a different route, and deliberately: the
-audit moved the inset **onto the shell** so one component owns the field edge
-instead of three. That is a structural difference from the kit, not a
-discrepancy — the rendered result is what has to match, and now does at four of
-five steps.
+The kit has two field implementations and they put the inset in different
+places: `.field` carries it on the shell, `.igrp` carries it on the parts
+(`.igrp-add{padding-left:12px}`, `.igrp-input{padding:0 12px 0 8px}`). The
+package puts it on the shell in both cases, so one component owns the field
+edge. Rendered result is what has to match, and does.
 
-~~The fifth is a decision taken at the screen: **`xs` is 6px in the package
-against the kit's 8px.**~~ **Reverted 2026-09-20 — `xs` is 8px and the ladder
-has no half-steps.** The argument was that at 28px tall with a 14px glyph an 8px
-edge leaves the icon nearer the border than the text it introduces. It cost the
-one thing this section exists to restore: `Button` `xs` stayed at 8, so a field
-and a button beside it stopped sharing an edge at exactly that step — and it
-left the package as the only one of four sources carrying 6. Settled at 8. See
-§45, "The 28px field tightens to a 6px edge".
-
-Field text, which the shell padding says nothing about: `sm` 12 → **14px**,
-`lg` and `xl` 14 → **16px**. The `sm` step is a correction in its own right —
-the earlier "13 → 14" migration rounded it down to 12 where the kit's `sm` field
-has always been Body M.
-
-The addon gap at `xs` tightens to 4px through a compound variant, matching the
-kit's `.field.is-xs` and its trailing `action → edge` of 4px.
-
-### `TextArea`
-
-`kit-theme.css` `.ta`, `.ta.is-*` · `src/components/TextArea/index.tsx:45-51`
-
-| size | padding y/x — kit | padding y/x — package | font — kit | font — package |
-|---|---|---|---|---|
-| xs | `.25rem .5rem` = 4/8 | `px-2 py-2` = 8/8 ❌ | Body S — 12 | `text-xs` = 12 ✅ |
-| sm | `.375rem .75rem` = 6/12 | `px-3 py-2` = 8/12 ❌ | Body M — 14 | `text-xs` = **12** ❌ |
-| md | `.5rem .75rem` = 8/12 | `px-3 py-2` = 8/12 ✅ | Body M — 14 | `text-sm` = 14 ✅ |
-| **lg** | `.5rem .75rem` = 8/12 | `px-4 py-2.5` = 10/16 ❌ | Body L — **16** | `text-sm` = **14** ❌ |
-| **xl** | `.625rem .75rem` = 10/12 | `px-5 py-3` = 12/20 ❌ | Body XL — **18** | `text-sm` = **14** ❌ |
-
-`sm` is the one place the package's own "13 → 14" migration overshot: the kit's
-`sm` is Body M (14), and the package reads `text-xs` (12).
-
-### The glyph ladder — one scale, read by four things
-
-`kit-theme.css` declares it once — `--icon-xs:14px`, `--icon-sm:16px`,
-`--icon-md:16px`, `--icon-lg:20px`, `--icon-xl:24px` — and four selectors read
-it: `.btn svg`, `.iconbtn svg`, `.field .field-icon`, `.igrp .igrp-add svg`. The
-same five values in all four.
-
-| size | kit | Button was | IconButton was | InputGroupAddon was |
-|---|---|---|---|---|
-| xs | 14 | 14 ✅ | 14 ✅ | **16** ❌ |
-| sm | 16 | 16 ✅ | 16 ✅ | 16 ✅ |
-| md | 16 | 16 ✅ | 16 ✅ | **20** ❌ |
-| lg | 20 | **16** ❌ | **16** ❌ | 20 ✅ |
-| xl | 24 → **20** | **16** ❌ | **16** ❌ | **20** ❌ |
-
-A field and a button of the same size carried different glyphs — at `md`, 20px
-in the field against 16px in the button standing beside it. Every step except
-`sm` disagreed with something.
-
-The package has no `--icon-*` tokens, so the three cva ladders have to agree by
-hand. Each now carries a comment naming the ladder it belongs to, which is the
-only guard available: nothing in the build compares them, and a fourth component
-adopting a glyph size would have no scale to read.
-
-### This is why the rung was missing
-
-The three `textStyle` rungs missing from `Typography` are **Label XL (16/24)**,
-**Label 2XL (18/28)** and **Body XL (18/28)** — and this section is what they are
-for. `.btn-lg` is Label XL, `.btn-xl` is Label 2XL, `.ta.is-xl` is Body XL. The
-package omitted the rungs and kept the labels flat, which is at least
-self-consistent; it is simply a different design from the one the kit ships.
-
-It also **closes the 18px open question**. I flagged the kit as contradicting
-itself — listing 18px under *не на шкалі* while Body XL and Label 2XL are both
-18/28. The stylesheet settles it: `--ts-label-2xl-size: var(--text-18)` and
-`--text-18: 1.125rem`. 18px is a real rung; the *не на шкалі* line is about 18px
-used with a weight and line-height that are not one of the nineteen, not about
-the size itself.
-
-### What was done
-
-The kit's model, applied. `lg` and `xl` hold their padding at 12px and grow the
-label, the field text and the glyph instead; `InputGroup`'s `sm` field text is
-corrected from 12 to 14; the `xs` addon gap tightens to 4px through a compound
-variant; and `Typography` gains `body18`, `label16` and `label18` — the three
-rungs this ladder needs, which settles the missing-rung question along with it.
-
-| | before | after |
-|---|---|---|
-| `Button` / `IconButton` padding | `lg` 16, `xl` 20 | both **12** |
-| `Button` label | `lg` 14, `xl` 14 | **16**, **16** (18 reverted — §45) |
-| `Button` gap | 6 everywhere | **8**, tightening to **4** at `xs` |
-| glyph, all three ladders | 14/16/16/16/16 and 16/16/20/20/20 | **14/16/16/20/20** |
-| `InputGroup` padding | `lg` 16, `xl` 20 | both **12** |
-| `InputGroup` field text | 12/12/14/14/14 | **12/14/14/16/16** |
-| `TextArea` padding y/x | 8·8 / 8·12 / 8·12 / 10·16 / 12·20 | **4·8 / 6·12 / 8·12 / 8·12 / 10·12** |
-| `TextArea` font | 12/12/14/14/14 | **12/14/14/16/16** |
-| `Typography.textStyle` | 18 styles + `display` | **19** + `display` — `label16` only (§45) |
-
-`.changeset/size-ladder-kit-alignment.md` carries the per-step detail and the
-breaking-change note. It is a **major**: an `xl` button gets narrower and its
-label larger at the same time, so any layout sized around the old proportions
-needs a second look, and anything reaching for `lg`/`xl` *because* they were
-wider should ask for an explicit width instead.
-
-`tsc --noEmit` passes. What it cannot tell you is whether the result looks right
-— the ladder is class strings over tokens, so the gate is Storybook (SPEC
-decision 10), and the published build is still the pre-audit baseline. Nothing
-here is verifiable by eye until that is rebuilt.
-
-Padding-driven scaling is what was wrong with the old model, beyond
-non-conformance: `px-5` on a 44px control beside a 14px label — a label unchanged
-since `sm` — reads as loose rather than large. Growing the content is the only
-thing that makes a five-step ladder legible at a glance.
+Field text also moved: `sm` 12 → 14, `lg`/`xl` 14 → 16. The `sm` step is a
+correction in its own right — the earlier "13 → 14" migration rounded it down to
+12, where the kit's `sm` field has always been Body M.
 
 ## 43. `TableCell` — a row that could not grow, under a comment saying it could
 
@@ -2503,124 +2104,73 @@ Two ways back, and the second is the better one: `layout="fixed"` on the table,
 or `truncate` on the specific cells that should clamp — which is what the kit
 does, and it keeps the decision beside the column it applies to.
 
-## 45. The icon surface — a ladder the bundle never compiled, and three decisions on top of it
+## 45. The icon surface
 
-Four changes that arrived together while the size ladder (§41) was being
-reviewed by eye. Three are design decisions taken at the screen; the fourth is
-the reason none of them would have shipped.
+Four things, one of which is the reason the other three would not have shipped.
 
-### The ladder stops at 20px, and the type stops at 16px
+### The ladder stops at 20px, and the type at 16px
 
-`--icon-xl` in the kit is 24px. On a 44px field a 24px glyph reads as an icon
-that outgrew its control, and it dwarfs the text beside it. The ladder now
-repeats at both ends — **14 / 16 / 16 / 20 / 20** — the way it already repeats
-16 across `sm` and `md`.
+The kit's `--icon-xl` is 24px. On a 44px field that reads as an icon that
+outgrew its control. The ladder repeats at both ends — **14 / 16 / 16 / 20 / 20** —
+the way it already repeats 16 across `sm` and `md`.
 
-The type ladder took the same cap. `xl` was Label 2XL / Body XL at 18px; it is
-now 16px, the same rung as `lg`. So `Typography` keeps **`label16`** and the two
-18px rungs added an hour earlier — `body18`, `label18` — are gone again: nothing
-in the control ladder reaches for them any more, and an unused rung on a named
-scale is an invitation to use it.
+The type took the same cap: `xl` was 18px, now 16, the same rung as `lg`. So
+`Typography` keeps `label16` and the two 18px rungs are gone again.
 
-**Changed in three places**, because the ladder exists in three: the package,
+Changed in three places, because the ladder exists in three: the package,
 `Insightis/pages/kit-theme.css` (`.btn-xl`, `.igrp.is-xl .igrp-input`,
-`.field.is-xl input`, `.ta.is-xl`), and this file. The kit is the reference the
-audit measures against, so leaving 18px there would have made the package look
-non-conformant at the next pass.
+`.field.is-xl input`, `.ta.is-xl`) and this file.
 
-> `Typography`'s prose scale still has `text-lg` in `h4`, `h5` and `large`.
-> Untouched deliberately: those are headings in running text, not control
-> labels, and the 16px cap is about controls.
+`Typography`'s prose scale keeps `text-lg` in `h4`, `h5` and `large` — headings
+in running text, not control labels.
 
-### A field's two glyphs were sized by two different mechanisms
+### A field's two glyphs were sized by two mechanisms
 
-`PasswordInput` showed it plainly: the leading lock grew with the field while the
-trailing eye stayed 16px at every step.
+`PasswordInput`: the leading lock grew with the field, the trailing eye stayed
+16px at every step.
 
-The lock is a **direct child** of `InputGroupAddon`, so `[&>svg]:size-*` reaches
-it — and out-specifies the `size-4` the component wrote on the icon, because a
-child selector beats a plain class. The eye sits **inside an IconButton**, which
-the addon deliberately does not reach (§7), and whose own `[&_svg]:size-*`
-likewise beats any class on the glyph. So the icon's own `className` was
-decorative in both cases, and the two ends of the field disagreed.
+The lock is a direct child of `InputGroupAddon`, so `[&>svg]:size-*` reaches it
+and beats the `size-4` written on the icon. The eye sits inside an
+`IconButton`, which the addon does not reach (§7), and whose own
+`[&_svg]:size-*` beats any class on the glyph. Either way the icon's own
+`className` did nothing.
 
-The fix is to stop writing sizes on icons at all: the lock carries no size class,
-and the toggle receives the field's step as the IconButton's `size` prop.
-
-The kit is firmer still — a control docked in a field is a sub-part of the field
-(`.igrp-act`, `width: calc(var(--icon-md) + 8px)`), not an entry on the
-IconButton ladder. `variant="transparent"` gets the "no surface" half of that;
-the size map gets the other half.
+Fix: stop writing sizes on icons. The lock carries no size class; the toggle
+takes the field's step as the `IconButton`'s `size` prop.
 
 ### The leading glyph takes the placeholder's ink
 
 ```
-[&>svg]:text-ink-inactive          decorative glyph — reads as placeholder
-[&>button]:text-ink-secondary      docked control — rest
-[&>button:hover]:text-ink-body     docked control — hover
+[&>svg]:text-ink-inactive          decorative glyph
+[&>button]:text-ink-secondary      docked control, rest
+[&>button:hover]:text-ink-body     docked control, hover
 ```
 
-A decorative glyph belongs to the placeholder, not to the content: an empty
-field should be one weight of grey, not two. Scoped to the addon's direct `svg`
-so addon *text* and a `kbd` keep the addon's own colour — those are labels, and a
-label at placeholder weight reads as disabled.
+An empty field should be one weight of grey, not two. Scoped to the addon's
+direct `svg` so addon text and a `kbd` keep the addon's colour. Written as
+`[&>button]` because a nested `IconButton` sets its own `text-ink-body`.
 
-The hover half is the kit's `.igrp-act` recipe exactly — `--ink-secondary` at
-rest, `--ink-body` on hover. It is written as `[&>button]` because the nested
-IconButton sets its own `text-ink-body` and a plain class would lose to it, which
-is the same specificity trap as the glyph sizes above.
+A deliberate step away from the kit, which puts the leading glyph on
+`--ink-secondary`.
 
-**This is a deliberate step away from the kit**, and the only one in this
-section: `.igrp .igrp-add` puts the leading glyph on `--ink-secondary`, one step
-darker than the placeholder. Recorded here rather than silently absorbed.
+### `xs` field edge — 6px, reverted to 8px
 
-### The 28px field tightens to a 6px edge — **reverted 2026-09-20**
-
-`InputGroup` `xs` moved from 8px to 6px, the only half-step on the ladder, on
-the argument that at 28px tall with a 14px glyph an 8px edge leaves the icon
-nearer the border than the text it introduces.
-
-It cost more than it bought. `Button` `xs` stayed at 8px, so at that one step a
-field and a button beside it no longer lined up — the property §41 exists to
-restore — and the package was then the only one of four sources carrying 6:
-`kit-theme.css` (`.field.is-xs{padding:0 .5rem}`), the UX audit's table and the
-prod-migration report all say 8. Settled in that direction. `xs` is 8px, and the
+Moved to 6px on the argument that an 8px edge crowds a 14px glyph at 28px tall.
+Reverted: `Button` `xs` stayed at 8, so a field and a button beside it stopped
+lining up, and the package was the only one of four sources carrying 6. The
 ladder has no half-steps.
 
-### The whole icon surface was missing from the bundle's vocabulary
+### The glyph rules were absent from the bundle
 
-`.design-sync/.cache/ds-classlist.txt` contained **zero** `svg`-scoped classes.
-Not one. Every glyph rule in the library is written as a child or descendant
-selector on the control — `[&_svg]:size-4` in `Button`, `IconButton`, `Badge`,
-`File`; `[&>svg]:size-*` in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` in
-`DropdownMenuItem` — and the enumerated vocabulary the `ds-bundle` compiles from
-generated none of them.
+`.design-sync/.cache/ds-classlist.txt` contained zero `svg`-scoped classes.
+Every glyph rule in the library is a child or descendant selector —
+`[&_svg]:size-4` in `Button`, `IconButton`, `Badge`, `File`; `[&>svg]:size-*`
+in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` in `DropdownMenuItem` — and the
+enumerated vocabulary generated none of them.
 
-So in the bundle none of those rules existed: no glyph ladder, no shrink guard,
-no menu stroke weight. Every icon fell back to whatever `lucide-react` renders,
-and nothing failed — this is §20's failure mode at library scale rather than on
-one class.
-
-It stayed invisible for the reason that mode always stays invisible: **Storybook
-compiles Tailwind from source**, so the ladder worked perfectly everywhere it was
-being reviewed. Only a page built from the bundle would have shown it, and a
-wrong icon size looks like a design choice.
-
-`gen-classlist.mjs` now enumerates the size steps in both `[&_svg]` and `[&>svg]`
-forms, plus the colour, stroke and shrink rules. `pnpm check-bundle-css` is the
-gate that should have caught this and is worth re-running against a fresh `dist`
-— its last clean report predates every change in this section.
-
----
-
-# Open questions
-
-| | |
-|---|---|
-| **`Card variant="ghost"`** | Closed. The variant stays — it is the dashed "browse more" tile, as `Card.stories.tsx` always said; the surface is `bg-transparent` and is now written that way; `DropZone` is a separate component, not a rename of this one. The docs fix has landed: `Card.md` now describes the tile. |
-| **Row density** | Still ~44px — web density. A desktop app runs 32–36px and fits half again as many rows. A system-level decision, not a page one. |
-| **`TextArea` at the limit** | The counter is always neutral. Whether it should signal at the boundary — and whether that is an error or only a warning — is undecided. |
-| **A subtree cannot opt back into light** | `globals.css` defines the light tokens on `:root` alone and the dark ones under `.dark`, so a subtree can be made dark inside a light app — a class is all the cascade needs — but **not the reverse**. Anything that wants to read as separate from the app (the prototype's review bar, a preview of light chrome inside a dark tool, an embedded document) therefore works in one direction only. The fix is one line — mirror the light block onto `:root, .light` — but it doubles a token block, so it is a decision, not a tidy-up. Referenced from `connections/page.jsx` and `workspaces/page.jsx`. |
+So in the bundle no glyph ladder existed, no shrink guard, no menu stroke
+weight: every icon fell back to whatever `lucide-react` renders, and nothing
+failed. §20 at library scale.
 
 ## Raised by the kit ↔ Storybook audit
 
