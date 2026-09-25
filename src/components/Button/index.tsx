@@ -19,6 +19,13 @@ const buttonVariants = cva(
 
     // Disabled — both forms. `disabled` blocks focus; `aria-disabled` keeps the
     // control focusable so a screen reader can announce why it is inert.
+    //
+    // Every variant below also switches its OWN hover recipe off again, because
+    // `:hover` still matches a disabled button: without that, a switched-off
+    // control lit up under the pointer and read as pressable. It is done per
+    // variant rather than once with `disabled:pointer-events-none`, because a
+    // disabled button is exactly the one that needs a tooltip saying why it is
+    // disabled, and a control with no pointer events cannot open one.
     'disabled:cursor-not-allowed',
     'aria-disabled:cursor-not-allowed',
 
@@ -35,7 +42,8 @@ const buttonVariants = cva(
           'hover:bg-btn-primary-bg-hover',
           'pressed:bg-btn-primary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-state-disabled disabled:text-ink-inactive'
+          'disabled:bg-state-disabled disabled:text-ink-inactive',
+          'disabled:hover:bg-state-disabled'
         ),
         // Card-tone fill with a thin neutral border.
         //
@@ -51,13 +59,18 @@ const buttonVariants = cva(
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
           'pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          // No disabled FILL. `secondary` rests on --surface-card, and
-          // --state-disabled is a different opaque surface — swapping one for
-          // the other reads as a different control rather than as this one
-          // switched off. The border and the inactive label carry the state;
-          // the chip keeps its own surface. (The kit specifies bg
-          // State/Disabled here — deliberate divergence.)
-          'disabled:border-btn-secondary-border disabled:text-ink-inactive'
+          /* No disabled fill at all — not `--state-disabled` and not its own
+             `--surface-card` either. A switched-off control should read as
+             absent, and a white chip on a white card is invisible while the
+             same chip on a tinted one reads as a card of its own. Transparent
+             is the one answer that holds on every surface, and it is what
+             `outline` already does; the border and the inactive label are
+             what carry the state.
+
+             The kit paints `--state-disabled` here (`.s-disabled.btn-secondary`).
+             Deliberate divergence. */
+          'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
         ),
         // Brand-bordered, transparent fill (previous Secondary look).
         outline: cn(
@@ -65,7 +78,8 @@ const buttonVariants = cva(
           'hover:border-brand-hover hover:bg-btn-outline-bg-hover',
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
+          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
         ),
         // Lowest-emphasis ghost: Outlined minus the border — same brand-tinted
         // hover/press overlays.
@@ -75,6 +89,7 @@ const buttonVariants = cva(
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // Tertiary with a brand label: the pill, the focus ring and the
@@ -88,6 +103,7 @@ const buttonVariants = cva(
           'pressed:bg-state-pressed pressed:text-brand-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // Destructive: theme-independent red fill; focus ring is the kit-wide
@@ -97,7 +113,8 @@ const buttonVariants = cva(
           'hover:bg-fb-error-hover',
           'pressed:bg-fb-error-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-state-disabled disabled:text-ink-inactive'
+          'disabled:bg-state-disabled disabled:text-ink-inactive',
+          'disabled:hover:bg-state-disabled'
         ),
         // Destructive outline: red-bordered, transparent fill with red-tinted
         // hover/press. The label is Feedback/Red too — a neutral label under a
@@ -107,7 +124,8 @@ const buttonVariants = cva(
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
           'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
+          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
         ),
         // Low-emphasis destructive ghost: red label, transparent fill, red-tinted
         // hover/press. Tertiary sibling of destructiveOutline (no border).
@@ -119,6 +137,7 @@ const buttonVariants = cva(
           'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // Bare utility (no box, fit-content) for inline/icon triggers.

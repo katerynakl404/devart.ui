@@ -300,6 +300,8 @@ export function Autocomplete<
               'w-[--radix-dropdown-menu-trigger-width] max-w-none',
               // z-[110]: is used so the dropdown menu is rendered on top of Modal (z-100)
               'z-[110] overflow-y-auto p-2',
+              // The kit's own list scrollbar — `.cl-mention-list`.
+              'scrollbar-thin',
               listboxClassName
             )}
             onCloseAutoFocus={(e) => e.preventDefault()}

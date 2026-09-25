@@ -153,6 +153,12 @@ const ROWS: Row[] = [
     page: '4. New in the system',
   },
   {
+    n: '46',
+    area: 'LinkButton',
+    change: "the kit's .link — standalone, and inline at 25% of the ink",
+    page: '4. New in the system',
+  },
+  {
     n: 'Docs',
     area: 'Table.md',
     change: 'where an empty state goes, and what it must carry',
@@ -304,7 +310,7 @@ const UNCOVERED: [string, string][] = [
   ['Sidebar', '29, 37, 41'],
   ['New components', '38, 48, 49, 50, 55'],
   ['Table', '3, 59, 62'],
-  ['Links and the rest', '7a, 27, 34, 40, 46, 53, 57, 60'],
+  ['Links and the rest', '7a, 27, 34, 40, 53, 57, 60'],
   ['Build — nothing to render', '21, 22, 39'],
 ];
 

@@ -1,7 +1,7 @@
 'use client';
 
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { cva } from 'class-variance-authority';
+import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
 import { useSegmentedControl } from './SegmentedControlContext';
@@ -49,25 +49,67 @@ const segmentedControlTriggerVariants = cva(
         xl: 'rounded-lg',
         full: 'rounded-full',
       },
+      /**
+       * DRAFT. What the selected half MEANS, for a control whose two options
+       * are not equivalent.
+       *
+       * `neutral` is the default and the only one that existed: the selected
+       * half is a raised card-tone pill, and which half that is carries no
+       * meaning beyond "this one". Right for Read / Read & write, Light / Dark,
+       * Create / Edit — alternatives of the same kind.
+       *
+       * `positive` and `negative` are for a control that states a FACT with a
+       * consequence: included or excluded, allowed or blocked, on or off. A
+       * column of these is read down at a glance, and a neutral pill makes the
+       * reader parse the label on every row to find the exceptions; a green or
+       * red fill is read without parsing. The tone belongs to the TRIGGER, not
+       * to the control: only the option itself knows whether it is the
+       * permissive one.
+       *
+       * Unselected, both are the same neutral text as any other trigger. The
+       * colour is the answer, not the offer.
+       */
+      tone: {
+        neutral: '',
+        positive: cn(
+          // Theme-independent fills, like the destructive button: one green
+          // and one red in both themes, so there is no `dark:` pair to keep in
+          // step (and no stacked variant for the bundle to miss).
+          'data-[state=active]:bg-fb-green',
+          'data-[state=active]:text-content-on-solid',
+          'data-[state=active]:shadow-none'
+        ),
+        negative: cn(
+          'data-[state=active]:bg-fb-red',
+          'data-[state=active]:text-content-on-solid',
+          'data-[state=active]:shadow-none'
+        ),
+      },
     },
     defaultVariants: {
       size: 'md',
       rounded: 'md',
+      tone: 'neutral',
     },
   }
 );
 
 const SegmentedControlTrigger = ({
   className,
+  tone,
   ref,
   ...props
-}: ComponentProps<typeof TabsPrimitive.Trigger>) => {
+}: ComponentProps<typeof TabsPrimitive.Trigger> &
+  VariantProps<typeof segmentedControlTriggerVariants>) => {
+  /* `size` and `rounded` come from the control, because the track and its pills
+     have to agree. `tone` does not: it is a property of the one option, so it
+     is passed per trigger. */
   const { size, rounded } = useSegmentedControl();
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       className={cn(
-        segmentedControlTriggerVariants({ size, rounded }),
+        segmentedControlTriggerVariants({ size, rounded, tone }),
         className
       )}
       {...props}

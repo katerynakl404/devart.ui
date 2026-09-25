@@ -18,6 +18,19 @@ const badgeVariants = cva(
     // edge inset at `sm`, which is what makes a small pill read as two things
     // in a box rather than one chip.
     'inline-flex items-center border border-badge-border',
+    // The height is fixed by `size`, so the label must never wrap: a second
+    // line does not make the pill taller, it spills out of it — the text runs
+    // over the border and the chip reads as broken. `Badge.md` already said a
+    // chip is one or two words; this is that rule in CSS rather than in prose,
+    // for the cases the author cannot see (a narrow column, a long locale, a
+    // count that reaches three digits).
+    //
+    // `overflow-hidden` is the other half of it, and it is what makes the pill
+    // shrinkable at all: a flex item's automatic minimum size is its content
+    // width until the item hides its overflow, at which point it becomes 0. So
+    // a badge with too little room narrows and ellipsises INSIDE its own
+    // border, instead of either wrapping or running out across its neighbour.
+    'whitespace-nowrap overflow-hidden',
     // reference: `.badge .b-ic { width:14px; height:14px; flex:none }`
     '[&_svg]:shrink-0',
     'font-medium',
@@ -128,13 +141,17 @@ function Badge({
         />
       )}
 
-      {leftSlot}
+      {leftSlot ? <span className="inline-flex shrink-0">{leftSlot}</span> : null}
 
-      <span className="inline-block align-text-top leading-none">
+      {/* `min-w-0` + `truncate`: the label is the part that gives way. The dot,
+          the slots and the delete control are `shrink-0`, so a squeezed badge
+          loses characters from its text and keeps its glyphs — a chip reading
+          `Not config…` still says what it is, one with half a glyph does not. */}
+      <span className="inline-block min-w-0 truncate align-text-top leading-none">
         {children}
       </span>
 
-      {rightSlot}
+      {rightSlot ? <span className="inline-flex shrink-0">{rightSlot}</span> : null}
 
       {onDelete && (
         <button

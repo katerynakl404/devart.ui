@@ -57,9 +57,13 @@ function createToast(
       duration,
       position,
       ...(options?.id ? { id: options.id } : {}),
-      ...(options?.width !== undefined
-        ? { style: { width: options.width } }
-        : {}),
+      /* One width for every toast, taken from the Toaster’s own `--width`.
+         A custom toast is unstyled as far as sonner is concerned, so it fell
+         back to fitting its content: three success toasts stacked in a
+         corner measured 317, 268 and 296px, and a stack of ragged boxes
+         reads as three unrelated things rather than one log. The variable is
+         still the Toaster’s to set, and an explicit `width` still wins. */
+      style: { width: options?.width ?? 'var(--width)' },
     }
   );
 }

@@ -119,7 +119,13 @@ function CodeBlock({
       ) : null}
       <pre
         className={cn(
-          'overflow-x-auto whitespace-pre',
+          // The kit draws a hairline scrollbar and this pre never asked for
+          // it, so a long command got the browser default: a 16px trough with
+          // stepper arrows on Windows, under a 4px-radius code block. The
+          // preset that ships `scrollbar-thin` names `.cp-code-pre` as one of
+          // the three kit rules it was copied FROM, so the code block is where
+          // the utility came from in the first place.
+          'scrollbar-thin overflow-x-auto whitespace-pre',
           // Room for the button on the first line only — the rest of the block
           // uses the full width, so a long line is not indented for nothing.
           copyable && '[&>code]:pe-8'

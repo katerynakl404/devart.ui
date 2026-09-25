@@ -1,5 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChevronRight, SearchX, Settings2, TriangleAlert } from 'lucide-react';
+import {
+  ArrowRight,
+  ChevronRight,
+  SearchX,
+  Settings2,
+  TriangleAlert,
+} from 'lucide-react';
 import { Badge } from '../src/components/Badge';
 import { Button } from '../src/components/Button';
 import { ConnectorLogo } from '../src/components/ConnectorLogo';
@@ -18,7 +24,7 @@ import {
   StatusView,
 } from '../src/components/StatusView';
 import { TextArea } from '../src/components/TextArea';
-import { ChangeCase, ChangePage, Code } from './Harness';
+import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
 
 const meta = {
   title: 'Proposed changes/4. New in the system',
@@ -44,7 +50,7 @@ export const NewInTheSystem: Story = {
   name: 'New in the system',
   render: () => (
     <ChangePage
-      intro="Four additions. Two of them replace something every page was assembling by hand, which is the only reason they belong in the library rather than in a page."
+      intro="Five additions. Two of them replace something every page was assembling by hand, which is the only reason they belong in the library rather than in a page."
       title="New in the system"
     >
       <ChangeCase
@@ -216,6 +222,92 @@ export const NewInTheSystem: Story = {
         n={18}
         title="StatusView — EmptyStateIllustration"
         why="At page scale a lucide glyph in a halo reads as a notification icon rather than an empty region."
+      />
+
+      <ChangeCase
+        after={
+          <TryIt action="Hover each link — standalone grows a rule, inline brings the one it already has to full strength">
+            <div className="flex max-w-[54ch] flex-col gap-5">
+              <p className="text-ink-body text-sm leading-5">
+                Read{' '}
+                <LinkButton variant="inline">how permissions work</LinkButton>{' '}
+                before you invite anyone, or{' '}
+                <LinkButton tone="body" variant="inline">
+                  skip it for now
+                </LinkButton>
+                .
+              </p>
+
+              <div className="flex items-center gap-6 text-sm">
+                <LinkButton>Select all</LinkButton>
+                <LinkButton rightSlot={<ArrowRight />}>
+                  Manage connections
+                </LinkButton>
+              </div>
+
+              <div className="flex items-center gap-4 rounded bg-brand-primary px-3 py-2">
+                <span className="text-content-on-solid text-sm">
+                  Your trial ends in 4 days.
+                </span>
+                <LinkButton className="ms-auto text-sm" tone="onSolid">
+                  Upgrade
+                </LinkButton>
+              </div>
+
+              <p className="text-ink-body text-lg leading-7">
+                A link in a heading takes the heading's size:{' '}
+                <LinkButton variant="inline">18px, not 14</LinkButton>.
+              </p>
+            </div>
+          </TryIt>
+        }
+        afterNote="two variants x three tones — size, line-height and family all inherited"
+        files={['src/components/LinkButton/index.tsx']}
+        footnote={
+          <>
+            <b>The two variants answer two different questions.</b>{' '}
+            <Code>standalone</Code> — the default — is a link that sits on its
+            own: a row action, a "See all", the end of a card. It carries no
+            rule until the pointer is on it, because in a column of them a
+            permanent underline reads as a table of contents.{' '}
+            <Code>inline</Code> is a link inside a sentence, where nothing else
+            marks it: the rule is always there, at{' '}
+            <b className="font-medium text-ink-body">25% of the ink</b>, so it
+            reads as a link without cutting the line of text in half. Hover
+            brings it to full strength rather than adding it — the text does not
+            move, and nothing appears that was not already there.
+            <br />
+            <br />
+            <b>No size ladder, and that is the point.</b> Size, line-height and
+            family are all inherited, so a link agrees with the line it sits in
+            — the last panel is the same component at 18px with no prop changed.
+            The rule sits a quarter of the font-size below the baseline so it
+            clears descenders, and is pinned to 1px so it does not thicken as
+            the inherited size grows. Both are straight from the kit's note.
+            <br />
+            <br />
+            <b>
+              Named <Code>LinkButton</Code>, not <Code>Link</Code>.
+            </b>{' '}
+            It renders an <Code>&lt;a&gt;</Code>, but it is a control in the
+            kit's sense — hover, focus and disabled states — and it is often not
+            navigation at all ("Select all"). A bare <Code>Link</Code> in a
+            React codebase reads as the router's. <Code>asChild</Code> renders a
+            router link or a button in its place.
+          </>
+        }
+        n={46}
+        state="draft"
+        title="LinkButton — and the inline half of it"
+        why={
+          <>
+            The kit ships <Code>.link</Code>; the package did not, so "Manage
+            connections →" was built from{' '}
+            <Code>Button variant="transparent"</Code> — a control with a hit box
+            and a size ladder, dropped into a card heading it then failed to
+            line up with. A link inside a sentence had nothing at all.
+          </>
+        }
       />
 
       <ChangeCase

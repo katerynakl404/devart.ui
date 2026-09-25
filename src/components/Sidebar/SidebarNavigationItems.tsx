@@ -101,7 +101,11 @@ function SidebarNavigationItems<T extends DefaultLink>({
     if (isNavigationItem(item)) {
       return (
         <SidebarMenuItem key={item.id ?? item.title}>
-          <SidebarMenuButton asChild className={menuButtonClassName}>
+          <SidebarMenuButton
+            asChild
+            className={menuButtonClassName}
+            tooltip={{ children: item.title }}
+          >
             {renderItemLink(item)}
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -127,6 +131,7 @@ function SidebarNavigationItems<T extends DefaultLink>({
                 asChild
                 isActive={item.isActive}
                 className={menuButtonClassName}
+                tooltip={{ children: item.title }}
               >
                 {renderItemLink(viewAllAsItem, { controlledActive: true })}
               </SidebarMenuButton>
@@ -139,6 +144,7 @@ function SidebarNavigationItems<T extends DefaultLink>({
             <SidebarMenuButton
               isActive={item.isActive}
               className={menuButtonClassName}
+              tooltip={{ children: item.title }}
             >
               {Icon && <Icon />}
               <span className="font-medium">{item.title}</span>

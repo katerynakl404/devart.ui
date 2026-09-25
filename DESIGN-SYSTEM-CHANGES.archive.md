@@ -560,3 +560,34 @@ Verified: desktop shell header height 12, `padding-bottom: 0`, gap from window
 bar to first nav row 12. Web shell keeps `pb-2`. Both are in Storybook as
 `Sidebar / ShellShapes` — the only place the two can be compared, and the thing
 that fails visibly if either breaks.
+
+## §44 — the leading glyph's ink (was: "The leading glyph takes the placeholder's ink")
+
+**Retracted: invented.** Nobody asked for it and no case called for it. The kit
+states the rule plainly — `.igrp-add` is `color: var(--ink-secondary)` with no
+separate rule for its `svg`, so the glyph inherits it — and the package stepped
+one shade lighter on an argument made inside the package. A package that mirrors
+a kit does not get to do that; the reasoning belonged in a question to the kit,
+not in a class string. `[&>svg]:text-ink-inactive` is out of
+`InputGroupAddon.tsx` and the glyph is back on `--ink-secondary`.
+
+The docked-control half of the same block STAYS, and is not part of this
+retraction: `[&>button]` at `--ink-secondary` lifting to `--ink-body` on hover is
+`.igrp-act` as the kit writes it.
+
+The archived text:
+
+### The leading glyph takes the placeholder's ink
+
+```
+[&>svg]:text-ink-inactive          decorative glyph
+[&>button]:text-ink-secondary      docked control, rest
+[&>button:hover]:text-ink-body     docked control, hover
+```
+
+An empty field should be one weight of grey, not two. Scoped to the addon's
+direct `svg` so addon text and a `kbd` keep the addon's colour. Written as
+`[&>button]` because a nested `IconButton` sets its own `text-ink-body`.
+
+A deliberate step away from the kit, which puts the leading glyph on
+`--ink-secondary`.

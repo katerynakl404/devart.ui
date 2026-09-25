@@ -15,6 +15,9 @@ const iconButtonVariants = cva(
     // Focus: 2px ring + 2px surface-card gap; ring colour is set per variant
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
 
+    // Each variant switches its own hover recipe off when disabled — see the
+    // note on `Button`: `:hover` still matches a disabled control, and
+    // `pointer-events-none` would take away the tooltip that says why.
     'disabled:cursor-not-allowed',
     'aria-disabled:cursor-not-allowed',
 
@@ -30,7 +33,8 @@ const iconButtonVariants = cva(
           'hover:bg-btn-primary-bg-hover',
           'pressed:bg-btn-primary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-state-disabled disabled:text-ink-inactive'
+          'disabled:bg-state-disabled disabled:text-ink-inactive',
+          'disabled:hover:bg-state-disabled'
         ),
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
@@ -38,20 +42,20 @@ const iconButtonVariants = cva(
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
           'pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          // No disabled FILL. `secondary` rests on --surface-card, and
-          // --state-disabled is a different opaque surface — swapping one for
-          // the other reads as a different control rather than as this one
-          // switched off. The border and the inactive label carry the state;
-          // the chip keeps its own surface. (The kit specifies bg
-          // State/Disabled here — deliberate divergence.)
-          'disabled:border-btn-secondary-border disabled:text-ink-inactive'
+          /* No disabled fill at all — see Button: a white chip is invisible on
+             a white card and reads as its own card on a tinted one, so the
+             border and the inactive glyph carry the state instead. The kit
+             paints --state-disabled here; deliberate divergence. */
+          'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
         ),
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
           'hover:border-brand-hover hover:bg-btn-outline-bg-hover',
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
+          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
         ),
         tertiary: cn(
           'border-transparent bg-transparent text-ink-body',
@@ -59,6 +63,7 @@ const iconButtonVariants = cva(
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // The same pill as `tertiary`, with a brand glyph. Its label — the
@@ -69,6 +74,7 @@ const iconButtonVariants = cva(
           'pressed:bg-state-pressed pressed:text-brand-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         // Focus ring is the kit-wide brand teal on every variant, destructive
@@ -78,14 +84,16 @@ const iconButtonVariants = cva(
           'hover:bg-fb-error-hover',
           'pressed:bg-fb-error-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-state-disabled disabled:text-ink-inactive'
+          'disabled:bg-state-disabled disabled:text-ink-inactive',
+          'disabled:hover:bg-state-disabled'
         ),
         destructiveOutline: cn(
           'border-outlineDestructive-border bg-transparent text-fb-red-text',
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
           'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive'
+          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
         ),
         // Low-emphasis destructive ghost: red icon, transparent fill, red-tinted
         // hover/press. Tertiary sibling of destructiveOutline (no border).
@@ -97,6 +105,7 @@ const iconButtonVariants = cva(
           'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
+          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
         ),
         transparent: cn(

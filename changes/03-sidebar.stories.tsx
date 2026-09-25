@@ -574,6 +574,92 @@ export const TheSidebar: Story = {
         title="The navigation column had no gutter"
         why="Nothing between the sidebar edge and the row button supplies a gutter, so the navigation sits on 8 while §10 moved the brand mark to 16 — and the live product puts both on 16 with an 8px gutter."
       />
+      <ChangeCase
+        after={
+          <TryIt action="Hover any icon in the rail">
+            <Shell navInset open={false}>
+              <SidebarHeader>
+                <BrandRow />
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarNavigationItems items={navigation} />
+              </SidebarContent>
+            </Shell>
+          </TryIt>
+        }
+        afterNote="every row names itself, and the header centres on the nav axis"
+        before={
+          <TryIt action="Hover any icon in the rail — nothing names it">
+            <Shell navInset open={false}>
+              <SidebarHeader className="group-data-[collapsible=icon]:ps-4 group-data-[collapsible=icon]:pe-2">
+                <BrandRow />
+              </SidebarHeader>
+              <SidebarContent>
+                <SidebarMenu>
+                  {navigation.map((item) => {
+                    const Icon = 'icon' in item ? item.icon : undefined;
+                    return (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton className="gap-2 px-2">
+                          {Icon ? <Icon /> : null}
+                          <span className="font-medium">{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarContent>
+            </Shell>
+          </TryIt>
+        }
+        beforeNote="no tooltip anywhere, and the header leans 4px right"
+        beforeSource={
+          <>
+            the rows rebuilt with no <Code>tooltip</Code> prop — which is what{' '}
+            <Code>SidebarNavigationItems</Code> emitted — and the header's
+            asymmetric inset put back through <Code>className</Code>.
+          </>
+        }
+        files={[
+          'src/components/Sidebar/SidebarNavigationItems.tsx',
+          'src/components/Sidebar/SidebarProvider.tsx',
+          'src/components/Sidebar/SidebarHeader.tsx',
+        ]}
+        footnote={
+          <>
+            Three things, one cause: the rail had been given its width and
+            nothing else. <b>The tooltip existed and was never passed</b> —{' '}
+            <Code>SidebarMenuButton</Code> takes a <Code>tooltip</Code> prop and
+            hides it unless the sidebar is collapsed, and{' '}
+            <Code>SidebarNavigationItems</Code> supplied it on none of the three
+            rows it can render collapsed, so the one state where a row has no
+            label was the state with nothing to supply one.{' '}
+            <b>The delay was overridden to 500ms</b> in{' '}
+            <Code>SidebarProvider</Code>, with no note saying why; the package's
+            own value is 300, the kit's, and a collapsed rail has the strongest
+            claim on it — the tooltip there is not extra information about the
+            row, it is the name of it. <b>And the header leaned</b>:{' '}
+            <Code>ps-4 pe-2</Code> is correct expanded, but in a 48px rail an
+            asymmetric inset stops being an inset — it put the surviving
+            control's centre on 28 while every nav glyph below centres on 24.
+            Measured after: both on 24.
+            <br />
+            <br />
+            <strong className="font-medium text-ink-body">
+              The catalog is why none of this showed:
+            </strong>{' '}
+            <Code>Components/Sidebar</Code> built its header row as a plain{' '}
+            <Code>div</Code> with its own <Code>px-2</Code> instead of{' '}
+            <Code>SidebarBrand</Code>, so it stacked an inset on the header's
+            own and had nothing to hide its label with — the product name ran
+            straight across the rail and over the page behind it. A story that
+            does not use the part cannot demonstrate the part.
+          </>
+        }
+        n={72}
+        title="The collapsed rail was never finished"
+        why="Collapsed, an icon is the whole row — and nothing told you what it was. The prop for it had shipped; no row passed it."
+      />
     </ChangePage>
   ),
 };

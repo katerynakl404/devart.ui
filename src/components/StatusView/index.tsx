@@ -11,12 +11,16 @@ const containerVariants = cva(
   'flex min-h-0 flex-1 flex-col items-center justify-center rounded-lg text-center',
   {
     variants: {
-      // reference ladder: sm gap 8 / pad 16 · md gap 12 / pad 24 · lg gap 16 / pad 32
+      /* `lg` and `sm` are the kit's two empty states, copied from
+         `.empty-state` and `.empty-state.is-sm`: 48/24 padding at gap 8, and
+         24/16 at gap 6. `xs` and `md` have no counterpart in the kit — they
+         are the package's own rungs for a status block inside a card, and are
+         marked as such in StatusView.md rather than presented as kit values. */
       size: {
         xs: 'gap-1 p-3',
-        sm: 'gap-2 p-4',
+        sm: 'gap-1.5 px-4 py-6',
         md: 'gap-3 p-6',
-        lg: 'gap-4 p-8',
+        lg: 'gap-2 px-6 py-12',
       },
       surface: {
         embedded: '',
@@ -42,7 +46,13 @@ const haloVariants = cva(
         success: 'bg-fb-green/10 text-fb-green',
         transparent: 'bg-transparent',
       },
-      // reference circles: sm 32 · md 40 · lg 56; glyphs 16 · 20 · 28
+      /* The halo is the package's own; the kit's page-level empty state has
+         no chip at all — `.empty-ic` is a bare 48px glyph in `--ink-inactive`
+         (32px at `.is-sm`). Reach for `withIconHalo={false}` to get that, which
+         is also what the illustrations need. The chip that IS in the kit is
+         `.cl-menu-empty-ic`: 28px, `--icon-wrapper-bg`, a border, a 16px glyph.
+         The `xs` rung is that size; its fill comes from `tone`, not from here,
+         because a size axis that also sets a colour cannot be composed. */
       size: {
         xs: 'size-7 [&_svg]:size-4',
         sm: 'size-8 [&_svg]:size-4',
@@ -68,6 +78,19 @@ const TITLE_BY_SIZE = {
   sm: { element: 'span', textStyle: 'title12' },
   md: { element: 'p', textStyle: 'title14' },
   lg: { element: 'h3', textStyle: 'title16' },
+} as const;
+
+/**
+ * The kit sets the CTA's own offset on top of the block's gap — `.empty-state
+ * .btn{margin-top:.75rem}` over a gap of 8, and `.5rem` over 6 at `.is-sm`.
+ * So the action sits 12 below the text at `lg` and 8 at `sm`, not at the
+ * block's gap. `xs` and `md` have no kit value and take none.
+ */
+const ACTIONS_OFFSET_BY_SIZE = {
+  xs: '',
+  sm: 'mt-0.5',
+  md: '',
+  lg: 'mt-1',
 } as const;
 
 const DESCRIPTION_BY_SIZE = {
@@ -369,9 +392,19 @@ const StatusView = ({
         {description && (
           <Typography
             align="center"
-            className={
-              isCompact ? 'text-balance leading-normal' : 'leading-relaxed'
-            }
+            /* `.empty-msg` in the kit: `max-width:32ch` and
+               `text-wrap:balance`, on every size. Both were conditional here —
+               balance only on `xs`, and the width came from the block's own
+               `max-w-md` (448px) — which is how a message ends up breaking one
+               word onto a line of its own.
+
+               The cap is on the MESSAGE, not on the block: the kit gives the
+               title no max-width, because a title short enough to be a title
+               does not need one. */
+            className={cn(
+              'max-w-[32ch] text-balance',
+              isCompact ? 'leading-normal' : 'leading-relaxed'
+            )}
             element="p"
             textColor="secondary"
             textStyle={DESCRIPTION_BY_SIZE[size ?? 'md']}
@@ -383,8 +416,16 @@ const StatusView = ({
 
       {resolvedActions && (
         <div
+          /* One action or two, and no more. One is the thing the state is
+             missing; two is that plus its alternative — never two primaries,
+             and never a third, because an empty state that offers three ways
+             out is a menu with a picture on it.
+
+             `max-w-xs` caps the row so a stacked pair does not stretch to the
+             width of the block. */
           className={cn(
             'flex w-full max-w-xs',
+            ACTIONS_OFFSET_BY_SIZE[size ?? 'md'],
             actionsOrientation === 'stacked'
               ? 'flex-col gap-3'
               : 'flex-row items-center justify-center gap-3'

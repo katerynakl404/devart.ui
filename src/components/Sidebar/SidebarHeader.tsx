@@ -25,6 +25,12 @@ function SidebarHeader({ className, ref, ...props }: ComponentProps<'div'>) {
       data-sidebar="header"
       className={cn(
         'flex flex-col gap-0 ps-4 pe-2 pt-3 pb-2 empty:pb-0',
+        // Collapsed the rail is 48px and the asymmetric inset stops being an
+        // inset: 16/8 puts the surviving control's centre on 28 while every nav
+        // glyph below it centres on 24, so the top of the rail leans 4px right
+        // of the column it heads. Symmetric 8/8 is the same gutter the nav
+        // column uses, so the two line up.
+        'group-data-[collapsible=icon]:px-2',
         className
       )}
       {...props}

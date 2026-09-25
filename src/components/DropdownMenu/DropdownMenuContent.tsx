@@ -1,5 +1,6 @@
 import { Content, Portal } from '@radix-ui/react-dropdown-menu';
 import type { ComponentProps } from 'react';
+import { restoreFocusOnlyForKeyboard } from '../../lib/focus-modality';
 import { usePortalContainer } from '../../lib/portal-container';
 import { cn } from '../../lib/utils';
 
@@ -18,6 +19,7 @@ const DropdownMenuContent = ({
   sideOffset = 4,
   alignOffset = 0,
   collisionPadding = 8,
+  onCloseAutoFocus,
   ref,
   ...props
 }: DropdownMenuContentProps) => {
@@ -29,6 +31,16 @@ const DropdownMenuContent = ({
         sideOffset={sideOffset}
         alignOffset={alignOffset}
         collisionPadding={collisionPadding}
+        /* Closing returns focus to the trigger — and Radix does it with a
+           programmatic `focus()`, which Chrome answers with the
+           `:focus-visible` ring. So a menu opened with the mouse left a
+           focus ring sitting on its trigger afterwards, marking a row
+           nobody was navigating. Restored for the keyboard, where losing
+           your place is the worse fault; skipped for the pointer. A
+           consumer's own handler runs first and can still preventDefault. */
+        onCloseAutoFocus={(event) =>
+          restoreFocusOnlyForKeyboard(event, onCloseAutoFocus)
+        }
         className={cn(
           'z-50 rounded-lg border p-1',
           'max-h-[var(--radix-dropdown-menu-content-available-height)]',
@@ -39,6 +51,8 @@ const DropdownMenuContent = ({
           // for dark; `shadow-dropdown` is light-only and all but vanishes there.
           'shadow-overlay-soft',
           'overflow-y-auto overflow-x-hidden',
+          // The kit's own menu scrollbar — `.cl-menu-scroll`.
+          'scrollbar-thin',
 
           // Performance optimizations to reduce forced reflows
           'will-change-[transform,opacity]',

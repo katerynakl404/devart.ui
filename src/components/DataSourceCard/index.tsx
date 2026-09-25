@@ -22,6 +22,12 @@ import { ConnectorLogo } from '../ConnectorLogo';
  * Nothing about that can be expressed by giving the button a different variant,
  * which is the shape the problem kept being mistaken for: the button is fine,
  * it simply had no surface beneath it.
+ *
+ * The action does answer the pointer, though. It sits inside the scrim, and the
+ * scrim is `pointer-events-none` so the tile stays the click target — which also
+ * meant the button could never be hovered, and a control that stays flat under
+ * the cursor is the one thing every other button in the system does not do. It
+ * takes its own pointer events back; the click still bubbles to the tile.
  */
 const dataSourceCardVariants = cva(
   cn(
@@ -106,8 +112,9 @@ function DataSourceCard({
         <span className="line-clamp-2 text-ink-primary text-sm">{label}</span>
       </span>
 
-      {/* The scrim. `pointer-events-none` at rest so the tile itself stays the
-          click target; the sheet only exists to give the action a ground. */}
+      {/* The scrim. `pointer-events-none` so the tile itself stays the click
+          target; the sheet only exists to give the action a ground. The action
+          inside it takes its pointer events back — see the note on it. */}
       <span
         aria-hidden
         className={cn(
@@ -134,7 +141,14 @@ function DataSourceCard({
           variant="secondary"
           className={cn(
             'translate-y-1.5 transition-transform duration-slow',
-            'group-hover/ds-card:translate-y-0 group-focus-visible/ds-card:translate-y-0'
+            'group-hover/ds-card:translate-y-0 group-focus-visible/ds-card:translate-y-0',
+            // `pointer-events-auto`: the action answers the pointer itself.
+            // Inside a `pointer-events-none` scrim it could not be hovered at
+            // all, so the one control on the tile was the only button in the
+            // system that stayed flat under the cursor — reported as "why is
+            // there no hover on the buttons". It is still not the click target:
+            // a click on it bubbles to the tile, which is the button.
+            'pointer-events-auto'
           )}
         >
           {/* A span, not a nested button: the tile is already the control, and

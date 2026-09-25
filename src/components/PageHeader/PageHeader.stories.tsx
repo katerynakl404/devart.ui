@@ -66,3 +66,27 @@ export const LongTitle: Story = {
     ),
   },
 };
+
+/**
+ * DRAFT — `condensed`. What a sticky header becomes once the page has scrolled:
+ * the same row at 40px instead of 72px, the `h1` at `title16`. The back
+ * control, the title and the actions keep their columns, so the change is a
+ * shrink and not a relayout.
+ */
+export const Condensed: Story = {
+  args: {
+    title: 'Oracle ERP (staging)',
+    condensed: true,
+    onBack: fn(),
+    actions: (
+      <>
+        <Button size="sm" variant="secondary">
+          Cancel
+        </Button>
+        <Button size="sm" variant="primary">
+          Save
+        </Button>
+      </>
+    ),
+  },
+};

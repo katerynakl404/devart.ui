@@ -27,6 +27,22 @@ export interface PageHeaderProps
    * more control next to Save.
    */
   badge?: ReactNode;
+  /**
+   * DRAFT. The same header, shorter: half the vertical padding and a `title16`
+   * where the full one has a `title24` — 40px tall instead of 72px.
+   *
+   * It exists for a header that STAYS on screen while the page scrolls under
+   * it. At full height a sticky header spends a fifth of a short window on a
+   * line already read; condensed it keeps what a scrolled page still needs from
+   * it — which page this is, the way out, and the commit — and gives the rest
+   * back to the content.
+   *
+   * It is a state of the same row, not a second component: the back control,
+   * the title and the actions keep their columns, so nothing moves sideways as
+   * it changes. The consumer decides when — a page that does not scroll has no
+   * use for it.
+   */
+  condensed?: boolean;
 }
 
 /**
@@ -35,11 +51,9 @@ export interface PageHeaderProps
  *
  * Two details are what make it read as one unit rather than three parts:
  *
- * - **The back control is a tertiary button**, and measures as one: a 32px box
- *   with a 16px glyph, the same as `Button size="sm"`. That matters beyond
- *   looks — it is what keeps a header the same height whether or not a screen
- *   has a back arrow, so the page does not slide between two screens one step
- *   apart in a flow.
+ * - **The back arrow is a 24px glyph**, not the 16px used inside dense
+ *   controls. It sits beside a `title24`, and a 16px arrow reads as a stray
+ *   icon rather than the page's own control.
  * - **The arrow's box sits 6px from the title** (its glyph, 12px), while
  *   everything else in the row is 12px apart. The arrow belongs to the title —
  *   it is not a sibling of it, and the tighter gap is what says so.
@@ -54,13 +68,24 @@ function PageHeader({
   actions,
   leading,
   badge,
+  condensed,
   className,
   ...props
 }: PageHeaderProps) {
   return (
     <header
       data-slot="page-header"
-      className={cn('flex shrink-0 items-center gap-3 px-6 py-5', className)}
+      data-condensed={condensed ? '' : undefined}
+      className={cn(
+        'flex shrink-0 items-center gap-3 px-6 py-5',
+        // The padding is what shrinks, and it is animated: the row is on screen
+        // while it changes, so a jump reads as the page flinching. The type is
+        // not animated — a font-size transition is a reflow every frame, and the
+        // one step it would smooth is 8px.
+        'transition-[padding] duration-fast',
+        condensed && 'py-2.5',
+        className
+      )}
       {...props}
     >
       {leading}
@@ -73,12 +98,16 @@ function PageHeader({
             rendered 26px wide around a 24px glyph — no inset left, and a
             hover pill the same size as the icon.
 
-            It is a tertiary button and takes a tertiary button's metrics —
-            `sm`, so a 32px box with the component's own 16px glyph, no size
-            override. An earlier version used `md` with a forced 24px glyph, on
-            the reasoning that a large arrow suits a `title24`; the cost was a
-            36px control in a row whose other members are 32px, which made the
-            whole header 4px taller on any screen that had a back arrow.
+            `md` rather than `sm`: a 24px glyph needs a 36px box to read as a
+            pill rather than as a frame.
+
+            The arrow is sized against the TITLE, not against the row. It was
+            briefly `sm` with the component's own 16px glyph, on the reasoning
+            that a tertiary button should measure like every other control in
+            the row; next to a `title24` that arrow read as a stray icon. The
+            cost of `md` is known and accepted: the control is 36px in a row
+            whose other members are 32, so a header with a back arrow is 4px
+            taller than one without.
 
             NO negative inset. There was one — `-ms-1.5 -me-1.5` — on the
             principle that a tertiary control is measured by its glyph, not by
@@ -107,15 +136,20 @@ function PageHeader({
             aria-label={backLabel}
             className="me-0.5 shrink-0"
             onClick={onBack}
-            size="sm"
+            /* The arrow is sized against the TITLE, not against the row — so
+               it steps down with it. `condensed` puts a `title16` where the
+               full header has a `title24`, and a 24px arrow beside 16px type
+               stops reading as the title's own control and starts reading as
+               a control that outgrew it. */
+            size={condensed ? 'sm' : 'md'}
             variant="tertiary"
           >
-            <ArrowLeft />
+            <ArrowLeft className={condensed ? undefined : '!size-6'} />
           </IconButton>
         ) : null}
         <Typography
           element="h1"
-          textStyle="title24"
+          textStyle={condensed ? 'title16' : 'title24'}
           textColor="primary"
           className="truncate"
         >

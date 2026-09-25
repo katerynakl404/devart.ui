@@ -27,6 +27,48 @@ const breakpointVarsPlugin = plugin(({ addBase }) => {
   });
 });
 
+/**
+ * The two scrollbars the kit draws, copied from it rather than restated.
+ *
+ * `scrollbar-thin` is `.cl-menu-scroll` / `.cl-mention-list` / `.cp-code-pre`
+ * in `Insightis/pages/kit-theme.css`, which carry identical declarations. The
+ * 3px transparent border with `background-clip: padding-box` is what makes a
+ * 10px track hold a 4px thumb — it is inset, not narrow, so the hit area stays
+ * 10px while the thumb reads as a hairline.
+ *
+ * `scrollbar-none` is `.sbx-chats` / `.chip-row`: the region scrolls and shows
+ * nothing. It is for a strip whose overflow is obvious from its content, never
+ * for a panel where the bar is the only sign there is more.
+ *
+ * Both are utilities rather than a base rule on every scroller, because which
+ * of the two a region takes is a decision per region — and `globals.css` ships
+ * no component-layer CSS (decision 8).
+ */
+const scrollbarPlugin = plugin(({ addUtilities }) => {
+  addUtilities({
+    '.scrollbar-thin': {
+      'scrollbar-width': 'thin',
+      'scrollbar-color': 'hsl(var(--stroke-border)) transparent',
+      '&::-webkit-scrollbar': { width: '10px', height: '10px' },
+      '&::-webkit-scrollbar-track': { background: 'transparent' },
+      '&::-webkit-scrollbar-thumb': {
+        background: 'hsl(var(--stroke-border))',
+        'border-radius': '99px',
+        border: '3px solid transparent',
+        'background-clip': 'padding-box',
+      },
+      '&:hover::-webkit-scrollbar-thumb': {
+        background: 'hsl(var(--ink-inactive))',
+        'background-clip': 'padding-box',
+      },
+    },
+    '.scrollbar-none': {
+      'scrollbar-width': 'none',
+      '&::-webkit-scrollbar': { display: 'none' },
+    },
+  });
+});
+
 export const preset: Partial<Config> = {
   darkMode: ['class'],
   theme: {
@@ -54,6 +96,11 @@ export const preset: Partial<Config> = {
         'modal-sm': 'var(--modal-w-sm)',
         'modal-md': 'var(--modal-w-md)',
         'modal-lg': 'var(--modal-w-lg)',
+        'modal-xl': 'var(--modal-w-xl)',
+      },
+      maxHeight: {
+        /* The cap a dialog may not pass — see `--modal-max-h`. */
+        modal: 'var(--modal-max-h)',
       },
       borderRadius: {
         DEFAULT: 'var(--radius)',
@@ -154,6 +201,34 @@ export const preset: Partial<Config> = {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(100%)' },
         },
+        /* A settled row leaving a list.
+
+           Two movements, not one, and the order is what makes it read as
+           smooth: the row FADES first and only then collapses. Fading and
+           shrinking together is the version that looks abrupt — the row is
+           still legible while the list is already moving under it, so the
+           eye is asked to track text that is going away and rows that are
+           arriving at the same time.
+
+           So opacity is spent over the first 40%, and the height and its
+           padding over the remaining 60%, by which point there is nothing
+           left to watch. Height and padding both go, or the row leaves a
+           gap the width of its own inset. */
+        'row-out': {
+          '0%': { opacity: '1', height: 'var(--row-height)' },
+          '40%': { opacity: '0', height: 'var(--row-height)' },
+          '100%': {
+            opacity: '0',
+            height: '0',
+            'padding-top': '0',
+            'padding-bottom': '0',
+          },
+        },
+        /* A panel leaving once it has nothing left to say. */
+        'panel-out': {
+          from: { opacity: '1', transform: 'translateY(0)' },
+          to: { opacity: '0', transform: 'translateY(4px)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -161,6 +236,12 @@ export const preset: Partial<Config> = {
         'collapsible-down': 'collapsible-down 0.2s ease-out',
         'collapsible-up': 'collapsible-up 0.2s ease-out',
         'skeleton-shimmer': 'skeleton-shimmer 1.5s infinite ease-in-out',
+        /* `--motion-slow`, not `base`: this is a row leaving a list under
+           the reader, not a control answering a press. The curve is
+           `ease-in-out` for the same reason — `ease-out` starts at full
+           speed, which is what made the collapse snap. */
+        'row-out': 'row-out var(--motion-slow) ease-in-out forwards',
+        'panel-out': 'panel-out var(--motion-slow) ease-in-out forwards',
       },
       backgroundImage: {
         'skeleton-shimmer':
@@ -178,7 +259,12 @@ export const preset: Partial<Config> = {
       },
     },
   },
-  plugins: [pressedVariantPlugin, breakpointVarsPlugin, animate],
+  plugins: [
+    pressedVariantPlugin,
+    breakpointVarsPlugin,
+    scrollbarPlugin,
+    animate,
+  ],
 };
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');

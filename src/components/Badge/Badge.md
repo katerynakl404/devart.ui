@@ -93,3 +93,14 @@ opacity modifier. `bg-badge-brand-bg/50` silently emits nothing.
 A badge inside a table cell or a title row is `inline` and vertically centred —
 do not wrap it in a flex container just to align it. Keep the label to one or
 two words; a chip that wraps is a sentence wearing a chip's clothes.
+
+The base is `whitespace-nowrap overflow-hidden`, so it cannot: the height comes
+from `size`, and a second line would spill out of the pill rather than grow it.
+A label with too little room is **truncated with an ellipsis inside the pill** —
+it never wraps and never runs out over what sits next to it. The dot, both slots
+and the delete control are `shrink-0`; the label is the only part that gives
+way, so a squeezed chip still shows its glyph and its shape.
+
+An ellipsis is a fallback, not a layout: `Not config…` is the sign that the
+label needs shortening or the column widening. Pair a badge whose text can be
+cut with `tooltip`, so the full wording stays reachable.

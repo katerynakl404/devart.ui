@@ -31,7 +31,18 @@ function TableRow({ className, nested, ...props }: TableRowProps) {
       // cells are what carry the padding, and they read it back off the row
       // through the group.
       data-nested={nested ? '' : undefined}
-      className={cn('group/row border-stroke border-b', className)}
+      className={cn(
+        'group/row border-stroke border-b',
+        // `data-interactive` already gets the hover fill (on the cells, see
+        // TableCell) and the pressed fill and the focus fill. It did not get a
+        // CURSOR, so the one row state that means "this opens something"
+        // answered the pointer with a text caret — the fill said pressable and
+        // the cursor said selectable text, on the same pixel. Consumers were
+        // documenting the cursor as part of the attribute while no rule
+        // emitted it.
+        'data-[interactive]:cursor-pointer',
+        className
+      )}
       {...props}
     />
   );

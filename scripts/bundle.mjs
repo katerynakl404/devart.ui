@@ -20,15 +20,147 @@
  * The roster check below is the speed win: the Storybook build is most of the
  * wall-clock, and it is only needed when the SET of components changed. Class
  * strings, tokens and props are picked up by `pnpm build` alone.
+ *
+ * 3. ONE AT A TIME. The chain is not re-entrant: every step writes the same
+ *    `dist/`, the same `ds-bundle/` and the same `.design-sync/.cache/`, so two
+ *    runs in one checkout interleave their output and neither reports anything
+ *    wrong. It has happened with three at once — two plain, one `--storybook` —
+ *    and what reached the prototype was a part of each. The lock below makes
+ *    the second run refuse instead of joining in.
  */
 import { execSync } from 'node:child_process';
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import {
+  closeSync,
+  existsSync,
+  mkdirSync,
+  openSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
 const has = (f) => argv.includes(f);
+
+/* ── One run per checkout ───────────────────────────────────────────────
+ *
+ * `wx` is the whole mechanism: creating the file IS the test, in a single
+ * syscall, so two runs starting in the same second cannot both pass it. What
+ * the file HOLDS is only for the message — never for the decision.
+ *
+ * A lock left behind by a killed run must not block the checkout for ever, so a
+ * lock whose process is gone is taken over rather than obeyed. `kill(pid, 0)`
+ * sends no signal, it asks whether the pid exists; EPERM means it exists and
+ * belongs to someone else, which still counts as running.
+ */
+const LOCK = join(ROOT, '.design-sync/.cache/bundle.lock');
+
+const isRunning = (pid) => {
+  if (!Number.isInteger(pid) || pid <= 0) return false;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error.code === 'EPERM';
+  }
+};
+
+function takeLock() {
+  mkdirSync(dirname(LOCK), { recursive: true });
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const fd = openSync(LOCK, 'wx');
+      writeFileSync(
+        fd,
+        JSON.stringify({
+          pid: process.pid,
+          started: new Date().toISOString(),
+          argv,
+        })
+      );
+      return fd;
+    } catch (error) {
+      if (error.code !== 'EEXIST') throw error;
+
+      let held = {};
+      try {
+        held = JSON.parse(readFileSync(LOCK, 'utf8'));
+      } catch {
+        /* A lock written by a run that died mid-write says nothing about who
+           holds it, and the pid check below then reads it as stale — the safe
+           way round, because a live run is still protected by its own pid. */
+      }
+
+      if (isRunning(held.pid)) {
+        process.stderr.write(
+          [
+            '',
+            'ds-bundle: another bundle is already running in this checkout.',
+            `  pid ${held.pid}, started ${held.started ?? 'unknown'}${
+              held.argv?.length ? ` (${held.argv.join(' ')})` : ''
+            }`,
+            '  Every step writes the same dist/ and ds-bundle/, so a second run',
+            '  interleaves with it and neither reports an error.',
+            '  Wait for it to finish, or stop it and delete',
+            `  ${LOCK}`,
+            '',
+          ].join('\n')
+        );
+        process.exit(1);
+      }
+
+      /* Stale, so the run that held it was killed — and step 3 leaves
+         `dist/_ds-entry.*` behind. That file is not a source file, so the next
+         `pnpm build` type-checks it against dist's own module resolution and
+         fails with a page of TS2835 naming neither this script nor the kill.
+         Clearing it here is the difference between "the last run was stopped"
+         and "the checkout is broken". */
+      process.stderr.write(
+        `\nds-bundle: clearing a stale lock (pid ${held.pid ?? '?'} is gone)\n`
+      );
+      for (const leftover of [
+        'dist/_ds-entry.js',
+        'dist/_ds-entry.d.ts',
+        'dist/_ds-entry.d.ts.map',
+      ]) {
+        rmSync(join(ROOT, leftover), { force: true });
+      }
+      unlinkSync(LOCK);
+    }
+  }
+  throw new Error('ds-bundle: could not take the lock');
+}
+
+const lockFd = takeLock();
+
+/* Released on every exit, including the ones that are not a return: `exit`
+   covers a thrown error and `process.exit`, and the signals cover Ctrl-C and a
+   harness stopping the run. Without them a cancelled build leaves a lock behind
+   that only the pid check saves the next run from. */
+let lockReleased = false;
+const releaseLock = () => {
+  if (lockReleased) return;
+  lockReleased = true;
+  try {
+    closeSync(lockFd);
+  } catch {
+    /* already closed */
+  }
+  rmSync(LOCK, { force: true });
+};
+process.on('exit', releaseLock);
+for (const signal of ['SIGINT', 'SIGTERM', 'SIGHUP', 'SIGBREAK']) {
+  process.on(signal, () => {
+    releaseLock();
+    process.exit(1);
+  });
+}
 
 function run(label, cmd) {
   process.stderr.write(`\n── ${label}\n`);
@@ -86,6 +218,54 @@ function bundledComponents() {
   return [...read('components'), ...foundations].sort();
 }
 
+/**
+ * Is the reference Storybook older than the source it is supposed to show?
+ *
+ * The roster check answers only "did the SET of components change". It cannot
+ * see a story rewritten in place — and that is the bundle that validates clean
+ * while showing last week's component. Everything downstream is derived from
+ * this one index: the roster, the docs, the previews, the story sources. So
+ * anything newer than it is a bundle that disagrees with the library.
+ *
+ * mtime, not a content hash: the question is only "was this built after that
+ * was written", and a false positive costs one Storybook build.
+ */
+function referenceStale() {
+  const idx = join(ROOT, '.design-sync/sb-reference/index.json');
+  if (!existsSync(idx)) return 'nothing — there is no reference yet';
+  const built = statSync(idx).mtimeMs;
+  let newest = 0;
+  let newestPath = null;
+  const see = (full) => {
+    const m = statSync(full).mtimeMs;
+    if (m > newest) {
+      newest = m;
+      newestPath = full;
+    }
+  };
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, e.name);
+      if (e.isDirectory()) {
+        if (e.name !== 'node_modules') walk(full);
+      } else see(full);
+    }
+  };
+  for (const entry of [
+    'src',
+    '.storybook',
+    'changes',
+    'globals.css',
+    'fonts.css',
+  ]) {
+    const full = join(ROOT, entry);
+    if (!existsSync(full)) continue;
+    if (statSync(full).isDirectory()) walk(full);
+    else see(full);
+  }
+  return newest > built ? relative(ROOT, newestPath) : false;
+}
+
 const bundled = bundledComponents();
 const source = sourceComponents();
 const missing =
@@ -93,13 +273,15 @@ const missing =
 const removed =
   bundled === null ? [] : bundled.filter((c) => !source.includes(c));
 
+const stale = referenceStale();
+
 let storybook;
 if (has('--no-storybook')) {
   storybook = false;
 } else if (has('--storybook') || bundled === null) {
   storybook = true;
 } else {
-  storybook = missing.length > 0 || removed.length > 0;
+  storybook = missing.length > 0 || removed.length > 0 || stale !== false;
 }
 
 process.stderr.write(
@@ -110,17 +292,23 @@ process.stderr.write(
         (missing.length ? `; NEW: ${missing.join(', ')}` : '') +
         (removed.length ? `; GONE: ${removed.join(', ')}` : '') +
         (missing.length || removed.length ? '\n' : ' — roster unchanged\n')) +
+    (stale === false
+      ? ''
+      : `  reference is older than ${stale} — rebuild required\n`) +
     `  Storybook build: ${storybook ? 'yes' : 'skipped'}` +
     (storybook || has('--no-storybook')
       ? '\n'
       : ' (pass --storybook to force)\n')
 );
 
-if (has('--no-storybook') && (missing.length || removed.length)) {
+if (
+  has('--no-storybook') &&
+  (missing.length || removed.length || stale !== false)
+) {
   process.stderr.write(
-    '\n  WARNING: the component set changed and you asked to skip Storybook.\n' +
-      '  The roster comes from the Storybook index, so the bundle will be built\n' +
-      '  against a stale one — and it will NOT report an error.\n'
+    '\n  WARNING: the reference is out of date and you asked to skip Storybook.\n' +
+      '  The roster, the docs and the previews all come from that index, so the\n' +
+      '  bundle will be built against it — and it will NOT report an error.\n'
   );
 }
 
@@ -145,7 +333,11 @@ run(
 if (storybook) {
   run(
     '6. storybook — the component roster and previews',
-    'corepack pnpm run build-storybook'
+    // `-o` is why this is not `pnpm run build-storybook`: that script writes
+    // to `storybook-static/`, while step 7 reads `.design-sync/sb-reference`.
+    // Run one and the other keeps whatever roster it was last built with — a
+    // bundle missing every component added since, reported as a clean build.
+    'corepack pnpm exec storybook build -o .design-sync/sb-reference'
   );
 }
 run(

@@ -18,26 +18,34 @@ const inputGroupAddonVariants = cva(
     // Kbd shortcut styling
     '[&>kbd]:rounded-[calc(var(--radius)-5px)]',
 
-    /* A decorative glyph reads as part of the placeholder, not as content: it
-       takes the placeholder's own ink so an empty field is one weight of grey
-       rather than two. Scoped to the addon's direct `svg` so addon *text* and
-       a `kbd` keep the addon colour — those are labels, and a label at
-       placeholder weight reads as disabled.
+    /* NO ink rule on the glyph. It inherits the addon's own `--ink-secondary`,
+       which is what the kit states: `.igrp-add` sets `color: var(--ink-secondary)`
+       and has no separate rule for its `svg`.
 
-       (The kit puts the leading glyph on `--ink-secondary`, one step darker.
-       This is a deliberate step lighter — see DESIGN-SYSTEM-CHANGES §43.) */
-    '[&>svg]:text-ink-inactive',
+       There was one — `[&>svg]:text-ink-inactive` — on the reasoning that a
+       decorative glyph reads as part of the placeholder and an empty field
+       should be one weight of grey. Nobody asked for it and no case called for
+       it; it was a step away from the kit argued from inside the package, which
+       is the one thing a package that mirrors a kit may not do. */
     glyphStroke,
 
-    /* A docked control is not decoration: it answers the pointer. Rest sits on
-       the addon's own step and hover lifts to Text/Body, which is the kit's
-       `.igrp-act` recipe exactly. Written as a child selector because the
-       nested IconButton sets its own `text-ink-body`, and a plain class on the
-       button would lose to it. No pill, no surface — the field already owns
-       hover, focus and press. */
-    '[&>button]:text-ink-secondary',
+    /* A docked control is not decoration: it answers the pointer. The kit names
+       its own pair for this — `.igrp-act` is `--ink-icon` lifting to
+       `--ink-icon-hover` — so the package names them too.
+
+       It used to write `--ink-secondary` -> `--ink-body` under a comment
+       claiming that WAS the kit's recipe. Rest matched by accident
+       (`--ink-icon` is declared as `var(--ink-secondary)`); hover did not —
+       `--ink-icon-hover` is `--ink-primary`, a step darker than `--ink-body`.
+       Naming the token the kit names is what keeps the two from drifting when
+       one of them is re-pointed.
+
+       Written as a child selector because the nested IconButton sets its own
+       `text-ink-body`, and a plain class on the button would lose to it. No
+       pill, no surface — the field already owns hover, focus and press. */
+    '[&>button]:text-ink-icon',
     '[&>button]:transition-colors',
-    '[&>button:hover]:text-ink-body'
+    '[&>button:hover]:text-ink-icon-hover'
   ),
   {
     variants: {

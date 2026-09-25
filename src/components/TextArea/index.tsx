@@ -275,10 +275,17 @@ export const TextArea = ({
               {errorText}
             </Typography>
           ) : hintText ? (
+            // `textStyle="body12"`, not `variant="span"`. The legacy variant is
+            // `font-medium text-sm`, so `text-xs` beside it corrected the size
+            // and left the WEIGHT at 500: the hint under a field rendered
+            // bolder than the sentence it belongs to, and bolder than the same
+            // hint written by hand anywhere else in the product. A hint is body
+            // copy; the named scale says so in one token.
             <Typography
-              variant="span"
+              element="span"
+              textStyle="body12"
               textColor="secondary"
-              className="min-w-0 flex-1 text-xs"
+              className="min-w-0 flex-1"
             >
               {hintText}
             </Typography>
@@ -286,14 +293,15 @@ export const TextArea = ({
 
           {hasCount ? (
             <Typography
-              variant="span"
+              element="span"
+              textStyle="body12"
               textColor="secondary"
               aria-live="polite"
               // Digits only. "0 characters / 4000 max" reads as a sentence and
               // gets re-read on every keystroke; "0/4000" is a readout — the eye
               // catches the changing number without parsing words around it.
               // tabular-nums keeps it from twitching as the width of digits changes.
-              className="ms-auto shrink-0 whitespace-nowrap text-xs tabular-nums"
+              className="ms-auto shrink-0 whitespace-nowrap tabular-nums"
             >
               {count}/{maxLength}
             </Typography>

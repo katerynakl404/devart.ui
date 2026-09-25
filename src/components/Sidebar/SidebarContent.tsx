@@ -20,6 +20,8 @@ function SidebarContent({ className, ref, ...props }: ComponentProps<'div'>) {
         'flex min-h-0 flex-1 flex-col gap-2 px-2 pb-4',
 
         'overflow-auto',
+        // `.sbx-chats` in the kit: the rail scrolls and shows no bar.
+        'scrollbar-none',
         'group-data-[collapsible=icon]:overflow-hidden',
 
         className

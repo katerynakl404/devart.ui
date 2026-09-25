@@ -159,45 +159,178 @@ export function Shadows() {
   );
 }
 
-const SPACING = [
-  ['1', 4],
-  ['2', 8],
-  ['3', 12],
-  ['4', 16],
-  ['5', 20],
-  ['6', 24],
-  ['8', 32],
-  ['10', 40],
-  ['12', 48],
-  ['16', 64],
-  ['20', 80],
-  ['24', 96],
+/**
+ * The scale. The third column is quoted from `Spacing.md` and from nowhere
+ * else: three steps have a stated rule, the other nine do not, and a step with
+ * no rule stays blank. Filling it with plausible prose would make this page a
+ * second source for a number nobody has decided.
+ */
+const SPACING: readonly (readonly [string, number, string])[] = [
+  ['1', 4, ''],
+  ['2', 8, 'tight cluster'],
+  ['3', 12, ''],
+  ['4', 16, 'related elements'],
+  ['5', 20, ''],
+  ['6', 24, 'page padding, and the gap between sections'],
+  ['8', 32, ''],
+  ['10', 40, ''],
+  ['12', 48, ''],
+  ['16', 64, ''],
+  ['20', 80, ''],
+  ['24', 96, ''],
 ] as const;
 
-/** The 4px step. The step number is the unit: `4` is 16px. */
-export function Spacing() {
+/**
+ * Control internals only, per `Spacing.md` — never page or section rhythm.
+ * The third column is not a rule: it names one call site in this library, so
+ * that "control internals" is read off real code rather than guessed at.
+ */
+const HALF_STEPS: readonly (readonly [string, number, string])[] = [
+  ['px', 1, 'Card — the lift on hover'],
+  ['0.5', 2, 'SidebarMenu — between nav rows'],
+  ['1.5', 6, 'Button sm — glyph to label'],
+  ['2.5', 10, 'SidebarFooter — the row own inset'],
+  ['3.5', 14, ''],
+] as const;
+
+function Step({
+  step,
+  px,
+  use,
+  max,
+}: {
+  step: string;
+  px: number;
+  use: string;
+  max: number;
+}) {
   return (
-    <div className="flex flex-col gap-2">
-      {SPACING.map(([step, px]) => (
-        <div className="flex items-center gap-3" key={step}>
-          <Typography
-            className="w-8 shrink-0"
-            element="span"
-            textColor="secondary"
-            textStyle="body12"
-          >
-            {step}
-          </Typography>
-          <span
-            aria-hidden
-            className="h-4 rounded-sm bg-brand-primary"
-            style={{ width: `${px}px` }}
-          />
-          <Typography element="span" textColor="secondary" textStyle="body12">
-            {px}px
-          </Typography>
+    <div className="flex items-center gap-3">
+      <Typography
+        className="w-10 shrink-0 text-end tabular-nums"
+        element="span"
+        textStyle="body12"
+      >
+        {step}
+      </Typography>
+      <Typography
+        className="w-10 shrink-0 tabular-nums"
+        element="span"
+        textColor="secondary"
+        textStyle="body12"
+      >
+        {px}px
+      </Typography>
+      {/* The bar is measured against the largest step on the page, so the
+          column is a true ruler rather than twelve bars scaled to fit. */}
+      <span
+        className="hidden shrink-0 sm:block"
+        style={{ width: `${max}px` }}
+        aria-hidden
+      >
+        <span
+          className="block h-3 rounded-sm bg-brand-primary"
+          style={{ width: `${px}px` }}
+        />
+      </span>
+      <Typography
+        className="min-w-0 truncate"
+        element="span"
+        textColor={use ? 'secondary' : 'light'}
+        textStyle="body12"
+      >
+        {use || '—'}
+      </Typography>
+    </div>
+  );
+}
+
+/** One rhythm, rendered rather than described. */
+function Rhythm({
+  label,
+  cls,
+  children,
+}: {
+  label: string;
+  cls: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Typography element="span" textStyle="body12">
+        <code className="rounded bg-surface-chips px-1 py-0.5 font-mono text-xxs">
+          {cls}
+        </code>{' '}
+        {label}
+      </Typography>
+      <div className="rounded-md border border-stroke bg-surface-card">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/** A filled block standing in for content, so only the space is the subject. */
+function Fill({ h = 'h-6' }: { h?: string }) {
+  return (
+    // A tint rather than `--surface-chips`: the block sits on a card and has
+    // to read as content at a glance, or the gap it is there to show reads as
+    // the whole box being empty.
+    <span aria-hidden className={`block rounded-sm bg-brand-primary/15 ${h}`} />
+  );
+}
+
+/**
+ * The 4px step. The step number **is** the unit: `4` is 16px, so `p-4`,
+ * `gap-4` and `m-4` are all 16.
+ */
+export function Spacing() {
+  const max = SPACING.at(-1)?.[1] ?? 96;
+  return (
+    <div className="flex flex-col gap-5">
+      <Group title="The scale — the number in p-*, m-*, gap-*, size-*">
+        <div className="flex flex-col gap-1.5">
+          {SPACING.map(([step, px, use]) => (
+            <Step key={step} max={max} px={px} step={step} use={use} />
+          ))}
         </div>
-      ))}
+      </Group>
+
+      <Group title="Half-steps — control internals only · one call site each">
+        <div className="flex flex-col gap-1.5">
+          {HALF_STEPS.map(([step, px, use]) => (
+            <Step key={step} max={max} px={px} step={step} use={use} />
+          ))}
+        </div>
+      </Group>
+
+      <Group title="Page rhythm — the four states Spacing.md names">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Rhythm cls="gap-2" label="a tight cluster">
+            <div className="flex flex-col gap-2 p-3">
+              <Fill h="h-4" />
+              <Fill h="h-4" />
+            </div>
+          </Rhythm>
+          <Rhythm cls="gap-4" label="related elements">
+            <div className="flex flex-col gap-4 p-3">
+              <Fill h="h-4" />
+              <Fill h="h-4" />
+            </div>
+          </Rhythm>
+          <Rhythm cls="gap-6" label="between sections">
+            <div className="flex flex-col gap-6 p-3">
+              <Fill h="h-4" />
+              <Fill h="h-4" />
+            </div>
+          </Rhythm>
+          <Rhythm cls="p-6" label="the page’s own padding">
+            <div className="p-6">
+              <Fill />
+            </div>
+          </Rhythm>
+        </div>
+      </Group>
     </div>
   );
 }

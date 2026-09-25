@@ -43,11 +43,28 @@ const cardVariants = cva(
           'shadow-sm',
           'text-ink-body'
         ),
-        // Compact single-row layout for list items (chats, files, insights row view)
+        // Compact row layout for list items (chats, files, insights row view).
+        //
+        // PADDING, not a height. It was `h-11`: 44px stated as a ceiling as well as
+        // a floor, so a row with a name over a description either clipped or had to
+        // be argued out of its own height at the call site. A list item does not
+        // know how many lines its consumer has — it knows how much air belongs
+        // around them.
+        //
+        // `py-3` reproduces the 44px exactly where the fixed height was right: one
+        // line of `text-sm` is 20px, plus 12 above and below, is 44. Two lines grow
+        // to 64 instead of being cut off, and nothing at the call site has to say
+        // so.
+        //
+        // The horizontal inset is its own decision, and it is 16: the vertical
+        // number is the row’s height and the horizontal one is how far the text
+        // starts from the edge, which is 16 everywhere else a card holds text.
+        // 12 read as tight against a two-line row whose second line is a full
+        // sentence.
         row: cn(
           'group/row',
           'flex flex-row items-center gap-3',
-          'h-11 px-3',
+          'px-4 py-3',
           'cursor-pointer select-none',
           'bg-surface-card font-medium text-ink-body text-sm',
           'border border-stroke/45 shadow-rest',

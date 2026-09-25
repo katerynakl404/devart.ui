@@ -53,17 +53,29 @@ drops the folder in and writes JSX against it; there is no install and no
 bundler. This is how the Insightis and AI Connectivity prototypes consume the
 library.
 
-Rebuilding it runs three things in order, then the design-sync package build:
+Rebuilding it is one command:
 
 ```bash
-node .design-sync/theme-audit.mjs   # token ladders + WCAG contrast, both themes
-pnpm build                          # dist/ — verify-dist gates it
-pnpm build-storybook                # the component roster comes from the Storybook
-                                    # index, so this is REQUIRED whenever a
-                                    # component was added or removed — skip it and
-                                    # the new component is silently absent from a
-                                    # bundle that still validates clean
+pnpm bundle              # the whole chain, in order
+pnpm bundle --storybook  # force the Storybook build
 ```
+
+`scripts/bundle.mjs` runs the steps and decides the slow one for itself: the
+component roster comes from the Storybook index, so `pnpm build-storybook` is
+required whenever a component was added or removed — skip it and the new
+component is silently absent from a bundle that still validates clean. The
+script diffs the source directories against what the last bundle holds and
+builds Storybook only when that set changed; class strings, tokens and props
+reach the bundle through `pnpm build` alone.
+
+**One run at a time, per checkout.** Every step writes the same `dist/`,
+`ds-bundle/` and `.design-sync/.cache/`, so two runs side by side interleave
+their output and neither reports anything wrong — the bundle that comes out is
+partly each. A lock at `.design-sync/.cache/bundle.lock` makes the second run
+refuse and name the first. A lock whose process is gone is taken over, not
+obeyed, and the takeover also clears the `dist/_ds-entry.*` a killed run leaves
+behind — without that, the next `pnpm build` fails with a page of TS2835 that
+mentions neither the kill nor this script.
 
 `ds-bundle/` is generated, git-ignored and never hand-edited; the emitting step
 and the exact chain live in `.design-sync/config.json` (`buildCmd`). Conventions

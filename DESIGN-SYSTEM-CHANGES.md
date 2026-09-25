@@ -88,6 +88,22 @@ off — nothing should be built on it yet.
 | §62 | `Autocomplete` | the clear and the chevron painted as placeholders |
 | §63 | `Tooltip` | the delay before it opens |
 | §64 | `SidebarContent` | the nav column had no gutter |
+| §65 | `Badge` | a fixed-height pill whose label could wrap |
+| §66 | `Button` / `IconButton` | a switched-off control lit up under the pointer |
+| §67 | `PageHeader` | `condensed` — the state a sticky header takes once the page scrolls · `draft` |
+| §68 | `SidebarBrand` | the collapsed state was undefined |
+| §69 | `AccordionTrigger` | `size` — a trigger that is a section heading · `draft` |
+| §70 | `TextArea` | the hint under a field was 500, and nothing asked for it |
+| §71 | `Modal` | `size="xl"` — a dialog holding a tree, not a form · `draft` |
+| §72 | `Sidebar` | the collapsed rail — no tooltips, a 500ms delay, a leaning header |
+| §73 | `SegmentedControlTrigger` | `tone` — a selected half that means included or excluded · `draft` |
+| §74 | `DropdownMenuContent` | the focus ring left on a trigger after the menu was closed with the mouse |
+| §75 | `toast` | a stack of toasts, each a different width |
+| §76 | `TableRow` | a row that declares itself clickable kept the text cursor |
+| §77 | `DataSourceCard` | the one control on the tile could not be hovered |
+| §78 | `Card` | `variant="row"` stated its height as a ceiling as well as a floor |
+| §79 | `UploadTray` | **new** — the upload plate production raises on /files · **draft** |
+| §80 | `Button` / `IconButton` | a disabled `secondary` still had a surface — white, and invisible only on white |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -1356,7 +1372,7 @@ Used by `Autocomplete` (§62) and by the search field's clear button (§28).
 
 ## 46. New — `LinkButton` · **DRAFT**
 
-`src/components/Link/index.tsx`
+`src/components/LinkButton/index.tsx`
 
 The kit ships `.link`; the package did not, so "Permissions →" and "Manage
 connections →" were built out of `Button variant="transparent"` — which is a
@@ -1904,6 +1920,472 @@ rail the library does not draw.
 Measured after: the row fill starts 8px from the edge and the glyph lands on
 16 — the brand mark’s line, and what the product renders.
 
+## 65. `Badge` — a fixed-height pill whose label could wrap
+
+`src/components/Badge/index.tsx`
+
+```diff
+  'inline-flex items-center border border-badge-border',
++ 'whitespace-nowrap overflow-hidden',
+```
+
+```diff
+- <span className="inline-block align-text-top leading-none">
++ <span className="inline-block min-w-0 truncate align-text-top leading-none">
+    {children}
+  </span>
+```
+
+with `leftSlot` and `rightSlot` wrapped in `shrink-0` spans, as the dot and the
+delete control already were.
+
+Every size sets the height (`xs`/`sm` 20px, `md` 28px, `lg` 32px, `xl` 36px), so a
+label that wraps does not make the pill taller — the second line is drawn
+outside it, across the border and whatever sits below. Found on a dashboard
+tile: `1 not configured` in a 213px tile broke across two lines and the chip
+read as a rendering fault.
+
+`Badge.md` already carried the rule in prose — "keep the label to one or two
+words; a chip that wraps is a sentence wearing a chip's clothes" — which holds
+only while the author can see the narrow case. A three-digit count, a longer
+locale or a column the page did not size is exactly where they cannot.
+
+**When a badge does not fit, the one allowed outcome is a truncated label.** Not
+a second line, and not text running out over the neighbour: `nowrap` alone would
+have swapped one broken frame for another. `overflow-hidden` is what makes the
+pill able to give way at all — a flex item's automatic minimum size is its
+content width until the item hides its overflow, and then it is 0 — and
+`truncate` on the label span puts the ellipsis inside the border. The glyphs
+hold their size, so a squeezed chip reads `⚠ Not config…`, never half a glyph.
+
+The ellipsis is a fallback, not a layout: it says the label wants shortening or
+the column widening, and a badge whose text can be cut should carry `tooltip`.
+
+## 66. `Button` / `IconButton` — a switched-off control lit up under the pointer
+
+Reported plainly: *"a disabled button cannot hover."* It did. `:hover` matches a
+disabled button — it is not focusable and it does not fire, but it is still hit
+by the pointer — and each variant's hover recipe was a plain `hover:` utility,
+so a disabled Secondary took the hover border and the hover fill and then sat
+there looking pressable with an inactive label.
+
+Every variant now switches its own hover recipe off again, at the same
+specificity the state deserves: `disabled:hover:*` is `:disabled:hover`, three
+compound selectors against `hover:*`'s two, so the disabled recipe wins without
+`!important`.
+
+**Not `disabled:pointer-events-none`**, which is the one-line version of this
+fix and would have been wrong. A disabled control is exactly the one that needs
+a tooltip saying why it is disabled, and a tooltip needs the pointer events it
+would have removed — the same reason the `aria-disabled` form of these variants
+is the one that carries `pointer-events-none`, where the control keeps focus and
+a screen reader reads the reason instead.
+
+`cursor-not-allowed` stays on both forms, and now means something: the cursor is
+the only thing that changes under the pointer.
+
+## 67. `PageHeader` — `condensed` · **DRAFT**
+
+A header that stays on screen while the page scrolls spends window on a line
+already read. On a 900px window — the minimum this product supports — the
+72px header plus a 32px window bar is a fifth of the height, in front of the
+form the person came for.
+
+`condensed` is the same row at 40px: `py-2.5` instead of `py-5`, and the `h1`
+at `title16` instead of `title24`. The back control, the title cluster and the
+actions keep their columns, so it is a shrink and not a relayout — nothing moves
+sideways as it changes, which is what would have made it read as two different
+headers.
+
+The padding transition is animated (`duration-fast`) because the row is on
+screen while it changes; the type is not, because a font-size transition is a
+reflow every frame to smooth one 8px step.
+
+**The consumer decides when.** The component has no scroll listener and should
+not: which element scrolls is the page's fact, not the header's. A page that
+does not scroll has no use for the prop.
+
+**The back arrow steps down with the title.** The docblock's rule is that the
+arrow is sized against the TITLE and not against the row, so `condensed` takes
+it from a 36px box with a 24px glyph to 32/16 — beside 16px type a 24px arrow
+stops reading as the title's own control and starts reading as one that outgrew
+it. Measured: full 24px title / 36px box / 24px glyph / 76px header; condensed
+16 / 32 / 16 / 52.
+
+Draft because the flow it was built for is a concept: if that concept is not the
+one chosen, this state is not needed either.
+
+## 68. `SidebarBrand` — the collapsed state was undefined
+
+The brand row had no answer for `collapsible="icon"`. At 32px wide it cannot
+hold a 20px mark, a product name and a 24px control, so all three stayed and the
+row overflowed its own column — the mark pushed off the icon grid the navigation
+rows below it sit on.
+
+Collapsed, the row now keeps its **trailing control**, centred, and hides the
+leading cluster. Which survives is not arbitrary: in that state the control is
+what the row is for — it is the way back out of a collapsed sidebar — while the
+name is the part the width was taken from. It is the same trade
+`SidebarMenuButton` already makes when it drops its label and keeps its icon.
+
+Two classes, on the component rather than on the page:
+`group-data-[collapsible=icon]:justify-center` and
+`group-data-[collapsible=icon]:[&>*:first-child]:hidden`. They belong here for a
+reason beyond tidiness — **a page cannot add them**. The bundle compiles only
+the utilities the components name (§19), so a consumer writing
+`group-data-[collapsible=icon]:hidden` on its own markup gets a class with no
+CSS behind it, which is what the AI connectivity prototype had: labels that were
+supposed to disappear when the sidebar collapsed, and did not.
+
+## 69. `AccordionTrigger` — `size` · **DRAFT**
+
+One size, `text-sm`, which is right for an accordion inside a card and wrong for
+an accordion that IS the section. In the connection form each settings group is
+its own card with the trigger as its heading, so the heading of a section read
+one step smaller than the `title16` headings of the sections around it — the
+reviewer's note was that the section names had to be *more prominent*.
+
+`size="md"` puts the trigger on `text-base`, matching `title16`. `sm` stays the
+default, so nothing that exists changes.
+
+Draft for the same reason as §67: it exists for one concept's form.
+
+## 70. `TextArea` — the hint under a field was 500, and nothing asked for it
+
+Reported as "why is the font still bold". It was: the hint line and the
+character counter rendered at `font-medium`, so a sentence of helper text sat
+a weight above the body copy around it.
+
+Neither asked for it. Both were written as `Typography variant="span"` with a
+`text-xs` beside it — and the legacy `variant` ladder is **`font-medium`
+`text-sm`**, so `text-xs` corrected the size and left the weight behind. The
+same call would have been right with the named scale, where size and weight
+are decided together: `textStyle="body12"` is `font-normal text-xs`.
+
+Both now use it. The error line keeps `font-medium` — that one is deliberate
+and matches `InputGroup` — and the two labels keep `weight="medium"`, which
+they pass explicitly.
+
+**The general lesson, because this will happen again:** `variant` is the old
+prop and every one of its values carries a weight. `variant="span"` reads like
+"render a span" and means "render medium 14px". Use `element` for the tag and
+`textStyle` for the type, and the two cannot drift.
+
+## 71. `Modal` — `size="xl"` · **DRAFT**
+
+The ladder stopped at `lg`, 36rem, described as "for a multi-step wizard" —
+which is a column of fields, the widest thing a form needs. A dialog holding
+a **tree** or a **table** is not that: a row of the connection-scope tree
+carries a disclosure, a name, a row count and a two-state control, and the
+control alone is 150px. At 36rem the table names truncated to one word.
+
+`xl` is 56rem — the same ratio step as 30 → 36 — and still leaves a page
+gutter on a 1280px window, which is inside the 900px minimum this product
+declares only because the dialog caps at the viewport anyway.
+
+It is a last resort, and the docblock says so: a surface this wide covering
+the page is usually the sign that the thing belongs on a screen of its own.
+The case for using it has to say why the context behind must not be lost.
+
+`--modal-w-xl` in `globals.css`, `max-w-modal-xl` in the preset, and the class
+listed in `gen-classlist.mjs` — a `max-w` the enumeration does not know about
+compiles to nothing (§19), and the ladder is enumerated by name.
+
+### And a height it cannot pass
+
+Widening the ladder made the other axis the problem: a dialog holding a tree
+grows with its content, and `ModalContent` had `max-h-[90dvh]` — 10% of the
+window left over, split between two ends, so on a 900px window the dialog
+stopped 45px short of each edge and read as a page with a hairline round it.
+A dialog has to be visibly ON something.
+
+`--modal-max-h: 80dvh` in `globals.css`, `maxHeight: { modal: … }` in the
+preset, `max-h-modal` on `ModalContent`, and `modal` in the `max-h` cross in
+`gen-classlist.mjs`. Measured on a 900px window: 720px, with the tree
+scrolling inside its own body. The arbitrary value had to go for the same
+reason `max-w-[56rem]` could not stay — `max-h-[90dvh]` is not enumerated, so
+it compiled to nothing and the cap was never applied at all.
+
+`dvh`, not `vh`: on a window whose chrome can retract, `vh` measures the
+larger state and a dialog sized against it is clipped in the smaller one.
+## 72. The collapsed rail was never finished
+
+Reported from the catalog's own `Collapsed Icon` story, where the product name
+ran straight across a 48px rail and over the page behind it. Three things, one
+cause: the rail had been given its width and nothing else.
+
+**Nav rows had no tooltip.** `SidebarMenuButton` has carried a `tooltip` prop all
+along — it renders the label to the side and hides it unless the sidebar is
+collapsed — and `SidebarNavigationItems` passed it on none of the three rows it
+can render collapsed. So the one state where a row has no label was the state
+with nothing to supply one. Every collapsed row now passes its own title.
+
+**The delay was overridden to 500ms.** `SidebarProvider` wrapped the shell in
+`TooltipProvider delayDuration={500}`, with no note saying why. The package's
+own value is 300, the kit's. A collapsed rail has the strongest claim on the
+shorter one: the tooltip there is not extra information about the row, it is the
+name of it. The override is gone.
+
+**The header leaned 4px right of its own column.** `SidebarHeader` carries
+`ps-4 pe-2` — correct expanded, where the mark lines up with the nav glyphs.
+Collapsed, an asymmetric inset in a 48px rail stops being an inset: it put the
+surviving control's centre on 28 while every nav glyph below centres on 24.
+`group-data-[collapsible=icon]:px-2` makes it the same 8px gutter the nav column
+uses. Measured after: both on 24.
+
+**The story was the fourth thing, and it is why none of this showed.** The
+catalog's header row was a hand-rolled `div` with its own `px-2` and an `h5`,
+not `SidebarBrand` — so it stacked an inset on `SidebarHeader`'s own and had
+nothing to hide its label with, which is the overflow in the report. A story
+that does not use the part cannot demonstrate the part. It uses `SidebarBrand`
+now, with `SidebarTrigger` as the trailing control, which is the shape §68
+defined.
+
+## 73. `SegmentedControlTrigger` — `tone` · **DRAFT**
+
+The control had one selected state: a raised card-tone pill. That is right
+when the two options are alternatives of the same kind — Read / Read & write,
+Light / Dark, Create / Edit — where which half is selected means nothing
+beyond "this one".
+
+It is not right when the control states a **fact with a consequence**.
+Included / Excluded on a row of a connection-scope tree is the case that
+raised it: a column of forty of those is read down at a glance, and with a
+neutral pill on every row the reader has to parse the label on each one to
+find the exceptions — which is the only reason anybody scans a scope.
+
+`tone="positive"` fills the selected half `--fb-green`, `tone="negative"`
+fills it `--fb-red`, both with `--content-on-solid` and no pill shadow. Both
+fills are theme-independent, like the destructive button: one green and one
+red in both themes, so there is no `dark:` pair to keep in step.
+
+**The tone is on the TRIGGER, not on the control.** Only the option itself
+knows whether it is the permissive one; a control-level prop would have to be
+told which of its children means "yes". Unselected, both tones are the same
+neutral text as any other trigger — the colour is the answer, not the offer.
+
+Listed in `gen-classlist.mjs`, because `CV` carries
+`data-[state=open|on|checked]` and not `active`, which is the state Radix Tabs
+stamps — a new colour on that state compiles to nothing otherwise (§19).
+## 74. The focus ring a closed menu left behind
+
+Reported from the connections list: open a row’s Workspaces menu with the
+mouse, close it, and the trigger is left wearing a focus ring — on one row of
+a table nobody is navigating with the keyboard, until the next click somewhere
+else. It reads as "this row is selected", which is a state that column already
+uses for something else.
+
+Radix returns focus to the trigger when an overlay closes, and it has to: a
+keyboard user who opened a menu from a row must land back on that row. It does
+it with a programmatic `focus()`, and Chrome answers a programmatic focus with
+`:focus-visible` — so the ring appears whether or not a keyboard was ever
+involved. The browser’s own heuristic is what is wrong here, which is why no
+stylesheet can fix it after the fact: by the time the ring is painted, the two
+cases are indistinguishable in CSS.
+
+So the component asks the question the heuristic cannot: `lib/focus-modality`
+keeps one boolean — was the last interaction this document saw a keystroke or a
+pointer — from a capture-phase `keydown`/`pointerdown` pair (modifier-only
+presses do not count, or holding Shift before a click would make that click a
+keyboard interaction). `DropdownMenuContent` now defaults `onCloseAutoFocus` to
+restoring focus **only for the keyboard**; for the pointer it calls
+`preventDefault`, which leaves focus where the click put it and no ring. A
+consumer’s own handler runs first and its `preventDefault` still wins.
+
+Kept deliberately narrow: this is the surface where it was reported, and the
+helper is exported so `Modal`, `Popover` and `Select` can take the same
+default when each one is looked at. `Autocomplete` already prevents the
+restore outright — which is the right answer for a field that keeps its own
+focus, and the wrong one for a menu on a table row.
+
+## 75. A stack of toasts, each a different width
+
+Three "connection OK" toasts from one bulk action stacked in the corner at
+317, 296 and 268px — measured — because each one had sized itself to its own
+message. Three ragged boxes down the edge of the screen read as three
+unrelated events; one column of one width reads as what it is, a log of the
+same action repeated.
+
+`Toaster` already declares `--width: 356px`, and sonner applies it to toasts it
+styles itself. `toast.custom` — which is how every toast in this system is
+built, because the body is our own `ToastMessage` — is `data-styled="false"`,
+so it fell through to fitting its content. `createToast` now passes
+`style: { width: var(--width) }`, so the Toaster keeps ownership of the number
+and an explicit `width` option still overrides it.
+
+## 76. A clickable row kept the text cursor
+
+`data-interactive` on `TableRow` is how a table says a row opens something, and
+it already carried three fills: hover, pressed and focus, all painted on the
+cells because a `<tr>` background renders under every `<td>`. It carried no
+**cursor**. So the one row state whose entire meaning is "this is pressable"
+answered the pointer with a text caret: the fill said pressable and the cursor
+said selectable text, on the same pixel.
+
+It went unnoticed because consumers documented it as though it were there — the
+connections list has a comment promising "`data-interactive` — the hover fill
+and the pointer cursor" — and no rule emitted one.
+
+`data-[interactive]:cursor-pointer` on the row, and the class enumerated in
+`gen-classlist.mjs`: the `cursor-*` cross there carries `disabled:` and nothing
+else, so a `data-[…]` variant of it is never compiled unless it is named (§19).
+
+On the row rather than on the cells, unlike the fills: a cursor is not painted,
+so it inherits, and the row is the thing being described.
+
+## 77. The one control on a catalog tile could not be hovered
+
+`DataSourceCard` reveals its `Connect` action on hover inside a scrim, and the
+scrim is `pointer-events-none` so the tile itself stays the click target. The
+action inherited that, so the only button in the system that stayed completely
+flat under the cursor was the one the whole tile exists to offer. Reported as
+*"why is there no hover on the buttons"*.
+
+`pointer-events-auto` on the action. It is still not the click target — a
+click on it bubbles to the tile, which is the button, and it keeps
+`tabIndex={-1}` and stays a `<span>` because a button inside a button is
+invalid. All it takes back is the pointer, which is all a hover state needs.
+
+## 78. A list item that could only ever be one line
+
+`Card variant="row"` is the product’s clickable list item, and it carried `h-11`.
+44px is right for the row it was drawn from — one line of `text-sm` — but a fixed
+height states it as a ceiling as well as a floor, so the first consumer with a
+name over a description had two bad choices: clip, or argue the component out of
+its own height at the call site. The connection form did the second, with
+`h-auto min-h-11 items-start py-3` — three layout classes to undo one.
+
+The size is **padding** now: `px-4 py-3`, and no height at all. One line of
+`text-sm` is 20px, plus 12 above and below, is the same 44 — so nothing that used
+the row before changes height — and two lines grow to 64 instead of being cut off.
+A list item does not know how many lines its consumer has; it knows how much air
+belongs around them.
+
+The horizontal inset is its own decision and it is 16, not the 12 the fixed-height
+version carried: 12 read as tight the moment the row held two lines, and 16 is
+where text starts from the edge in every other card in the system.
+
+Nothing else in the variant changes: the pointer, the hover fill, the focus ring,
+the press scale and the `:has()` guard that keeps the press off the card while a
+button inside it is pressed or its menu is open are what make this a component
+rather than a bordered div, and they are why the call site should not have been
+reaching for its own box in the first place.
+
+## 79. New — `UploadTray` · **DRAFT**
+
+`src/components/UploadTray/index.tsx`
+
+The plate production raises on `/files` after an upload — a summary bar that
+expands into the per-file list, plus a dismiss ✕. The kit specifies it in full
+(`.upl-tray`); the package had nothing, so any page needing it would have built
+a card, a header row and a list by hand.
+
+Copied rather than designed. Two parts of the kit's contract are load-bearing
+and both are easy to lose:
+
+**The whole bar except the ✕ is the expand target, and the ✕ is its sibling.**
+Nesting the dismiss inside the head is invalid markup and unreachable by
+keyboard. The chevron is a state indicator only — it flips off the head's own
+`aria-expanded`, so the visual cannot disagree with what is announced.
+
+**The plate is positioning-neutral.** A width and a cap, no placement. The page
+docks it, the same division of labour `MetaRow` uses, and that is what lets one
+plate serve a drawer, a panel and the bottom of a screen.
+
+**Nothing in it is colour-only.** The summary glyph carries the batch outcome —
+brand and spinning while uploading, green complete, red failed — and the title
+says it in words beside it ("1 of 5 uploads failed"). A failed row says it three
+ways: glyph, a 5% red tint, and the sentence in `error`.
+
+**The spinner is a prop: `spinner` (draft, default `true`).** The three
+statuses the kit specifies all assume a transfer — something is moving, or it
+finished, or it broke — and the glyph for the first of them turns. A batch can
+also be open and stopped on the PERSON, and the first such plate outside
+`/files` is one: a connection form tracking which workspaces still have no
+scope, where nothing advances until somebody goes and sets one. There the
+loader promised progress nothing was making and, left on screen, read as an
+upload that had hung — the one meaning a spinner must never carry. So the
+status stays `uploading` and the turning is what the page decides: same ring,
+same place, and the title still counts in words beside it.
+
+A fourth status (`waiting`, still glyph, neutral ink) was tried first and
+replaced by this: the fact in question is whether anything is moving, not what
+kind of outcome the batch has, and a status is for outcomes.
+
+One deviation from the package's own habits, and it is the kit's reasoning: the
+head's focus ring is **inset**. The plate is `overflow: hidden` so its corners
+clip, and the package's usual offset ring on a full-bleed bar would be clipped
+away with them.
+
+**It can clear itself, and that is a prop rather than a habit.** `autoDismiss`
+is off by default: a plate that empties itself is right for a background upload
+nobody is watching and wrong for one they are, so the page decides. With it on,
+a row that reaches `done` is marked, waits, then fades out taking its own height
+with it; when the last row goes the plate follows and `onDismiss` fires. A
+`failed` row never retires — it is the only row still waiting for an answer.
+
+Two details there are the kind that pass review and fail in use. Reduced motion
+**shortens** the exit rather than removing it, because a row retires on
+`animationend` and `motion-reduce:animate-none` would leave every row on screen
+for ever. And `animationend` bubbles, so the plate accepts only its own — the
+first row to finish would otherwise dismiss the whole plate.
+
+Three classes are enumerated in `gen-classlist.mjs` — `max-w-[26rem]`,
+`rounded-[0.625rem]` and the chevron's `aria-expanded` selector. All three are
+values the kit states and no scale carries, so nothing derives them and §19
+would otherwise ship the plate full-width with square corners.
+
+## 80. A disabled `secondary` still had a surface
+
+`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+
+Reported as 'disable secondary should have no fill'. It had one — just not the
+obvious one. The package had already refused the kit's `--state-disabled` here,
+on the reasoning that swapping an opaque grey in for the chip's own surface
+reads as a different control rather than as this one switched off. What it kept
+instead was `--surface-card`: white.
+
+Which is a fill, and a worse one for being conditional on where it lands. On a
+white card it is invisible and the argument for keeping it never comes up; on a
+tinted surface — a chips row, a banner, a table header — the same disabled
+button reads as a white card of its own, switched off and yet the brightest
+thing in the row.
+
+Transparent is the one answer that holds on every surface, and it is what
+`outline` has always done. The border and the inactive label carry the state.
+Measured after: `rgba(0, 0, 0, 0)` with the border at `--btn-secondary-border`
+and the label at `--ink-inactive`; `primary` still takes `--state-disabled`,
+because a filled button switched off has nothing else to be.
+
+**Still a divergence from the kit**, now a wider one: `.s-disabled.btn-secondary`
+paints `--state-disabled`. It is recorded here rather than argued in a class
+string.
+
+## 81. `CodeBlock` scrolled with the browser's own bar
+
+`src/components/CodeBlock/index.tsx`
+
+A command wider than the block got a horizontal scrollbar, and it was the
+platform's: on Windows a 16px trough with stepper arrows at both ends, drawn
+under a block whose own radius is 4px and whose only other control is a 20px
+copy button. Every other scroller the package ships is the kit's hairline —
+`DropdownMenuContent`, `Autocomplete`'s list, `UploadTray`'s rows all carry
+`scrollbar-thin` — so the code block was the one place where a scroller looked
+like the operating system rather than like the kit.
+
+It is not a new decision. The preset's own note says `scrollbar-thin` was copied
+from `.cl-menu-scroll` / `.cl-mention-list` / **`.cp-code-pre`** in
+`kit-theme.css`: the code block is one of the three rules the utility came FROM,
+and the React component simply never applied it. One class on the `<pre>`:
+
+```
+'scrollbar-thin overflow-x-auto whitespace-pre'
+```
+
+10px track, 4px thumb inset by a transparent 3px border, `--stroke-border` at
+rest and `--ink-inactive` on hover — the same bar as every menu in the package,
+with the hit area a pointer can still find.
+
 ## 38. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
@@ -2076,7 +2558,10 @@ does, and it keeps the decision beside the column it applies to.
 
 ## 44. The icon surface
 
-Four things, one of which is the reason the other three would not have shipped.
+Three things, one of which is the reason the other two would not have shipped.
+
+(A fourth — an ink rule on the leading glyph — is in the archive: it was
+invented inside the package and stepped away from the kit.)
 
 ### The ladder stops at 20px, and the type at 16px
 
@@ -2107,21 +2592,6 @@ and beats the `size-4` written on the icon. The eye sits inside an
 
 Fix: stop writing sizes on icons. The lock carries no size class; the toggle
 takes the field's step as the `IconButton`'s `size` prop.
-
-### The leading glyph takes the placeholder's ink
-
-```
-[&>svg]:text-ink-inactive          decorative glyph
-[&>button]:text-ink-secondary      docked control, rest
-[&>button:hover]:text-ink-body     docked control, hover
-```
-
-An empty field should be one weight of grey, not two. Scoped to the addon's
-direct `svg` so addon text and a `kbd` keep the addon's colour. Written as
-`[&>button]` because a nested `IconButton` sets its own `text-ink-body`.
-
-A deliberate step away from the kit, which puts the leading glyph on
-`--ink-secondary`.
 
 ### `xs` field edge — 6px, reverted to 8px
 

@@ -87,9 +87,9 @@ cross(['gap', 'gap-x', 'gap-y', 'space-x', 'space-y'], SPACE, S);
 const SIZE = [...SPACE, 'full', 'screen', 'min', 'max', 'fit', 'dvh', 'svh', 'lvh',
   '1/2', '1/3', '2/3', '1/4', '3/4', '1/5', '2/5', '3/5', '4/5', '1/6', '5/6', '11/12'];
 cross(['w', 'h', 'size', 'min-w', 'min-h', 'basis'], SIZE, S);
-cross(['max-w'], [...SIZE, 'modal-sm', 'modal-md', 'modal-lg', 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl',
+cross(['max-w'], [...SIZE, 'modal-sm', 'modal-md', 'modal-lg', 'modal-xl', 'none', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl',
   '5xl', '6xl', '7xl', 'prose'], S);
-cross(['max-h'], SIZE, S);
+cross(['max-h'], [...SIZE, 'modal'], S); /* `modal` is the 80% dialog cap (`--modal-max-h`). */
 cross(['top', 'right', 'bottom', 'left', 'inset', 'inset-x', 'inset-y', 'start', 'end'],
   [...SPACE, 'full', '1/2'], S);
 cross(['translate-x', 'translate-y', '-translate-x', '-translate-y'],
@@ -194,6 +194,10 @@ for (const r of ['0', '1', '2', '3', '6', '12', '45', '90', '180']) {
 }
 for (const c of ['auto', 'default', 'pointer', 'wait', 'text', 'move', 'help',
   'not-allowed', 'none', 'grab', 'grabbing']) add(`cursor-${c}`, `disabled:cursor-${c}`);
+/* `TableRow` reads its own attribute for the pointer: a clickable row is
+   declared with `data-interactive` and the cursor has to follow it, and the
+   `cursor-*` cross above carries no `data-[...]` variant. */
+add('data-[interactive]:cursor-pointer');
 for (const s of ['none', 'text', 'all', 'auto']) add(`select-${s}`);
 for (const p of ['none', 'auto']) add(`pointer-events-${p}`, `disabled:pointer-events-${p}`);
 add('sr-only', 'not-sr-only', 'isolate', 'container', 'resize', 'resize-none',
@@ -211,6 +215,39 @@ for (const b of ['none', 'sm', '', 'md', 'lg', 'xl', '2xl', '3xl']) {
    failure mode this list creates, so anything relying on a variant must be
    added deliberately. */
 add('empty:pb-0', 'empty:pt-0', 'empty:hidden');
+
+
+/* The segmented control's DRAFT `tone` (§73): a selected half that means
+   included or excluded rather than merely "this one". `CV` above carries
+   `data-[state=open|on|checked]` but not `active`, which is the state Radix
+   Tabs stamps — the neutral pill's own active classes come from elsewhere in
+   this file, so a new colour on that state compiles to nothing unless it is
+   listed here. */
+add(
+  'data-[state=active]:bg-fb-green',
+  'data-[state=active]:bg-fb-red',
+  'data-[state=active]:text-content-on-solid',
+  'data-[state=active]:shadow-none'
+);
+
+/* Switching a hover recipe off again when the control is disabled (§66).
+
+   `CV` above enumerates ONE variant at a time, so nothing in it produces a
+   stacked `disabled:hover:*` — and `Button` and `IconButton` need exactly that:
+   `:hover` still matches a disabled button, so each variant has to restate its
+   resting colours at `:disabled:hover` to beat its own `hover:` rule. Without
+   these six the JS names the classes, the CSS has no rules behind them, and a
+   switched-off button lights up under the pointer exactly as it did before the
+   fix. Six by hand rather than a stacked cross product: the full one is what
+   pushed the sheet past 7MB. */
+add(
+  'disabled:hover:bg-state-disabled',
+  'disabled:hover:bg-surface-card',
+  'disabled:hover:bg-transparent',
+  'disabled:hover:border-btn-secondary-border',
+  'disabled:hover:border-ink-inactive',
+  'disabled:hover:text-ink-inactive'
+);
 
 /* The table's truncation clamp. A cell wraps by default so the row grows with
    its content; only a `layout="fixed"` table clamps, because there the column
@@ -239,10 +276,27 @@ for (const step of ['3', '3.5', '4', '5', '6', '7', '8']) {
   add(`[&>svg]:size-${step}`, `[&_svg]:size-${step}`);
 }
 add(
-  '[&>svg]:text-ink-inactive',
-  '[&>button]:text-ink-secondary',
+  /* The kit's two scrollbars, as preset utilities. Named here because nothing
+     derives them: a plugin utility only ships if something asks for it. */
+  'scrollbar-thin',
+  'scrollbar-none',
+  /* `.empty-msg` — the kit caps the empty state's message at 32ch and balances
+     it. An arbitrary value, so nothing derives it. */
+  'max-w-[32ch]',
+  'text-balance',
+  /* UploadTray — the kit's own plate width and radius, neither on a scale. */
+  'max-w-[26rem]',
+  'w-[26rem]',
+  'rounded-[0.625rem]',
+  'animate-row-out',
+  'group-hover/head:text-ink-icon-hover',
+  'animate-panel-out',
+  'motion-reduce:[animation-duration:1ms]',
+  '[&[aria-expanded=true]_[data-slot=upload-tray-chevron]]:rotate-180',
+  /* The field's docked control, by the names the kit uses for it. */
+  '[&>button]:text-ink-icon',
   '[&>button]:transition-colors',
-  '[&>button:hover]:text-ink-body',
+  '[&>button:hover]:text-ink-icon-hover',
   '[&_svg]:pointer-events-none',
   '[&_svg]:shrink-0',
   '[&>svg]:shrink-0',

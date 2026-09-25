@@ -35,6 +35,14 @@ function SidebarBrand({ className, ref, ...props }: ComponentProps<'div'>) {
       data-sidebar="brand"
       className={cn(
         'flex h-8 min-w-0 items-center justify-between gap-2',
+        // Collapsed to icons the row is 32px wide, and a 20px mark, a name and a
+        // 24px control cannot share that. What survives is the TRAILING control,
+        // centred: in that state it is the one thing the row is for — the way
+        // back out of the collapsed sidebar. The mark and the name go with the
+        // width they needed, the same way `SidebarMenuButton` drops its label
+        // and keeps its icon.
+        'group-data-[collapsible=icon]:justify-center',
+        'group-data-[collapsible=icon]:[&>*:first-child]:hidden',
         className
       )}
       {...props}

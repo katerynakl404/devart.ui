@@ -93,7 +93,11 @@ function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={contextValue}>
-      <TooltipProvider delayDuration={500}>
+      {/* No delay override. The package's own 300ms is the kit's value, and a
+          collapsed rail is the surface with the strongest claim on it: the icon
+          is the only label there, so the tooltip is not extra information, it
+          is the name of the row. 500 made the rail feel unlabelled. */}
+      <TooltipProvider>
         <div
           style={style}
           className={cn(

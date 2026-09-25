@@ -9,9 +9,16 @@
   /* Dialog widths — a dialog is sized by what it holds, not one width for
      all. S: a confirm the user only reads and answers. M (the default):
      anything the user fills in. L: the multi-step wizard. */
+  /* A dialog never takes the whole window: there has to be page visible
+     around it, or it reads as a screen rather than as something ON a screen.
+     80% leaves that margin at every window height, and the body scrolls
+     inside it — see ModalContent. */
+  --modal-max-h: 80dvh;
   --modal-w-sm: 22.5rem;
   --modal-w-md: 30rem;
   --modal-w-lg: 36rem;
+  /* DRAFT — see ModalContent: a dialog holding a tree or a table, not a form. */
+  --modal-w-xl: 56rem;
   --sidebar-width: 16rem;
   /* 48px = 8 + 32 + 8: the nav container's own inset on both sides of a 32px
      collapsed row. At the previous 3.563rem (57px) the row sat 8 from the left

@@ -21,10 +21,20 @@ import { ModalPortal } from './ModalPortal';
 const DEFAULT_CLOSE_LABEL = 'Close';
 
 /**
- * A dialog is sized by what it holds. Three steps, and every dialog maps to
+ * A dialog is sized by what it holds. Four steps, and every dialog maps to
  * one: `sm` for a confirm the user only reads and answers, `md` (the default)
  * for anything the user fills in, `lg` for a multi-step wizard. Rename is
  * `md`, not `sm` — the user types into it, so it is a form, not a confirm.
+ *
+ * `xl` is **DRAFT**: 56rem, for a dialog holding a TABLE or a TREE rather than
+ * a form. The three sizes above top out at 36rem, which is a column of fields;
+ * a tree row carries a name, a count and a control, and at 36rem the name
+ * truncates to one word. The step from 36 to 56 is the same ratio as the ones
+ * below it, and 56rem still leaves a page gutter on a 1280px window.
+ *
+ * It is a last resort. A surface this wide covering the page is usually the
+ * sign that the thing belongs on a screen of its own, so a case for `xl` has
+ * to say why the user must not lose the context behind it.
  */
 export const modalContentVariants = cva(null, {
   variants: {
@@ -32,6 +42,7 @@ export const modalContentVariants = cva(null, {
       sm: 'max-w-modal-sm',
       md: 'max-w-modal-md',
       lg: 'max-w-modal-lg',
+      xl: 'max-w-modal-xl',
     },
   },
   defaultVariants: { size: 'md' },
@@ -66,7 +77,12 @@ export function ModalContent({
         ref={ref}
         aria-describedby={undefined}
         className={cn(
-          'flex max-h-[90dvh] flex-col',
+          // `max-h-modal` — 80% of the window, from `--modal-max-h`. It was an
+          // arbitrary `max-h-[90dvh]`: a number in a class rather than a token,
+          // and 90% left so little page around a tall dialog that the dialog
+          // read as the screen. The body scrolls inside the cap (`ModalBody`),
+          // so a dialog can hold a long tree without growing past it.
+          'flex max-h-modal flex-col',
           modalContentVariants({ size }),
           'fixed top-1/2 left-1/2 z-[100] w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2',
           'rounded-2xl',

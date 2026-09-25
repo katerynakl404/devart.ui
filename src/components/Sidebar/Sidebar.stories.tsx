@@ -22,6 +22,7 @@ import {
 import { Typography } from '../Typography';
 import {
   Sidebar,
+  SidebarBrand,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
@@ -39,11 +40,27 @@ import {
 } from './index';
 import type { NavigationElement } from './types';
 
+/**
+ * The header row, as the library ships it.
+ *
+ * It was a bare `div` with its own `px-2` and an `h5`. Two things were wrong
+ * with that and both only showed collapsed: the inset stacked on
+ * `SidebarHeader`'s own, and nothing hid the name — so "Header" ran straight
+ * across a 48px rail and over the page behind it.
+ *
+ * `SidebarBrand` is the part for this. It hides its first child when the rail
+ * collapses and keeps the trailing control, which is the way back out.
+ */
 const SidebarStoryHeader = () => (
-  <div className="flex items-center gap-2 px-2">
-    <LayoutDashboard className="size-5 shrink-0 text-brand-primary" />
-    <Typography variant="h5">Header</Typography>
-  </div>
+  <SidebarBrand>
+    <span className="flex min-w-0 items-center gap-2">
+      <LayoutDashboard className="size-5 shrink-0 text-brand-primary" />
+      <Typography className="truncate" element="span" textStyle="title14">
+        Header
+      </Typography>
+    </span>
+    <SidebarTrigger size="xs" variant="tertiary" />
+  </SidebarBrand>
 );
 
 // Realistic app navigation: single links + a collapsible group with sub-items.
@@ -122,7 +139,7 @@ export const Expanded: Story = {
           <SidebarNavigationItems items={navigation} />
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center gap-2 px-2">
+          <div className="flex items-center gap-2">
             <Settings className="size-4" />
             <Typography variant="span" textColor="secondary">
               Settings

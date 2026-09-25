@@ -28,7 +28,7 @@ const STATE_LABEL: Record<ChangeState, string> = {
   'docs-only': 'Documentation only',
   proposed: 'Proposed — not made yet',
   'not-a-library-change': 'Not a library change',
-  draft: 'Draft — tied to an unchosen concept',
+  draft: 'Draft',
 };
 
 const STATE_CLASS: Record<ChangeState, string> = {
