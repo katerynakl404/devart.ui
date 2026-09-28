@@ -16,6 +16,21 @@ export interface PaginationProps {
   boundaryCount: number;
   showFirstLast: boolean;
   showPrevNext: boolean;
+  /**
+   * Draw the numbered page buttons. **Draft.**
+   *
+   * On for everything that is paged by the reader: a page number is a
+   * destination, and a list somebody searches through needs to be able to jump.
+   *
+   * Off for a stream that is read in order — a log, a transcript, an audit
+   * trail — where "page 3" names nothing the reader was looking for. There the
+   * numbers are three buttons that all do the same thing as Next, and the one
+   * of them that is already current does nothing at all. The range beside the
+   * control ("Showing 51–100 of 118") keeps the reader's place; Prev and Next
+   * move it. Pair it with `showFirstLast={false}`, or First and Last are jumps
+   * of their own.
+   */
+  showPageNumbers?: boolean;
   onPageChange: (page: number) => void;
   /** Accessible labels for the navigation buttons, overriding their defaults. */
   labels?: {
@@ -34,6 +49,7 @@ const Pagination = ({
   boundaryCount = 1,
   showFirstLast = true,
   showPrevNext = true,
+  showPageNumbers = true,
   labels,
 }: PaginationProps) => {
   const paginationRange = useMemo(
@@ -68,18 +84,19 @@ const Pagination = ({
         />
       )}
 
-      {paginationRange.map((item) =>
-        isEllipsisItem(item) ? (
-          <EllipsisIndicator key={item} />
-        ) : (
-          <PageButton
-            key={item}
-            page={item}
-            isActive={currentPage === item}
-            onClick={() => onPageChange(item)}
-          />
-        )
-      )}
+      {showPageNumbers &&
+        paginationRange.map((item) =>
+          isEllipsisItem(item) ? (
+            <EllipsisIndicator key={item} />
+          ) : (
+            <PageButton
+              key={item}
+              page={item}
+              isActive={currentPage === item}
+              onClick={() => onPageChange(item)}
+            />
+          )
+        )}
 
       {showPrevNext && (
         <NextButton

@@ -104,6 +104,8 @@ off — nothing should be built on it yet.
 | §78 | `Card` | `variant="row"` stated its height as a ceiling as well as a floor |
 | §79 | `UploadTray` | **new** — the upload plate production raises on /files · **draft** |
 | §80 | `Button` / `IconButton` | a disabled `secondary` still had a surface — white, and invisible only on white |
+| §81 | `Banner` | the dismiss was a tertiary button on a painting |
+| §82 | `Pagination` | a stream read in order has no use for page numbers · **draft** |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -2385,6 +2387,58 @@ and the React component simply never applied it. One class on the `<pre>`:
 10px track, 4px thumb inset by a transparent 3px border, `--stroke-border` at
 rest and `--ink-inactive` on hover — the same bar as every menu in the package,
 with the hit area a pointer can still find.
+
+## 81. The banner's dismiss was a tertiary button on a painting
+
+`src/components/Banner/index.tsx`
+
+`.banner-close` fills on hover in the kit (`--state-hover`). On the solid
+variant that is quiet enough to pass unnoticed; on the gradient ones it is a
+pale box sitting on the artwork, and the ✕ stops reading as part of the banner
+and starts reading as a control stuck onto it.
+
+It answers with colour now and nothing else — `--ink-icon` to
+`--ink-icon-hover` on the solid variant, `--banner-grad-sub` to
+`--banner-grad-text` on the gradients. The 32px box stays: it is the hit area,
+and a 16px glyph is not one. Measured after: background `rgba(0, 0, 0, 0)` on
+both, ink `rgb(90, 106, 128)` solid and white at 80% on the gradient.
+
+Third component on the same rule, after `InputGroupAction` (§45) and
+`UploadTray`: an icon docked on a surface that already owns hover does not get
+a surface of its own. Deliberate divergence from the kit, recorded here rather
+than argued in a class string.
+
+## 82. `Pagination` — a stream read in order has no use for page numbers · **DRAFT**
+
+`src/components/Pagination/index.tsx`
+
+New prop: `showPageNumbers` (default `true`, so nothing that exists moves).
+
+The component always drew the numbered buttons. That is right wherever a page
+number is a DESTINATION — a table somebody searches, sorts and comes back to,
+where "page 4" is a place you meant to be. It is wrong for a stream that is read
+in order. A connection's log is the case that raised it: three pages, three
+number buttons, all of them doing what Next does, and the one that is current
+doing nothing at all. What keeps the reader's place there is the range beside
+the control — *Showing 51–100 of 118* — and what moves it is Prev and Next.
+
+```jsx
+<Pagination
+  currentPage={page}
+  totalPages={pages}
+  onPageChange={setPage}
+  showFirstLast={false}
+  showPageNumbers={false}
+/>
+```
+
+Pair it with `showFirstLast={false}`: First and Last are jumps of the same kind,
+and leaving them in while the numbers go is half a decision.
+
+**Numbering.** §81 is used twice in this file — `CodeBlock`'s scrollbar (landed)
+and a `Banner` dismiss written in a parallel session. Two sessions took the next
+free number at the same time. This takes §82, and one of the two §81s needs
+renumbering by whoever owns the second.
 
 ## 38. `StepSlider` — four measurements against a spec that argues for each one
 
