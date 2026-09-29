@@ -4,10 +4,44 @@ import type { Preview, ReactRenderer } from '@storybook/react-vite';
 
 import './tailwind.css';
 import '../globals.css';
+// After globals.css, which is the whole mechanism: a pack is `:root[data-palette]`
+// (0,2,0) and beats the plain `:root` it overrides. Load it first and nothing
+// would change.
+import '../palettes.css';
 import '../fonts.css';
 import './preview.css';
 
+/**
+ * The colour packs, as a toolbar switch.
+ *
+ * A pack redeclares Layer 1 and nothing else, so there is nothing to wrap a
+ * story in — the attribute goes on the preview's own `<html>` and every token
+ * above the ramps re-resolves. That is also what this control is for: it is the
+ * only way to see that a component really does read roles rather than shades,
+ * since a component that pinned itself to a ramp step stays teal while the page
+ * around it moves.
+ */
+const PACKS = [
+  { value: '', title: 'Teal (default)' },
+  { value: 'azure', title: 'Azure' },
+  { value: 'blue', title: 'Blue' },
+  { value: 'indigo', title: 'Indigo' },
+  { value: 'iris', title: 'Iris' },
+] as const;
+
 const preview: Preview = {
+  globalTypes: {
+    palette: {
+      description: 'Colour pack',
+      defaultValue: '',
+      toolbar: {
+        title: 'Palette',
+        icon: 'paintbrush',
+        items: [...PACKS],
+        dynamicTitle: true,
+      },
+    },
+  },
   parameters: {
     controls: {
       matchers: {
@@ -29,6 +63,12 @@ const preview: Preview = {
     },
   },
   decorators: [
+    (Story, context) => {
+      const pack = context.globals.palette as string;
+      if (pack) document.documentElement.dataset.palette = pack;
+      else document.documentElement.removeAttribute('data-palette');
+      return <Story />;
+    },
     withThemeByClassName<ReactRenderer>({
       themes: {
         light: '',

@@ -18,6 +18,7 @@
     "dist",
     "globals.css",
     "fonts.css",
+    "palettes.css",
     "fonts",
     "LICENSE",
     "README.md"
@@ -33,6 +34,7 @@
     "format-and-lint:fix": "biome check . --write",
     "changeset": "changeset",
     "check-changeset": "node scripts/check-changeset.mjs",
+    "gen-palettes": "node scripts/gen-palettes.mjs",
     "check-stories": "node scripts/check-story-coverage.mjs",
     "smoke": "node scripts/smoke/verify-consumer.mjs",
     "version-packages": "changeset version",
@@ -43,6 +45,7 @@
     "./tailwind-preset": "./src/tailwind-preset.ts",
     "./globals.css": "./globals.css",
     "./fonts.css": "./fonts.css",
+    "./palettes.css": "./palettes.css",
     "./package.json": "./package.json",
     "./cn": {
       "source": "./src/lib/utils.ts",
@@ -75,6 +78,7 @@
       },
       "./globals.css": "./globals.css",
       "./fonts.css": "./fonts.css",
+      "./palettes.css": "./palettes.css",
       "./package.json": "./package.json",
       "./cn": {
         "types": "./dist/lib/utils.d.ts",

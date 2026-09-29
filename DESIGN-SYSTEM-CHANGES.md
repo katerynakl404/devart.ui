@@ -107,6 +107,7 @@ off — nothing should be built on it yet.
 | §81 | `Banner` | the dismiss was a tertiary button on a painting |
 | §82 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
 | §83 | `Badge` | `leading-none` clipped every descender the pill contained |
+| §84 | `palettes.css` | **new** — colour packs: Layer 1 redeclared, the rest re-resolves · **draft** |
 | §82 | `Pagination` | a stream read in order has no use for page numbers · **draft** |
 | §84 | class list | a bulleted list and the last band of a stack had no way to ask for themselves |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
@@ -2534,6 +2535,46 @@ is what both of these were.
 numbers have collided twice: two §81s (a `CodeBlock` scrollbar and a `Banner`
 dismiss) and two §82/§83 pairs around `Badge`. This took §84 to stay out of the
 way; the duplicates need renumbering by whoever owns them.
+
+## 84. New — colour packs (`palettes.css`) · **DRAFT**
+
+`palettes.css`, `scripts/gen-palettes.mjs`
+
+The system could be recoloured all along; nothing shipped that did it. The AI
+connectivity prototype had worked this out and carried it locally, which meant
+the one piece of the token system with no consumer-facing lever lived outside
+the package. Ported, not redesigned.
+
+**A pack redeclares Layer 1 and nothing else** — the `--brand-*` and
+`--tertiary-*` ramps. Everything above re-resolves by itself, including every
+`color-mix()`: hover fills, card borders, toast tints, banner gradients, the
+pale fill behind a selected row. This is decision 3 paying for itself — no
+component can name a ramp step, so no component is touched to change the colour
+of the system.
+
+```html
+<html data-palette="iris">
+```
+
+Four packs — `azure`, `blue`, `indigo`, `iris` — and no attribute leaves teal,
+which the file does not declare. `:root[data-palette]` (0,2,0) beats `:root` and
+`.dark` (0,1,0); `:root[data-palette].dark` (0,3,0) beats the dark branch. So a
+pack needs no `!important` and no load order beyond coming second.
+
+Each pack takes the L and C profile of the default teal (C ≈ 0.09 in OKLCH) and
+rotates the hue only, so none is louder than teal, and the key steps are solved
+against contrast thresholds taken from the teal original. Feedback colours are
+not packed: red and attention stay loud, which is their job.
+
+Measured in Storybook: with `iris`, `--brand-600` and `--brand-primary` both
+move to `250.5 46.2% 56.3%` and a primary button renders `rgb(110, 92, 195)` —
+the #6E5CC3 the generator reports; with no attribute they are back to
+`179 89.6% 26.5%` and `rgb(7, 128, 126)`.
+
+The catalogue carries a **Palette** toolbar switch, and that is the point of it
+rather than a convenience: it is the only way to see a component that pinned
+itself to a ramp step, because that one stays teal while the page around it
+moves.
 
 ## 38. `StepSlider` — four measurements against a spec that argues for each one
 
