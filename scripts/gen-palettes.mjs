@@ -234,25 +234,23 @@ const buildRamp = (profile, hue) => {
 
    Warm packs are parked in ARCHIVED below — not generated, but not lost either:
    moving one back up here is a single line. */
+/*
+ * The packs the system ships. Teal is NOT here: it is the default that
+ * globals.css already declares, and a pack only exists to override it.
+ *
+ * One pack, deliberately. Azure, indigo and iris were generated too and are
+ * gone again — a palette list is a menu of decisions somebody has to make for
+ * every screen, and four of them made the choice look like a preference rather
+ * than a product. Adding one back is two lines and a regen; the solver and the
+ * contrast thresholds below are unchanged.
+ */
 const PACKS = [
   {
-    id: 'azure', label: 'Azure', hue: 240, tertiaryHue: 222,
-    note: 'A cool blue that still carries a note of cyan.',
-    extra: {},
-  },
-  {
-    id: 'blue', label: 'Blue', hue: 256, tertiaryHue: 238,
+    id: 'blue',
+    label: 'Blue',
+    hue: 256,
+    tertiaryHue: 238,
     note: 'Blue sitting exactly on the blue of the DS chart palette.',
-    extra: {},
-  },
-  {
-    id: 'indigo', label: 'Indigo', hue: 272, tertiaryHue: 252,
-    note: 'A deep blue leaning toward purple.',
-    extra: {},
-  },
-  {
-    id: 'iris', label: 'Iris', hue: 288, tertiaryHue: 305,
-    note: 'The purple that still remembers blue.',
     extra: {},
   },
 ];
@@ -382,7 +380,7 @@ const header = `/*
  *      @import '@devart/ui-react/globals.css';
  *      @import '@devart/ui-react/palettes.css';
  *
- *      <html data-palette="iris">
+ *      <html data-palette="blue">
  *
  *  With no attribute the system stays teal, which is the package's own default
  *  and is not declared here. \`:root[data-palette]\` (0,2,0) beats \`:root\` and

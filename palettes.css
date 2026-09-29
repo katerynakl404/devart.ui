@@ -22,7 +22,7 @@
  *      @import '@devart/ui-react/globals.css';
  *      @import '@devart/ui-react/palettes.css';
  *
- *      <html data-palette="iris">
+ *      <html data-palette="blue">
  *
  *  With no attribute the system stays teal, which is the package's own default
  *  and is not declared here. `:root[data-palette]` (0,2,0) beats `:root` and
@@ -44,42 +44,8 @@
  *  CONTRAST: the lightness of the key steps is solved against thresholds taken
  *  from the teal original, so no pack is worse than it:
  *
- *    azure    600 #1477AD C 0.118 4.92/white   500 #2287C1 4.50/dark   400 #269AD3 5.64/dark
  *    blue     600 #3870B8 C 0.128 5.03/white   500 #4681CF 4.50/dark   400 #4A94E2 5.63/dark
- *    indigo   600 #5467C1 C 0.142 5.14/white   500 #657ADC 4.56/dark   400 #6A8CF0 5.62/dark
- *    iris     600 #6E5CC3 C 0.156 5.27/white   500 #8270E0 4.54/dark   400 #8A82F7 5.62/dark
  */
-
-/* Azure — A cool blue that still carries a note of cyan. */
-:root[data-palette="azure"] {
-  /* Brand — L and C of the DS teal brand, hue changed and nothing else */
-  --brand-50: 220.0 60.0% 95.1%; /* #EBF0FA */
-  --brand-100: 223.6 52.4% 87.6%; /* #CFD8F0 */
-  --brand-200: 214.5 50.8% 74.5%; /* #9DB9DF */
-  --brand-300: 211.9 46.5% 60.4%; /* #6B97C9 */
-  --brand-400: 199.8 69.5% 48.8%; /* #269AD3 · on #17171E 5.64 */
-  --brand-500: 201.9 70.0% 44.5%; /* #2287C1 · on #17171E 4.50 */
-  --brand-600: 201.2 79.3% 37.8%; /* #1477AD · on white 4.92 */
-  --brand-700: 202.3 77.5% 31.4%; /* #12608E · on white 6.80 */
-  --brand-800: 220.0 34.1% 17.3%; /* #1D273B */
-  --brand-900: 222.9 38.2% 10.8%; /* #111726 */
-  --brand-50-soft: 217.5 44.4% 96.5%; /* #F2F5FA */
-  --brand-900-soft: 222.0 19.2% 10.2%; /* #15181F */
-
-  /* Tertiary — the brand's lighter relative (in the DS, teal → cyan) */
-  --tertiary-50: 200.0 81.8% 95.7%; /* #EBF7FD */
-  --tertiary-100: 197.0 86.9% 88.0%; /* #C6ECFB */
-  --tertiary-200: 196.0 87.8% 77.5%; /* #93DDF8 */
-  --tertiary-300: 195.4 84.1% 65.5%; /* #5DCBF1 */
-  --tertiary-400: 196.6 78.4% 56.5%; /* #39B7E7 · on #17171E 7.73 */
-  --tertiary-500: 196.5 67.6% 48.4%; /* #28A1CF · on #17171E 6.02 */
-  --tertiary-600: 197.0 81.3% 35.7%; /* #117BA5 · on white 4.77 */
-  --tertiary-700: 198.9 72.2% 31.0%; /* #166488 · on white 6.54 */
-  --tertiary-800: 202.4 57.2% 28.4%; /* #1F5372 */
-  --tertiary-900: 200.0 58.9% 22.0%; /* #174359 */
-  --tertiary-950: 206.5 58.9% 14.3%; /* #0F273A */
-
-}
 
 /* Blue — Blue sitting exactly on the blue of the DS chart palette. */
 :root[data-palette="blue"] {
@@ -109,67 +75,5 @@
   --tertiary-800: 212.7 46.7% 32.4%; /* #2C4F79 */
   --tertiary-900: 210.5 48.8% 25.3%; /* #214060 */
   --tertiary-950: 217.5 47.6% 16.5%; /* #16253E */
-
-}
-
-/* Indigo — A deep blue leaning toward purple. */
-:root[data-palette="indigo"] {
-  /* Brand — L and C of the DS teal brand, hue changed and nothing else */
-  --brand-50: 255.0 54.5% 95.7%; /* #F1EEFA */
-  --brand-100: 258.6 49.2% 88.4%; /* #DCD3F0 */
-  --brand-200: 244.5 50.5% 79.4%; /* #B4B0E5 */
-  --brand-300: 241.7 44.4% 68.2%; /* #8C8AD2 */
-  --brand-400: 224.8 81.7% 67.8%; /* #6A8CF0 · on #17171E 5.62 */
-  --brand-500: 229.4 63.0% 62.9%; /* #657ADC · on #17171E 4.56 */
-  --brand-600: 229.5 46.8% 54.3%; /* #5467C1 · on white 5.14 */
-  --brand-700: 230.6 39.2% 44.5%; /* #45539E · on white 7.04 */
-  --brand-800: 256.2 27.7% 18.4%; /* #29223C */
-  --brand-900: 262.1 33.3% 11.2%; /* #1A1326 */
-  --brand-50-soft: 252.0 29.4% 96.7%; /* #F5F4F9 */
-  --brand-900-soft: 248.6 13.2% 10.4%; /* #18171E */
-
-  /* Tertiary — the brand's lighter relative (in the DS, teal → cyan) */
-  --tertiary-50: 213.8 100.0% 96.9%; /* #EFF6FF */
-  --tertiary-100: 213.5 100.0% 91.6%; /* #D4E7FF */
-  --tertiary-200: 212.7 97.5% 84.5%; /* #B1D4FE */
-  --tertiary-300: 213.1 100.0% 77.3%; /* #8BBFFF */
-  --tertiary-400: 215.8 100.0% 71.8%; /* #6FA9FF · on #17171E 7.47 */
-  --tertiary-500: 216.4 76.1% 63.9%; /* #5D94E9 · on #17171E 5.84 */
-  --tertiary-600: 219.1 46.2% 51.2%; /* #4971BC · on white 4.80 */
-  --tertiary-700: 220.9 41.9% 42.5%; /* #3F5C9A · on white 6.54 */
-  --tertiary-800: 224.3 37.7% 35.9%; /* #394B7E */
-  --tertiary-900: 221.8 39.4% 27.8%; /* #2B3C63 */
-  --tertiary-950: 231.2 37.0% 18.0%; /* #1D223F */
-
-}
-
-/* Iris — The purple that still remembers blue. */
-:root[data-palette="iris"] {
-  /* Brand — L and C of the DS teal brand, hue changed and nothing else */
-  --brand-50: 275.0 50.0% 95.3%; /* #F4EDF9 */
-  --brand-100: 281.4 44.6% 87.3%; /* #E4D0ED */
-  --brand-200: 265.3 50.4% 77.8%; /* #C2AAE3 */
-  --brand-300: 262.3 45.3% 66.3%; /* #9F82D0 */
-  --brand-400: 244.1 88.0% 73.9%; /* #8A82F7 · on #17171E 5.62 */
-  --brand-500: 249.6 64.4% 65.9%; /* #8270E0 · on #17171E 4.54 */
-  --brand-600: 250.5 46.2% 56.3%; /* #6E5CC3 · on white 5.27 */
-  --brand-700: 251.3 36.5% 45.7%; /* #5A4A9F · on white 7.20 */
-  --brand-800: 275.6 30.3% 17.5%; /* #2F1F3A */
-  --brand-900: 281.1 35.8% 10.4%; /* #1E1124 */
-  --brand-50-soft: 270.0 22.2% 96.5%; /* #F6F4F8 */
-  --brand-900-soft: 270.0 11.5% 10.2%; /* #1A171D */
-
-  /* Tertiary — the brand's lighter relative (in the DS, teal → cyan) */
-  --tertiary-50: 267.7 100.0% 97.5%; /* #F8F2FF */
-  --tertiary-100: 268.2 100.0% 93.3%; /* #EDDDFF */
-  --tertiary-200: 268.0 100.0% 88.2%; /* #DFC3FF */
-  --tertiary-300: 270.7 100.0% 82.0%; /* #D2A3FF */
-  --tertiary-400: 276.9 100.0% 75.1%; /* #CE80FF · on #17171E 6.93 */
-  --tertiary-500: 278.3 68.8% 66.1%; /* #B96DE4 · on #17171E 5.41 */
-  --tertiary-600: 282.6 41.7% 52.9%; /* #9C55B9 · on white 4.76 */
-  --tertiary-700: 285.0 36.7% 42.7%; /* #814595 · on white 6.52 */
-  --tertiary-800: 290.2 36.1% 33.1%; /* #693673 */
-  --tertiary-900: 286.5 35.8% 26.9%; /* #522C5D */
-  --tertiary-950: 301.8 42.9% 15.1%; /* #371636 */
 
 }

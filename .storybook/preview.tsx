@@ -23,10 +23,7 @@ import './preview.css';
  */
 const PACKS = [
   { value: '', title: 'Teal (default)' },
-  { value: 'azure', title: 'Azure' },
   { value: 'blue', title: 'Blue' },
-  { value: 'indigo', title: 'Indigo' },
-  { value: 'iris', title: 'Iris' },
 ] as const;
 
 const preview: Preview = {

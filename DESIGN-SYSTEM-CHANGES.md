@@ -2556,8 +2556,9 @@ of the system.
 <html data-palette="iris">
 ```
 
-Four packs — `azure`, `blue`, `indigo`, `iris` — and no attribute leaves teal,
-which the file does not declare. `:root[data-palette]` (0,2,0) beats `:root` and
+One pack — `blue` — and no attribute leaves teal, which the file does not
+declare. Azure, indigo and iris were generated and then dropped: four of them
+made the palette read as a preference rather than as a product. `:root[data-palette]` (0,2,0) beats `:root` and
 `.dark` (0,1,0); `:root[data-palette].dark` (0,3,0) beats the dark branch. So a
 pack needs no `!important` and no load order beyond coming second.
 
@@ -2566,9 +2567,8 @@ rotates the hue only, so none is louder than teal, and the key steps are solved
 against contrast thresholds taken from the teal original. Feedback colours are
 not packed: red and attention stay loud, which is their job.
 
-Measured in Storybook: with `iris`, `--brand-600` and `--brand-primary` both
-move to `250.5 46.2% 56.3%` and a primary button renders `rgb(110, 92, 195)` —
-the #6E5CC3 the generator reports; with no attribute they are back to
+Measured in Storybook: with `blue`, `--brand-600` and `--brand-primary` both
+move to the pack's #3870B8; with no attribute they are back to
 `179 89.6% 26.5%` and `rgb(7, 128, 126)`.
 
 The catalogue carries a **Palette** toolbar switch, and that is the point of it

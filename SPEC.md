@@ -331,8 +331,11 @@ component has to be touched to change the colour of the whole system.
 <html data-palette="iris">
 ```
 
-Four packs ship — `azure`, `blue`, `indigo`, `iris` — and no attribute leaves
-the system on its own teal, which the file does not declare.
+One pack ships — `blue` — and no attribute leaves the system on its own teal,
+which the file does not declare. A palette list is a menu of decisions somebody
+has to make for every screen, and a long one makes the choice read as a
+preference rather than as a product; adding a pack back is two lines in the
+generator and a regen.
 `:root[data-palette]` (0,2,0) beats `:root` and `.dark` (0,1,0), and
 `:root[data-palette].dark` (0,3,0) beats the dark branch, so a pack needs no
 `!important` and no load-order luck beyond coming second.
