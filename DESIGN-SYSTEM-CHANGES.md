@@ -2697,3 +2697,296 @@ than "fixed": the kit's `Accordion` is *"an instant show/hide (no CSS
 transition)"*, while the package animates with `accordion-up` / `accordion-down`.
 The kit is describing production; the animation is an improvement, but it is a
 divergence from the agreed reference and should be ratified, not assumed.
+
+## 84. The class list — a list with markers, and the last band of a stack
+
+`.design-sync/gen-classlist.mjs`
+
+Six utilities added, because a consumer had no way to write two ordinary things
+and the compiled sheet turned both into silent no-ops:
+
+```
+list-disc  list-decimal  list-none
+last:border-b-0  last:border-0  first:border-t-0
+```
+
+**The list.** The preflight strips markers from every `ul`, which is right —
+navigation and menus are lists too — but it leaves prose with no way back. The
+case that raised it is a troubleshooting panel whose *Potential causes* and
+*Suggested actions* are bulleted lists; they were written as `list-disc` and
+have been rendering without markers since, because the class was never
+enumerated.
+
+**The stack.** `border-b` on every band and `last:border-b-0` on the stack is
+the standard way to rule between bands without a trailing rule against the
+container's own edge. Without the `last:` half a consumer either builds the
+divider out of a separate element, or reaches for `not-last:` — a Tailwind v4
+variant this v3 bundle compiles to nothing. The settings panel in the
+connections prototype has been missing its dividers for exactly that reason.
+
+**Why enumeration and not a safelist**: the file's own note at the top. A class
+that is not in the list does not exist in the sheet, and nothing warns — which
+is what both of these were.
+
+**Numbering.** This file is being written by several sessions at once and the
+numbers have collided twice: two §81s (a `CodeBlock` scrollbar and a `Banner`
+dismiss) and two §82/§83 pairs around `Badge`. This took §84 to stay out of the
+way; the duplicates need renumbering by whoever owns them.
+
+## 38. `StepSlider` — four measurements against a spec that argues for each one
+
+*Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
+colliding with it.*
+
+`src/components/StepSlider/index.tsx`
+
+The kit's StepSlider entry is the most closely argued in the whole document: it
+builds the control as a member of the Switch family and gives a reason for every
+number. Four of them do not match.
+
+| | Kit | Package |
+|---|---|---|
+| Track fill | `--surface-card2` | `bg-surface-chips` |
+| Dot, at rest | 6px, `--ink-inactive` (4px at `sm`) | `size-1` = **4px**, `bg-ink-secondary` |
+| Dot, on hover | lifts to `--ink-secondary` | — no hover rule |
+| Width, default | **68px** (`2 + 3×1rem + 2×.5rem + 2`) | `w-20` = **80px** |
+| Hit area | 24×24 via `::before {inset:-4px}` on a 1rem slot | `before:-inset-2` on a 4px dot = **20×20** |
+
+The thumb is right — `size-4` / `size-3` matching Switch's 16/12px, with
+`shadow-thumb`, which is the part the kit cares most about ("the mark grows to
+fill its slot and becomes exactly the paired Switch's thumb"). So the family
+resemblance holds; the rail it sits on does not.
+
+**The dot colour is the one to fix first, because it collapses two states into
+one.** The kit picks `--ink-inactive` deliberately and shows its work: the
+obvious family choice, Switch's `--switch-off-bg`, gives *"1.34:1 on the
+`--surface-card2` rail (1.10:1 dark)"*, and since the dots **are** the other
+steps — the only cue that the control has three positions — WCAG 1.4.11's 3:1
+applies to them. Hover then *"lifts one step along the ink ramp → `--ink-secondary`"*.
+
+The package starts at `--ink-secondary`, which is where the kit's hover ends. So
+the rest state is one step too loud and the hover step does not exist: pointing
+at a dot changes nothing.
+
+**The hit area misses the floor the kit claims it clears.** `before:-inset-2`
+expands 8px around a 4px dot — 20×20, under WCAG 2.5.8's 24×24. The kit reaches
+24 by insetting 4px around a **16px slot**, not around the mark: *"the slot plus
+an invisible `::before` ring clears 24×24 on both axes without changing layout."*
+Same trick as `.swt::before`, which the package did implement correctly (§28 of
+the kit's Switch entry, `-inset-x-1 -inset-y-3`). The gap is that the dot here is
+the mark, not the slot — the constant-slot layer the kit describes was not built,
+which is also why the width came out at 80px instead of 68px.
+
+**The track token matters for one reason the kit names.** `--surface-card2` is
+*"one notch recessed from the popover's Surface/Card"*; `--surface-chips` is a
+step further still. On the composer popover — the shipped consumer — the control
+sits on Surface/Card, so the package's track reads as a deeper well than the
+design intends, and the 4px dots on it are what has to carry the contrast.
+
+None of these are visible in the published Storybook, which predates the
+component's current form; all four were read off the kit's rendered CSS and the
+package source side by side.
+
+## 40. The size ladder
+
+**The canonical ladder. Four sources carry this table and must agree:** this
+file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
+`Insightis/reports/2026-09-19-prod-interaction-states-migration.md` and
+`Insightis/pages/kit-theme.css`.
+
+| step | height | button padding | field padding | gap | label | glyph |
+|---|---|---|---|---|---|---|
+| xs | 28 | 8 | 8 | 4 | 12 | 14 |
+| sm | 32 | 12 | 12 | 6 | 14 | 16 |
+| md | 36 | 12 | 12 | 8 | 14 | 16 |
+| lg | 40 | **16** | 12 | 8 | 16 | 20 |
+| xl | 44 | **20** | 12 | 8 | 16 | 20 |
+
+The button opens out at `lg` and `xl`; the field family — `Input`,
+`InputGroup`, `Autocomplete`, `TextArea` — holds 12px. They share an edge at
+`xs`, `sm` and `md`, which is every step the product uses. The gap has three
+steps, not two. No half-steps.
+
+### What the package had
+
+| | was | is |
+|---|---|---|
+| `Button` padding | `px-2.5` = 10 at every step | 8 / 12 / 12 / 16 / 20 |
+| `Button` gap | `gap-1.5` = 6 at every step | 4 / 6 / 8 / 8 / 8 |
+| `Button` label | 12 at `xs`, 14 above it | 12 / 14 / 14 / 16 / 16 |
+| `Button` glyph | 12 at `xs`, 16 above it | 14 / 16 / 16 / 20 / 20 |
+| `IconButton` glyph | 16 / 12 / 16 / 20 / 20 / 20 for `2xs`…`xl` | 14 / 14 / 16 / 16 / 20 / 20 |
+
+Only the height was on a ladder. `IconButton` had no glyph ladder at all: 12px
+at `xs`, one step *below* the 16px it gave `2xs`.
+
+### The field is built differently from the kit, deliberately
+
+The kit has two field implementations and they put the inset in different
+places: `.field` carries it on the shell, `.igrp` carries it on the parts
+(`.igrp-add{padding-left:12px}`, `.igrp-input{padding:0 12px 0 8px}`). The
+package puts it on the shell in both cases, so one component owns the field
+edge. Rendered result is what has to match, and does.
+
+Field text also moved: `sm` 12 → 14, `lg`/`xl` 14 → 16. The `sm` step is a
+correction in its own right — the earlier "13 → 14" migration rounded it down to
+12, where the kit's `sm` field has always been Body M.
+
+## 42. `TableCell` — a row that could not grow, under a comment saying it could
+
+`src/components/Table/TableCell.tsx`, `.design-sync/gen-classlist.mjs`
+
+Against the published catalog the cell is one clipped line —
+`h-9 whitespace-nowrap p-2 text-xs`. This branch had already replaced that with
+a scoped truncation rule and a comment claiming it only bit under
+`layout="fixed"`; both are quoted below, and the comment was wrong:
+
+```diff
+- // Truncate rather than wrap. In an auto-layout table the column just
+- // widens, so this only bites under `layout="fixed"` — which is exactly
+- // where a long value must not blow its column open.
+- 'overflow-hidden text-ellipsis whitespace-nowrap',
++ '[[data-layout=fixed]_&]:overflow-hidden',
++ '[[data-layout=fixed]_&]:text-ellipsis',
++ '[[data-layout=fixed]_&]:whitespace-nowrap',
+```
+
+`white-space: nowrap` stops text wrapping whatever `table-layout` is in effect.
+Under `auto` the column widened instead and the table scrolled sideways; under
+`fixed` it ellipsised. **A two-line cell was unreachable in both modes** — so the
+row height was always one line plus padding, never the content.
+
+Twelve lines further down the same file says the opposite:
+
+> Height comes from the padding, never from an `h-*` lock — a two-line cell has
+> to be free to grow.
+
+Both comments were in the file at once. The class string won, and nothing
+contradicted it, because a row that never wraps looks deliberate.
+
+### What the reference does
+
+```css
+table.tbl td { padding: .625rem 1rem; border-bottom: 1px solid var(--stroke-border); color: var(--ink-body) }
+```
+
+No `white-space`, no `overflow`, no `text-overflow`. The cell wraps and the row
+grows. Truncation exists in the kit twice, and both are opt-ins next to the thing
+they affect:
+
+- `.ds-conn-tbl .ds-conn-cell-desc` — the one description column in the
+  Connections table, with `max-width:0` to make the ellipsis land;
+- `.cp-tbl-scroll table.tbl th, td` — the horizontally scrolling variant, where
+  wrapping would defeat the scroll.
+
+### Where the clamp belongs
+
+`layout="fixed"`, and only there. That mode takes its column widths from the
+first row and never re-measures, which is the case where a long value genuinely
+must not blow its column open — it is also the reason the prop exists (see
+`table-composition.md`). The scope is a descendant selector on the `data-layout`
+attribute the `Table` root already stamps, so the cell needs no new prop and no
+context.
+
+### The enumeration is part of the fix, not an afterthought
+
+`[[data-layout=fixed]_&]:` is an arbitrary variant. Nothing in
+`gen-classlist.mjs` generates that prefix, so all three classes are listed by
+hand — §19's failure mode exactly: un-enumerated, they compile to nothing in the
+`ds-bundle` and a fixed-layout table silently stops truncating, with Storybook
+still showing it working because Storybook compiles from source.
+
+### Breaking
+
+A table relying on single-line rows gets taller rows the moment a value wraps.
+Two ways back, and the second is the better one: `layout="fixed"` on the table,
+or `truncate` on the specific cells that should clamp — which is what the kit
+does, and it keeps the decision beside the column it applies to.
+
+## 44. The icon surface
+
+Three things, one of which is the reason the other two would not have shipped.
+
+(A fourth — an ink rule on the leading glyph — is in the archive: it was
+invented inside the package and stepped away from the kit.)
+
+### The ladder stops at 20px, and the type at 16px
+
+The kit's `--icon-xl` is 24px. On a 44px field that reads as an icon that
+outgrew its control. The ladder repeats at both ends — **14 / 16 / 16 / 20 / 20** —
+the way it already repeats 16 across `sm` and `md`.
+
+The type took the same cap: `xl` was 18px, now 16, the same rung as `lg`. So
+`Typography` keeps `label16` and the two 18px rungs are gone again.
+
+Changed in three places, because the ladder exists in three: the package,
+`Insightis/pages/kit-theme.css` (`.btn-xl`, `.igrp.is-xl .igrp-input`,
+`.field.is-xl input`, `.ta.is-xl`) and this file.
+
+`Typography`'s prose scale keeps `text-lg` in `h4`, `h5` and `large` — headings
+in running text, not control labels.
+
+### A field's two glyphs were sized by two mechanisms
+
+`PasswordInput`: the leading lock grew with the field, the trailing eye stayed
+16px at every step.
+
+The lock is a direct child of `InputGroupAddon`, so `[&>svg]:size-*` reaches it
+and beats the `size-4` written on the icon. The eye sits inside an
+`IconButton`, which the addon does not reach (§7), and whose own
+`[&_svg]:size-*` beats any class on the glyph. Either way the icon's own
+`className` did nothing.
+
+Fix: stop writing sizes on icons. The lock carries no size class; the toggle
+takes the field's step as the `IconButton`'s `size` prop.
+
+### `xs` field edge — 6px, reverted to 8px
+
+Moved to 6px on the argument that an 8px edge crowds a 14px glyph at 28px tall.
+Reverted: `Button` `xs` stayed at 8, so a field and a button beside it stopped
+lining up, and the package was the only one of four sources carrying 6. The
+ladder has no half-steps.
+
+### The glyph rules were absent from the bundle
+
+`.design-sync/.cache/ds-classlist.txt` contained zero `svg`-scoped classes.
+Every glyph rule in the library is a child or descendant selector —
+`[&_svg]:size-4` in `Button`, `IconButton`, `Badge`, `File`; `[&>svg]:size-*`
+in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` in `DropdownMenuItem` — and the
+enumerated vocabulary generated none of them.
+
+So in the bundle no glyph ladder existed, no shrink guard, no menu stroke
+weight: every icon fell back to whatever `lucide-react` renders, and nothing
+failed. §19 at library scale.
+
+## Raised by the kit ↔ Storybook audit
+
+Three are contradictions **inside the kit**, and the package cannot implement
+either side until the design answers:
+
+| | |
+|---|---|
+| **`--tbl-row-pressed`** | Prose says neutral, `--tint-6` of `--ink-primary`. CSS says `color-mix(in srgb, #07807E 4%, transparent)` — brand teal, off the tint scale. |
+| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §44. |
+| **Sidebar active ink** | The row table says active is *"`Text/Body` (no brand colour)"*; the Collapsed row two lines down says *"(active = teal icon)"*. The package follows the first. |
+
+Eight more are the kit's own ⚠ markers — agreed to be *needed*, never specified,
+so there is nothing to implement yet. Listing them so they are not rediscovered
+as bugs:
+
+| Component | What the kit leaves open |
+|---|---|
+| `Tabs` | tab with a counter / badge |
+| `Card` | focus (for focusable cards) and disabled; self-hover on `secondary` |
+| `DropdownMenu` | item keyboard focus; item selected / checked |
+| `Toast` | pause countdown on hover; focus-visible |
+| `File` | disabled; pressed (marked optional) |
+| `Separator` | a `muted` variant between `border` and `primary` |
+| `Sheet` | surface harmonization — the `Popover` half was retracted (archive), still open in the kit’s own text |
+| `Resizable` | the kit draws a 6px handle, the package a 1px line plus a grip; neither clears 24px, and the kit has no `:active` rule to compare against |
+
+One is a behaviour difference that may be intentional and is recorded rather
+than "fixed": the kit's `Accordion` is *"an instant show/hide (no CSS
+transition)"*, while the package animates with `accordion-up` / `accordion-down`.
+The kit is describing production; the animation is an improvement, but it is a
+divergence from the agreed reference and should be ratified, not assumed.

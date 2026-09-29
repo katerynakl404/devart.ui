@@ -308,7 +308,26 @@ add(
   'after:inset-0',
   'relative',
   '[&::-webkit-search-cancel-button]:hidden',
-  '[&::-webkit-search-decoration]:hidden'
+  '[&::-webkit-search-decoration]:hidden',
+
+  /* A list that is a list. The preflight strips markers from every `ul`, so a
+     bulleted list — the causes and the actions in a troubleshooting panel are
+     the case that raised it — has no way to ask for them back. Three utilities,
+     base only: a list inside a panel does not change its markers at a
+     breakpoint. */
+  'list-disc',
+  'list-decimal',
+  'list-none',
+
+  /* The last row of a stack of bands. `border-b` on every band and
+     `last:border-b-0` on the stack is the standard way to rule between them
+     without a trailing rule against the container's own edge; without the
+     `last:` half, a consumer either writes the divider as a separate element
+     or reaches for a variant the bundle does not carry (`not-last:`, which is
+     Tailwind v4 and compiles to nothing here). */
+  'last:border-b-0',
+  'last:border-0',
+  'first:border-t-0'
 );
 
 const dir = path.join(root, '.design-sync/.cache');
