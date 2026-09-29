@@ -1,0 +1,64 @@
+# Builds the catalogue and publishes it to GitHub Pages.
+#
+# Storybook is this package's verification surface (SPEC decision 10): there are
+# no unit tests, and a regression in a declarative class-string recipe is a
+# visual one. So the catalogue has to be somewhere a reviewer can open without
+# checking the repo out.
+#
+# One manual step, once: Settings -> Pages -> Source = "GitHub Actions". The
+# workflow cannot set that for you.
+name: Storybook
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Pages needs these; `contents: read` is the default and is restated so the
+# token is visibly minimal.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time, and a newer push waits rather than cancelling the
+# one in flight — a half-published catalogue is worse than a late one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # `--frozen-lockfile` is the point of committing one: the catalogue is
+      # built from the versions that were reviewed, not from whatever resolves
+      # today.
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run build-storybook
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
