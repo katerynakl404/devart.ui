@@ -104,12 +104,13 @@ off — nothing should be built on it yet.
 | §78 | `Card` | `variant="row"` stated its height as a ceiling as well as a floor |
 | §79 | `UploadTray` | **new** — the upload plate production raises on /files · **draft** |
 | §80 | `Button` / `IconButton` | a disabled `secondary` still had a surface — white, and invisible only on white |
-| §81 | `Banner` | the dismiss was a tertiary button on a painting |
-| §82 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
-| §83 | `Badge` | `leading-none` clipped every descender the pill contained |
-| §84 | `palettes.css` | **new** — colour packs: Layer 1 redeclared, the rest re-resolves · **draft** |
+| §81 | `CodeBlock` | the snippet scrolled with the browser's own bar |
 | §82 | `Pagination` | a stream read in order has no use for page numbers · **draft** |
+| §83 | `Badge` | `leading-none` clipped every descender the pill contained |
 | §84 | class list | a bulleted list and the last band of a stack had no way to ask for themselves |
+| §85 | `Banner` | the dismiss was a tertiary button on a painting |
+| §86 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
+| §87 | `palettes.css` | **new** — colour packs: Layer 1 redeclared, the rest re-resolves · **draft** |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -2400,7 +2401,7 @@ and the React component simply never applied it. One class on the `<pre>`:
 rest and `--ink-inactive` on hover — the same bar as every menu in the package,
 with the hit area a pointer can still find.
 
-## 81. The banner's dismiss was a tertiary button on a painting
+## 85. The banner's dismiss was a tertiary button on a painting
 
 `src/components/Banner/index.tsx`
 
@@ -2447,12 +2448,13 @@ the control — *Showing 51–100 of 118* — and what moves it is Prev and Next
 Pair it with `showFirstLast={false}`: First and Last are jumps of the same kind,
 and leaving them in while the numbers go is half a decision.
 
-**Numbering.** §81 is used twice in this file — `CodeBlock`'s scrollbar (landed)
-and a `Banner` dismiss written in a parallel session. Two sessions took the next
-free number at the same time. This takes §82, and one of the two §81s needs
-renumbering by whoever owns the second.
+**Numbering.** This took §82 while a `Banner` dismiss, written in a parallel
+session, had also taken §81 — `CodeBlock`'s scrollbar already held it. The rule
+applied when the three collisions were resolved: the section whose commit is
+older keeps the number, the later one moves to the next free one. `CodeBlock`
+keeps §81 and the banner is now §85.
 
-## 82. `Badge` — a step that was not a step
+## 86. `Badge` — a step that was not a step
 
 `src/components/Badge/index.tsx`
 
@@ -2539,12 +2541,15 @@ connections prototype has been missing its dividers for exactly that reason.
 that is not in the list does not exist in the sheet, and nothing warns — which
 is what both of these were.
 
-**Numbering.** This file is being written by several sessions at once and the
-numbers have collided twice: two §81s (a `CodeBlock` scrollbar and a `Banner`
-dismiss) and two §82/§83 pairs around `Badge`. This took §84 to stay out of the
-way; the duplicates need renumbering by whoever owns them.
+**Numbering.** This file is written by several sessions at once, and three
+numbers had collided by taking "the next free one" simultaneously: §81
+(`CodeBlock`'s scrollbar / a `Banner` dismiss), §82 (`Pagination` / a `Badge`
+step) and §84 (the class list / this section). All three are resolved on the
+same rule — the older commit keeps the number — so the banner is §85, the badge
+step §86, and the colour packs §87. §83 was never duplicated; the note that said
+so was counting the two adjacent `Badge` sections.
 
-## 84. New — colour packs (`palettes.css`) · **DRAFT**
+## 87. New — colour packs (`palettes.css`) · **DRAFT**
 
 `palettes.css`, `scripts/gen-palettes.mjs`
 
