@@ -13,6 +13,12 @@ const Glyph = () => <FileText aria-hidden="true" />;
 const meta = {
   title: 'Components/UploadTray',
   component: UploadTray,
+  /* The row is half the component and carried none of its own documentation:
+     the props table is built from `component`, so everything a row decides —
+     its status, whether that status is a glyph or a sentence, the progress, the
+     action — was invisible on the docs page. `subcomponents` gives it a table
+     of its own. */
+  subcomponents: { UploadTrayItem },
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
   argTypes: {
