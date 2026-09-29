@@ -2336,6 +2336,14 @@ Two details there are the kind that pass review and fail in use. Reduced motion
 for ever. And `animationend` bubbles, so the plate accepts only its own — the
 first row to finish would otherwise dismiss the whole plate.
 
+**A row can say its state in words.** `statusLabel` puts a pill at the row’s end
+in place of the glyph, and the consumer supplies only the sentence: the variant
+follows `status` (`attention` / `secondary` / `error`) and the size and radius
+are the component’s. The AI connectivity prototype had been building that pill
+itself — variant, `sm`, `rounded="full"` — which is three copies of one decision
+and the reason the same state could read amber in the plate and grey on the
+panel behind it. The override is gone from the prototype.
+
 Three classes are enumerated in `gen-classlist.mjs` — `max-w-[26rem]`,
 `rounded-[0.625rem]` and the chevron's `aria-expanded` selector. All three are
 values the kit states and no scale carries, so nothing derives them and §19

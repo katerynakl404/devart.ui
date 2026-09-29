@@ -282,3 +282,50 @@ export const ClickableRows: Story = {
     </UploadTray>
   ),
 };
+
+/**
+ * `statusLabel` — the state in words, as a pill at the end of the row, in place
+ * of the check or the alert.
+ *
+ * The consumer supplies the sentence and nothing else: the variant comes from
+ * `status`, and the size and radius are the component's. A product with its own
+ * name for a state should not also have to know which pill that state takes —
+ * three copies of that knowledge is how the same state ends up amber in one
+ * plate and grey in the next.
+ */
+export const StatusAsWords: Story = {
+  args: {
+    status: 'uploading',
+    title: '3 workspaces need configuring',
+    spinner: false,
+    onDismiss: () => undefined,
+  },
+  render: (args) => (
+    <UploadTray {...args}>
+      <UploadTrayItem
+        icon={<Glyph />}
+        meta="DB2"
+        name="Product"
+        onRowClick={() => undefined}
+        status="uploading"
+        statusLabel="No data included"
+      />
+      <UploadTrayItem
+        icon={<Glyph />}
+        meta="DB2"
+        name="Finance"
+        onRowClick={() => undefined}
+        status="uploading"
+        statusLabel="No data included"
+      />
+      <UploadTrayItem
+        icon={<Glyph />}
+        meta="DB2"
+        name="Support"
+        onRowClick={() => undefined}
+        status="done"
+        statusLabel="Data included"
+      />
+    </UploadTray>
+  ),
+};

@@ -388,12 +388,24 @@ export const ColourAndState: Story = {
           <>
             <Code>asChild</Code> makes <Code>IconButton</Code> render its child
             instead of a button, so what lands in the addon is a bare{' '}
-            <Code>&lt;svg&gt;</Code>. The addon's own rules read that literally:{' '}
-            <Code>[&amp;&gt;svg]:text-ink-inactive</Code> is the{' '}
-            <em>decorative</em> glyph rule — placeholder ink — while{' '}
-            <Code>[&amp;&gt;button]:text-ink-secondary</Code> and its hover step
-            match nothing. Two clickable controls therefore painted one step
-            below the text they sat next to and never answered the pointer.
+            <Code>&lt;svg&gt;</Code>, and the addon's rules read that literally:
+            the rule for a <em>decorative</em> glyph matched them while the rule
+            for a docked <em>control</em> matched nothing. Two clickable
+            controls therefore painted one step below the text they sat next to
+            and never answered the pointer.
+            <br />
+            <br />
+            <strong className="font-medium text-ink-body">
+              The two rules have both moved since:
+            </strong>{' '}
+            the decorative-glyph rule was retracted as invented (§44, archived)
+            and the glyph now inherits the addon's own{' '}
+            <Code>--ink-secondary</Code>, which is what the kit states; the
+            docked-control pair was renamed to the tokens the kit names,{' '}
+            <Code>--ink-icon</Code> to <Code>--ink-icon-hover</Code>. Neither
+            move changes this case — the defect was that a bare <Code>svg</Code>{' '}
+            is not a button — but the mechanism is no longer spelled the way it
+            was when this was found.
             <br />
             <br />
             Both are now <Code>InputGroupAction</Code> — §45's part for exactly

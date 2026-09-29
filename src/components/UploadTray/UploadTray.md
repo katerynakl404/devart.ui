@@ -74,6 +74,27 @@ second timer to keep in step with the first.
 (`event.target === event.currentTarget`); without that guard the first row to
 finish would dismiss the whole plate.
 
+## The state in words — `statusLabel`
+
+A row can say its state as a **pill at its end**, in place of the check or the
+alert. The consumer supplies the sentence and nothing else:
+
+```jsx
+<UploadTrayItem status="uploading" statusLabel="No data included" … />
+```
+
+The variant comes from `status` — `uploading` is `attention` (a row still waiting
+on somebody is the one to act on), `done` is `secondary` (settled, asking for
+nothing), `failed` is `error` — and the size and radius are the component’s
+(`sm`, `rounded="full"`).
+
+That split is the point. A product with its own name for a state — “No data
+included” rather than “Failed” — should not also have to know which pill it
+takes; three copies of that knowledge is how one state ends up amber in this
+plate and grey on the panel two inches away.
+
+With no `statusLabel` the row keeps the glyph.
+
 ## The row is always the target
 
 `onRowClick` is **required**. There is no second, inert kind of row to

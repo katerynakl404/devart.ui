@@ -19,6 +19,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '../../lib/utils';
+import { Badge } from '../Badge';
 import { IconButton } from '../IconButton';
 import { ProgressBar } from '../ProgressBar';
 
@@ -388,6 +389,21 @@ const itemIconVariants = cva(
  * `uploading` shows nothing: the progress bar under the name is already the
  * answer, and a second mark beside it would be a second clock for one wait.
  */
+/**
+ * The variant each status takes when the row says its state in WORDS. It is
+ * fixed here rather than passed, because the pairing is the whole point: the
+ * same state must not be amber in one plate and grey in the next.
+ *
+ * `uploading` is `attention` — a row still waiting on somebody is the one the
+ * reader has to act on, and that is what attention is for. `done` is
+ * `secondary`: settled, and no longer asking for anything.
+ */
+const STATUS_BADGE_VARIANT = {
+  uploading: 'attention',
+  done: 'secondary',
+  failed: 'error',
+} as const;
+
 const STATUS_MARK = {
   uploading: null,
   done: <CircleCheck aria-hidden="true" className="size-4 text-fb-green" />,
@@ -419,6 +435,18 @@ export interface UploadTrayItemProps extends ComponentProps<'div'> {
   /** The one action a failed row gets — a `LinkButton` reading "Retry". */
   action?: ReactNode;
   /**
+   * Say the state in words instead of a glyph.
+   *
+   * Given, the row renders a pill at its end in place of the check or the
+   * alert, and the variant comes from `status` — the consumer supplies the
+   * SENTENCE and nothing else. A product with its own name for a state
+   * ("No data included" rather than "Failed") should not also have to know
+   * which variant, which size and which radius that pill takes; three copies
+   * of that knowledge is how the same state ends up amber here and grey two
+   * inches away.
+   */
+  statusLabel?: ReactNode;
+  /**
    * What the row does. **Required — a row is always the click target**, so
    * there is no second, inert kind of row to configure into existence.
    *
@@ -446,6 +474,7 @@ function UploadTrayItem({
   meta,
   error,
   action,
+  statusLabel,
   onRowClick,
   className,
   ...props
@@ -558,7 +587,25 @@ function UploadTrayItem({
         </span>
       ) : null}
 
-      {STATUS_MARK[status] ? (
+      {statusLabel ? (
+        <span
+          className={cn(
+            'flex shrink-0 items-center',
+            hasSecondLine && 'self-start'
+          )}
+          data-slot="upload-tray-item-status"
+        >
+          <Badge
+            rounded="full"
+            size="sm"
+            variant={STATUS_BADGE_VARIANT[status]}
+          >
+            {statusLabel}
+          </Badge>
+        </span>
+      ) : null}
+
+      {!statusLabel && STATUS_MARK[status] ? (
         <span
           className={cn(
             'flex shrink-0 items-center',
