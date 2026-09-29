@@ -260,17 +260,17 @@ export function Autocomplete<
                     screen reader. `InputGroupAction` is a real `<button>`, on
                     the `--ink-icon` / `--ink-icon-hover` pair the system keeps
                     for a glyph with no surface. */}
+                {/* Rendered only when the field HAS a value (`showClear` is
+                    `isDirty` minus the three states that forbid clearing), so
+                    it carries no opacity gate: the control appeared on hover
+                    and focus-within, which meant a filled field looked like it
+                    had no way out until the pointer was already over it. A
+                    field the user cannot empty without discovering the control
+                    first is the thing the control exists to prevent. */}
                 {showClear && (
                   <InputGroupAction
                     {...getClearProps()}
                     aria-label={clearLabel}
-                    className={cn(
-                      'opacity-0',
-                      'transition-opacity',
-                      'group-focus-within:opacity-100',
-                      'group-hover:opacity-100',
-                      open && 'opacity-100'
-                    )}
                   >
                     <X />
                   </InputGroupAction>
