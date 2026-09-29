@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Colors } from './index';
+import { Colors, Primitives } from './index';
 
 /**
- * Every semantic and component-scoped colour token, grouped by role.
- *
- * The Layer-1 primitive ramps (`--brand-*`, `--slate-*`, …) are deliberately
- * not here: they are never exposed to Tailwind, so no component can pin itself
- * to a shade. That indirection is what lets a colour pack re-theme the whole
- * system by redefining the primitives and the semantic layer only.
+ * Every colour token in the system, in the two layers it actually has: the
+ * semantic and component-scoped tokens Tailwind is given, and the Layer-1 ramps
+ * underneath that only those tokens are allowed to name.
  */
 const meta = {
   title: 'Foundations/Colors',
@@ -19,4 +16,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Layers 2 and 3 — the names a class may carry. */
 export const Default: Story = {};
+
+/**
+ * Layer 1 — the ramps. Shown, not exposed: there is still no `bg-slate-200`,
+ * and a component still may not name a shade. They are here because the token
+ * page above is unreadable without them — a swatch called `fb-info` is a blue
+ * rectangle until the page says *which* blue, and in which theme.
+ */
+export const PrimitiveRamps: Story = {
+  render: () => <Primitives />,
+};

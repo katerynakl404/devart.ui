@@ -1,8 +1,18 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { THEME_COLORS } from '../../lib/constants';
+import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
+import {
+  aliasOf,
+  type Decls,
+  darkDecls,
+  lightDecls,
+  ramps,
+  resolved,
+  tripletToHex,
+} from './tokens';
 
 /**
  * Token-preview components for the design system's foundations.
@@ -14,9 +24,22 @@ import { Typography } from '../Typography';
  * `.dark` exactly like any utility would.
  */
 
-function Grid({ children }: { children: ReactNode }) {
+/**
+ * Six columns for a one-line cell, four for a two-line one. A colour swatch now
+ * carries its source underneath the name, and at six columns that second line
+ * truncates to `brand-600 · dar…` — which is the half of it that matters, since
+ * the whole point of the line is to say when a token moves under a theme.
+ */
+function Grid({ children, wide }: { children: ReactNode; wide?: boolean }) {
   return (
-    <div className="grid grid-cols-3 gap-x-3 gap-y-2 sm:grid-cols-4 lg:grid-cols-6">
+    <div
+      className={cn(
+        'grid gap-x-3 gap-y-2',
+        wide
+          ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
+          : 'grid-cols-3 sm:grid-cols-4 lg:grid-cols-6'
+      )}
+    >
       {children}
     </div>
   );
@@ -33,9 +56,161 @@ function Group({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function Swatch({ name, value }: { name: string; value: string }) {
+/**
+ * Read the stylesheet once per theme and per colour pack.
+ *
+ * Both are attributes on `<html>` — `class="dark"` and `data-palette` — so one
+ * observer covers the theme toolbar and the palette toolbar alike. Without it
+ * the hex column would keep showing light-mode values after a theme flip while
+ * the swatches beside it had already moved, which is worse than no hex.
+ */
+function useTokenGraph() {
+  const [graph, setGraph] = useState<{
+    light: Decls;
+    dark: Decls;
+    hex: Decls;
+  }>({ light: {}, dark: {}, hex: {} });
+
+  useEffect(() => {
+    const read = () => {
+      const light = lightDecls();
+      // The hexes are resolved here rather than per swatch, because `resolved`
+      // reads the cascade and the cascade has only just moved: taking them in
+      // the same pass as the declarations is what guarantees the printed value
+      // and the painted one describe the same moment.
+      const hex: Decls = {};
+      for (const [, names] of ramps(light)) {
+        for (const name of names) hex[name] = tripletToHex(resolved(name));
+      }
+      setGraph({ light, dark: darkDecls(), hex });
+    };
+    read();
+    const observer = new MutationObserver(read);
+    observer.observe(document.documentElement, {
+      attributeFilter: ['class', 'data-palette'],
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  return graph;
+}
+
+/**
+ * A primitive swatch.
+ *
+ * The fill is `hsl(var(--name))` rather than the hex beside it: the cascade has
+ * to be the thing on screen, or the page would go on showing teal while the
+ * Palette switch says Blue. The hex is the read-off value, printed because a
+ * designer matching a mock needs it and `globals.css` keeps it in a comment
+ * nobody opening Storybook can see.
+ */
+function PrimitiveSwatch({ name, hex }: { name: string; hex: string }) {
+  return (
+    <div className="flex min-w-0 items-center gap-2">
+      <span
+        aria-hidden
+        className="size-6 shrink-0 rounded border border-stroke"
+        style={{ background: `hsl(var(${name}))` }}
+      />
+      <span className="flex min-w-0 flex-col">
+        <Typography className="truncate" element="span" textStyle="body12">
+          {name.replace(/^--/, '')}
+        </Typography>
+        <Typography
+          className="truncate tabular-nums"
+          element="span"
+          textColor="secondary"
+          textStyle="body12"
+        >
+          {hex}
+        </Typography>
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Layer 1 — the ramps.
+ *
+ * These are shown and still not exposed to Tailwind: there is no `bg-slate-200`
+ * and decision 3 is unchanged. Reading a ramp is not the same as naming one in
+ * a class, and the page above this one is unreadable without it — `fb-info` is
+ * a blue rectangle with no answer to *which* blue until the ramp it aliases is
+ * on the same page.
+ */
+export function Primitives() {
+  const { light, hex } = useTokenGraph();
+  return (
+    <div className="flex flex-col gap-4">
+      {ramps(light).map(([ramp, names]) => (
+        <Group key={ramp} title={ramp}>
+          <Grid>
+            {names.map((name) => (
+              <PrimitiveSwatch hex={hex[name] ?? ''} key={name} name={name} />
+            ))}
+          </Grid>
+        </Group>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Where a semantic token's colour comes from, in one line.
+ *
+ * Three shapes, because the token system has three: a plain `var()` alias names
+ * the ramp step it pins (`fb-info` -> `blue-600`), a `color-mix()` recipe is
+ * marked as one and stops there, and a bare triplet is its own answer and shows
+ * the hex. A dark value is printed only when it differs from the light one —
+ * per SPEC most tokens need no `.dark` twin precisely because they alias a role,
+ * and printing "dark: same" 118 times would bury the 76 that do move.
+ */
+function lineage(
+  cssName: string,
+  light: Decls,
+  dark: Decls
+): { light: string; dark: string } {
+  const describe = (value: string | undefined): string => {
+    if (!value) return '';
+    const alias = aliasOf(value);
+    if (alias) return alias;
+    if (value.startsWith('color-mix')) return 'color-mix';
+    if (/^\d/.test(value)) return tripletToHex(value);
+    return value;
+  };
+  const l = describe(light[cssName]);
+  const d = describe(dark[cssName]);
+  return { light: l, dark: d && d !== l ? d : '' };
+}
+
+function Swatch({
+  name,
+  value,
+  light,
+  dark,
+}: {
+  name: string;
+  value: string;
+  light: Decls;
+  dark: Decls;
+}) {
   // THEME_COLORS ships Tailwind's alpha placeholder; resolve it to opaque.
   const css = value.replace('<alpha-value>', '1');
+  // THEME_COLORS wraps the variable (`hsl(var(--x) / …)` or a bare `var(--x)`),
+  // so the token name is the first custom property in the string.
+  const cssName = /--[\w-]+/.exec(value)?.[0] ?? '';
+  const from = lineage(cssName, light, dark);
+  // A token with no `:root` value paints nothing in light mode — SPEC names
+  // this as a failure mode with two live instances (`--fb-red-hover`,
+  // `--fb-red-press`), so the line says "dark only" rather than opening with a
+  // stray separator and letting it pass for an ordinary pair.
+  // The line is narrow enough to clip on a long pair, so the title carries the
+  // variable it came from as well as the text — a truncated cell is still
+  // answerable without opening `globals.css`.
+  const source = from.light
+    ? `${from.light}${from.dark ? ` · dark ${from.dark}` : ''}`
+    : `dark only: ${from.dark}`;
+
   return (
     <div className="flex min-w-0 items-center gap-2">
       <span
@@ -46,6 +221,15 @@ function Swatch({ name, value }: { name: string; value: string }) {
       <span className="flex min-w-0 flex-col">
         <Typography className="truncate" element="span" textStyle="body12">
           {name}
+        </Typography>
+        <Typography
+          className="truncate"
+          element="span"
+          textColor="secondary"
+          textStyle="body12"
+          title={`${cssName}: ${source}`}
+        >
+          {source}
         </Typography>
       </span>
     </div>
@@ -71,18 +255,28 @@ function colorGroups(): [string, [string, string][]][] {
 }
 
 /**
- * Every semantic and component-scoped colour token, by role. The primitive
- * ramps are deliberately absent — they are not exposed to Tailwind, which is
- * what keeps a colour pack swappable.
+ * Every semantic and component-scoped colour token, by role — Layers 2 and 3,
+ * which is the whole of what Tailwind is given. The second line under each name
+ * is where the colour comes from: the ramp step a plain `var()` pins, or
+ * `color-mix` where the recipe is a mix rather than an alias. A dark value is
+ * printed only where it differs, so the tokens that actually move under a theme
+ * are the ones that stand out.
  */
 export function Colors() {
+  const { light, dark } = useTokenGraph();
   return (
     <div className="flex flex-col gap-4">
       {colorGroups().map(([group, entries]) => (
         <Group key={group} title={group}>
-          <Grid>
+          <Grid wide>
             {entries.map(([name, value]) => (
-              <Swatch key={name} name={name} value={value} />
+              <Swatch
+                dark={dark}
+                key={name}
+                light={light}
+                name={name}
+                value={value}
+              />
             ))}
           </Grid>
         </Group>

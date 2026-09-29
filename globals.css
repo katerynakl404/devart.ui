@@ -54,7 +54,7 @@
   /* Scrim behind modal surfaces. Declared here as well as in .dark so the
      token is reachable in BOTH themes - it was dark-only, which is why the
      overlays hardcoded bg-black/80 instead of using it. */
-  --overlay-scrim: rgb(2 6 23 / 60%);
+  --overlay-scrim: hsl(var(--slate-950) / 60%); /* #020617 @60% */
 
   /* Type scale — sizes and paired line-heights mirror Tailwind's own defaults.
      xxs and compact are this system's own steps and carry no paired
@@ -666,8 +666,8 @@
   --surface-chips: var(--grey-700); /* #2A2834 */
   --surface-page: var(--grey-950); /* #0F0E14 — page background */
   --surface-accent: var(--brand-900-soft); /* #111A1C */
-  /* Scrim behind modals and sheets — declared on dark only */
-  --overlay-scrim: rgb(2 6 23 / 60%);
+  /* Scrim behind modals and sheets */
+  --overlay-scrim: hsl(var(--slate-950) / 60%); /* #020617 @60% */
   /* Chat landing shell — stronger tint/glow on dark (kit .cl-shell .dark) */
   --chat-shell-bg: radial-gradient(
     at 50% 0%,
