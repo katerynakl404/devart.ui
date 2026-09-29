@@ -29,7 +29,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg', 'xl'],
     },
     rounded: {
       control: 'select',
@@ -82,7 +82,7 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-col gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+      {(['sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <div className="flex flex-wrap items-center gap-3" key={size}>
           <Badge {...args} size={size} variant="primary">
             {size}

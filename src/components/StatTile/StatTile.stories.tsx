@@ -66,7 +66,7 @@ export const Sizes: Story = {
 export const WithBadge: Story = {
   args: {
     rightSlot: (
-      <Badge variant="attention" size="xs" rounded="full">
+      <Badge variant="attention" size="sm" rounded="full">
         1 not configured
       </Badge>
     ),

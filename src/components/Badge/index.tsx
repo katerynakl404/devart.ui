@@ -30,7 +30,7 @@ const badgeVariants = cva(
     // width until the item hides its overflow, at which point it becomes 0. So
     // a badge with too little room narrows and ellipsises INSIDE its own
     // border, instead of either wrapping or running out across its neighbour.
-    'whitespace-nowrap overflow-hidden',
+    'overflow-hidden whitespace-nowrap',
     // reference: `.badge .b-ic { width:14px; height:14px; flex:none }`
     '[&_svg]:shrink-0',
     'font-medium',
@@ -60,7 +60,16 @@ const badgeVariants = cva(
       // gap / 12px glyph, with the reason written next to it: "a 14px glyph in
       // a 20px pill leaves 3px of air — step down".
       size: {
-        xs: 'h-5 gap-1 px-2 text-xs [&_svg]:size-3',
+        /* One small step, not two. `xs` and `sm` were both 20px tall and
+           differed only in their sides — and backwards at that: the step named
+           smaller carried the LARGER inset (8 against 6). A call site moving
+           between them changed nothing anyone could see, which is what made it
+           read as a mistake rather than as a choice.
+
+           `sm` keeps its own 6px sides and `xs` is gone. The kit has one badge
+           at all (28px / 10px, this ladder's `md`), so nothing here is being
+           contradicted — the ladder is the package's own and now has no step
+           that is not a step. */
         sm: 'h-5 gap-1 px-1.5 text-xs [&_svg]:size-3',
         md: 'h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5',
         lg: 'h-8 gap-2 px-2.5 text-sm [&_svg]:size-4',
@@ -141,17 +150,31 @@ function Badge({
         />
       )}
 
-      {leftSlot ? <span className="inline-flex shrink-0">{leftSlot}</span> : null}
+      {leftSlot ? (
+        <span className="inline-flex shrink-0">{leftSlot}</span>
+      ) : null}
 
       {/* `min-w-0` + `truncate`: the label is the part that gives way. The dot,
           the slots and the delete control are `shrink-0`, so a squeezed badge
           loses characters from its text and keeps its glyphs — a chip reading
           `Not config…` still says what it is, one with half a glyph does not. */}
-      <span className="inline-block min-w-0 truncate align-text-top leading-none">
-        {children}
-      </span>
+      {/* NO `leading-none`, and no `align-text-top` with it. `leading-none`
+          makes the line box exactly the font size — 14px for a 14px label —
+          and a descender lives BELOW that box. The pill clips its overflow, so
+          the tail of a g, y or p was cut off: `PostgreSQL` lost the bottom of
+          its g while every other letter looked fine, which is why it read as a
+          rendering fault rather than as a line-height.
 
-      {rightSlot ? <span className="inline-flex shrink-0">{rightSlot}</span> : null}
+          Without it the label takes the line-height the type scale pairs with
+          its size — 16px at `text-xs`, 20px at `text-sm` — which is what the
+          kit states for `.badge` too (`line-height: var(--ts-label-m-lh)`). The
+          pill does not grow: its height comes from `size`, and the row is
+          `items-center`, so the taller line box centres inside the same chip. */}
+      <span className="inline-block min-w-0 truncate">{children}</span>
+
+      {rightSlot ? (
+        <span className="inline-flex shrink-0">{rightSlot}</span>
+      ) : null}
 
       {onDelete && (
         <button

@@ -9,8 +9,10 @@ const BADGE_SIZE_MAP: Record<
   NonNullable<InputGroupProps['size']>,
   BadgeProps['size']
 > = {
-  xs: 'xs',
-  sm: 'xs',
+  /* The field's two smallest steps both take the badge's one small step —
+     there is no longer a second 20px rung to distinguish them with. */
+  xs: 'sm',
+  sm: 'sm',
   md: 'sm',
   lg: 'md',
   xl: 'lg',

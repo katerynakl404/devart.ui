@@ -105,7 +105,10 @@ off — nothing should be built on it yet.
 | §79 | `UploadTray` | **new** — the upload plate production raises on /files · **draft** |
 | §80 | `Button` / `IconButton` | a disabled `secondary` still had a surface — white, and invisible only on white |
 | §81 | `Banner` | the dismiss was a tertiary button on a painting |
+| §82 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
+| §83 | `Badge` | `leading-none` clipped every descender the pill contained |
 | §82 | `Pagination` | a stream read in order has no use for page numbers · **draft** |
+| §84 | class list | a bulleted list and the last band of a stack had no way to ask for themselves |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -2439,6 +2442,63 @@ and leaving them in while the numbers go is half a decision.
 and a `Banner` dismiss written in a parallel session. Two sessions took the next
 free number at the same time. This takes §82, and one of the two §81s needs
 renumbering by whoever owns the second.
+
+## 82. `Badge` — a step that was not a step
+
+`src/components/Badge/index.tsx`
+
+Reported from a call site moving a pill from `sm` to `xs`: the result looked
+like a mistake, because nothing anyone could see had changed.
+
+Measured, it had not. Both steps were **20px tall with 12px text** and differed
+only in their sides — and backwards at that: the step named smaller carried the
+LARGER inset.
+
+| | Height | Sides |
+|---|---|---|
+| `xs` | 20px | 8px |
+| `sm` | 20px | 6px |
+| `md` | 28px | 10px |
+
+`xs` is gone and `sm` keeps its own 6px. Nothing in the kit is contradicted by
+either half: the kit has **one** badge — 28px with 10px sides, which is this
+ladder's `md` — so `xs`, `sm`, `lg` and `xl` are all the package's own, and
+the one that was indistinguishable from its neighbour is the one that went.
+
+Call sites: `BADGE_SIZE_MAP` in `Autocomplete/BadgeList.tsx` now maps the
+field's two smallest steps onto the same badge step, since there is no second
+20px rung to tell them apart with; the catalogue's `Sizes` story and its
+`size` control lost the rung; the AI connectivity prototype moved 12 pills.
+
+## 83. `Badge` — the pill cut the tail off a g
+
+`src/components/Badge/index.tsx`
+
+Reported as text being cut in a badge, and it was — downward, not sideways.
+`PostgreSQL` lost the bottom of its **g** while every other letter looked
+whole, which is why it read as a rendering fault rather than as a measurement.
+
+The label carried `leading-none`: a line box exactly the size of the font, 14px
+for a 14px label. A descender lives BELOW that box, and the pill hides its
+overflow (§Badge nowrap) — so the tail was clipped by the chip that was
+supposed to contain it. Nothing was wrong with the width, which is where the
+first look goes.
+
+`leading-none` and the `align-text-top` beside it are gone. The label now takes
+the line-height the type scale pairs with its size, which is also what the kit
+states for `.badge` — `line-height: var(--ts-label-m-lh)`. Measured across the
+four sizes, every line box is 4px taller than its font and sits clear of both
+edges:
+
+| Pill | Font | Line box | Clearance |
+|---|---|---|---|
+| 20px | 12 | 16 | 2 / 2 |
+| 28px | 12 | 16 | 6 / 6 |
+| 32px | 14 | 20 | 6 / 6 |
+| 36px | 14 | 20 | 8 / 8 |
+
+The pill does not grow: its height comes from `size` and the row is
+`items-center`, so the taller line box centres inside the same chip.
 
 ## 84. The class list — a list with markers, and the last band of a stack
 

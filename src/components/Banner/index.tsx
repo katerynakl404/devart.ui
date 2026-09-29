@@ -58,15 +58,20 @@ const SOLID_ICON = cn(
   'shadow-banner-ic'
 );
 
+/* The dismiss is an ICON, not a tertiary button: it answers the pointer with
+   colour and nothing else. The kit fills `.banner-close` on hover
+   (`--state-hover`), and on the solid variant that is invisible enough to pass;
+   on a gradient it is a pale box sitting on the artwork, which reads as a
+   control stuck onto the banner rather than as part of it. Same rule
+   `InputGroupAction` and `UploadTray` already follow. Deliberate divergence.
+
+   The 32px box stays — it is the hit area, and a 16px glyph is not one. */
 const GRADIENT_CLOSE = cn(
   'text-banner-grad-sub',
-  'hover:bg-banner-grad-ic-bg hover:text-banner-grad-text'
+  'hover:text-banner-grad-text'
 );
 
-const SOLID_CLOSE = cn(
-  'text-ink-secondary',
-  'hover:bg-state-hover hover:text-ink-primary'
-);
+const SOLID_CLOSE = cn('text-ink-icon', 'hover:text-ink-icon-hover');
 
 const bannerVariants = cva(BANNER_ROOT_LAYOUT, {
   variants: {
