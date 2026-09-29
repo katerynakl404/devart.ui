@@ -8,6 +8,8 @@ import { UploadTray, UploadTrayItem } from './index';
  * **positioning-neutral**: it has a width and a cap and no placement of its
  * own, so the page docks it — a drawer, a panel, the bottom of a screen.
  */
+const Glyph = () => <FileText aria-hidden="true" />;
+
 const meta = {
   title: 'Components/UploadTray',
   component: UploadTray,
@@ -17,12 +19,38 @@ const meta = {
     status: { control: 'select', options: ['uploading', 'complete', 'failed'] },
     children: { control: false },
   },
+  /* The docs page renders its primary block from the META, not from the first
+     story — and with no args it had nothing to draw, so the page opened on
+     “No Preview” above eight working examples. The plate needs a status, a
+     sentence and rows before it is a plate at all, so the meta carries them and
+     every story below overrides what it is about. */
+  args: {
+    status: 'complete',
+    title: '2 uploads complete',
+    onDismiss: () => undefined,
+  },
+  render: (args) => (
+    <UploadTray {...args}>
+      <UploadTrayItem
+        icon={<Glyph />}
+        meta="1.2 MB"
+        name="giffycanvas.gif"
+        onRowClick={() => undefined}
+        status="done"
+      />
+      <UploadTrayItem
+        icon={<Glyph />}
+        meta="480 KB"
+        name="Grid.png"
+        onRowClick={() => undefined}
+        status="done"
+      />
+    </UploadTray>
+  ),
 } satisfies Meta<typeof UploadTray>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-const Glyph = () => <FileText aria-hidden="true" />;
 
 export const Complete: Story = {
   args: {
