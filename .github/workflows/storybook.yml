@@ -11,7 +11,7 @@ name: Storybook
 
 on:
   push:
-    branches: [master]
+    branches: [main, master]
   workflow_dispatch:
 
 # Pages needs these; `contents: read` is the default and is restated so the
