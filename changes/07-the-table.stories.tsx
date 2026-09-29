@@ -358,53 +358,6 @@ export const TheTable: Story = {
         why="Pressing a button inside an interactive row painted the entire row, so a row action looked like it was opening the row."
       />
 
-      <ChangeCase
-        after={
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead width="md">Source</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead width="actions">&nbsp;</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {ROWS.map((row) => (
-                <TableRow data-interactive key={row.id}>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{row.status}</TableCell>
-                  <TableActionsCell>
-                    <Button size="xs" variant="tertiary">
-                      Edit
-                    </Button>
-                    <Button size="xs" variant="destructiveTertiary">
-                      Delete
-                    </Button>
-                  </TableActionsCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        }
-        afterNote="TableActionsCell — revealed on row hover and on focus"
-        files={['src/components/Table/TableActionsCell.tsx']}
-        footnote={
-          <>
-            New part, so there is nothing to compare it against. It owns the
-            three things every page was re-deriving: the cell is right-aligned
-            and holds its width whether or not the actions are visible, the
-            cluster fades in on the row's hover, and it stays visible whenever
-            anything inside it has focus — otherwise the controls are
-            unreachable by keyboard. The catalog's{' '}
-            <Code>Components/Table → WithRowActions</Code> and{' '}
-            <Code>AlwaysVisibleActions</Code> are the two modes.
-          </>
-        }
-        n="new"
-        title="TableActionsCell"
-        why="Row actions were assembled per page: a right-aligned cell, a hover reveal, and a focus escape hatch that pages routinely forgot."
-      />
-
       <section className="flex max-w-[72ch] flex-col gap-2 text-ink-secondary text-xs leading-5">
         <p>
           The catalog's own interactive tables, composed here so the two cannot

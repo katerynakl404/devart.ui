@@ -1,7 +1,13 @@
 # `changes/` — the review section of Storybook
 
-Every numbered change in `DESIGN-SYSTEM-CHANGES.md`, rendered as **Before |
+Every numbered **change** in `DESIGN-SYSTEM-CHANGES.md`, rendered as **Before |
 After** so it can be reviewed by eye before it is reviewed in a diff.
+
+**A new component is not a change and gets no panel here.** It has no Before, so
+the panel would be a one-sided box that reviews nothing — the catalogue entry,
+shown a second time. A `New — …` section in `DESIGN-SYSTEM-CHANGES.md` is
+therefore expected to have no counterpart in this section; that is not a gap.
+The place to look at a new component is its own story under **Components**.
 
 It exists because of SPEC.md decision 10: Storybook is this package's only
 verification surface. There are no unit tests, and a class naming a token that
@@ -58,8 +64,12 @@ cannot tell a replica from the real thing cannot trust either.
 />
 ```
 
-Omit `before` for a new component: the panel goes full width, which is the
-honest shape when there is nothing to compare against.
+`before` is expected. A case with no Before renders as one wide panel, and there
+are exactly two honest reasons to reach for that: the change is `proposed` and
+not built yet, so there is no After to set against anything either; or the gap
+was filed and downgraded to a recipe (`state="not-a-library-change"`), where the
+single panel IS the recipe. "The subject is new, so there is nothing to compare
+against" is not one of them — see the rule at the top. Say which in `footnote`.
 
 `state` is where the change currently sits — working tree, committed to this
 branch, or documentation only. It is not decoration: per the Propagation section

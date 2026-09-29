@@ -129,34 +129,16 @@ const ROWS: Row[] = [
     page: '3. The sidebar',
   },
   {
-    n: '15',
-    area: 'PageHeader',
-    change: 'new component, plus a badge that belongs to the title',
-    page: '4. New in the system',
-  },
-  {
-    n: '16',
-    area: 'ConnectorLogo',
-    change: 'new component — connector marks as data-URIs',
-    page: '4. New in the system',
-  },
-  {
     n: '17',
     area: 'TextArea',
     change: 'a character counter, which pages were writing by hand',
-    page: '4. New in the system',
+    page: '9. The fields',
   },
   {
     n: '18',
     area: 'StatusView',
     change: 'EmptyStateIllustration — the standard empty-state artwork',
-    page: '4. New in the system',
-  },
-  {
-    n: '46',
-    area: 'LinkButton',
-    change: "the kit's .link — standalone, and inline at 25% of the ink",
-    page: '4. New in the system',
+    page: '5. Documented recipes',
   },
   {
     n: 'Docs',
@@ -225,22 +207,10 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: 'new',
-    area: 'TableActionsCell',
-    change: 'row actions as a part, not a shape each page re-derives',
-    page: '7. The table',
-  },
-  {
     n: '33',
     area: 'Badge',
     change: 'the hairline is the base, not a second variant',
     page: '8. The badge',
-  },
-  {
-    n: '45',
-    area: 'InputGroupAction',
-    change: 'an icon docked in a field is not an icon button',
-    page: '9. The fields',
   },
   {
     n: '52',

@@ -45,46 +45,6 @@ export const TheFields: Story = {
     >
       <ChangeCase
         after={
-          <div className="flex w-72 flex-col gap-4">
-            <InputGroup inputId="act-after">
-              <InputGroupAddon align="inline-start">
-                <Search aria-hidden />
-              </InputGroupAddon>
-              <InputGroupInput defaultValue="Q3 KPI" type="search" />
-              <InputGroupAddon align="inline-end">
-                <InputGroupAction aria-label="Clear search">
-                  <X aria-hidden />
-                </InputGroupAction>
-              </InputGroupAddon>
-            </InputGroup>
-            <SearchWithClear />
-          </div>
-        }
-        afterNote="InputGroupAction — 24px box, 16px glyph, colour-only hover"
-        files={['src/components/InputGroup/InputGroupAction.tsx']}
-        footnote={
-          <>
-            New part, so there is nothing to compare it against. Every page had
-            been building this slot out of the nearest control on the ladder —{' '}
-            <Code>IconButton size="2xs" variant="tertiary"</Code> — which is the
-            right 24px box and two wrong things: a 14px glyph where the field's
-            own step is 16, and a hover pill. The kit is explicit that the slot
-            has no surface, because the field already owns hover, focus and
-            press, and a second filled box inside that one reads as a control
-            sitting on top of a control. It answers the pointer the only way
-            something without a box can — with colour, through{' '}
-            <Code>--ink-icon</Code> / <Code>--ink-icon-hover</Code>. The lower
-            panel is the catalog's own <Code>InputGroup → SearchWithClear</Code>
-            , composed.
-          </>
-        }
-        n={45}
-        title="An icon docked in a field is not an icon button"
-        why="There was no part for a field's trailing control, so every page reached for the icon button one step down the ladder and got a glyph one size small under a pill the field did not need."
-      />
-
-      <ChangeCase
-        after={
           <div className="w-72">
             <InputGroup inputId="inset-after">
               <InputGroupAddon align="inline-start">
@@ -320,6 +280,45 @@ export const TheFields: Story = {
         state="proposed"
         title="One bespoke focus ring, not three missing states"
         why="Filed after reading one file, and three quarters of it was wrong. The quarter that is not: a calendar day focuses differently from every other control in the package."
+      />
+
+      <ChangeCase
+        after={
+          <TextArea
+            wrapperClassName="w-[320px]"
+            defaultValue="Answer in the user's language."
+            label="AI instructions"
+            maxLength={4000}
+            showCount
+          />
+        }
+        afterNote="showCount — digits only, tabular-nums"
+        before={
+          <div className="flex w-[320px] flex-col gap-1">
+            <TextArea
+              defaultValue="Answer in the user's language."
+              label="AI instructions"
+            />
+            <span className="text-ink-secondary text-xs">
+              31 characters / 4000 max
+            </span>
+          </div>
+        }
+        beforeNote="a counter each page wrote by hand"
+        beforeSource="a page's own counter line under a plain TextArea — the shape found on the prototype."
+        files={['src/components/TextArea/index.tsx']}
+        footnote={
+          <>
+            Digits only, because a worded phrase reads as a sentence and a
+            screen reader re-reads it on every keystroke. Error text and counter
+            share one line under the field: both describe the same field, and a
+            separate line would shift the next field down every time an error
+            appears. Works controlled and uncontrolled.
+          </>
+        }
+        n={17}
+        title="TextArea character counter"
+        why="There was none, so pages wrote it by hand — differently each time."
       />
     </ChangePage>
   ),

@@ -144,9 +144,11 @@ export interface ChangeCaseProps {
 /**
  * One numbered change, rendered as Before | After.
  *
- * With no `before` the case renders a single wide panel — that is the shape for
- * a new component, where there is nothing to compare against because the thing
- * did not exist.
+ * With no `before` the case renders a single wide panel. That is not the shape
+ * for a new component — a new component gets no case here at all, because a
+ * one-sided panel reviews nothing (see `README.md`). It is for a gap that was
+ * filed and then downgraded rather than built, where the single panel IS the
+ * documented recipe and the footnote says which.
  */
 export function ChangeCase({
   n,
