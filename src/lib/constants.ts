@@ -59,6 +59,7 @@ export const THEME_COLORS = {
     'error-press': 'hsl(var(--fb-error-press) / <alpha-value>)',
     attention: 'hsl(var(--fb-attention) / <alpha-value>)',
     green: 'hsl(var(--fb-green) / <alpha-value>)',
+    info: 'hsl(var(--fb-info) / <alpha-value>)',
   },
   logo: {
     ink: 'hsl(var(--logo-ink) / <alpha-value>)',
@@ -117,6 +118,17 @@ export const THEME_COLORS = {
   switch: {
     'off-bg': 'hsl(var(--switch-off-bg) / <alpha-value>)',
     'off-bg-hover': 'hsl(var(--switch-off-bg-hover) / <alpha-value>)',
+  },
+  // color-mix values (variant-tinted alert surfaces) — no alpha substitution
+  alert: {
+    'bg-success': 'var(--alert-bg-success)',
+    'bg-info': 'var(--alert-bg-info)',
+    'bg-warning': 'var(--alert-bg-warning)',
+    'bg-error': 'var(--alert-bg-error)',
+    'border-success': 'var(--alert-border-success)',
+    'border-info': 'var(--alert-border-info)',
+    'border-warning': 'var(--alert-border-warning)',
+    'border-error': 'var(--alert-border-error)',
   },
   // color-mix values (variant-tinted toast surfaces) — no alpha substitution
   toast: {

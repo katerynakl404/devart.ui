@@ -167,9 +167,23 @@
   --red-850: 0 62.8% 30.6%; /* #7F1D1D */
   --red-900: 0 74.7% 15.5%; /* #450A0A */
   --red-950: 0 44.8% 11.4%; /* #2A1010 */
-  --orange-500: 24.7 100% 50%; /* #FF6900 */
-  --green-light-600: 160 100% 30%; /* #009966 */
-  --green-dark-500: 160.1 96.6% 34.9%; /* #03AF76 */
+  /* Orange, green and blue here carry Tailwind values but only the steps in use. The point of a
+     Tailwind value is not the scale — it is that each step BELONGS to one, so the neighbours can
+     be dropped in later without the ramp breaking around a stranger. --orange-500 was a custom
+     #FF6900 sitting off its own curve, which is what made every neighbour unusable. This moves
+     --fb-attention, #FF6900 -> #F97316. */
+  --orange-500: 24.6 95% 53.1%; /* #F97316 */
+  /* Blue (Tailwind). The palette had none: Brand and Tertiary are both teal, so an informational
+     surface had no colour to be that was not also the product talking about itself. Two steps,
+     the ones --fb-info uses; the rest of the ramp drops straight in when something needs it. */
+  --blue-400: 213.1 93.9% 67.8%; /* #60A5FA */
+  --blue-600: 221.2 83.2% 53.3%; /* #2563EB */
+  /* Emerald. Renamed off the names green-light-600 / green-dark-500 — a primitive that knew which THEME
+     it was for kept the choosing in the wrong layer and left a scale nowhere to exist. Values are
+     Tailwind now, so 400 or 700 drop in later without a stranger in the ramp — this moves
+     --fb-green, #009966 -> #059669 on light and #03AF76 -> #10B981 on dark. */
+  --green-600: 161.4 93.5% 30.4%; /* #059669 */
+  --green-500: 160.1 84.1% 39.4%; /* #10B981 */
   --chart-teal-600: 173 82.2% 30.8%; /* #0E8F80 */
   --chart-teal-500: 175.6 80.7% 36.7%; /* #12A99E */
   --chart-orange-700: 27 95% 39%; /* #C25A05 */
@@ -247,8 +261,11 @@
   --fb-red-text: var(--red-700); /* #B91C1C */
   --fb-error-hover: var(--red-800); /* #991B1B */
   --fb-error-press: var(--red-850); /* #7F1D1D */
-  --fb-attention: var(--orange-500); /* #FF6900 */
-  --fb-green: var(--green-light-600); /* #009966 */
+  --fb-attention: var(--orange-500); /* #F97316 */
+  --fb-green: var(--green-600); /* #059669 */
+  /* Feedback/Info — the fourth feedback colour, beside Red, Attention and Green.
+     Blue-600 on white Surface/Card = 5.17:1, AA for text. */
+  --fb-info: var(--blue-600); /* #2563EB */
   --logo-ink: var(--slate-900); /* #0F172A */
   --logo-mark: var(--brand-600); /* #07807E */
 
@@ -260,7 +277,7 @@
   --chart-series-1: var(--chart-teal-600);
   --chart-series-2: var(--chart-orange-700);
   --chart-series-3: var(--chart-violet-600);
-  --chart-series-4: var(--green-light-600);
+  --chart-series-4: var(--green-600);
   --chart-series-5: var(--chart-blue-600);
   --chart-series-6: var(--red-700);
 
@@ -425,6 +442,51 @@
   --switch-off-bg-hover: var(--slate-400); /* #94A3B8 (light) */
 
   /* Toast tokens */
+  /* Alert is Toast standing still instead of floating: same family, same surfaces, so a
+     condition does not change colour depending on whether it moves. Mixed over the card, not
+     over transparent — an inline block sits INSIDE a surface and must not take its tint from
+     whatever is behind it. Info is the one deliberate difference: Brand/Tertiary, not
+     Brand/Primary, so a notice does not read as the product's own voice. */
+  --alert-bg-success: color-mix(
+    in srgb,
+    hsl(var(--fb-green)) 5%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-info: color-mix(
+    in srgb,
+    hsl(var(--brand-tertiary)) 5%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-warning: color-mix(
+    in srgb,
+    hsl(var(--fb-attention)) 5%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-error: color-mix(
+    in srgb,
+    hsl(var(--fb-red-text)) 5%,
+    hsl(var(--surface-card))
+  );
+  --alert-border-success: color-mix(
+    in srgb,
+    hsl(var(--fb-green)) var(--tint-30),
+    transparent
+  );
+  --alert-border-info: color-mix(
+    in srgb,
+    hsl(var(--brand-tertiary)) var(--tint-30),
+    transparent
+  );
+  --alert-border-warning: color-mix(
+    in srgb,
+    hsl(var(--fb-attention)) var(--tint-30),
+    transparent
+  );
+  --alert-border-error: color-mix(
+    in srgb,
+    hsl(var(--fb-red-text)) var(--tint-30),
+    transparent
+  );
   --toast-bg-success: color-mix(
     in srgb,
     hsl(var(--fb-green)) 5%,
@@ -638,8 +700,11 @@
   --fb-red-press: var(--red-850); /* #7F1D1D — declared on dark only */
   --fb-error-hover: var(--red-800); /* #991B1B */
   --fb-error-press: var(--red-850); /* #7F1D1D */
-  --fb-attention: var(--orange-500); /* #FF6900 */
-  --fb-green: var(--green-dark-500); /* #03AF76 */
+  --fb-attention: var(--orange-500); /* #F97316 */
+  --fb-green: var(--green-500); /* #10B981 */
+  /* Blue-600 falls to 2.9:1 on dark Surface/Card, so dark steps two up: Blue-400 = 6.4:1.
+     The same move --fb-red-text makes. */
+  --fb-info: var(--blue-400); /* #60A5FA */
   --logo-ink: var(--brand-50); /* #E8F2F5 */
   --logo-mark: var(--brand-500); /* #148F8D */
 
@@ -647,7 +712,7 @@
   --chart-series-1: var(--chart-teal-500);
   --chart-series-2: var(--chart-orange-600);
   --chart-series-3: var(--chart-violet-500);
-  --chart-series-4: var(--green-dark-500);
+  --chart-series-4: var(--green-500);
   --chart-series-5: var(--chart-blue-500);
   --chart-series-6: var(--red-400);
 
@@ -713,6 +778,26 @@
   --switch-off-bg-hover: var(--grey-600); /* #525258 */
 
   /* Toast tokens */
+  --alert-bg-success: color-mix(
+    in srgb,
+    hsl(var(--fb-green)) 8%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-info: color-mix(
+    in srgb,
+    hsl(var(--brand-tertiary)) 8%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-warning: color-mix(
+    in srgb,
+    hsl(var(--fb-attention)) 8%,
+    hsl(var(--surface-card))
+  );
+  --alert-bg-error: color-mix(
+    in srgb,
+    hsl(var(--fb-red-text)) 8%,
+    hsl(var(--surface-card))
+  );
   --toast-bg-success: color-mix(
     in srgb,
     hsl(var(--fb-green)) 8%,
