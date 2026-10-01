@@ -1,50 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  CheckCircle2,
+  CircleStop,
+  Info,
+  TriangleAlert,
+  XCircle,
+} from 'lucide-react';
 import { Button } from '../Button';
 import { Alert } from './index';
 
-/* The glyphs are Toast's own paths, not lucide lookalikes: the point of the
-   shared vocabulary is that the SAME event renders the same mark whether it
-   floats past or sits in the page, and two icon sets that merely resemble each
-   other is how that quietly stops being true. */
-const stroke = {
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-} as const;
-
-const SuccessIcon = () => (
-  <svg {...stroke}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="m9 12 2 2 4-4" />
-  </svg>
-);
-const InfoIcon = () => (
-  <svg {...stroke}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 16v-4M12 8h.01" />
-  </svg>
-);
-const WarningIcon = () => (
-  <svg {...stroke}>
-    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-    <path d="M12 9v4M12 17h.01" />
-  </svg>
-);
-const ErrorIcon = () => (
-  <svg {...stroke}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="m15 9-6 6M9 9l6 6" />
-  </svg>
-);
-/* Neutral is the one variant Toast has no counterpart for, so its mark is
-   Alert's own. */
-const NeutralIcon = () => (
-  <svg {...stroke}>
-    <circle cx="12" cy="12" r="10" />
-    <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
-  </svg>
-);
+/* The same four lucide components Toast renders (`VARIANT_ICON_MAP`), imported
+   rather than redrawn. These were hand-written copies of lucide's path data,
+   which is how the two sets stopped matching: the paths were right and the two
+   attributes lucide puts on every icon — `stroke-linecap="round"` and
+   `stroke-linejoin="round"` — were missing, so SVG's own defaults applied.
+   `butt` and `miter` do not merely look different. Lucide draws the dot of an
+   `i` or a `!` as a 0.01-unit segment that only becomes a dot under a round
+   cap, so the info glyph lost the dot off its `i` and the warning triangle came
+   up empty — the two marks whose whole meaning is that dot. Importing the
+   component makes "the same event renders the same mark" true by construction
+   instead of by transcription. */
+const SuccessIcon = CheckCircle2;
+const InfoIcon = Info;
+const WarningIcon = TriangleAlert;
+const ErrorIcon = XCircle;
+/* Neutral is the one variant Toast has no counterpart for. `CircleStop` is the
+   same shape the hand-drawn mark was reaching for — a square inside a ring —
+   and it comes from the same set as the other four. */
+const NeutralIcon = CircleStop;
 
 const meta = {
   title: 'Components/Alert',
