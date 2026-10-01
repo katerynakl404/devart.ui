@@ -23,9 +23,10 @@ import { cn } from '../../lib/utils';
    hairline all the way round does the job the rail was reaching for: it gives the
    block an edge of its own instead of letting a wash bleed into the surface. */
 const alertVariants = cva(
-  /* px is one step tighter than py so the title lands on the same vertical as unboxed text
-     beside it — a bordered block's inner text otherwise never joins a list's column. */
-  cn('flex items-start gap-2.5', 'rounded-lg border px-2 py-2.5'),
+  /* px stays wider than py. It was tightened to px-2 for one pass, to put the title on the
+     same vertical as unboxed text beside it — a bordered block's inner text only joins that
+     column when its own inset is subtracted. Reverted: the side gaps read as too tight. */
+  cn('flex items-start gap-2.5', 'rounded-lg border p-2.5'),
   {
     variants: {
       /* The four tinted surfaces come from --alert-bg-* / --alert-border-*, which
@@ -44,7 +45,14 @@ const alertVariants = cva(
            Surface/Card2, not Surface/Chips: on dark, Chips resolves to the SAME
            grey as Stroke/Border, so fill and edge collapsed into one bright slab
            while on light they sat clearly apart — the themes stopped agreeing. */
-        neutral: 'border-stroke-border bg-surface-card2',
+        /* `border-stroke`, not `border-stroke-border`: the key is
+           `stroke.DEFAULT`, so the latter named nothing, generated no CSS, and
+           left the bare `border` in the base string painting Tailwind's own
+           default (#E5E7EB). On light that is 1.13 against the fill — within a
+           hundredth of the token it was meant to be, so the defect was
+           invisible. On dark it is 12.86: a white hairline round a near-black
+           block, and the one variant whose themes did not match. */
+        neutral: 'border-stroke bg-surface-card2',
       },
     },
     defaultVariants: { variant: 'neutral' },
