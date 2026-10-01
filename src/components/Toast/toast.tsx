@@ -8,7 +8,7 @@ import {
   type ToastVariant,
 } from './ToastMessage';
 import {
-  TOAST_DEFAULT_DURATION,
+  getUndoWindow,
   TOAST_DEFAULT_POSITION,
 } from './ToastMessage/constants';
 
@@ -37,7 +37,7 @@ function createToast(
   message: ReactNode,
   options?: ToastOptions
 ) {
-  const duration = options?.duration ?? TOAST_DEFAULT_DURATION;
+  const duration = options?.duration ?? getUndoWindow();
   const position = options?.position ?? TOAST_DEFAULT_POSITION;
 
   return sonnerToast.custom(

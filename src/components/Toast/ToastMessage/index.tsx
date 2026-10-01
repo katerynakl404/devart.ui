@@ -7,7 +7,7 @@ import { Button } from '../../Button';
 import { IconButton } from '../../IconButton';
 import { Typography } from '../../Typography';
 import {
-  TOAST_DEFAULT_DURATION,
+  getUndoWindow,
   VARIANT_BG_MAP,
   VARIANT_BORDER_MAP,
   VARIANT_COLOR_MAP,
@@ -42,7 +42,7 @@ export function ToastMessage({
   description,
   action,
   icon,
-  duration = TOAST_DEFAULT_DURATION,
+  duration = getUndoWindow(),
   onClose,
   closeLabel = 'Close',
   ...props

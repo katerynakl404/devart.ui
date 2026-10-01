@@ -7,7 +7,24 @@ import {
 } from 'lucide-react';
 import type { ToastVariant } from './index';
 
+/* The fallback, and the only place this number is written in TypeScript. The real value is the
+   `--undo-window` token in globals.css: an undo that floats past in a toast and an undo that
+   sits in a list have to give the reader the same amount of time, and two numbers in two
+   languages drift. This one is used when there is no computed style to read — during server
+   rendering, and in tests without a stylesheet. */
 export const TOAST_DEFAULT_DURATION = 4000;
+
+/* Read at CALL time, not at module scope: a module can be evaluated before the stylesheet is
+   applied, which would freeze the fallback for the life of the page. */
+export function getUndoWindow(): number {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return TOAST_DEFAULT_DURATION;
+  }
+  const ms = Number.parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--undo-window')
+  );
+  return Number.isFinite(ms) && ms > 0 ? ms : TOAST_DEFAULT_DURATION;
+}
 
 export const TOAST_DEFAULT_POSITION = 'top-right';
 

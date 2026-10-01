@@ -213,16 +213,56 @@ export const preset: Partial<Config> = {
            So opacity is spent over the first 40%, and the height and its
            padding over the remaining 60%, by which point there is nothing
            left to watch. Height and padding both go, or the row leaves a
-           gap the width of its own inset. */
+           gap the width of its own inset.
+
+           Every step also pins `min-height` to 0. A row that carries a
+           min-height so short content still fills it keeps that floor while
+           this animates, so the collapse silently does nothing and the row
+           fades and then jumps out. It belongs in the keyframes rather than
+           in a utility beside them: a class and the component rule it fights
+           have equal specificity, so source order decides, which is a coin
+           toss — a declaration inside a keyframe outranks both. */
         'row-out': {
-          '0%': { opacity: '1', height: 'var(--row-height)' },
-          '40%': { opacity: '0', height: 'var(--row-height)' },
+          '0%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
+          '40%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
           '100%': {
             opacity: '0',
             height: '0',
+            'min-height': '0',
             'padding-top': '0',
             'padding-bottom': '0',
           },
+        },
+        /* The same row arriving — an undo putting it back, or a row inserted into a list
+           the reader is already looking at. It is `row-out` reversed, and reversed in order
+           too: the height opens first and the text only fades in once there is room for it.
+           Fading in while the list is still moving asks the eye to read something that is not
+           where it will end up. */
+        'row-in': {
+          '0%': {
+            opacity: '0',
+            height: '0',
+            'min-height': '0',
+            'padding-top': '0',
+            'padding-bottom': '0',
+          },
+          '60%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
+          '100%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
+        },
+        /* REPLACING a row in place, rather than losing one. When what arrives belongs in the
+           slot the thing that left just had — a removal that leaves an undo behind, a row
+           swapped for its own edit form — running `row-out` and then `row-in` at it reads as
+           two events: the list closes the gap and then tears it back open, and the eye is
+           asked to follow a hole that was never really there.
+           So the box stays put and only the contents cross over. The height still moves,
+           because the two contents are not the same height, but it moves BETWEEN them and
+           never through zero. The consumer hands over the outgoing height as `--row-from`
+           and the incoming one as `--row-height`. */
+        'row-swap-out': { from: { opacity: '1' }, to: { opacity: '0' } },
+        'row-swap-in': {
+          '0%': { opacity: '0', height: 'var(--row-from)', 'min-height': '0' },
+          '50%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
+          '100%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
         },
         /* A panel leaving once it has nothing left to say. */
         'panel-out': {
@@ -241,6 +281,10 @@ export const preset: Partial<Config> = {
            `ease-in-out` for the same reason — `ease-out` starts at full
            speed, which is what made the collapse snap. */
         'row-out': 'row-out var(--motion-slow) ease-in-out forwards',
+        'row-in': 'row-in var(--motion-slow) ease-in-out forwards',
+        /* Out is --motion-fast: it is the half of the move you are not meant to watch. */
+        'row-swap-out': 'row-swap-out var(--motion-fast) ease-in-out forwards',
+        'row-swap-in': 'row-swap-in var(--motion-slow) ease-in-out both',
         'panel-out': 'panel-out var(--motion-slow) ease-in-out forwards',
       },
       backgroundImage: {
