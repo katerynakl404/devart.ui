@@ -6,7 +6,10 @@ const meta = {
   component: Counter,
   tags: ['autodocs'],
   args: { children: '2', active: false },
-  argTypes: { active: { control: 'boolean' } },
+  argTypes: {
+    active: { control: 'boolean' },
+    size: { control: 'inline-radio', options: ['md', 'sm'] },
+  },
   parameters: {
     docs: {
       description: {
@@ -39,6 +42,45 @@ export const States: Story = {
       description: {
         story:
           'A second digit does not widen the box — the same rule every mark in the kit follows. If a count outgrows it, the box grows on BOTH axes or the count is abbreviated; it never becomes an oval.',
+      },
+    },
+  },
+};
+
+/** Both steps, and the thing each one sits next to. A size is only right relative to its
+ *  neighbour, so neither is shown on its own. */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-5">
+      <div className="flex items-center gap-3">
+        <Counter size="md">3</Counter>
+        <span className="text-ink-body text-sm">
+          md — beside 14px body text in a list row
+        </span>
+      </div>
+      <div className="flex items-center gap-3">
+        <Counter size="sm">3</Counter>
+        <span className="text-ink-body text-sm">
+          sm — beside a 14px nav label, where md reads as a token dropped on the row
+        </span>
+      </div>
+      <div className="flex items-center gap-4 border-stroke border-t pt-4">
+        <Counter size="md">3</Counter>
+        <Counter size="sm">3</Counter>
+        <Counter size="md" active>
+          3
+        </Counter>
+        <Counter size="sm" active>
+          3
+        </Counter>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Two steps and no more, because the same count sits beside two different line heights. The step is chosen by what the counter stands next to, not by how important the number is.',
       },
     },
   },

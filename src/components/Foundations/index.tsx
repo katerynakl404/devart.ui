@@ -478,6 +478,107 @@ function Fill({ h = 'h-6' }: { h?: string }) {
  * The 4px step. The step number **is** the unit: `4` is 16px, so `p-4`,
  * `gap-4` and `m-4` are all 16.
  */
+const DURATIONS = [
+  ['duration-fast', '--motion-fast', '120ms', 'micro-feedback: colour, opacity, an icon swapping'],
+  ['duration-base', '--motion-base', '180ms', 'surface changes: background, border, shadow, transform'],
+  ['duration-slow', '--motion-slow', '240ms', 'larger moves: a panel opening, a row leaving a list'],
+];
+
+/* The window an undoable action keeps its way back on screen. It sits here rather than with the
+   durations because it is NOT one: nothing animates for four seconds. It is a reading window, and
+   it is listed beside them so nobody reaches for --motion-slow when they mean this. */
+const WINDOWS = [['--undo-window', '4000ms', 'how long an undo stays reachable — a toast and an inline Undo give the same time']];
+
+/* The four list movements. Each one is replayed on click, because a motion token shown as a number
+   is a number: the only way to review an exit is to watch it. */
+const MOVES = [
+  ['animate-row-in', 'a row arriving', 'The height opens first and the text fades in only once there is room for it.'],
+  ['animate-row-out', 'a row leaving', 'It FADES first (0–40%) and only then collapses. Fading and shrinking together is the version that looks abrupt: the row is still legible while the list is already moving under it.'],
+  ['animate-row-swap-in', 'a slot whose contents change', 'For a removal that leaves an undo behind. The box stays put, the height travels BETWEEN the two contents and never through zero — out-then-in reads as two events.'],
+  ['animate-panel-out', 'a panel with nothing left to say', 'Fades and settles 4px down.'],
+] as const;
+
+function MoveRow({ cls, what, why }: { cls: string; what: string; why: string }) {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-stroke p-3">
+      <div className="flex items-center justify-between gap-3">
+        <Typography element="span" textStyle="body14">
+          <code>{cls}</code> — {what}
+        </Typography>
+        <button
+          className="rounded-md border border-stroke px-2 py-1 text-ink-body text-xs hover:bg-state-hover"
+          onClick={() => {
+            setPlaying(false);
+            requestAnimationFrame(() => setPlaying(true));
+          }}
+          type="button"
+        >
+          Play
+        </button>
+      </div>
+      <div className="overflow-hidden rounded-md bg-surface-chips p-2">
+        <div
+          className={cn('flex items-center gap-2 rounded-md bg-surface-card px-2 py-1.5', playing && cls)}
+          onAnimationEnd={() => setPlaying(false)}
+          style={{ ['--row-height' as string]: '34px', ['--row-from' as string]: '34px' }}
+        >
+          <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-card2 text-ink-body text-xs">
+            1
+          </span>
+          <Typography element="span" textStyle="body14">
+            now split that by channel
+          </Typography>
+        </div>
+      </div>
+      <Typography element="span" textColor="secondary" textStyle="body12">
+        {why}
+      </Typography>
+    </div>
+  );
+}
+
+export function Motion() {
+  return (
+    <div className="flex flex-col gap-6">
+      <Grid wide>
+        {DURATIONS.map(([cls, token, ms, use]) => (
+          <div className="flex flex-col gap-2" key={cls}>
+            <span
+              aria-hidden
+              className="h-14 w-full rounded-md border border-stroke bg-surface-chips"
+              style={{ transition: `background-color var(${token}) ease-in-out` }}
+            />
+            <Typography element="span" textStyle="body12">
+              {cls}
+            </Typography>
+            <Typography element="span" textColor="secondary" textStyle="body12">
+              {ms} · {use}
+            </Typography>
+          </div>
+        ))}
+      </Grid>
+      <div className="flex flex-col gap-2">
+        {WINDOWS.map(([token, ms, use]) => (
+          <div className="flex flex-col gap-1 rounded-lg border border-stroke p-3" key={token}>
+            <Typography element="span" textStyle="body12">
+              <code>{token}</code> — {ms}
+            </Typography>
+            <Typography element="span" textColor="secondary" textStyle="body12">
+              {use}
+            </Typography>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col gap-3">
+        {MOVES.map(([cls, what, why]) => (
+          <MoveRow cls={cls} key={cls} what={what} why={why} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Spacing() {
   const max = SPACING.at(-1)?.[1] ?? 96;
   return (
