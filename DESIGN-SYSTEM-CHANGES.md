@@ -111,6 +111,11 @@ off — nothing should be built on it yet.
 | §85 | `Banner` | the dismiss was a tertiary button on a painting |
 | §86 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
 | §87 | `palettes.css` | **new** — colour packs: Layer 1 redeclared, the rest re-resolves · **draft** |
+| §88 | `Popover` | floated on the page colour |
+| §89 | `Alert` | one size where the component does two jobs |
+| §90 | `Banner` | `sm` kept the default's line gap, chosen for a larger title |
+| §91 | `PromoCard` | **new** — the offer card a sidebar has room for |
+| §92 | `glyphStroke` | glyph stroke 1.75 → 2, the weight prod draws: `Button`, `IconButton`, `InputGroupAddon`, `DropdownMenu`, and `Alert sm` 1.5 → 2 |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -682,7 +687,7 @@ written down nowhere — that is the coverage audit that follows.
 | 9 | `CircularProgress` | `#circularprogress` | ✅ size 40, stroke 2.5, track `--surface-page`, indicator brand |
 | 10 | `Collapsible` | `#collapsible` | ✅ pure Radix re-export on both sides; nothing to diverge |
 | 11 | `Datepicker` | `#datepicker` | ⚠ §29 the one focus ring in the package that is not the shared recipe · §22 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
-| 12 | `DropdownMenu` | `#dropdown` | ✅ 6/12 padding, 8px gap, 16px glyph @1.75, 4-inside-8 radius, disabled = ink only · radius, disabled recipe, focus removal and `portalContainer` all *undoc.* |
+| 12 | `DropdownMenu` | `#dropdown` | ✅ 6/12 padding, 8px gap, 16px glyph @2 (was 1.75 — §92), 4-inside-8 radius, disabled = ink only · radius, disabled recipe, focus removal and `portalContainer` all *undoc.* |
 | 13 | `File` | `#file` | ✅ 4/8 padding, card surface, medium name, interactive hover/press/focus · all of it *undoc.* |
 | 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §40 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
 | 15 | `Input` | `#input` | ✅ §40 **fixed** — padding, field text and glyph now match at all five steps |
@@ -1770,9 +1775,9 @@ through the same renderer. The bar is now drawn as a stroke — same viewBox, sa
 `stroke-width: 3`, same cap — with `M2 12h20`, which is 10px long at this size,
 the width the bar always had. (Lucide’s own `Minus` is `M5 12h14` = 7px.)
 
-1.5 rather than 2, because the tick’s weight is the one the icon system sets:
-it comes from the stroke ladder every other glyph in the package uses, while
-the bar’s 2px came from a spacing scale that has no 1.5 step. `h-[1.5px]` is an
+1.5 rather than 2, because the bar follows the tick, and the tick’s weight is
+the checkbox’s own — a mark below 16px keeps the weight its component gives it
+(§92) — while the bar’s 2px came from a spacing scale that has no 1.5 step. `h-[1.5px]` is an
 arbitrary value on purpose — the alternative is to bend the glyph to the
 spacing scale, which would make one checkbox heavier than every icon beside it.
 
@@ -2589,6 +2594,159 @@ rather than a convenience: it is the only way to see a component that pinned
 itself to a ramp step, because that one stays teal while the page around it
 moves.
 
+## 88. `Popover` floated on the page colour
+
+- **`PopoverContent`** — background `bg-surface-page` → **`bg-surface-card`**.
+
+Surface/Page is the colour the page is painted. A popover wearing it had no
+surface of its own: over the page body only the 1px border said where the
+panel began, and over a card — which is where most of them open — it read as
+a hole cut in the card rather than a panel above it.
+
+`DropdownMenuContent` has always been `bg-surface-card`, and the two are the
+same family of floating panel with the same elevation shadow. One of them
+wearing the page colour was the defect; the shade itself was never the
+decision.
+
+Raised by the connections prototype, where a popover carrying a connection’s
+description and its problems opens over the catalog table.
+
+## 89. `Alert` had one size, and does two jobs
+
+- **`Alert`** — new `size="sm" | "md"`, default `sm`.
+
+Tucked inside another surface — a queue band, a card — an Alert is a footnote
+and reads at 12. Standing on a page, above a table, speaking about the whole
+screen, it occupies a full row, and 12px there is a whisper from something
+large. Consumers were reaching for `titleClassName` and `descriptionClassName`
+to say that, which puts the type scale back in the page.
+
+Every rung moves together — type 12→14, glyph 16→20, padding 10/12→12/14, gap
+10→12 — so `md` is a size and not an Alert with a bigger font. The glyph box
+equals the title's line box at both sizes, which is what aligns them.
+
+The gap between title and description does **not** move with the size: each
+line box already carries its own half-leading, and 2px is what the pair wants
+at 12/16 and at 14/20 alike.
+
+Raised by the plan-gating prototype, where the read-only notice stands over a
+table on one screen and inside a chat thread on another.
+
+## 90. `Banner` — `sm` kept a line gap chosen for a larger title
+
+- **`Banner`** — `size="sm"`: title→description gap `gap-1.5` → **`gap-0.5`**.
+- **`Banner`** — the body gains `data-slot="banner-body"`, so the size can reach it.
+
+`sm` already steps the title down to 14/20, but the gap under it stayed at the
+default's 6px — a value chosen for a 16px title. Beside an `Alert size="md"`,
+which states the same kind of thing at the same type with 2px between its
+lines, the two read as different components rather than as two sizes of one
+system.
+
+The default size is untouched: its 16px title and taller block still want the
+air.
+
+## 91. New — `PromoCard`
+
+- **`PromoCard`** — a small offer card, first used in the sidebar directly above the footer.
+
+A glyph, what is on offer, one line of what it gives, and a dismiss. Products
+were building it by hand: the Insightis prototype had a one-line pill first,
+which said almost nothing in a 15rem column, and then a card of its own CSS.
+It is named for the job rather than for a plan: an upgrade, an invitation or an ending
+trial all fit the same shape. The consuming kit calls the same part `.promo-card`, so the
+two systems name it identically.
+
+Two rules the component enforces, because both were got wrong by hand first:
+
+- **It does not name the plan the person is on.** The account row directly
+  below already does, and the same word twice in 40px of column is noise rather
+  than emphasis. The title is the offer; the line under it is what the money
+  buys.
+- **The dismiss is a sibling of the link, never nested inside it** — a button
+  inside an anchor is not markup, and the whole card is the link's hit area.
+
+Hover is the package's card recipe. The hand-built version recoloured the title
+on hover, which read as the heading turning into a link under the pointer.
+
+## 92. Glyph stroke — 1.75 → 2, the weight prod draws
+
+- **`glyphStroke`** (`src/lib/utils.ts`) — `[&_svg]:stroke-[1.75]` → **`[&_svg]:stroke-2`**.
+  Reaches `Button`, `IconButton`, `InputGroupAddon` and `DropdownMenuItem`.
+- **`Alert`** — the glyph takes `glyphStroke` at both sizes: `sm` **1.5 → 2**,
+  `md` stays 2. `SIZE_ICON` now sizes the glyph and nothing else.
+- **`gen-classlist.mjs`** — the enumerated form follows, so the bundle carries
+  the same rule as Storybook (§19).
+
+1.75 came from the kit, which called it "one step lighter than prod's 2". The
+kit has since measured prod: every UI glyph on the live app is Lucide's
+default, `stroke-width="2"` in a 24 viewBox — 20 glyphs, 13 in a 16px box and 7
+in a 14px one. It tried 1.75 across the board the same day and reverted it,
+because the identical mark came out 12% lighter than in production. Its
+`--icon-stroke` is 2 now, and the package follows.
+
+**One weight; the box does the scaling.** The rule stays although it now equals
+Lucide's default. A CSS `stroke-width` beats the attribute on the `<svg>`, so a
+glyph passed in with its own `strokeWidth`, or from a set that does not default
+to 2, still comes out at the same weight as the glyph beside it.
+
+**`Alert` was the exception, and is not any more.** Its 16px glyph drew at 1.5
+so the circle-and-cross would match the weight it has at 20px. The cost was that
+an Alert's 16px mark rendered at 1px while a button's 16px glyph right beside it
+rendered at 1.33px. The same box at two weights is the split this section
+removes, so `Alert` takes the shared rule. The kit still carries the
+pair (`--icon-stroke-sm: 1.5`); it needs the same move.
+
+One component keeps a weight of its own:
+
+| | Box | Stroke | Rendered | Why |
+|---|---|---|---|---|
+| `Checkbox` tick and bar | 12px | 3 | 1.5px | below ~16px a stroke must stay heavy enough to survive rasterisation |
+
+The kit tried a ladder across the whole system (stroke proportional to box) the
+same day and reverted that too: a 12–14px mark at 1.25–1.5 reads as a scratch.
+So there is no formula below 16px. A small mark keeps the weight its component
+gives it, and anything new matches its neighbours.
+
+The `StatusView` illustrations draw at 1.5 in a 150-unit viewBox. They are
+artwork, not UI glyphs, and stay out of this rule.
+
+## 93. `Pagination` takes a rung, and the page gets a floor · **DRAFT**
+
+- **`Pagination`** — new `size` prop: `sm` (32px, default) · `xs` (24px).
+  Threaded to `PageButton`, `NavButton` and `EllipsisIndicator`; the row gap
+  closes with it (8px → 4px). New `Pagination/size.ts` holds the type and the
+  box map, so one file decides what a rung measures.
+- **`lib/utils`** — new `pageFloor` recipe (`pb-8`), beside `focusRing` and
+  `glyphStroke`.
+
+### The rung
+
+Every part was hard-coded to `size-8` with `size="sm"` underneath it. That is
+right when the pager is the page’s own control, and wrong under a table: there
+it shares a footer band with the range it annotates — "Showing 1–20 of 300" at
+`body12` — and a 32px control beside 12px text is the loudest thing in a strip
+whose whole job is to be quiet. 24px is the floor for the hit target, so the
+ladder is two rungs and stops.
+
+### The floor
+
+Raised by the connections prototype, where the last table row finished flush
+against the bottom of the window — for the second time.
+
+The reason it comes back is that the padding looks present and does nothing.
+A page puts `pb-8` on its content box, that box is `min-h-0 flex-1`, and such
+a box is sized to the SCROLLPORT: its padding is drawn at its own bottom edge,
+which is the bottom of the window, and the content scrolls straight past it.
+
+Padding on the scroll container is the other wrong answer — it moves the sticky
+constraint rectangle, and a `sticky bottom-0` commit bar then stops short of the
+window with the form scrolling visibly underneath it.
+
+So the recipe names where it goes as much as what it is: the element that GROWS
+with the content. `lib/utils` is re-exported into the design-sync bundle, so a
+consumer gets the name rather than a number it picks for itself.
+
 ## 38. `StepSlider` — four measurements against a spec that argues for each one
 
 *Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
@@ -2808,7 +2966,7 @@ ladder has no half-steps.
 `.design-sync/.cache/ds-classlist.txt` contained zero `svg`-scoped classes.
 Every glyph rule in the library is a child or descendant selector —
 `[&_svg]:size-4` in `Button`, `IconButton`, `Badge`, `File`; `[&>svg]:size-*`
-in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` in `DropdownMenuItem` — and the
+in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` (now `stroke-2`, §92) in `DropdownMenuItem` — and the
 enumerated vocabulary generated none of them.
 
 So in the bundle no glyph ladder existed, no shrink guard, no menu stroke

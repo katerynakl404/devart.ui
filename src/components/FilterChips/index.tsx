@@ -29,14 +29,14 @@ const filterChipVariants = cva(
 
     // Rest
     'border-stroke bg-transparent text-ink-body',
-    'hover:border-stroke-field-hover hover:bg-state-hover',
+    'enabled:hover:border-stroke-field-hover enabled:hover:bg-state-hover',
 
     // Selected — brand outline and ink over a light brand wash. The fill is an
     // alpha tint so the chip keeps working on any surface it is placed on.
     'data-[state=checked]:border-brand-primary',
     'data-[state=checked]:bg-brand-primary/8',
     'data-[state=checked]:text-brand-secondary',
-    'data-[state=checked]:hover:bg-brand-primary/12'
+    'enabled:data-[state=checked]:hover:bg-brand-primary/12'
   ),
   {
     variants: {

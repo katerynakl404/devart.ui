@@ -18,9 +18,9 @@ const segmentedControlTriggerVariants = cva(
     '[&_svg]:shrink-0',
 
     // Hover (inactive only): half-step lift + neutral rim + primary text.
-    'data-[state=inactive]:hover:bg-segctrl-hover-bg',
-    'data-[state=inactive]:hover:text-ink-primary',
-    'data-[state=inactive]:hover:shadow-segctrl-hover',
+    'enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg',
+    'enabled:data-[state=inactive]:hover:text-ink-primary',
+    'enabled:data-[state=inactive]:hover:shadow-segctrl-hover',
 
     // Active / selected: raised pill (Surface/Card light, Chips dark) + rim.
     'data-[state=active]:bg-surface-card',

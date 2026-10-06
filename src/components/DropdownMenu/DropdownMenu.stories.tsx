@@ -159,7 +159,7 @@ export const WithSelectionItems: Story = {
  *
  * | State | Treatment |
  * |---|---|
- * | Default | `Text/Body` label, 16px leading glyph at stroke 1.75 |
+ * | Default | `Text/Body` label, 16px leading glyph at stroke 2 |
  * | Highlighted (hover + keyboard) | `State/Hover` fill |
  * | Pressed | `State/Pressed` fill |
  * | Destructive | `Feedback/Red_Text` label and glyph together |

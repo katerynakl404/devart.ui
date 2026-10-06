@@ -36,20 +36,20 @@ const radioVariants = cva(
           // Unchecked state — same shell as Checkbox
           'bg-surface-card',
           'border-stroke-field-hover',
-          'hover:border-ink-secondary',
+          'enabled:hover:border-ink-secondary',
           // Checked state
           'data-[state=checked]:border-brand-primary',
           'data-[state=checked]:bg-brand-primary',
           'data-[state=checked]:text-content-on-solid',
-          'data-[state=checked]:hover:border-brand-hover',
-          'data-[state=checked]:hover:bg-brand-hover',
+          'enabled:data-[state=checked]:hover:border-brand-hover',
+          'enabled:data-[state=checked]:hover:bg-brand-hover',
           // Error state — mirrors Input / Checkbox; error fill wins over checked
           'aria-invalid:border-input-error',
-          'aria-invalid:hover:border-input-error',
+          'enabled:aria-invalid:hover:border-input-error',
           'aria-invalid:data-[state=checked]:border-input-error',
           'aria-invalid:data-[state=checked]:bg-input-error',
-          'aria-invalid:data-[state=checked]:hover:border-input-error',
-          'aria-invalid:data-[state=checked]:hover:bg-input-error'
+          'enabled:aria-invalid:data-[state=checked]:hover:border-input-error',
+          'enabled:aria-invalid:data-[state=checked]:hover:bg-input-error'
         ),
       },
       size: {

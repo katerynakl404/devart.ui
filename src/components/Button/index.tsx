@@ -90,7 +90,9 @@ const buttonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         // Tertiary with a brand label: the pill, the focus ring and the
         // disabled recipe are the neutral tertiary's, and only the label moves
@@ -104,7 +106,9 @@ const buttonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         // Destructive: theme-independent red fill; focus ring is the kit-wide
         // brand teal (red-on-red would be unreadable).
@@ -138,7 +142,9 @@ const buttonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         // Bare utility (no box, fit-content) for inline/icon triggers.
         transparent: cn(

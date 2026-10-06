@@ -78,7 +78,7 @@ is ink and weight at the same size, on the same rail.
 
 ## Every action item takes a leading glyph
 
-16px, `stroke-width: 1.75`, `currentColor` — so a `danger` or `accent` row
+16px, `stroke-width: 2`, `currentColor` — so a `danger` or `accent` row
 tints label and icon together with no extra rule. A text-only menu makes the
 reader parse every label to find one action; the glyph gives each row a shape
 the eye catches first.

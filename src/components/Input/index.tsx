@@ -27,8 +27,8 @@ function Input({ className, type, ref, ...props }: ComponentProps<'input'>) {
         'focus-visible:outline-none',
         'transition-[color,box-shadow]',
 
-        //Disabled
-        'disabled:pointer-events-none',
+        // Disabled keeps its pointer events so a Tooltip can say why it is off; what it loses is
+        // the hover state, which the shell (InputGroup / the field wrapper) guards with `enabled:`.
         'disabled:cursor-not-allowed',
         'disabled:text-ink-inactive',
         'disabled:placeholder:text-ink-inactive',

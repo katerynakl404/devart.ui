@@ -90,7 +90,8 @@ const bannerVariants = cva(BANNER_ROOT_LAYOUT, {
         '[&_[data-slot=banner-icon]_svg]:size-5',
         '[&_[data-slot=banner-title]]:text-sm',
         '[&_[data-slot=banner-title]]:leading-5',
-        '[&_[data-slot=banner-action]]:gap-2'
+        '[&_[data-slot=banner-action]]:gap-2',
+        '[&_[data-slot=banner-body]]:gap-0.5'
       ),
     },
   },
@@ -224,7 +225,10 @@ const Banner = ({
         </div>
       )}
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+      <div
+        className="flex min-w-0 flex-1 flex-col gap-1.5"
+        data-slot="banner-body"
+      >
         <Typography
           className={cn(
             bannerTitleVariants({ variant: resolvedVariant }),

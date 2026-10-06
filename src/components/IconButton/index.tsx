@@ -64,7 +64,9 @@ const iconButtonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         // The same pill as `tertiary`, with a brand glyph. Its label — the
         // glyph — moves through the brand ramp; the surface does not.
@@ -75,7 +77,9 @@ const iconButtonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         // Focus ring is the kit-wide brand teal on every variant, destructive
         // included — a red ring on a red control reads as noise.
@@ -106,7 +110,9 @@ const iconButtonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:pointer-events-none aria-disabled:bg-transparent aria-disabled:text-ink-inactive'
+          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
+          'aria-disabled:pressed:bg-transparent'
         ),
         transparent: cn(
           '!p-0 m-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',

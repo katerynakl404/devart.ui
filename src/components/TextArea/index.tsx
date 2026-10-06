@@ -11,8 +11,11 @@ export const textAreaVariants = cva(
     'block w-full min-w-0 resize-none',
     'outline-none',
 
-    //Disabled — real fill instead of opacity dimming
-    'disabled:pointer-events-none disabled:cursor-not-allowed',
+    // Disabled — a real fill instead of opacity dimming, and it KEEPS its pointer events: a
+    // disabled control is the one that most needs to explain itself, and pointer-events:none
+    // means it never emits mouseover, so a Tooltip on it is attached to a dead target. What goes
+    // instead is the hover STATE: every hover utility below is guarded with `enabled:`.
+    'disabled:cursor-not-allowed',
     'disabled:border-stroke disabled:bg-state-disabled',
     'disabled:text-ink-inactive disabled:placeholder:text-ink-inactive'
   ),
@@ -26,8 +29,8 @@ export const textAreaVariants = cva(
           //Transition
           'transition-[border-color,color,box-shadow]',
 
-          //Hover state
-          'hover:border-stroke-field-hover',
+          //Hover state — only while the control is enabled
+          'enabled:hover:border-stroke-field-hover',
 
           //Focus state — neutral border, no outer ring
           'focus-visible:border-input-focus'
@@ -227,7 +230,7 @@ export const TextArea = ({
         textAreaVariants({ variant, size, rounded }),
         //Error — red border in every state, no bg tint, no outer ring
         isInvalid &&
-          'border-input-error hover:border-input-error focus-visible:border-input-error',
+          'border-input-error enabled:hover:border-input-error focus-visible:border-input-error',
         className
       )}
       {...props}

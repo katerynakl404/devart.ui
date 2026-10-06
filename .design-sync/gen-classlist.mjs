@@ -270,8 +270,8 @@ add(
    working, which is why it stayed invisible.
 
    The ladder is 14/16/16/20/20 — `size-3.5` / `size-4` / `size-5` — plus the
-   `size-3` and `size-6` steps other components use, and the stroke weight the
-   menu row asks for. */
+   `size-3` and `size-6` steps other components use, and `glyphStroke`, the one
+   weight every control's glyph takes. */
 for (const step of ['3', '3.5', '4', '5', '6', '7', '8']) {
   add(`[&>svg]:size-${step}`, `[&_svg]:size-${step}`);
 }
@@ -300,7 +300,7 @@ add(
   '[&_svg]:pointer-events-none',
   '[&_svg]:shrink-0',
   '[&>svg]:shrink-0',
-  '[&_svg]:stroke-[1.75]',
+  '[&_svg]:stroke-2',
   /* The stretched row link (Table.md): one anchor covers the row via a
      pseudo-element, so the row is the hit area while the anchor stays the
      accessible target. */

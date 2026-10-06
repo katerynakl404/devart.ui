@@ -27,7 +27,8 @@ const linkButtonVariants = cva(
     '[text-decoration-thickness:1px] [text-underline-offset:25%]',
     '[&_svg]:size-4 [&_svg]:shrink-0',
     'focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
-    'aria-disabled:pointer-events-none aria-disabled:text-ink-inactive'
+    'aria-disabled:text-ink-inactive',
+    'aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline'
   ),
   {
     variants: {

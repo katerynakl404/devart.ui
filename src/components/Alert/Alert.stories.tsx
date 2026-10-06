@@ -86,6 +86,39 @@ export const WithActions: Story = {
 };
 
 /** All five together: the set has to read apart at a glance and still as one family. */
+export const Sizes: Story = {
+  render: () => (
+    <div className="flex w-[34rem] max-w-full flex-col gap-3">
+      <Alert
+        variant="info"
+        icon={<InfoIcon />}
+        title="Queue paused · waiting for your answer above"
+        description="2 messages kept · nothing sent or charged"
+      />
+      <Alert
+        size="md"
+        variant="info"
+        icon={<InfoIcon />}
+        title="Queue paused · waiting for your answer above"
+        description="2 messages kept · nothing sent or charged"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Two sizes, because an Alert does two jobs. **sm** (the default) is the footnote ' +
+          'inside another surface — a band, a card: title Title/12, description Body/S, 16px ' +
+          'glyph. **md** stands on the page, above a table, speaking about the whole screen, ' +
+          'where 12px is a whisper from something that occupies a full row: Title/14, Body/M, ' +
+          '20px glyph, one rung more padding. Every rung moves together, so md is a size and ' +
+          'not an Alert with a bigger font.',
+      },
+    },
+  },
+};
+
 export const Variants: Story = {
   render: () => (
     <div className="flex w-[34rem] max-w-full flex-col gap-2">

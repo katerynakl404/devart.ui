@@ -28,7 +28,14 @@ const PopoverContent = ({
         sideOffset={sideOffset}
         className={cn(
           'z-50 w-72 rounded-md border p-4 outline-none',
-          'border-stroke bg-surface-page text-ink-primary',
+          // Surface/Card, like every other floating panel in the system.
+          // It was Surface/Page: the colour the page itself is painted, so a
+          // popover opened over a page had no edge of its own — only the
+          // hairline border separated it from what it floated above, and on
+          // a card it read as a hole. `DropdownMenu` has always used Card;
+          // two overlays of the same family wearing different surfaces was
+          // the defect, not the shade.
+          'border-stroke bg-surface-card text-ink-primary',
           // Floating-surface elevation — theme-aware, unlike the stock shadows,
           // which are invisible against a dark card.
           'shadow-overlay-soft',

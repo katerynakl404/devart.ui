@@ -18,7 +18,7 @@ const tabsTriggerVariants = cva(
     "after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-[1px] after:bg-transparent after:transition-colors after:content-['']",
 
     // Hover (inactive only): body text shift only — no background change.
-    'data-[state=inactive]:hover:text-ink-body',
+    'enabled:data-[state=inactive]:hover:text-ink-body',
 
     // Active: highlight text + brand underline.
     'data-[state=active]:text-ink-highlight',

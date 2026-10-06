@@ -7,6 +7,7 @@ import { LastButton } from './LastButton';
 import { NextButton } from './NextButton';
 import { PageButton } from './PageButton';
 import { PrevButton } from './PrevButton';
+import type { PaginationSize } from './size';
 import { getPaginationRange, isEllipsisItem } from './utils';
 
 export interface PaginationProps {
@@ -31,6 +32,16 @@ export interface PaginationProps {
    * of their own.
    */
   showPageNumbers?: boolean;
+  /**
+   * The rung the whole control is drawn on. **Draft.**
+   *
+   * `sm` (32px) is the default and is right when the pager is the page's own
+   * control. `xs` (24px) is for a pager inside a TABLE's footer, where it
+   * shares a band with the range it annotates — "Showing 1–20 of 300" at
+   * `body12` — and a 32px control beside 12px text is the loudest thing in a
+   * footer whose whole job is to be quiet.
+   */
+  size?: PaginationSize;
   onPageChange: (page: number) => void;
   /** Accessible labels for the navigation buttons, overriding their defaults. */
   labels?: {
@@ -50,6 +61,7 @@ const Pagination = ({
   showFirstLast = true,
   showPrevNext = true,
   showPageNumbers = true,
+  size = 'sm',
   labels,
 }: PaginationProps) => {
   const paginationRange = useMemo(
@@ -67,12 +79,13 @@ const Pagination = ({
   const isLastPage = currentPage === totalPages;
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={`flex items-center ${size === 'xs' ? 'gap-1' : 'gap-2'}`}>
       {showFirstLast && (
         <FirstButton
           onClick={() => onPageChange(1)}
           isDisabled={isFirstPage}
           label={labels?.first}
+          size={size}
         />
       )}
 
@@ -81,19 +94,21 @@ const Pagination = ({
           onClick={() => onPageChange(currentPage - 1)}
           isDisabled={isFirstPage}
           label={labels?.previous}
+          size={size}
         />
       )}
 
       {showPageNumbers &&
         paginationRange.map((item) =>
           isEllipsisItem(item) ? (
-            <EllipsisIndicator key={item} />
+            <EllipsisIndicator key={item} size={size} />
           ) : (
             <PageButton
               key={item}
               page={item}
               isActive={currentPage === item}
               onClick={() => onPageChange(item)}
+              size={size}
             />
           )
         )}
@@ -103,6 +118,7 @@ const Pagination = ({
           onClick={() => onPageChange(currentPage + 1)}
           isDisabled={isLastPage}
           label={labels?.next}
+          size={size}
         />
       )}
 
@@ -111,6 +127,7 @@ const Pagination = ({
           onClick={() => onPageChange(totalPages)}
           isDisabled={isLastPage}
           label={labels?.last}
+          size={size}
         />
       )}
     </div>

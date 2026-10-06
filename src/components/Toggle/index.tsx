@@ -9,8 +9,8 @@ const TOGGLE_ON_CHIP = cn(
   'data-[state=on]:cursor-default',
   'data-[state=on]:border-ink-highlight data-[state=on]:bg-state-pressed',
   'data-[state=on]:text-ink-highlight',
-  'data-[state=on]:hover:border-ink-highlight',
-  'data-[state=on]:hover:bg-state-pressed data-[state=on]:hover:text-ink-highlight',
+  'enabled:data-[state=on]:hover:border-ink-highlight',
+  'enabled:data-[state=on]:hover:bg-state-pressed enabled:data-[state=on]:hover:text-ink-highlight',
   'data-[state=on]:active:border-ink-highlight',
   'data-[state=on]:active:bg-state-pressed data-[state=on]:active:text-ink-highlight'
 );
@@ -18,8 +18,8 @@ const TOGGLE_ON_CHIP = cn(
 const TOGGLE_ON_BADGE = cn(
   'data-[state=on]:border-transparent data-[state=on]:bg-badge-primary-bg',
   'data-[state=on]:text-badge-primary-text',
-  'data-[state=on]:hover:border-transparent data-[state=on]:hover:bg-badge-primary-bg',
-  'data-[state=on]:hover:text-badge-primary-text',
+  'enabled:data-[state=on]:hover:border-transparent enabled:data-[state=on]:hover:bg-badge-primary-bg',
+  'enabled:data-[state=on]:hover:text-badge-primary-text',
   'data-[state=on]:active:border-transparent data-[state=on]:active:bg-badge-primary-bg',
   'data-[state=on]:active:text-badge-primary-text'
 );
@@ -46,7 +46,7 @@ const toggleVariants = cva(
       variant: {
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
-          'hover:border-brand-hover hover:bg-brand-primary/6',
+          'enabled:hover:border-brand-hover enabled:hover:bg-brand-primary/6',
           'active:border-brand-hover active:bg-brand-primary/8',
           'disabled:border-ink-inactive disabled:bg-transparent',
           'disabled:text-ink-inactive',
@@ -54,7 +54,7 @@ const toggleVariants = cva(
         ),
         stroke: cn(
           'border-stroke bg-surface-card text-ink-body',
-          'hover:bg-state-hover',
+          'enabled:hover:bg-state-hover',
           'active:border-stroke active:bg-state-pressed',
           'disabled:border-stroke disabled:bg-state-disabled',
           'disabled:text-ink-inactive',
@@ -62,13 +62,13 @@ const toggleVariants = cva(
         ),
         ghost: cn(
           'border-transparent bg-transparent text-ink-body',
-          'hover:bg-state-hover active:bg-state-pressed',
+          'enabled:hover:bg-state-hover active:bg-state-pressed',
           'disabled:bg-transparent disabled:text-ink-inactive',
           TOGGLE_ON_CHIP
         ),
         badge: cn(
           'border-transparent bg-transparent text-ink-body',
-          'hover:bg-state-hover active:bg-state-pressed',
+          'enabled:hover:bg-state-hover active:bg-state-pressed',
           'disabled:bg-transparent disabled:text-ink-inactive',
           TOGGLE_ON_BADGE
         ),

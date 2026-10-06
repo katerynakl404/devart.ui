@@ -35,7 +35,7 @@ const InputGroupAction = ({
       'size-6 p-0',
       'rounded-sm border-none bg-transparent',
       'cursor-pointer',
-      'text-ink-icon transition-colors hover:text-ink-icon-hover',
+      'text-ink-icon transition-colors enabled:hover:text-ink-icon-hover',
       '[&>svg]:size-4 [&>svg]:shrink-0',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
       'disabled:pointer-events-none disabled:text-ink-inactive',

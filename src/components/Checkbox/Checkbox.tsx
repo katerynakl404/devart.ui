@@ -33,30 +33,30 @@ const checkboxVariants = cva(
         primary: cn(
           // Unchecked state
           'border-stroke-field-hover bg-surface-card',
-          'hover:border-ink-secondary',
+          'enabled:hover:border-ink-secondary',
           // Checked state
           'data-[state=checked]:border-brand-primary',
           'data-[state=checked]:bg-brand-primary',
           'data-[state=checked]:text-content-on-solid',
-          'data-[state=checked]:hover:border-brand-hover',
-          'data-[state=checked]:hover:bg-brand-hover',
+          'enabled:data-[state=checked]:hover:border-brand-hover',
+          'enabled:data-[state=checked]:hover:bg-brand-hover',
           // Indeterminate state
           'data-[state=indeterminate]:border-brand-primary',
           'data-[state=indeterminate]:bg-brand-primary',
           'data-[state=indeterminate]:text-content-on-solid',
-          'data-[state=indeterminate]:hover:border-brand-hover',
-          'data-[state=indeterminate]:hover:bg-brand-hover',
+          'enabled:data-[state=indeterminate]:hover:border-brand-hover',
+          'enabled:data-[state=indeterminate]:hover:bg-brand-hover',
           // Error state — mirrors Input; error fill wins over checked
           'aria-invalid:border-input-error',
-          'aria-invalid:hover:border-input-error',
+          'enabled:aria-invalid:hover:border-input-error',
           'aria-invalid:data-[state=checked]:border-input-error',
           'aria-invalid:data-[state=checked]:bg-input-error',
-          'aria-invalid:data-[state=checked]:hover:border-input-error',
-          'aria-invalid:data-[state=checked]:hover:bg-input-error',
+          'enabled:aria-invalid:data-[state=checked]:hover:border-input-error',
+          'enabled:aria-invalid:data-[state=checked]:hover:bg-input-error',
           'aria-invalid:data-[state=indeterminate]:border-input-error',
           'aria-invalid:data-[state=indeterminate]:bg-input-error',
-          'aria-invalid:data-[state=indeterminate]:hover:border-input-error',
-          'aria-invalid:data-[state=indeterminate]:hover:bg-input-error'
+          'enabled:aria-invalid:data-[state=indeterminate]:hover:border-input-error',
+          'enabled:aria-invalid:data-[state=indeterminate]:hover:bg-input-error'
         ),
       },
       size: {

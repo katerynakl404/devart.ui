@@ -11,10 +11,10 @@ import { cn, formFocusRing } from '../../lib/utils';
 const switchTrackClasses = cn(
   // Checked states
   'data-[state=checked]:bg-brand-primary',
-  'data-[state=checked]:hover:bg-brand-hover',
+  'enabled:data-[state=checked]:hover:bg-brand-hover',
   // Unchecked states — filled medium-grey track, no outline
   'data-[state=unchecked]:bg-switch-off-bg',
-  'data-[state=unchecked]:hover:bg-switch-off-bg-hover'
+  'enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover'
 );
 
 const switchVariants = cva(
@@ -111,7 +111,7 @@ const switchContainerVariants = cva('flex items-center', {
       tertiary: cn(
         'cursor-pointer rounded',
         'transition-colors duration-fast',
-        'hover:bg-state-hover',
+        'enabled:hover:bg-state-hover',
         'active:bg-state-pressed',
         'has-[:disabled]:pointer-events-none'
       ),

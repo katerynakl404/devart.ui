@@ -7,10 +7,12 @@ import {
   MessageSquare,
   Search,
   Settings,
+  Sparkles,
 } from 'lucide-react';
 import { useEffect } from 'react';
 import { cn } from '../../lib/utils';
 import { Button } from '../Button';
+import { PromoCard } from '../PromoCard';
 import {
   Table,
   TableBody,
@@ -159,6 +161,47 @@ export const Expanded: Story = {
 
 // `collapsible="icon"` + collapsed provider state minimises the sidebar to an
 // icon rail with tooltips on hover.
+export const Promo: Story = {
+  render: () => (
+    <SidebarProvider>
+      <Sidebar>
+        <SidebarHeader>
+          <SidebarStoryHeader />
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarNavigationItems items={navigation} />
+        </SidebarContent>
+        <PromoCard
+          description="Unlimited sources and 15,000 credits a month"
+          href="#plan"
+          icon={<Sparkles />}
+          onDismiss={() => undefined}
+          title="Upgrade to Pro"
+        />
+        <SidebarFooter>
+          <div className="flex items-center gap-2">
+            <Settings className="size-4" />
+            <Typography textColor="secondary" variant="span">
+              Settings
+            </Typography>
+          </div>
+        </SidebarFooter>
+      </Sidebar>
+    </SidebarProvider>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'A small offer directly above the footer: glyph, what it is, one line of what it ' +
+          'gives, and a dismiss. It does NOT name the plan the person is on — the account row ' +
+          'below already does, and the same word twice in 40px of column is noise. The dismiss ' +
+          'is a sibling of the link, never nested inside it.',
+      },
+    },
+  },
+};
+
 export const CollapsedIcon: Story = {
   args: { collapsible: 'icon' },
   render: (args) => (

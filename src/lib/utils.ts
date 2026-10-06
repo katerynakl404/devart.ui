@@ -29,22 +29,50 @@ export const focusRing = cn(
 );
 
 /**
- * Lucide's default stroke is 2. At the sizes this library actually renders a
- * glyph — 14 to 20px beside 12 to 16px text — that reads a step heavier than
- * the text it sits next to, and an icon that out-weights its own label is the
- * most common way a control starts looking like a toolbar.
+ * The page’s FLOOR — the air under the last thing on a scrolling page, so
+ * nothing ever finishes flush against the bottom of the window.
  *
- * 1.75 is the reference kit's value: it calls it "one step lighter than prod's
- * 2" and uses it for every menu glyph. The menu row was the only place the
- * package had picked it up; this is the same value hoisted so the controls
- * agree.
+ * Apply it to the element that GROWS with the content. Not to the scroller,
+ * and not to a `min-h-0 flex-1` box: those are sized to the scrollport, so
+ * their padding is drawn at the bottom of the WINDOW and the content scrolls
+ * straight past it. The padding looks present in the markup and does nothing,
+ * which is how this gets "fixed" twice.
+ *
+ * Padding on the scroll container is the other wrong answer: it moves the
+ * sticky constraint rectangle with it, and a `sticky bottom-0` commit bar then
+ * stops short of the window edge with the form scrolling visibly underneath.
+ * A bar like that owns its own inset instead.
+ *
+ * 32px: one step above the 24px page gutter, because the end of a page is the
+ * one edge a reader can mistake for "there is nothing more".
+ */
+export const pageFloor = 'pb-8';
+/**
+ * One weight for every ordinary UI glyph — a button icon, an icon button, a
+ * field addon, a menu row: 2, Lucide's own default and the kit's
+ * `--icon-stroke`. Production draws every glyph at 2 in a 24 viewBox, at 16px
+ * and at 14px alike; the box does the scaling, not the stroke.
+ *
+ * 1.75 was the value here until 2026-10-06. The kit tried it the same day and
+ * reverted it: it made the identical glyph 12% lighter than in prod.
+ *
+ * The rule is still worth stating although it equals the default. A CSS
+ * `stroke-width` beats the attribute on the `<svg>`, so a glyph passed in with
+ * its own `strokeWidth`, or from a set whose default is not 2, comes out at the
+ * same weight as its neighbours.
+ *
+ * `Alert` takes it too, at both sizes: its 16px glyph used to draw at 1.5,
+ * which made it the one 16px glyph lighter than its neighbours. The one place
+ * that keeps a weight of its own is `Checkbox` (a 12px tick at 3). Below ~16px
+ * a stroke has to stay heavy enough to survive rasterisation, so a smaller mark
+ * takes its component's weight, not a ratio.
  *
  * Written as a descendant selector so it reaches a glyph the consumer passes
  * in, which is the whole icon surface — a component never renders the icon
- * itself. Both forms are enumerated in `gen-classlist.mjs`; without that the
- * rule exists in Storybook and not in the bundle.
+ * itself. It is enumerated in `gen-classlist.mjs`; without that the rule exists
+ * in Storybook and not in the bundle.
  */
-export const glyphStroke = '[&_svg]:stroke-[1.75]';
+export const glyphStroke = '[&_svg]:stroke-2';
 
 /**
  * Focus indicator for FORM controls — checkbox, radio, switch and friends.

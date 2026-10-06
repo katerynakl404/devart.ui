@@ -1,9 +1,11 @@
 import { Ellipsis } from 'lucide-react';
 
-const EllipsisIndicator = () => (
+import { PAGINATION_BOX, type PaginationSize } from './size';
+
+const EllipsisIndicator = ({ size = 'sm' }: { size?: PaginationSize }) => (
   <span
     aria-hidden
-    className="flex size-8 cursor-default items-center justify-center text-ink-inactive [&_svg]:size-4"
+    className={`flex ${PAGINATION_BOX[size]} cursor-default items-center justify-center text-ink-inactive [&_svg]:size-4`}
   >
     <Ellipsis />
   </span>

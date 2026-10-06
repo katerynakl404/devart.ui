@@ -2,11 +2,13 @@
 
 import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { IconButton } from '../IconButton';
+import type { PaginationSize } from './size';
 
 interface Props {
   label: string;
   isDisabled: boolean;
   onClick: MouseEventHandler<HTMLButtonElement>;
+  size?: PaginationSize;
 }
 
 const NavButton = ({
@@ -14,11 +16,12 @@ const NavButton = ({
   label,
   children,
   onClick,
+  size = 'sm',
 }: PropsWithChildren<Props>) => (
   <IconButton
     type="button"
     variant="secondary"
-    size="sm"
+    size={size}
     rounded="md"
     onClick={onClick}
     disabled={isDisabled}

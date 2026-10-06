@@ -2,7 +2,7 @@
 
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
-import { cn } from '../../lib/utils';
+import { cn, glyphStroke } from '../../lib/utils';
 
 /* Alert is the package's third feedback surface, and the one it was missing.
    Banner is a large onboarding/marketing card — 60px icon, 24px padding, gradient
@@ -26,9 +26,18 @@ const alertVariants = cva(
   /* px stays wider than py. It was tightened to px-2 for one pass, to put the title on the
      same vertical as unboxed text beside it — a bordered block's inner text only joins that
      column when its own inset is subtracted. Reverted: the side gaps read as too tight. */
-  cn('flex items-start gap-2.5', 'rounded-lg border p-2.5'),
+  cn('flex items-start', 'rounded-lg border'),
   {
     variants: {
+      /* TWO SIZES, because an Alert does two jobs. Tucked inside another surface — a queue
+         band, a card — it is a footnote and reads at 12. Standing on a page, above a table,
+         speaking about the whole screen, it occupies a full row, and 12px there is a whisper
+         from something large. Every rung moves together — type, glyph, padding and gap — so md
+         is a SIZE, not an Alert with a bigger font. */
+      size: {
+        sm: 'gap-2.5 px-3 py-2.5',
+        md: 'gap-3 px-3.5 py-3',
+      },
       /* The four tinted surfaces come from --alert-bg-* / --alert-border-*, which
          have the same shape Toast's do: a color-mix() over Surface/Card, so the
          block does not take the colour of whatever it is dropped onto, and the
@@ -55,9 +64,33 @@ const alertVariants = cva(
         neutral: 'border-stroke bg-surface-card2',
       },
     },
-    defaultVariants: { variant: 'neutral' },
+    /* sm is the default: every inline use of Alert predates md, and the component was drawn for
+       the footnote case first. */
+    defaultVariants: { variant: 'neutral', size: 'sm' },
   }
 );
+
+/* The size's other three rungs. They sit beside ICON_TONE as plain maps rather than inside the
+   cva above, because cva styles the ROOT and these land on children — the same shape the tone
+   map already uses. */
+const SIZE_TITLE = {
+  sm: 'text-xs leading-4',
+  md: 'text-sm leading-5',
+} as const;
+
+const SIZE_DESCRIPTION = {
+  sm: 'text-xs leading-4',
+  md: 'text-sm leading-5',
+} as const;
+
+/* The glyph box equals the title's line box, which is what aligns them: 16/16 at sm, 20/20 at md.
+   The stroke does NOT follow the size. It was 1.5 at sm for a while, so the 16px mark matched
+   the weight of the 20px one; that made Alert the one place a 16px glyph drew lighter than the
+   same glyph in a button beside it. It takes `glyphStroke` like every other control. */
+const SIZE_ICON = {
+  sm: '[&_svg]:size-4',
+  md: '[&_svg]:size-5',
+} as const;
 
 const ICON_TONE = {
   success: 'text-fb-green',
@@ -96,6 +129,7 @@ const Alert = ({
   actions,
   actionsClassName,
   variant = 'neutral',
+  size = 'sm',
   className,
   ref,
   ...props
@@ -106,7 +140,7 @@ const Alert = ({
   <div
     ref={ref}
     role="status"
-    className={cn(alertVariants({ variant }), className)}
+    className={cn(alertVariants({ variant, size }), className)}
     {...props}
   >
     {icon ? (
@@ -115,7 +149,9 @@ const Alert = ({
       <span
         aria-hidden="true"
         className={cn(
-          'flex shrink-0 [&_svg]:size-4',
+          'flex shrink-0',
+          SIZE_ICON[size ?? 'sm'],
+          glyphStroke,
           ICON_TONE[variant ?? 'neutral'],
           iconClassName
         )}
@@ -127,7 +163,8 @@ const Alert = ({
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
       <span
         className={cn(
-          'font-semibold text-ink-primary text-xs leading-4',
+          'font-semibold text-ink-primary',
+          SIZE_TITLE[size ?? 'sm'],
           titleClassName
         )}
       >
@@ -136,7 +173,8 @@ const Alert = ({
       {description ? (
         <span
           className={cn(
-            'font-normal text-ink-secondary text-xs leading-4',
+            'font-normal text-ink-secondary',
+            SIZE_DESCRIPTION[size ?? 'sm'],
             descriptionClassName
           )}
         >
