@@ -1,17 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   Bot,
+  ChartPie,
+  CirclePlus,
+  Database,
   Files,
+  Folder,
   Home,
+  Layers,
   LayoutDashboard,
   MessageSquare,
   Search,
   Settings,
   Sparkles,
+  Wallet,
 } from 'lucide-react';
-import { useEffect } from 'react';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { cn } from '../../lib/utils';
+import { Avatar, AvatarFallback } from '../Avatar';
 import { Button } from '../Button';
+import { DropdownMenuItem } from '../DropdownMenu';
+import { LinkButton } from '../LinkButton';
 import { PromoCard } from '../PromoCard';
 import {
   Table,
@@ -25,6 +34,7 @@ import { Typography } from '../Typography';
 import {
   Sidebar,
   SidebarBrand,
+  SidebarChatItem,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
@@ -36,8 +46,13 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarNavigationItems,
+  SidebarPromo,
   SidebarProvider,
+  SidebarRail,
+  SidebarSection,
+  SidebarStat,
   SidebarTrigger,
+  SidebarUser,
   useSidebar,
 } from './index';
 import type { NavigationElement } from './types';
@@ -45,51 +60,136 @@ import type { NavigationElement } from './types';
 /**
  * The header row, as the library ships it.
  *
- * It was a bare `div` with its own `px-2` and an `h5`. Two things were wrong
- * with that and both only showed collapsed: the inset stacked on
- * `SidebarHeader`'s own, and nothing hid the name — so "Header" ran straight
- * across a 48px rail and over the page behind it.
- *
- * `SidebarBrand` is the part for this. It hides its first child when the rail
- * collapses and keeps the trailing control, which is the way back out.
+ * `SidebarBrand` hides its first child when the rail collapses and keeps the
+ * trailing control, which is the way back out.
  */
 const SidebarStoryHeader = () => (
   <SidebarBrand>
     <span className="flex min-w-0 items-center gap-2">
-      <LayoutDashboard className="size-5 shrink-0 text-brand-primary" />
-      <Typography className="truncate" element="span" textStyle="title14">
-        Header
+      <Layers className="size-5 shrink-0 text-brand-primary" />
+      <Typography className="truncate" element="span" textStyle="title16">
+        Insightis
       </Typography>
     </span>
     <SidebarTrigger size="xs" variant="tertiary" />
   </SidebarBrand>
 );
 
-// Realistic app navigation: single links + a collapsible group with sub-items.
+// The product's four rows: the way to start, then the three libraries. Chats
+// are not a nav row — they are the Pinned / Recent lists below.
 const navigation: NavigationElement[] = [
-  { id: 'home', title: 'Home', icon: Home, url: '/' },
-  { id: 'search', title: 'Search', icon: Search, url: '/search' },
-  {
-    id: 'chats',
-    title: 'Chats',
-    icon: MessageSquare,
-    defaultOpen: true,
-    items: [
-      { id: 'c1', title: 'Onboarding questions', url: '/chats/1' },
-      { id: 'c2', title: 'Quarterly metrics review', url: '/chats/2' },
-      { id: 'c3', title: 'Bug triage thread', url: '/chats/3' },
-    ],
-    viewAll: { id: 'chats-all', title: 'View all', url: '/chats' },
-  },
-  {
-    id: 'agents',
-    title: 'Agents',
-    icon: Bot,
-    emptyMessage: 'No agents yet',
-    items: [],
-  },
-  { id: 'files', title: 'Files', icon: Files, url: '/files' },
+  { id: 'new', title: 'New Chat', icon: CirclePlus, url: '#new' },
+  { id: 'sources', title: 'Data Sources', icon: Database, url: '#sources' },
+  { id: 'metrics', title: 'Metrics', icon: ChartPie, url: '#metrics' },
+  { id: 'files', title: 'Files', icon: Folder, url: '#files' },
 ];
+
+type Chat = {
+  id: string;
+  title: string;
+  status?: 'loading' | 'new';
+  count?: number;
+  countActive?: boolean;
+};
+
+const PINNED: Chat[] = [
+  { id: 'p1', title: 'Message queue', count: 3, countActive: true },
+  { id: 'p2', title: 'Salesforce · Q1 revenue commentary' },
+  { id: 'p3', title: 'HubSpot · onboarding cohort' },
+  { id: 'p4', title: 'churn.csv · deep-dive' },
+];
+
+const RECENT: Chat[] = [
+  { id: 'r1', title: 'Jira · first 5 AIINS issues', status: 'new' },
+  { id: 'r2', title: 'Generate two charts using random data' },
+  { id: 'r3', title: 'Q3 report.xlsx', status: 'loading' },
+];
+
+const ChatMenu = ({ pinned }: { pinned: boolean }) => (
+  <>
+    <DropdownMenuItem>{pinned ? 'Unpin' : 'Pin'}</DropdownMenuItem>
+    <DropdownMenuItem>Rename</DropdownMenuItem>
+    <DropdownMenuItem variant="danger">Delete</DropdownMenuItem>
+  </>
+);
+
+const ChatRows = ({ chats, pinned }: { chats: Chat[]; pinned: boolean }) =>
+  chats.map((chat) => (
+    <SidebarChatItem
+      aria-current={chat.id === 'p2' ? 'page' : undefined}
+      count={chat.count}
+      countActive={chat.countActive}
+      href={`#${chat.id}`}
+      isActive={chat.id === 'p2'}
+      key={chat.id}
+      menu={<ChatMenu pinned={pinned} />}
+      status={chat.status}
+    >
+      {chat.title}
+    </SidebarChatItem>
+  ));
+
+const SeeAll = () => <LinkButton href="#chats">See all</LinkButton>;
+
+/** The promo slot, with the dismiss wired to the story's own state. */
+const StoryPromo = () => {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return null;
+  return (
+    <SidebarPromo>
+      <PromoCard
+        description="Unlimited sources and 15,000 credits a month"
+        href="#plan"
+        icon={<Sparkles />}
+        onDismiss={() => setVisible(false)}
+        title="Upgrade to Pro"
+      />
+    </SidebarPromo>
+  );
+};
+
+/**
+ * The sidebar as the product ships it: brand row, four nav rows, the Pinned
+ * and Recent lists, the promo slot, and the footer — balance and account.
+ */
+const ProductSidebar = ({
+  showPromo = false,
+  ...args
+}: ComponentProps<typeof Sidebar> & { showPromo?: boolean }) => (
+  <Sidebar {...args}>
+    <SidebarHeader>
+      <SidebarStoryHeader />
+    </SidebarHeader>
+    <SidebarContent>
+      <SidebarNavigationItems items={navigation} />
+      <SidebarSection action={<SeeAll />} label="Pinned">
+        <ChatRows chats={PINNED} pinned />
+      </SidebarSection>
+      <SidebarSection action={<SeeAll />} label="Recent">
+        <ChatRows chats={RECENT} pinned={false} />
+      </SidebarSection>
+    </SidebarContent>
+    {showPromo ? <StoryPromo /> : null}
+    <SidebarFooter>
+      <SidebarStat icon={<Wallet />} label="Balance" value="9,480 left" />
+      <SidebarUser
+        avatar={
+          <Avatar>
+            <AvatarFallback>K</AvatarFallback>
+          </Avatar>
+        }
+        meta={showPromo ? 'Admin · Free' : 'Admin · Pro'}
+        name="Kateryna K."
+      />
+    </SidebarFooter>
+    <SidebarRail />
+  </Sidebar>
+);
+
+type StoryArgs = ComponentProps<typeof Sidebar> & {
+  /** Show the PromoCard slot above the footer. */
+  showPromo: boolean;
+};
 
 const meta = {
   title: 'Components/Sidebar',
@@ -99,7 +199,8 @@ const meta = {
   args: {
     side: 'left',
     variant: 'sidebar',
-    collapsible: 'offcanvas',
+    collapsible: 'icon',
+    showPromo: false,
   },
   argTypes: {
     side: { control: 'select', options: ['left', 'right'] },
@@ -110,6 +211,13 @@ const meta = {
     collapsible: {
       control: 'select',
       options: ['offcanvas', 'icon', 'none'],
+    },
+    showPromo: {
+      name: 'Promo card',
+      control: 'boolean',
+      description:
+        'Adds `SidebarPromo` with a `PromoCard` above the footer. The product shows it on a free plan until dismissed; the account row then says `Free`.',
+      table: { category: 'Story' },
     },
     sheetClassname: { control: false },
     className: { control: false },
@@ -125,12 +233,112 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Sidebar>;
+} satisfies Meta<StoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<StoryArgs>;
 
+const StoryInset = ({ title = 'New chat' }: { title?: string }) => (
+  <SidebarInset>
+    <div className="flex items-center gap-2 p-4">
+      <SidebarTrigger variant="tertiary" />
+      <Typography variant="h4">{title}</Typography>
+    </div>
+  </SidebarInset>
+);
+
+/**
+ * The product sidebar. Toggle **Promo card** in Controls to add the offer
+ * above the footer — it is a slot (`SidebarPromo`) holding one `PromoCard`,
+ * not a prop of the sidebar, because whether to show it is the product's
+ * decision.
+ *
+ * Hover a chat row for its menu; hover a section header for the chevron and
+ * "See all". The first pinned chat shows a running queue count, a recent one
+ * has new activity and another is still generating.
+ */
 export const Expanded: Story = {
+  render: (args) => (
+    <SidebarProvider defaultOpen>
+      <ProductSidebar {...args} />
+      <StoryInset />
+    </SidebarProvider>
+  ),
+};
+
+/**
+ * The offer above the footer: glyph, what it is, one line of what it gives,
+ * and a dismiss. It does NOT name the plan the person is on — the account row
+ * below already does. Dismissing it here hides it for the story's lifetime.
+ */
+export const WithPromo: Story = {
+  args: { showPromo: true },
+  render: Expanded.render,
+};
+
+/**
+ * Collapsed to the icon rail: the brand keeps only its trigger, the nav keeps
+ * its icons with tooltips, and the lists, the promo and the balance leave —
+ * none of them has a 48px form. The account row keeps its avatar.
+ */
+export const CollapsedIcon: Story = {
+  args: { showPromo: true },
+  render: (args) => (
+    <SidebarProvider defaultOpen={false}>
+      <ProductSidebar {...args} />
+      <StoryInset />
+    </SidebarProvider>
+  ),
+};
+
+export const FloatingVariant: Story = {
+  args: { variant: 'floating' },
+  render: Expanded.render,
+};
+
+export const InsetVariant: Story = {
+  args: { variant: 'inset' },
+  render: (args) => (
+    <SidebarProvider defaultOpen>
+      <ProductSidebar {...args} />
+      <StoryInset title="Inset content" />
+    </SidebarProvider>
+  ),
+};
+
+// A nav tree with a collapsible group and nested rows. The product no longer
+// lists chats this way, but `NavigationGroup` and `SidebarMenuSub` stay for
+// consumers whose second level really is navigation.
+const nestedNavigation: NavigationElement[] = [
+  { id: 'home', title: 'Home', icon: Home, url: '/' },
+  { id: 'search', title: 'Search', icon: Search, url: '/search' },
+  {
+    id: 'chats',
+    title: 'Chats',
+    icon: MessageSquare,
+    defaultOpen: true,
+    items: [
+      { id: 'c1', title: 'Onboarding questions', url: '/chats/1' },
+      { id: 'c2', title: 'Quarterly metrics review', url: '/chats/2' },
+    ],
+    viewAll: { id: 'chats-all', title: 'View all', url: '/chats' },
+  },
+  {
+    id: 'agents',
+    title: 'Agents',
+    icon: Bot,
+    emptyMessage: 'No agents yet',
+    items: [],
+  },
+  { id: 'files', title: 'Files', icon: Files, url: '/files' },
+];
+
+/**
+ * `SidebarNavigationItems` with a `NavigationGroup` — a second level that is
+ * navigation, nested under its row with a left rail. Use `SidebarSection` for
+ * lists of things the person made; use this for a genuine sub-tree.
+ */
+export const NestedGroup: Story = {
   render: (args) => (
     <SidebarProvider defaultOpen>
       <Sidebar {...args}>
@@ -138,48 +346,10 @@ export const Expanded: Story = {
           <SidebarStoryHeader />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
+          <SidebarNavigationItems items={nestedNavigation} />
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center gap-2">
-            <Settings className="size-4" />
-            <Typography variant="span" textColor="secondary">
-              Settings
-            </Typography>
-          </div>
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="tertiary" />
-          <Typography variant="h4">Dashboard</Typography>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  ),
-};
-
-// `collapsible="icon"` + collapsed provider state minimises the sidebar to an
-// icon rail with tooltips on hover.
-export const Promo: Story = {
-  render: () => (
-    <SidebarProvider>
-      <Sidebar>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-        <PromoCard
-          description="Unlimited sources and 15,000 credits a month"
-          href="#plan"
-          icon={<Sparkles />}
-          onDismiss={() => undefined}
-          title="Upgrade to Pro"
-        />
-        <SidebarFooter>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 px-2">
             <Settings className="size-4" />
             <Typography textColor="secondary" variant="span">
               Settings
@@ -187,83 +357,7 @@ export const Promo: Story = {
           </div>
         </SidebarFooter>
       </Sidebar>
-    </SidebarProvider>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'A small offer directly above the footer: glyph, what it is, one line of what it ' +
-          'gives, and a dismiss. It does NOT name the plan the person is on — the account row ' +
-          'below already does, and the same word twice in 40px of column is noise. The dismiss ' +
-          'is a sibling of the link, never nested inside it.',
-      },
-    },
-  },
-};
-
-export const CollapsedIcon: Story = {
-  args: { collapsible: 'icon' },
-  render: (args) => (
-    <SidebarProvider defaultOpen={false}>
-      <Sidebar {...args}>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="tertiary" />
-          <Typography variant="h4">Dashboard</Typography>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  ),
-};
-
-export const FloatingVariant: Story = {
-  args: { variant: 'floating' },
-  render: (args) => (
-    <SidebarProvider defaultOpen>
-      <Sidebar {...args}>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="tertiary" />
-          <Typography variant="h4">Dashboard</Typography>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
-  ),
-};
-
-export const InsetVariant: Story = {
-  args: { variant: 'inset', collapsible: 'icon' },
-  render: (args) => (
-    <SidebarProvider defaultOpen>
-      <Sidebar {...args}>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-      </Sidebar>
-      <SidebarInset>
-        <div className="flex items-center gap-2 p-4">
-          <SidebarTrigger variant="tertiary" />
-          <Typography variant="h4">Inset content</Typography>
-        </div>
-      </SidebarInset>
+      <StoryInset title="Dashboard" />
     </SidebarProvider>
   ),
 };
@@ -289,18 +383,10 @@ export const InsetVariant: Story = {
  * Never reach for `h-full` inside the shell: it resolves against a parent that
  * has only a `min-height`, so it computes to `auto` and silently does nothing.
  */
-export const AppShell: StoryObj<typeof Sidebar> = {
-  args: { collapsible: 'icon' },
+export const AppShell: Story = {
   render: (args) => (
     <SidebarProvider defaultOpen className="h-svh min-h-0 overflow-hidden">
-      <Sidebar {...args}>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-      </Sidebar>
+      <ProductSidebar {...args} />
       <SidebarInset className="min-h-0">
         <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
           <SidebarTrigger variant="tertiary" />
@@ -344,22 +430,14 @@ export const AppShell: StoryObj<typeof Sidebar> = {
  * `SidebarInset` header, not inside `Sidebar`. A trigger that lives in the
  * sidebar goes away with it under `lg`, leaving nothing to open the sheet with.
  */
-export const MobileOverlay: StoryObj<typeof Sidebar> = {
-  args: { collapsible: 'icon' },
+export const MobileOverlay: Story = {
   render: (args) => (
     <SidebarProvider
       className="h-svh min-h-0 overflow-hidden"
       sheetBreakpoint={ALWAYS_SHEET}
     >
       <OpenSheetOnMount />
-      <Sidebar {...args}>
-        <SidebarHeader>
-          <SidebarStoryHeader />
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarNavigationItems items={navigation} />
-        </SidebarContent>
-      </Sidebar>
+      <ProductSidebar {...args} />
       <SidebarInset className="min-h-0">
         <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
           <SidebarTrigger variant="tertiary" />

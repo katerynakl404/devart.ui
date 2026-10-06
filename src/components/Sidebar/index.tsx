@@ -3,7 +3,15 @@
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
 import { Sheet, SheetContent } from '../Sheet';
+import {
+  SidebarPromo,
+  SidebarStat,
+  type SidebarStatProps,
+  SidebarUser,
+  type SidebarUserProps,
+} from './SidebarAccount';
 import { SidebarBrand } from './SidebarBrand';
+import { SidebarChatItem, type SidebarChatItemProps } from './SidebarChatItem';
 import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarGroup } from './SidebarGroup';
@@ -30,6 +38,7 @@ import {
   useSidebar,
 } from './SidebarProvider';
 import { SidebarRail, type SidebarRailProps } from './SidebarRail';
+import { SidebarSection, type SidebarSectionProps } from './SidebarSection';
 import { SidebarTrigger, type SidebarTriggerProps } from './SidebarTrigger';
 import {
   type DefaultLink,
@@ -176,6 +185,8 @@ export {
   type NavigationItem,
   type RenderLinkOptions,
   Sidebar,
+  SidebarChatItem,
+  type SidebarChatItemProps,
   SidebarContent,
   type SidebarContextProps,
   SidebarFooter,
@@ -191,11 +202,18 @@ export {
   SidebarMenuSubItem,
   SidebarNavigationItems,
   type SidebarNavigationItemsProps,
+  SidebarPromo,
   SidebarProvider,
   SidebarRail,
   type SidebarRailProps,
+  SidebarSection,
+  type SidebarSectionProps,
+  SidebarStat,
+  type SidebarStatProps,
   SidebarTrigger,
   type SidebarTriggerProps,
+  SidebarUser,
+  type SidebarUserProps,
   sidebarMenuButtonVariants,
   useSidebar,
 };

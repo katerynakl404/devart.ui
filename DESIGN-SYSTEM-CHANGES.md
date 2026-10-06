@@ -116,6 +116,7 @@ off — nothing should be built on it yet.
 | §90 | `Banner` | `sm` kept the default's line gap, chosen for a larger title |
 | §91 | `PromoCard` | **new** — the offer card a sidebar has room for |
 | §92 | `glyphStroke` | glyph stroke 1.75 → 2, the weight prod draws: `Button`, `IconButton`, `InputGroupAddon`, `DropdownMenu`, and `Alert sm` 1.5 → 2 |
+| §94 | `Sidebar` | the product shape — `SidebarSection`, `SidebarChatItem`, `SidebarPromo`, `SidebarStat`, `SidebarUser`; `PromoCard`’s focus ring drew nothing |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
 | §42 | `TableCell` | a row that could not grow, under a comment saying it could |
@@ -2746,6 +2747,64 @@ window with the form scrolling visibly underneath it.
 So the recipe names where it goes as much as what it is: the element that GROWS
 with the content. `lib/utils` is re-exported into the design-sync bundle, so a
 consumer gets the name rather than a number it picks for itself.
+
+## 94. The product sidebar — Pinned / Recent, the chat row, the promo slot, the compact footer
+
+`src/components/Sidebar/SidebarSection.tsx`, `SidebarChatItem.tsx`, `SidebarAccount.tsx`
+
+Storybook showed the old prod shape — Home / Search / a `Chats` row with a nested,
+left-railed sub-list, a Settings line for a footer — long after Insightis had
+replaced it. §10–§16, §39, §64, §68 and §72 ported the **shell**: insets, rows,
+gutter, the collapsed rail. The redesign inside the shell (`Insightis/changes/Sidebar.md`)
+is information architecture, and it never came across, because it needed parts the
+package did not have. A `PromoCard` (§91) existed, but only as a separate story with
+nowhere in the sidebar to put it.
+
+**New parts**
+
+- **`SidebarSection`** — a flat list with an overline label (`Text/Inactive`,
+  brightening to `Text/Primary` under the pointer), a chevron that only appears on
+  hover and stays when closed, and an `action` slot for "See all" that reveals on
+  hover or focus and is always visible below `lg` and on touch. The whole label
+  toggles; the action is a sibling and never collapses. Spacing is the
+  component's: 16px under the nav, 12px between sections.
+- **`SidebarChatItem`** — h28, 14px `Text/Secondary`, radius `md`; hover
+  `State/Hover`, pressed and active `State/Pressed`, active ink `Text/Body`. The
+  title **fades** rather than ellipsising: a 36px gradient in the row's own
+  surface colour, widening to 72px on hover so the kebab sits on solid fill. The
+  gradient takes a *pre-composited* colour — `--state-hover` is a translucent
+  overlay, and a gradient ending in it would let the letters through.
+  `status="loading" | "new"` (each with a spoken label) or a queue `count`
+  (`Counter sm`, the fade off so the title stops before the number) share the
+  right-edge slot and fade out for the kebab. `menu` takes `DropdownMenuItem`s;
+  the kebab is the shared `IconButton` tertiary `2xs` and a **sibling** of the
+  link.
+- **`SidebarPromo`** — the slot for one `PromoCard`, above the footer rule, 8px
+  gutter, hidden on the collapsed rail. No sidebar prop decides whether it shows:
+  that is the product's (free plan, not yet dismissed).
+- **`SidebarStat`** and **`SidebarUser`** — the compact footer. One figure,
+  label left and value right with a 12px glyph on a round `State/Hover` chip; and
+  the account row — 24px avatar, 12px semibold name, 10px meta, 14px up-down
+  chevron at 70%. Both are buttons with the neutral hover / pressed recipe.
+  Collapsed, the stat leaves and the account row keeps its avatar.
+
+Measured against the kit's `chat-landing` at 1280×800: section, promo, footer, stat
+and avatar boxes land on the same pixels.
+
+**`PromoCard` fixes.** Its focus ring named `shadow-focus`, which the preset does not
+generate — keyboard focus on the card drew nothing. It now uses the package's ring
+recipe. The dismiss was a hand-drawn button with its own hover; it is the shared
+`IconButton` tertiary `2xs`. Padding is the kit's 10/12 with the text kept clear of
+the dismiss, instead of a 32px right pad on the whole card.
+
+**Stories.** Expanded, CollapsedIcon, Floating, Inset, AppShell and MobileOverlay
+render the product shape; **Promo card** is a control on every one, and `WithPromo`
+has it on. The nested-group tree moved to `NestedGroup`, since `NavigationGroup`
+stays for consumers whose second level really is navigation.
+
+**Not ported**, deliberately: the collapsed rail's single "Chats" icon that stands in
+for the lists. It is a product affordance (where it links), not a sidebar part —
+a `SidebarMenuButton` in the consumer's nav does it.
 
 ## 38. `StepSlider` — four measurements against a spec that argues for each one
 

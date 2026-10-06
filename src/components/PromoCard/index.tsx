@@ -1,5 +1,7 @@
+import { X } from 'lucide-react';
 import type { ComponentProps, ReactNode, Ref } from 'react';
 import { cn } from '../../lib/utils';
+import { IconButton } from '../IconButton';
 
 /**
  * A small promotional card: a glyph, what is on offer, one line of what it gives,
@@ -69,13 +71,15 @@ function PromoCard({
     >
       <Surface
         className={cn(
-          'flex w-full items-start gap-2 rounded-md border p-2.5 pr-8 text-left',
+          'flex w-full items-start gap-2 rounded-md border px-3 py-2.5 text-left',
           'border-stroke bg-surface-card',
           // The card hover is the package's card recipe, not a local one: no
           // recolouring of the title, which would read as the heading turning
           // into a link under the pointer.
           'transition-colors hover:bg-state-hover',
-          'focus-visible:shadow-focus focus-visible:outline-none'
+          // `shadow-focus` is not a class the preset generates, so the ring this
+          // used to name never drew. The package's own ring recipe instead.
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card'
         )}
         href={href}
         onClick={onSelect}
@@ -90,7 +94,8 @@ function PromoCard({
           </span>
         ) : null}
 
-        <span className="flex min-w-0 flex-col gap-0.5">
+        {/* pe-4 keeps the text clear of the dismiss, which sits over the corner. */}
+        <span className="flex min-w-0 flex-col gap-0.5 pe-4">
           <span className="font-semibold text-ink-primary text-xs leading-4">
             {title}
           </span>
@@ -103,30 +108,17 @@ function PromoCard({
       </Surface>
 
       {onDismiss ? (
-        <button
+        // The shared row kebab's button — IconButton tertiary 2xs — so its
+        // hover, pressed and focus are the package's, not a local copy.
+        <IconButton
           aria-label={dismissLabel}
-          className={cn(
-            'absolute top-1 right-1 flex size-6 items-center justify-center rounded-sm',
-            'text-ink-secondary hover:bg-state-hover hover:text-ink-body',
-            'focus-visible:shadow-focus focus-visible:outline-none',
-            '[&_svg]:size-3.5'
-          )}
+          className="absolute top-1 right-1"
           onClick={onDismiss}
-          type="button"
+          size="2xs"
+          variant="tertiary"
         >
-          <svg
-            aria-hidden="true"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
+          <X />
+        </IconButton>
       ) : null}
     </div>
   );

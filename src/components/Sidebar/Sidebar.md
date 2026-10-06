@@ -82,3 +82,49 @@ The rail is the cheapest and is what the shell example above uses.
 tall with a `md` radius, an 16px icon and an 8px gap; hover paints
 `State/Hover`, active paints `State/Pressed` and lifts the ink to `Text/Body`.
 Active is never a brand colour.
+
+## The product sidebar
+
+The shape both products ship, top to bottom:
+
+```jsx
+<Sidebar collapsible="icon">
+  <SidebarHeader>
+    <SidebarBrand>…mark and name… <SidebarTrigger size="xs" variant="tertiary" /></SidebarBrand>
+  </SidebarHeader>
+  <SidebarContent>
+    <SidebarNavigationItems items={nav} />           {/* New Chat, Data Sources, Metrics, Files */}
+    <SidebarSection label="Pinned" action={<LinkButton href="/chats">See all</LinkButton>}>
+      <SidebarChatItem href="/chats/1" menu={<>…DropdownMenuItems…</>}>Message queue</SidebarChatItem>
+    </SidebarSection>
+    <SidebarSection label="Recent" action={…}>…</SidebarSection>
+  </SidebarContent>
+  {showOffer ? (
+    <SidebarPromo>
+      <PromoCard icon={<Sparkles />} title="Upgrade to Pro" description="…" href="/plan" onDismiss={…} />
+    </SidebarPromo>
+  ) : null}
+  <SidebarFooter>
+    <SidebarStat icon={<Wallet />} label="Balance" value="9,480 left" />
+    <SidebarUser avatar={<Avatar><AvatarFallback>K</AvatarFallback></Avatar>} name="Kateryna K." meta="Admin · Free" />
+  </SidebarFooter>
+  <SidebarRail />
+</Sidebar>
+```
+
+- **Chats are not a nav row.** They are flat `SidebarSection` lists under the
+  nav, not a `NavigationGroup` nested under a `Chats` row with a left rail. Keep
+  `NavigationGroup` for a second level that really is navigation.
+- **`SidebarChatItem`** — h28, 14px `Text/Secondary`. The title *fades* at the
+  right edge instead of ellipsising; the fade widens on hover so the kebab lands
+  on solid fill. `status="loading" | "new"` and `count` share the right-edge slot
+  and step aside for the kebab. `menu` takes `DropdownMenuItem`s; the kebab is a
+  sibling of the link, never inside it.
+- **`SidebarPromo`** is a slot for one `PromoCard`: above the footer rule, 8px
+  gutter, hidden when the rail collapses. Whether it renders (free plan, not yet
+  dismissed) is the product's decision — the sidebar has no prop for it.
+- **The footer** is two buttons that open popovers above themselves: a
+  one-line `SidebarStat` (label left, figure right) and the `SidebarUser`
+  account row (24px avatar, name, one quiet line, up-down chevron).
+- **Collapsed to icons**, the sections, the promo and the stat leave — none has
+  a 48px form — and the account row keeps its avatar.
