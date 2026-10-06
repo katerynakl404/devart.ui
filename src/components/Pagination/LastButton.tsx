@@ -12,8 +12,18 @@ interface Props {
   size?: PaginationSize;
 }
 
-const LastButton = ({ onClick, isDisabled, label = 'Last page', size }: Props) => (
-  <NavButton onClick={onClick} isDisabled={isDisabled} label={label} size={size}>
+const LastButton = ({
+  onClick,
+  isDisabled,
+  label = 'Last page',
+  size,
+}: Props) => (
+  <NavButton
+    onClick={onClick}
+    isDisabled={isDisabled}
+    label={label}
+    size={size}
+  >
     <ChevronsRight />
   </NavButton>
 );

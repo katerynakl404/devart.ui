@@ -230,7 +230,7 @@ export const TextArea = ({
         textAreaVariants({ variant, size, rounded }),
         //Error — red border in every state, no bg tint, no outer ring
         isInvalid &&
-          'border-input-error enabled:hover:border-input-error focus-visible:border-input-error',
+          'border-input-error focus-visible:border-input-error enabled:hover:border-input-error',
         className
       )}
       {...props}

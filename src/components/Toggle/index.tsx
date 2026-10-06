@@ -62,13 +62,13 @@ const toggleVariants = cva(
         ),
         ghost: cn(
           'border-transparent bg-transparent text-ink-body',
-          'enabled:hover:bg-state-hover active:bg-state-pressed',
+          'active:bg-state-pressed enabled:hover:bg-state-hover',
           'disabled:bg-transparent disabled:text-ink-inactive',
           TOGGLE_ON_CHIP
         ),
         badge: cn(
           'border-transparent bg-transparent text-ink-body',
-          'enabled:hover:bg-state-hover active:bg-state-pressed',
+          'active:bg-state-pressed enabled:hover:bg-state-hover',
           'disabled:bg-transparent disabled:text-ink-inactive',
           TOGGLE_ON_BADGE
         ),

@@ -15,8 +15,15 @@ interface Props {
 const PrevButton = ({
   isDisabled,
   onClick,
-  label = 'Previous page', size }: Props) => (
-  <NavButton onClick={onClick} isDisabled={isDisabled} label={label} size={size}>
+  label = 'Previous page',
+  size,
+}: Props) => (
+  <NavButton
+    onClick={onClick}
+    isDisabled={isDisabled}
+    label={label}
+    size={size}
+  >
     <ChevronLeft />
   </NavButton>
 );
