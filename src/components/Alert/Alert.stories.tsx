@@ -37,12 +37,19 @@ const meta = {
     title: 'Queue paused because you stopped the reply',
     description: '2 messages kept · nothing sent or charged',
     variant: 'neutral',
+    size: 'sm',
     icon: <NeutralIcon />,
   },
   argTypes: {
     variant: {
       control: 'select',
       options: ['success', 'info', 'warning', 'error', 'neutral'],
+    },
+    /* Stated, because docgen cannot read a cva variant off `VariantProps` —
+       without it the size the component is built around has no control. */
+    size: {
+      control: 'inline-radio',
+      options: ['sm', 'md'],
     },
   },
   parameters: {
