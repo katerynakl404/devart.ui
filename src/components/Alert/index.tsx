@@ -100,6 +100,20 @@ const ICON_TONE = {
   neutral: 'text-ink-secondary',
 } as const;
 
+/* The illustration plate is the glyph's own colour at a tint — `currentColor`
+   washed over nothing — so it has no colour of its own to keep in step: it is
+   whatever ICON_TONE paints the glyph, per variant and per theme. Fill only —
+   no stroke, no shadow. The strength is a tint step, not a literal. */
+const ILLUSTRATION_PLATE =
+  'bg-[color-mix(in_srgb,currentColor_var(--tint-15),transparent)]';
+
+/* One rung per Alert size, like the glyph: the plate is two lines of copy tall,
+   the glyph inside keeps the size it would have had bare. */
+const SIZE_ILLUSTRATION = {
+  sm: 'size-8 [&_svg]:size-4',
+  md: 'size-10 [&_svg]:size-5',
+} as const;
+
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
@@ -113,6 +127,15 @@ export interface AlertProps
    *  (WCAG 1.4.1); the accent only reinforces it. */
   icon?: ReactNode;
   iconClassName?: string;
+  /** Leading illustration in place of `icon`: the given glyph (or an SVG drawn
+   *  in `currentColor`) on a round plate filled with the glyph's own colour at
+   *  a tint. Both follow `variant` — the caller passes the picture, never its
+   *  colours. When both
+   *  are passed, this wins. It is decorative (`aria-hidden`), and unlike the
+   *  variant glyph it carries no agreed shape, so the title has to name the
+   *  condition on its own. */
+  illustration?: ReactNode;
+  illustrationClassName?: string;
   /** Trailing controls. House rule: the primary action goes LAST, on the right. */
   actions?: ReactNode;
   actionsClassName?: string;
@@ -126,6 +149,8 @@ const Alert = ({
   descriptionClassName,
   icon,
   iconClassName,
+  illustration,
+  illustrationClassName,
   actions,
   actionsClassName,
   variant = 'neutral',
@@ -140,10 +165,31 @@ const Alert = ({
   <div
     ref={ref}
     role="status"
-    className={cn(alertVariants({ variant, size }), className)}
+    className={cn(
+      alertVariants({ variant, size }),
+      /* A glyph aligns with the title by sharing its line box. The plate is
+         taller than one line, so with it the copy centres on the plate instead
+         of hanging off its top edge. */
+      illustration ? 'items-center' : null,
+      className
+    )}
     {...props}
   >
-    {icon ? (
+    {illustration ? (
+      <span
+        aria-hidden="true"
+        className={cn(
+          'flex shrink-0 items-center justify-center rounded-full',
+          SIZE_ILLUSTRATION[size ?? 'sm'],
+          glyphStroke,
+          ICON_TONE[variant ?? 'neutral'],
+          ILLUSTRATION_PLATE,
+          illustrationClassName
+        )}
+      >
+        {illustration}
+      </span>
+    ) : icon ? (
       /* No nudge: the glyph box is 16px and so is the title's line box, so they
          align by being the same box. */
       <span

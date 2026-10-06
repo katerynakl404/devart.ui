@@ -4,6 +4,7 @@ import {
   CircleStop,
   Info,
   TriangleAlert,
+  Wallet,
   XCircle,
 } from 'lucide-react';
 import { Button } from '../Button';
@@ -169,6 +170,60 @@ export const Variants: Story = {
       },
     },
   },
+};
+
+export const WithIllustration: Story = {
+  args: {
+    size: 'md',
+    variant: 'warning',
+    icon: undefined,
+    illustration: <Wallet />,
+    title: 'You’ve run out of credits',
+    description: 'Buy more credits or upgrade your plan to continue.',
+    actions: (
+      <Button variant="transparent" size="sm">
+        Manage plan
+      </Button>
+    ),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`illustration` puts the picture on a round plate instead of showing a bare glyph. The ' +
+          'caller passes only the glyph; its colour comes from `variant`, and the plate is that ' +
+          'same colour at a tint, so switching the type recolours the whole illustration. The ' +
+          'copy centres on the plate rather than hanging off its top. It is decorative, so the ' +
+          'title must name the condition by itself.',
+      },
+    },
+  },
+};
+
+/** The plate in every type, at both sizes: only the glyph is passed, everything else is `variant`. */
+export const IllustrationVariants: Story = {
+  render: () => (
+    <div className="flex w-[34rem] max-w-full flex-col gap-3">
+      {(['success', 'info', 'warning', 'error', 'neutral'] as const).map(
+        (variant) => (
+          <Alert
+            key={variant}
+            size="md"
+            variant={variant}
+            illustration={<Wallet />}
+            title="You’ve run out of credits"
+            description="Buy more credits or upgrade your plan to continue."
+          />
+        )
+      )}
+      <Alert
+        variant="warning"
+        illustration={<Wallet />}
+        title="You’ve run out of credits"
+        description="sm: 32px plate, 16px glyph"
+      />
+    </div>
+  ),
 };
 
 export const TitleOnly: Story = {
