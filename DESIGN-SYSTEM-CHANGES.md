@@ -116,6 +116,7 @@ off — nothing should be built on it yet.
 | §90 | `Banner` | `sm` kept the default's line gap, chosen for a larger title |
 | §91 | `PromoCard` | **new** — the offer card a sidebar has room for |
 | §92 | `glyphStroke` | glyph stroke 1.75 → 2, the weight prod draws: `Button`, `IconButton`, `InputGroupAddon`, `DropdownMenu`, and `Alert sm` 1.5 → 2 |
+| §93 | `Pagination` | a `size` rung (`sm` 32px · `xs` 24px) and the `pageFloor` recipe · **draft** |
 | §94 | `Sidebar` | the product shape — `SidebarSection`, `SidebarChatItem`, `SidebarPromo`, `SidebarStat`, `SidebarUser`; `PromoCard`’s focus ring drew nothing |
 | §38 | `StepSlider` | four measurements against a spec that argues for each one |
 | §40 | `tokens` | the size ladder |
