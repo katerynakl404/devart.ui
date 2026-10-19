@@ -43,11 +43,15 @@ export interface SpotlightProps {
 /* Fades in once; `leaving` fades it out and nothing in it takes a click.
    While it is in the page, a toast sits one step under the scrim: sonner's
    own layer (999999999) would put "X connected" over a dimmed page, on top of
-   the tour that explains it. */
+   the tour that explains it. What pops out of a lit control — a tooltip, a
+   menu, a popover (Radix's popper wrapper, z-50 inline, hence the !) — goes
+   one step OVER it, beside the annotations and under the coachmark: under
+   the scrim it read as a half-transparent grey box. */
 const spotlightVariants = cva(
   cn(
     'pointer-events-none fixed inset-0 z-[var(--spotlight-z)] motion-reduce:animate-none',
-    '[:root:has(&)_[data-sonner-toaster]]:z-[calc(var(--spotlight-z)-1)]'
+    '[:root:has(&)_[data-sonner-toaster]]:z-[calc(var(--spotlight-z)-1)]',
+    '[:root:has(&)_[data-radix-popper-content-wrapper]]:!z-[calc(var(--spotlight-z)+1)]'
   ),
   {
     variants: {

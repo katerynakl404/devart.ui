@@ -86,6 +86,15 @@ describe('Spotlight', () => {
     );
   });
 
+  it('lifts what pops out of a lit control one step over the scrim', () => {
+    render(<Spotlight rect={RECT} bounds={BOUNDS} />);
+
+    const root = document.body.querySelector('[data-slot="spotlight"]');
+    expect(root?.className).toContain(
+      '[:root:has(&)_[data-radix-popper-content-wrapper]]:!z-[calc(var(--spotlight-z)+1)]'
+    );
+  });
+
   it('fades out and lets clicks through while leaving', () => {
     render(<Spotlight rect={RECT} bounds={BOUNDS} leaving />);
 

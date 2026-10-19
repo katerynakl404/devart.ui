@@ -2447,6 +2447,9 @@ while a tour closes. Portalled to `document.body`, or the nearest
 `PortalContainer`. While it is in the page, the Toaster drops one step under
 the scrim (`--spotlight-z` − 1, through `:root:has()` on the layer itself):
 sonner's own layer would lay a toast over the dimmed page and the tour.
+What pops out of a lit control (Radix's popper wrapper: a tooltip, a menu, a
+popover) goes one step over it (`--spotlight-z` + 1) — under the scrim it read
+as a half-transparent grey box.
 
 `useTargetRect(target, { padding, boundary })` →
 `{ rect, bounds, radius, vw, vh }` comes from the same entry: the

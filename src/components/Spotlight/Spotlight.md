@@ -40,4 +40,6 @@ your own furniture against the same rect.
 Portalled to `document.body`, or the nearest `PortalContainer`, at
 `--spotlight-z` (70). While it is in the page, toasts sit one step under the
 scrim (`--spotlight-z` − 1): a toast that lands as a tour opens ("HubSpot
-connected") is dimmed with the rest of the page, not laid over the tour.
+connected") is dimmed with the rest of the page, not laid over the tour. What pops out of
+a lit control — a tooltip, a menu, a popover — goes one step over the scrim
+(`--spotlight-z` + 1, under the coachmark), so it stays crisp.
