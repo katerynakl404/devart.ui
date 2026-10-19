@@ -2444,7 +2444,9 @@ targets' own radius + `padding`, else 12; `padding` (8); `boundary`, the
 area the scrim may cover, so a strip above it stays uncovered;
 `onScrimClick`; `pulse`; `leaving` — fades out and lets every click through
 while a tour closes. Portalled to `document.body`, or the nearest
-`PortalContainer`.
+`PortalContainer`. While it is in the page, the Toaster drops one step under
+the scrim (`--spotlight-z` − 1, through `:root:has()` on the layer itself):
+sonner's own layer would lay a toast over the dimmed page and the tour.
 
 `useTargetRect(target, { padding, boundary })` →
 `{ rect, bounds, radius, vw, vh }` comes from the same entry: the

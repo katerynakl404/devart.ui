@@ -40,9 +40,15 @@ export interface SpotlightProps {
   ref?: Ref<HTMLDivElement>;
 }
 
-/* Fades in once; `leaving` fades it out and nothing in it takes a click. */
+/* Fades in once; `leaving` fades it out and nothing in it takes a click.
+   While it is in the page, a toast sits one step under the scrim: sonner's
+   own layer (999999999) would put "X connected" over a dimmed page, on top of
+   the tour that explains it. */
 const spotlightVariants = cva(
-  'pointer-events-none fixed inset-0 z-[var(--spotlight-z)] motion-reduce:animate-none',
+  cn(
+    'pointer-events-none fixed inset-0 z-[var(--spotlight-z)] motion-reduce:animate-none',
+    '[:root:has(&)_[data-sonner-toaster]]:z-[calc(var(--spotlight-z)-1)]'
+  ),
   {
     variants: {
       leaving: {

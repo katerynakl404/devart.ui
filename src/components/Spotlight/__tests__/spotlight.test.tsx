@@ -77,6 +77,15 @@ describe('Spotlight', () => {
     expect(frame()?.className).not.toContain('after:animate-spotlight-ring');
   });
 
+  it('puts the toasts one step under the scrim while it is in the page', () => {
+    render(<Spotlight rect={RECT} bounds={BOUNDS} />);
+
+    const root = document.body.querySelector('[data-slot="spotlight"]');
+    expect(root?.className).toContain(
+      '[:root:has(&)_[data-sonner-toaster]]:z-[calc(var(--spotlight-z)-1)]'
+    );
+  });
+
   it('fades out and lets clicks through while leaving', () => {
     render(<Spotlight rect={RECT} bounds={BOUNDS} leaving />);
 
