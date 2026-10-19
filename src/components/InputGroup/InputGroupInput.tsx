@@ -1,8 +1,8 @@
 'use client';
 
-import { cva } from 'class-variance-authority';
 import type { ComponentProps, RefObject } from 'react';
 import { useCallback } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Input } from '../Input';
 import { useInputGroup } from './InputGroupContext';

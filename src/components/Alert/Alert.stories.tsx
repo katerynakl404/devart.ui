@@ -229,3 +229,15 @@ export const IllustrationVariants: Story = {
 export const TitleOnly: Story = {
   args: { description: undefined, variant: 'info', icon: <InfoIcon /> },
 };
+
+/** No title: the description is the message. For an Alert that explains a
+ *  surface rather than announcing a state. */
+export const DescriptionOnly: Story = {
+  args: {
+    title: undefined,
+    variant: 'info',
+    icon: <InfoIcon />,
+    description:
+      'A node left as Inherit follows its parent’s grant, all the way up to the connection itself; setting Allow or Deny directly overrides everything below it.',
+  },
+};

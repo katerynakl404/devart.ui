@@ -164,11 +164,26 @@ export const TextStyles: Story = {
         [
           [
             'Heading · 500',
-            ['heading36', 'heading30', 'heading24', 'heading20', 'heading16'],
+            [
+              'heading36',
+              'heading30',
+              'heading24',
+              'heading20',
+              'heading18',
+              'heading16',
+            ],
           ],
           [
             'Title · 600',
-            ['title30', 'title24', 'title20', 'title16', 'title14', 'title12'],
+            [
+              'title30',
+              'title24',
+              'title20',
+              'title18',
+              'title16',
+              'title14',
+              'title12',
+            ],
           ],
           ['Body · 400', ['body16', 'body14', 'body12']],
           ['Label · 500', ['label14', 'label12', 'label10']],

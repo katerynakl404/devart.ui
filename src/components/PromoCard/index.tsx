@@ -21,6 +21,9 @@ import { IconButton } from '../IconButton';
  *
  * The dismiss is a SIBLING of the link, never nested inside it — a button
  * inside an anchor is not markup, and the whole card is the link's hit area.
+ * So the card's hover hangs on the ROOT (`group/promo-card`), not on the link:
+ * the dismiss sits over the link's corner, and with `hover:` on the link the
+ * pointer reaching it took the hover off the card it is part of (§116).
  *
  * ```jsx
  * <PromoCard
@@ -66,7 +69,7 @@ function PromoCard({
     <div
       ref={ref}
       data-slot="promo-card"
-      className={cn('relative w-full', className)}
+      className={cn('group/promo-card relative w-full', className)}
       {...props}
     >
       <Surface
@@ -75,8 +78,9 @@ function PromoCard({
           'border-stroke bg-surface-card',
           // The card hover is the package's card recipe, not a local one: no
           // recolouring of the title, which would read as the heading turning
-          // into a link under the pointer.
-          'transition-colors hover:bg-state-hover',
+          // into a link under the pointer. It follows the ROOT, so it holds
+          // while the pointer is on the dismiss (a sibling over this corner).
+          'transition-colors group-hover/promo-card:bg-state-hover',
           // `shadow-focus` is not a class the preset generates, so the ring this
           // used to name never drew. The package's own ring recipe instead.
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card'

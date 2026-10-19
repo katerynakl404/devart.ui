@@ -1,5 +1,6 @@
 'use client';
 
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import { ChevronsUpDown } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '../../lib/utils';
@@ -21,6 +22,12 @@ export interface SidebarStatProps
   value: ReactNode;
   /** A 12px glyph in front of the value, on a round `State/Hover` chip. */
   icon?: ReactNode;
+  /**
+   * Render the caller's element instead of a `<button>` — a router link, or a
+   * `<div>` where the figure is a reading that opens nothing. The label and
+   * the value are injected as its children.
+   */
+  asChild?: boolean;
 }
 
 /**
@@ -30,18 +37,24 @@ export interface SidebarStatProps
  * It replaced a 14px meter with a bar: a figure the person checks in passing
  * does not need a progress bar under it in the rail, and the detail popover
  * has room for one. Hidden when the rail collapses.
+ *
+ * `asChild` changes the element and nothing else: the row's recipe, hover
+ * fill included, lands on the caller's element as it is.
  */
 function SidebarStat({
   label,
   value,
   icon,
+  asChild = false,
   className,
   type = 'button',
+  children,
   ref,
   ...props
 }: SidebarStatProps) {
+  const Comp = asChild ? Slot : 'button';
   return (
-    <button
+    <Comp
       ref={ref}
       data-sidebar="stat"
       className={cn(
@@ -50,9 +63,11 @@ function SidebarStat({
         'group-data-[collapsible=icon]:hidden',
         className
       )}
-      type={type}
+      // The caller's element decides its own type — a `<div>` takes none.
+      type={asChild ? undefined : type}
       {...props}
     >
+      {asChild ? <Slottable>{children}</Slottable> : null}
       <span className="font-medium text-ink-secondary text-xs leading-4">
         {label}
       </span>
@@ -67,7 +82,7 @@ function SidebarStat({
         ) : null}
         {value}
       </span>
-    </button>
+    </Comp>
   );
 }
 
@@ -86,7 +101,9 @@ export interface SidebarUserProps
  * and plan, and the up-down chevron that says it opens a menu above itself.
  *
  * Collapsed to icons it keeps only the avatar, centred in a 28px box — the
- * way to the account menu survives the rail.
+ * way to the account menu survives the rail. The name and the meta line leave
+ * the screen but not the button: they become visually hidden text, because on
+ * the rail they are the only accessible name the button has.
  */
 function SidebarUser({
   avatar,
@@ -111,7 +128,7 @@ function SidebarUser({
       {...props}
     >
       <span className="flex shrink-0 [&>*]:size-6 [&>*]:text-xs">{avatar}</span>
-      <span className="flex min-w-0 flex-1 flex-col gap-px group-data-[collapsible=icon]:hidden">
+      <span className="flex min-w-0 flex-1 flex-col gap-px group-data-[collapsible=icon]:sr-only">
         <span className="truncate font-semibold text-ink-primary text-xs leading-4">
           {name}
         </span>

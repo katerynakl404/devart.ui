@@ -18,158 +18,274 @@ caught, and corrected.
 The sidebar is the web shape and only that: the product mark, the name and the
 collapse control live in it, because a browser tab is no place for them.
 
+## How a fix reaches the products
+
+The fixes are in the source, so both products get them — but propagation is a
+**copy, not a subscription**:
+
+- `ds-bundle` must be rebuilt and copied into each product.
+- **Insightis' copy is older than AI Connectivity's** and will not pick these up
+  until it is re-synced.
+- The corporate repository `devart/components/devart.ui.react` has none of this;
+  the work sits on `design-sync/insightis-audit` in `katerynak/design-system`.
+
+Any bridge duplicating a fix in a product's own CSS — `_shared/pages.css` carries
+a few, each signed with a comment — must be removed once the bundle lands. Left
+in place it does not merely duplicate, it **masks**: the next regression in the
+library would look fine on the page carrying the override and ship broken to the
+one without it.
+
 ---
 
 ## What changed
 
-One row per section. `draft` means the thing is new and has not been signed
-off — nothing should be built on it yet.
+By component, its changes in number order; the number is its section below.
+`draft` — new and not signed off: nothing should be built on it yet. `open` —
+found and written down, not fixed.
 
-| § | Component | Change |
-|---|---|---|
-| §1 | `Button` | a neutral label under a red border |
-| §2 | `tokens` | dark destructive border — hover made the control *less* visible |
-| §3 | `Autocomplete` | selected and highlighted painted the same |
-| §4 | `Card` | `outline` — the hover border tint is gone |
-| §5 | `tokens` | no token for a standalone icon — new `--ink-icon` / `--ink-icon-hover` |
-| §6 | `TableHead` | the sort glyph did not hover with its label |
-| §6a | `Table` | interaction states were absolute colours, and two were the same colour |
-| §7 | `InputGroupAddon` | resized glyphs it did not own |
-| §8 | `TabsContent` | the inactive panel came back as an empty box |
-| §9 | `InputGroup` | a field label as loud as the hint beneath it |
-| §10 | `SidebarHeader` | lost its horizontal inset |
-| §11 | `SidebarMenuButton` | rendered tooltips with no styling at all |
-| §12 | `SidebarMenuButton` | a 32px box its own padding did not fit |
-| §13 | `Tooltip` | the arrow put the gap off the 4px scale |
-| §14 | `Sidebar` | collapsing could remove the only way to expand |
-| §15 | `PageHeader` | a page title with a back arrow was hand-assembled on every page, differently each · **draft** |
-| §16 | `PageHeader` | the title row: back control, h1, badge slot, actions · **draft** |
-| §17 | `ConnectorLogo` | 23 connector marks as data-URIs, with a monogram fallback · **draft** |
-| §18 | `StatusView` | `EmptyStateIllustration` |
-| §19 | `tokens` | a variant that is not enumerated is never compiled |
-| §20 | `Sidebar` | and `pnpm check-bundle-css` |
-| §21 | `Badge` | the hairline is the default, not a second variant |
-| §22 | `Sidebar` | five controls still fade at `opacity-50` |
-| §23 | `Toast` | has no width, so Sonner's does |
-| §24 | `Sheet` | the default side is the one without a border |
-| §25 | `Button` | a brand label on the neutral tertiary pill · **draft** |
-| §26 | `Tabs` | no flush tabset, so two rules stack |
-| §27 | `Sidebar` | no badge or counter on a nav row |
-| §28 | `InputGroup` | the search clear button is a recipe, not a part |
-| §29 | `Datepicker` | one bespoke focus ring, not three missing states |
-| §30 | `TextArea` | counter — one ink step too loud |
-| §31 | `Toast` | the toast close button is off the 24px ladder |
-| §32 | `tokens` | one of the three "unrelated" ones is not |
-| §33 | `Badge` | the hairline is the base, not a second variant |
-| §34 | `PopoverContent` | a closed panel stayed painted |
-| §35 | `Sidebar` | the fixed panel was pinned to the viewport |
-| §36 | `StepperIndicator` | ships **no rail** — so every consumer draws its own numbered circles out of raw · **draft** |
-| §37 | `StepperIndicator` | the numbered rail the headless Stepper never shipped · **draft** |
-| §39 | `SidebarMenu` | nav rows 4px apart where the kit says 2 |
-| §41 | `TextArea` | the counter row had a slot nothing could fill |
-| §43 | `DropdownMenu` | two kinds of row it could not draw · **draft** |
-| §45 | `InputGroupAction` | the trailing control of a field: · **draft** |
-| §46 | `InputGroupAction` | a field’s trailing control: 24px box, no surface, colour-only hover · **draft** |
-| §47 | `Link` | the kit’s text link, which the package never had · **draft** |
-| §48 | `StatTile` | label / value / caption — one number and what it counts · **draft** |
-| §49 | `CodeBlock` | a snippet and the control that copies it, as one object · **draft** |
-| §50 | `TableCell` | pressed belonged to whatever was pressed |
-| §51 | `StatusView` | the illustration is a pack, not a rule — **revised** |
-| §52 | `MetaRow` | the line above a list — "5 connections · Select all", and the Delete that · **draft** |
-| §53 | `MetaRow` | the line above a list, and the 4px to it, stated once · **draft** |
-| §54 | `TableRow` | nesting was a number one table owned |
-| §55 | `DropdownMenu` | a link may open a menu · **draft** |
-| §56 | `DropdownMenu` | a link may open a menu · **draft** |
-| §57 | `Table` | `density` — a compact row step · **draft** |
-| §58 | `DataSourceCard` | the tile could be narrower than its own action |
-| §59 | `Card` | one elevation recipe instead of two copies |
-| §60 | `Card` | two variants had no box, and one had a shape a card cannot take |
-| §61 | `DataSourceCard` | the popular flame is gone |
-| §62 | `Autocomplete` | the clear and the chevron painted as placeholders |
-| §63 | `Tooltip` | the delay before it opens |
-| §64 | `SidebarContent` | the nav column had no gutter |
-| §65 | `Badge` | a fixed-height pill whose label could wrap |
-| §66 | `Button` / `IconButton` | a switched-off control lit up under the pointer |
-| §67 | `PageHeader` | `condensed` — the state a sticky header takes once the page scrolls · `draft` |
-| §68 | `SidebarBrand` | the collapsed state was undefined |
-| §69 | `AccordionTrigger` | `size` — a trigger that is a section heading · `draft` |
-| §70 | `TextArea` | the hint under a field was 500, and nothing asked for it |
-| §71 | `Modal` | `size="xl"` — a dialog holding a tree, not a form · `draft` |
-| §72 | `Sidebar` | the collapsed rail — no tooltips, a 500ms delay, a leaning header |
-| §73 | `SegmentedControlTrigger` | `tone` — a selected half that means included or excluded · `draft` |
-| §74 | `DropdownMenuContent` | the focus ring left on a trigger after the menu was closed with the mouse |
-| §75 | `toast` | a stack of toasts, each a different width |
-| §76 | `TableRow` | a row that declares itself clickable kept the text cursor |
-| §77 | `DataSourceCard` | the one control on the tile could not be hovered |
-| §78 | `Card` | `variant="row"` stated its height as a ceiling as well as a floor |
-| §79 | `UploadTray` | **new** — the upload plate production raises on /files · **draft** |
-| §80 | `Button` / `IconButton` | a disabled `secondary` still had a surface — white, and invisible only on white |
-| §81 | `CodeBlock` | the snippet scrolled with the browser's own bar |
-| §82 | `Pagination` | a stream read in order has no use for page numbers · **draft** |
-| §83 | `Badge` | `leading-none` clipped every descender the pill contained |
-| §84 | class list | a bulleted list and the last band of a stack had no way to ask for themselves |
-| §85 | `Banner` | the dismiss was a tertiary button on a painting |
-| §86 | `Badge` | `xs` and `sm` were the same pill — the smaller name had the larger inset |
-| §87 | `palettes.css` | **new** — colour packs: Layer 1 redeclared, the rest re-resolves · **draft** |
-| §88 | `Popover` | floated on the page colour |
-| §89 | `Alert` | one size where the component does two jobs |
-| §90 | `Banner` | `sm` kept the default's line gap, chosen for a larger title |
-| §91 | `PromoCard` | **new** — the offer card a sidebar has room for |
-| §92 | `glyphStroke` | glyph stroke 1.75 → 2, the weight prod draws: `Button`, `IconButton`, `InputGroupAddon`, `DropdownMenu`, and `Alert sm` 1.5 → 2 |
-| §93 | `Pagination` | a `size` rung (`sm` 32px · `xs` 24px) and the `pageFloor` recipe · **draft** |
-| §94 | `Sidebar` | the product shape — `SidebarSection`, `SidebarChatItem`, `SidebarPromo`, `SidebarStat`, `SidebarUser`; `PromoCard`’s focus ring drew nothing |
-| §38 | `StepSlider` | four measurements against a spec that argues for each one |
-| §40 | `tokens` | the size ladder |
-| §42 | `TableCell` | a row that could not grow, under a comment saying it could |
-| §44 | `DropdownMenu` | two rows a menu could not draw — an accent action and a reading · **draft** |
+| Component | Changes |
+|---|---|
+| `Accordion` | §49 `AccordionItem` `standalone` — an item that is its own surface<br>§69 `AccordionTrigger` `size` — a trigger that is a section heading · draft |
+| `ActivityTray` | §79 the upload plate production raises on /files (written as `UploadTray`) · draft |
+| `Alert` | §89 `size` — `sm` inside a surface, `md` standing on a page<br>§95 `title` is optional — a description-only Alert |
+| `Annotation` | §121 **new** — `AnnotationGroup`, labels that point at controls inside a lit area · draft |
+| `Autocomplete` | §3 selected and highlighted painted the same<br>§62 the clear and the chevron painted as placeholders |
+| `Badge` | §33 the hairline is the base, not a second variant<br>§65 a fixed-height pill whose label could wrap<br>§83 `leading-none` clipped every descender<br>§86 `xs` was the same pill as `sm` — removed |
+| `Banner` | §85 the dismiss was a tertiary button on a painting<br>§90 `sm` kept the default's line gap |
+| `Button` and `IconButton` | §1 a neutral label under a red border · in `upstream` 1.1.0<br>§25 `primaryTertiary` — a brand label on the neutral tertiary pill<br>§66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` still had a surface<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft |
+| `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe instead of two copies<br>§60 two variants had no box; `rounded="full"` removed<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` — a tall card keeps its actions in reach · draft |
+| `Checkbox` | §57 the tick and the bar were two different weights |
+| `ChoiceCard` | §118 **new** — `ChoiceGroup` · `ChoiceCard`, a card-sized answer to a question · draft |
+| `Coachmark` | §120 **new** — the card next to what a spotlight lights · draft |
+| `CodeBlock` | §48 a snippet and the control that copies it, as one object · draft<br>§81 scrolled with the browser's own bar<br>§127 a header, line numbers, a height, wrapping<br>§128 `variant="error"`<br>§129 syntax colours — `--code-*`, `codeSyntaxVariants` |
+| `ConnectorLogo` | §16 connector marks as data-URIs, a monogram for the rest · draft<br>§108 the DB2 mark — it fell back to a "D"<br>§115 the SQLite mark — it fell back to an "S" |
+| `Datepicker` | §29 one bespoke focus ring, not three missing states · open |
+| `DropdownMenu` | §43 two rows it could not draw — `accent`, `DropdownMenuRow` · draft<br>§55 a link may open a menu · draft<br>§74 the focus ring a closed menu left behind<br>§130 `DropdownMenuItem` `isExternal`<br>§131 **new** — `DropdownMenuSegmentedItem`, a choice that keeps the menu open · draft |
+| `HighlightText` | §109 **new** — what a search matched, marked in the name · draft |
+| `InlineRename` | §132 **new** — a row title edited in place · draft |
+| `InputGroup` | §7 `InputGroupAddon` resized glyphs it did not own<br>§9 a field label as loud as the hint beneath it<br>§28 the search clear button is a recipe, not a part · open<br>§45 `InputGroupAction` — the field's trailing control · draft<br>§102 `xs` — the clear ✕ where the search icon is<br>§106 `InputGroupAddon` — the glyph in the placeholder's grey |
+| `LinkButton` | §46 the kit's text link, which the package never had · draft |
+| `ListPageLayout` | §133 the header condenses, and the body takes a class |
+| `MetaRow` | §52 the line above a list, and the 4px to it · draft<br>§134 `sticky` and `stickyOffset` |
+| `Modal` | §71 `size="xl"`, and a height it cannot pass · draft |
+| `PageHeader` | §15 the title row — back, title, badge, actions · draft<br>§67 `condensed` — the header once the page scrolls · draft<br>§110 the title is the kit's page title — heading30 / 24 / 20 · draft<br>§111 the collapse animates whole — title, arrow, 240ms · draft<br>§135 `wrapTitle`, and the back control as built |
+| `Pagination` | §82 `showPageNumbers` — a stream read in order · draft<br>§93 a `size` rung, and the `pageFloor` recipe · draft |
+| `PinToggle` | §136 **new** — pin a row · draft |
+| `Popover` | §34 a closed panel stayed painted<br>§88 floated on the page colour |
+| `ProgressBar` | §105 `trackVariant` — a bar split in two · draft |
+| `PromoCard` | §91 **new** — the offer card a sidebar has room for<br>§116 the hover holds over the dismiss |
+| `RowMenuButton` | §137 **new** — the ⋮ at the end of a list row · draft |
+| `SearchField` | §116 a search field of its own — the query, the ✕, and the matches while typing · draft |
+| `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft |
+| `SelectableListCard` | §138 keyboard, `aria-selected`, `menu` |
+| `Sheet` | §24 the default side is the one without a border · open |
+| `Sidebar` | §10 `SidebarHeader` lost its horizontal inset<br>§11 `SidebarMenuButton` tooltips had no styling<br>§12 `SidebarMenuButton` — a 32px box its padding did not fit<br>§14 collapsing could remove the only way to expand<br>§27 no badge or counter on a nav row → §142<br>§35 the fixed panel was pinned to the viewport<br>§39 `SidebarMenu` rows 4px apart where the kit says 2<br>§64 `SidebarContent` — the nav column had no gutter<br>§72 the collapsed rail was never finished<br>§94 the product shape — sections, chat row, promo slot, compact footer<br>§139 `SidebarUser` — the rail lost the name<br>§140 `SidebarProvider` — the sheet outlived the phone layout<br>§141 `SidebarChatItem` — the ⋮ where there is no hover, `countLabel`<br>§142 `SidebarNavItem` `badge`, an element as `icon`<br>§143 the triggers' tooltips<br>§144 `SidebarStat` `asChild` |
+| `Spotlight` | §119 **new** — the scrim around a lit target, and `useTargetRect` · draft |
+| `StatTile` | §47 label, value, caption — one number and what it counts · draft |
+| `StatusView` | §51 the illustration is a pack — empty, and empty search<br>§104 a wider message, 48ch<br>§107 `EmptySearchIllustration` visible on a white card |
+| `StepProgress` | §117 **new** — a bar per step and "Step N of M" · draft |
+| `StepSlider` | §38 four measurements against a spec that argues for each one · open |
+| `Stepper` | §36 `StepperIndicator` — the numbered rail the headless Stepper never shipped · draft |
+| `Table` | §6 `TableHead` — the sort glyph did not hover with its label<br>§42 `TableCell` — a row that could not grow<br>§50 `TableCell` — pressed belonged to whatever was pressed<br>§53 `TableHead` `width` — a share, not a size<br>§54 `TableRow` `nested` — the child row's 8px<br>§56 `density` — a compact row step · draft<br>§76 a clickable row kept the text cursor |
+| `Tabs` | §8 `TabsContent` — the inactive panel came back as an empty box<br>§26 no flush tabset, so two rules stack · open |
+| `TextArea` | §17 a character counter<br>§30 the counter one ink step too loud · open<br>§41 `hintText` — the counter row's empty slot<br>§70 the hint was 500, and nothing asked for it |
+| `Toast` | §31 the close button is off the 24px ladder · open<br>§75 a stack of toasts, each a different width |
+| `Toggle` | §32 `ghost` is `Button`'s removed variant under another name · open |
+| `Tooltip` | §13 the arrow put the gap off the 4px scale<br>§63 the delay before it opens |
+| `Tour` | §122 **new** — a guided walk: Spotlight, Coachmark, annotations · draft |
+| `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
+| Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a interaction states as translucent washes that stack<br>§87 **new** — colour packs, `palettes.css` · draft<br>§129 `--code-*` — syntax colours, AA in both themes |
+| Sizes and glyphs | §40 the size ladder<br>§44 the icon surface — the glyph ladder, and the bundle that had none<br>§92 glyph stroke 1.75 → 2, the weight prod draws |
+| Across components | §22 five controls still fade at `opacity-50` · open<br>§98 `Table`, `ModalBody` — the system's scrollbar<br>§99 disabled controls — the not-allowed cursor |
+| Build and tooling | §19 a variant that is not enumerated is never compiled<br>§20 `pnpm bundle` and `pnpm check-bundle-css`<br>§37 `bg-surface-card/85` compiles to nothing · open<br>§84 the class list — list markers, `last:` borders |
+| Synced from upstream | §97 the developers' names, parts and fixes — their 1.1.0 |
 
-# Colour and state
+Retired numbers, and where what they said lives now: §18 → §51 · §21 → §33 ·
+§23 → §75 · §58, §61, §77 → §97 (`IconCard`) · §68 → §97 (`SidebarPanelHeader`).
 
-## 1. `destructiveOutline` — a neutral label under a red border
+---
 
-`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+# `Accordion`
 
-```diff
-- 'border-outlineDestructive-border bg-transparent text-ink-body',
-+ 'border-outlineDestructive-border bg-transparent text-fb-red-text',
+## 49. `AccordionItem` — an item that is its own surface
+
+`src/components/Accordion/AccordionItem.tsx`
+
+```ts
+variant: 'divided' | 'standalone'   // default 'divided'
 ```
 
-Next to an ordinary secondary button the difference came down to one thin line,
-and the control stopped reading as destructive.
+`divided` is what it always did: a rule under every item but the last, items
+stacked inside one surface — `border-b last:border-b-0` since §97 (it was
+written as `not-last:border-b`, a Tailwind v4 variant this build compiles to
+nothing). `standalone` drops the rule, for one `Card` per section.
 
-`IconButton` shares the variant scale with `Button` by convention but keeps its
-own definition, so it needed the same edit — it was missed the first time. Rule:
-**every `destructiveOutline` has a red label**, text and icon alike.
+The two are not a style choice. A shut section inside a shared surface reads as
+a gap in that surface; a shut section that IS a card reads as a closed object,
+which is what it is. Without the variant the consumer cancels the divider with
+`border-b-0` on every item — a page overriding a component because the component
+has one layout and the page needs two.
 
-## 2. Dark destructive border — hover made the control *less* visible
+**Both products.** Additive; every existing item keeps the divider.
 
-`globals.css`, `.dark`
+## 69. `AccordionTrigger` — `size` · **DRAFT**
 
-Dark inherited the light values as-is: Red-700 at rest, Red-800 on hover. On
-white that works — darker reads as more prominent. On the near-black Card
-`#17171E` it inverts: **hover dropped contrast 2.76 → 2.15**. It was the only
-place in the kit where pointing at a control made it fainter; everything else
-goes lighter on dark (`--btn-secondary-border`: Grey-600 → Grey-500, 2.30 →
-3.69).
+One size, `text-sm`, which is right for an accordion inside a card and wrong for
+an accordion that IS the section. In the connection form each settings group is
+its own card with the trigger as its heading, so the heading of a section read
+one step smaller than the `title16` headings of the sections around it — the
+reviewer's note was that the section names had to be *more prominent*.
 
-The border had also drifted from its own label: after §1 the dark label is
-Red-400, while the frame stayed Red-700 — text lighter than the frame around it.
+`size="md"` puts the trigger on `text-base`, matching `title16`. `sm` stays the
+default, so nothing that exists changes.
 
-```diff
-- --btn-outline-destructive-border: var(--red-700);       /* #B91C1C */
-- --btn-outline-destructive-border-hover: var(--red-800); /* #991B1B */
-+ --btn-outline-destructive-border: var(--red-500);       /* #EF4444 — CR 4.74 */
-+ --btn-outline-destructive-border-hover: var(--red-400); /* #F25555 — CR 5.27 */
-```
+Draft for the same reason as §67: it exists for one concept's form.
 
-Same rule as light — **border = label colour, hover one step more prominent** —
-with the direction of the step mirrored because the ground is dark.
+---
 
-> **Revised.** The first fix used Red-400 → Red-300. Red-300 is a pale pink, and
-> measured against its own rest state it gave a **×1.79** jump where light rises
-> by ×1.22 — the step was correct in direction and far too big in size. Red-500 →
-> Red-400 keeps the direction and matches light's proportion. The earlier
-> document still quoted the 400/300 pair; it was wrong at the time of reading.
+# `ActivityTray`
+
+## 79. `ActivityTray` — the upload plate (written as `UploadTray`) · **DRAFT**
+
+> **§97:** renamed `ActivityTray`, with the developers' API (their AIINS-1948).
+
+`src/components/UploadTray/index.tsx`
+
+The plate production raises on `/files` after an upload — a summary bar that
+expands into the per-file list, plus a dismiss ✕. The kit specifies it in full
+(`.upl-tray`); the package had nothing, so any page needing it would have built
+a card, a header row and a list by hand.
+
+Copied rather than designed. Two parts of the kit's contract are load-bearing
+and both are easy to lose:
+
+**The whole bar except the ✕ is the expand target, and the ✕ is its sibling.**
+Nesting the dismiss inside the head is invalid markup and unreachable by
+keyboard. The chevron is a state indicator only — it flips off the head's own
+`aria-expanded`, so the visual cannot disagree with what is announced.
+
+**The plate is positioning-neutral.** A width and a cap, no placement. The page
+docks it, the same division of labour `MetaRow` uses, and that is what lets one
+plate serve a drawer, a panel and the bottom of a screen.
+
+**Nothing in it is colour-only.** The summary glyph carries the batch outcome —
+brand and spinning while uploading, green complete, red failed — and the title
+says it in words beside it ("1 of 5 uploads failed"). A failed row says it three
+ways: glyph, a 5% red tint, and the sentence in `error`.
+
+**The spinner is a prop: `spinner` (draft, default `true`).** The three
+statuses the kit specifies all assume a transfer — something is moving, or it
+finished, or it broke — and the glyph for the first of them turns. A batch can
+also be open and stopped on the PERSON, and the first such plate outside
+`/files` is one: a connection form tracking which workspaces still have no
+scope, where nothing advances until somebody goes and sets one. There the
+loader promised progress nothing was making and, left on screen, read as an
+upload that had hung — the one meaning a spinner must never carry. So the
+status stays `uploading` and the turning is what the page decides: same ring,
+same place, and the title still counts in words beside it.
+
+A fourth status (`waiting`, still glyph, neutral ink) was tried first and
+replaced by this: the fact in question is whether anything is moving, not what
+kind of outcome the batch has, and a status is for outcomes.
+
+One deviation from the package's own habits, and it is the kit's reasoning: the
+head's focus ring is **inset**. The plate is `overflow: hidden` so its corners
+clip, and the package's usual offset ring on a full-bleed bar would be clipped
+away with them.
+
+**It can clear itself, and that is a prop rather than a habit.** `autoDismiss`
+is off by default: a plate that empties itself is right for a background upload
+nobody is watching and wrong for one they are, so the page decides. With it on,
+a row that reaches `done` is marked, waits, then fades out taking its own height
+with it; when the last row goes the plate follows and `onDismiss` fires. A
+`failed` row never retires — it is the only row still waiting for an answer.
+
+Two details there are the kind that pass review and fail in use. Reduced motion
+**shortens** the exit rather than removing it, because a row retires on
+`animationend` and `motion-reduce:animate-none` would leave every row on screen
+for ever. And `animationend` bubbles, so the plate accepts only its own — the
+first row to finish would otherwise dismiss the whole plate.
+
+**A row can say its state in words.** `statusLabel` puts a pill at the row’s end
+in place of the glyph, and the consumer supplies only the sentence: the variant
+follows `status` (`attention` / `secondary` / `error`) and the size and radius
+are the component’s. The AI connectivity prototype had been building that pill
+itself — variant, `sm`, `rounded="full"` — which is three copies of one decision
+and the reason the same state could read amber in the plate and grey on the
+panel behind it. The override is gone from the prototype.
+
+Three classes are enumerated in `gen-classlist.mjs` — `max-w-[26rem]`,
+`rounded-[0.625rem]` and the chevron's `aria-expanded` selector. All three are
+values the kit states and no scale carries, so nothing derives them and §19
+would otherwise ship the plate full-width with square corners.
+
+---
+
+# `Alert`
+
+## 89. `Alert` had one size, and does two jobs
+
+- **`Alert`** — new `size="sm" | "md"`, default `sm`.
+
+Tucked inside another surface — a queue band, a card — an Alert is a footnote
+and reads at 12. Standing on a page, above a table, speaking about the whole
+screen, it occupies a full row, and 12px there is a whisper from something
+large. Consumers were reaching for `titleClassName` and `descriptionClassName`
+to say that, which puts the type scale back in the page.
+
+Every rung moves together — type 12→14, glyph 16→20, padding 10/12→12/14, gap
+10→12 — so `md` is a size and not an Alert with a bigger font. The glyph box
+equals the title's line box at both sizes, which is what aligns them.
+
+The gap between title and description does **not** move with the size: each
+line box already carries its own half-leading, and 2px is what the pair wants
+at 12/16 and at 14/20 alike.
+
+Raised by the plan-gating prototype, where the read-only notice stands over a
+table on one screen and inside a chat thread on another.
+
+## 95. `Alert` — the title is optional
+
+- **`Alert`** — `title` is now optional (`title?: string`). Without it the
+  title line is not rendered, the description is the whole message, and the
+  glyph sits on the description's first line (same line box at both sizes).
+- **`Alert`** — a description with no title reads in `text-ink-primary`;
+  under a title it stays `text-ink-secondary`.
+- **Stories** — new `DescriptionOnly`.
+
+Raised by the workspaces prototype: the Permissions and Effective Access panes
+explain the rules of the tree in a paragraph (PRD Workspaces F-25, F-31). As a
+titled Alert the first sentence had to be lifted out of the paragraph to serve
+as a title, which read as a heading that repeated the copy beneath it. There
+was no way to say "an info block, no headline" short of passing an empty string,
+which still rendered an empty line box above the text.
+
+Without a title the description is the message, and in secondary ink the whole
+block read grey — a footnote under a heading that is not there.
+
+---
+
+# `Annotation`
+
+## 121. New — `AnnotationGroup` · `Annotation` · **DRAFT**
+
+`src/components/Annotation/index.tsx`
+
+Labels that point at specific controls inside a lit area. Every label sits on
+one line (`top`) and fans out from its target without overlapping its
+neighbour; a curved Brand/Primary arrow runs from it to a dashed ring 3px
+around the target, concentric with it (the target's radius + 3). Rings side
+by side never touch — they split the gap and keep 6px apart.
+`<Annotation target icon>text</Annotation>` renders nothing on its own — the
+group reads its children and draws them, portalled above the spotlight;
+`leaving` fades it out. Hidden at 640px and below, where the coachmark lists
+the same texts instead (`Tour` does that).
+
+**Both products.** New components, no call sites in the package.
+
+---
+
+# `Autocomplete`
 
 ## 3. `Autocomplete` — selected and highlighted painted the same
 
@@ -192,6 +308,359 @@ readable while the pointer is elsewhere.
 > Also recorded as **#43** in the Insightis UX audit — `reports/2026-09-04-insightis-ux-audit.md`
 > in the **Insightis** project, not in this repository.
 
+## 62. `Autocomplete` — the clear and the chevron painted as placeholders
+
+`src/components/Autocomplete/index.tsx`
+
+Both controls were `IconButton asChild`, which renders the child instead of a
+button — so what reached the addon was a bare `<svg>`, and the addon’s rules
+read that literally. `[&>svg]:text-ink-inactive` is the DECORATIVE glyph rule,
+while `[&>button]:text-ink-secondary` and its hover step matched nothing at
+all. Two clickable controls painted at the placeholder step and never answered
+the pointer. Measured: `rgb(124 140 162)` — `--ink-inactive`.
+
+Both are `InputGroupAction` now (§45), which is also a real `<button>` under
+the `aria-label`: an `<svg>` with a label and a click handler is not a control
+to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
+`--ink-icon`, and no bare `svg` left as a direct child of the addon.
+
+Separate from §22, which lists Autocomplete for a different defect — its
+disabled option still fades at `opacity-50`.
+
+## 126. `Autocomplete` — its label is every other field's label
+
+`src/components/Autocomplete/index.tsx`
+
+Every field draws its label the same way — `InputGroup`, `PasswordInput` (through
+`inputGroupProps`) and `TextArea`: Text/Body, medium, 4px over the field.
+`Autocomplete` drew its own in **Text/Secondary** with **6px** under it, so in one
+form (Insightis "Create metric": Name · Alias · Definition · Data Source) the last
+label read as a hint and sat 2px further from its field. Owner's call (2026-10-16):
+all labels identical.
+
+```diff
+- textColor="secondary"
+- className="mb-1.5 block"
++ textColor="body"
++ className="mb-1 block"
+```
+
+Text/Secondary stays the hint's colour (`hintText` under the field), which is
+what the InputGroup comment already says. A recipe fix with no API change:
+**patch** (`.changeset/autocomplete-label.md`).
+
+---
+
+# `Badge`
+
+## 33. `Badge` — the hairline is the base, not a second variant
+
+`globals.css`, `src/lib/constants.ts`, `src/components/Badge/index.tsx`
+
+The kit defines one border and applies it to every chip, mixed from
+`currentColor`, so the border *is* the chip — teal on Primary, neutral on
+Secondary, green on Success, red on Error; `.badge-flat` opts out. The package
+had it inverted: five of seven variants `border-transparent`, and the bordered
+forms as extra variants (`brand`, `green`) with tokens of their own, so
+`attention`, `success` and `error` could not be bordered at all. Shipped because
+the page could not stop drawing the border by hand until it was — `.sync-chip` in `_shared/pages.css` was exactly the kit's rule, written
+out on the consumer:
+
+```css
+.sync-chip { border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+```
+
+```css
+/* globals.css */
+--badge-border: color-mix(in srgb, currentColor 25%, transparent);
+```
+
+```diff
+- 'inline-flex items-center gap-2 border',
++ 'inline-flex items-center gap-2 border border-badge-border',
+...
+-   primary: 'border-transparent bg-badge-primary-bg text-badge-primary-text',
++   primary: 'bg-badge-primary-bg text-badge-primary-text',
+```
+
+`brand` and `green` keep their own opaque border tokens — their fill is opaque
+too, so a `currentColor` mix would read differently there. A new `flat` variant
+puts `border-transparent` back for a chip on a surface it already contrasts
+with.
+
+**Why it is not decoration.** `secondary` is filled with `--surface-card2`,
+which is also where a hovered or selected table row lands. On the Last check
+column the pill and the row underneath it became one shape on hover. Any table
+in either product hits this, which is why the answer is a token and not a rule
+in one page's stylesheet.
+
+**Both products.** The border is mixed from `currentColor` at 25% alpha, so it
+is per-variant and per-theme by construction and needs no `.dark` twin and no
+per-product value. Every existing call site gains a hairline it did not have;
+none loses a fill or changes size — `border` was already in the base class, so
+the box model is untouched.
+
+## 65. `Badge` — a fixed-height pill whose label could wrap
+
+`src/components/Badge/index.tsx`
+
+```diff
+  'inline-flex items-center border border-badge-border',
++ 'whitespace-nowrap overflow-hidden',
+```
+
+```diff
+- <span className="inline-block align-text-top leading-none">
++ <span className="inline-block min-w-0 truncate align-text-top leading-none">
+    {children}
+  </span>
+```
+
+with `leftSlot` and `rightSlot` wrapped in `shrink-0` spans, as the dot and the
+delete control already were.
+
+Every size sets the height (`xs`/`sm` 20px, `md` 28px, `lg` 32px, `xl` 36px), so a
+label that wraps does not make the pill taller — the second line is drawn
+outside it, across the border and whatever sits below. Found on a dashboard
+tile: `1 not configured` in a 213px tile broke across two lines and the chip
+read as a rendering fault.
+
+`Badge.md` already carried the rule in prose — "keep the label to one or two
+words; a chip that wraps is a sentence wearing a chip's clothes" — which holds
+only while the author can see the narrow case. A three-digit count, a longer
+locale or a column the page did not size is exactly where they cannot.
+
+**When a badge does not fit, the one allowed outcome is a truncated label.** Not
+a second line, and not text running out over the neighbour: `nowrap` alone would
+have swapped one broken frame for another. `overflow-hidden` is what makes the
+pill able to give way at all — a flex item's automatic minimum size is its
+content width until the item hides its overflow, and then it is 0 — and
+`truncate` on the label span puts the ellipsis inside the border. The glyphs
+hold their size, so a squeezed chip reads `⚠ Not config…`, never half a glyph.
+
+The ellipsis is a fallback, not a layout: it says the label wants shortening or
+the column widening, and a badge whose text can be cut should carry `tooltip`.
+
+## 83. `Badge` — the pill cut the tail off a g
+
+`src/components/Badge/index.tsx`
+
+Reported as text being cut in a badge, and it was — downward, not sideways.
+`PostgreSQL` lost the bottom of its **g** while every other letter looked
+whole, which is why it read as a rendering fault rather than as a measurement.
+
+The label carried `leading-none`: a line box exactly the size of the font, 14px
+for a 14px label. A descender lives BELOW that box, and the pill hides its
+overflow (§65) — so the tail was clipped by the chip that was
+supposed to contain it. Nothing was wrong with the width, which is where the
+first look goes.
+
+`leading-none` and the `align-text-top` beside it are gone. The label now takes
+the line-height the type scale pairs with its size, which is also what the kit
+states for `.badge` — `line-height: var(--ts-label-m-lh)`. Measured across the
+four sizes, every line box is 4px taller than its font and sits clear of both
+edges:
+
+| Pill | Font | Line box | Clearance |
+|---|---|---|---|
+| 20px | 12 | 16 | 2 / 2 |
+| 28px | 12 | 16 | 6 / 6 |
+| 32px | 14 | 20 | 6 / 6 |
+| 36px | 14 | 20 | 8 / 8 |
+
+The pill does not grow: its height comes from `size` and the row is
+`items-center`, so the taller line box centres inside the same chip.
+
+## 86. `Badge` — a step that was not a step
+
+`src/components/Badge/index.tsx`
+
+Reported from a call site moving a pill from `sm` to `xs`: the result looked
+like a mistake, because nothing anyone could see had changed.
+
+Measured, it had not. Both steps were **20px tall with 12px text** and differed
+only in their sides — and backwards at that: the step named smaller carried the
+LARGER inset.
+
+| | Height | Sides |
+|---|---|---|
+| `xs` | 20px | 8px |
+| `sm` | 20px | 6px |
+| `md` | 28px | 10px |
+
+`xs` is gone and `sm` keeps its own 6px. Nothing in the kit is contradicted by
+either half: the kit has **one** badge — 28px with 10px sides, which is this
+ladder's `md` — so `xs`, `sm`, `lg` and `xl` are all the package's own, and
+the one that was indistinguishable from its neighbour is the one that went.
+
+Call sites: `BADGE_SIZE_MAP` in `Autocomplete/BadgeList.tsx` now maps the
+field's two smallest steps onto the same badge step, since there is no second
+20px rung to tell them apart with; the catalogue's `Sizes` story and its
+`size` control lost the rung; the AI connectivity prototype moved 12 pills.
+
+---
+
+# `Banner`
+
+## 85. The banner's dismiss was a tertiary button on a painting
+
+`src/components/Banner/index.tsx`
+
+`.banner-close` fills on hover in the kit (`--state-hover`). On the solid
+variant that is quiet enough to pass unnoticed; on the gradient ones it is a
+pale box sitting on the artwork, and the ✕ stops reading as part of the banner
+and starts reading as a control stuck onto it.
+
+It answers with colour now and nothing else — `--ink-icon` to
+`--ink-icon-hover` on the solid variant, `--banner-grad-sub` to
+`--banner-grad-text` on the gradients. The 32px box stays: it is the hit area,
+and a 16px glyph is not one. Measured after: background `rgba(0, 0, 0, 0)` on
+both, ink `rgb(90, 106, 128)` solid and white at 80% on the gradient.
+
+Third component on the same rule, after `InputGroupAction` (§45) and
+`UploadTray`: an icon docked on a surface that already owns hover does not get
+a surface of its own. Deliberate divergence from the kit, recorded here rather
+than argued in a class string.
+
+## 90. `Banner` — `sm` kept a line gap chosen for a larger title
+
+- **`Banner`** — `size="sm"`: title→description gap `gap-1.5` → **`gap-0.5`**.
+- **`Banner`** — the body gains `data-slot="banner-body"`, so the size can reach it.
+
+`sm` already steps the title down to 14/20, but the gap under it stayed at the
+default's 6px — a value chosen for a 16px title. Beside an `Alert size="md"`,
+which states the same kind of thing at the same type with 2px between its
+lines, the two read as different components rather than as two sizes of one
+system.
+
+The default size is untouched: its 16px title and taller block still want the
+air.
+
+---
+
+# `Button` and `IconButton`
+
+## 1. `destructiveOutline` — a neutral label under a red border
+
+> **§97:** the developers shipped this themselves in 1.1.0 (`silly-hounds-repeat`),
+> so it is off the review page — there is nothing left to propose.
+
+`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+
+```diff
+- 'border-outlineDestructive-border bg-transparent text-ink-body',
++ 'border-outlineDestructive-border bg-transparent text-fb-red-text',
+```
+
+Next to an ordinary secondary button the difference came down to one thin line,
+and the control stopped reading as destructive.
+
+`IconButton` shares the variant scale with `Button` by convention but keeps its
+own definition, so it needed the same edit — it was missed the first time. Rule:
+**every `destructiveOutline` has a red label**, text and icon alike.
+
+## 25. `primaryTertiary` — a brand label on the neutral tertiary pill
+
+> **§97:** the developers ship it as `primaryTertiary`; it was written here as
+> `tertiaryBrand`, the same recipe.
+
+`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+
+The kit ships this as `.btn-tertiary.is-brand`, marked **new**, in four rules:
+
+```css
+.btn-tertiary.is-brand          { color: var(--brand-primary); }
+.btn-tertiary.is-brand:hover    { background: var(--state-hover);   color: var(--brand-hover); }
+.btn-tertiary.is-brand:active   { background: var(--state-pressed); color: var(--brand-press); }
+.btn-tertiary.is-brand:disabled { color: var(--ink-inactive); background: transparent; }
+```
+
+**Shipped.** `Button` and `IconButton` both carry it:
+
+```
+border-transparent bg-transparent text-brand-primary
+hover:bg-state-hover hover:text-brand-hover
+pressed:bg-state-pressed pressed:text-brand-press
+disabled:bg-transparent disabled:text-ink-inactive
+```
+
+Measured on `Components/Button → Variants`: label `rgb(7 128 126)` =
+`--brand-primary`, surface transparent.
+
+The label moves through the brand ramp; the pill and the focus ring stay the
+plain tertiary recipe. It exists for standalone brand text actions — the
+connection sidepanel's *Test Connection* is the named case — and the kit is
+explicit that the global tertiary stays neutral, so this has to be a variant
+rather than a redefinition.
+
+This is the mirror of `destructiveTertiary`, which the package already has (§1's
+sibling). Both are tertiary ghosts that recolour the label only; shipping one and
+not the other is why pages keep hand-rolling a `text-brand-primary` button.
+
+## 66. `Button` / `IconButton` — a switched-off control lit up under the pointer
+
+Reported plainly: *"a disabled button cannot hover."* It did. `:hover` matches a
+disabled button — it is not focusable and it does not fire, but it is still hit
+by the pointer — and each variant's hover recipe was a plain `hover:` utility,
+so a disabled Secondary took the hover border and the hover fill and then sat
+there looking pressable with an inactive label.
+
+Every variant now switches its own hover recipe off again, at the same
+specificity the state deserves: `disabled:hover:*` is `:disabled:hover`, three
+compound selectors against `hover:*`'s two, so the disabled recipe wins without
+`!important`.
+
+**Not `disabled:pointer-events-none`**, which is the one-line version of this
+fix and would have been wrong. A disabled control is exactly the one that needs
+a tooltip saying why it is disabled, and a tooltip needs the pointer events it
+would have removed — the same reason the `aria-disabled` form of these variants
+is the one that carries `pointer-events-none`, where the control keeps focus and
+a screen reader reads the reason instead.
+
+`cursor-not-allowed` stays on both forms, and now means something: the cursor is
+the only thing that changes under the pointer.
+
+## 80. A disabled `secondary` still had a surface
+
+`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+
+Reported as 'disable secondary should have no fill'. It had one — just not the
+obvious one. The package had already refused the kit's `--state-disabled` here,
+on the reasoning that swapping an opaque grey in for the chip's own surface
+reads as a different control rather than as this one switched off. What it kept
+instead was `--surface-card`: white.
+
+Which is a fill, and a worse one for being conditional on where it lands. On a
+white card it is invisible and the argument for keeping it never comes up; on a
+tinted surface — a chips row, a banner, a table header — the same disabled
+button reads as a white card of its own, switched off and yet the brightest
+thing in the row.
+
+Transparent is the one answer that holds on every surface, and it is what
+`outline` has always done. The border and the inactive label carry the state.
+Measured after: `rgba(0, 0, 0, 0)` with the border at `--btn-secondary-border`
+and the label at `--ink-inactive`; `primary` still takes `--state-disabled`,
+because a filled button switched off has nothing else to be.
+
+**Still a divergence from the kit**, now a wider one: `.s-disabled.btn-secondary`
+paints `--state-disabled`. It is recorded here rather than argued in a class
+string.
+
+## 101. `IconButton` — `3xs`, the tree-row toggle · draft
+
+- **`IconButton`** — new `size` value `3xs`: `size-5` (20px) with a 12px
+  glyph (`[&_svg]:size-3`), the `rounded` radius as on `2xs` / `xs`, the
+  `xs` spinner. Story `Sizes` and `IconButton.md` list it.
+
+`2xs` (24px) was the smallest box, and it is the expand / collapse at the start
+of every row in the workspaces' data trees (Data model, Permissions, Effective
+access). One to a row, beside a 14px name, it outweighed the names. Asked for
+in review of the workspaces prototype. Row actions stay `2xs`.
+
+---
+
+# `Card`
+
 ## 4. `Card` / `outline` — the hover border tint is gone
 
 `src/components/Card/index.tsx`
@@ -212,100 +681,584 @@ clickable row uses the table's own interactive states.
 > removed inside this branch — so only the hover line is a change anybody
 > outside it can see.
 
-## 5. No token for a standalone icon — new `--ink-icon` / `--ink-icon-hover`
+## 59. `liftOnHover` — one elevation recipe instead of two copies
 
-`globals.css` (Layer 2), `src/lib/constants.ts`
+`src/lib/utils.ts`, `src/components/Card/index.tsx`,
+`src/components/DataSourceCard/index.tsx`
 
-The system had no colour token for a glyph. The ink ladder is primary / body /
-secondary / inactive / highlight, and icons simply inherited their container's
-text colour.
+The lift — border tints toward brand, shadow grows, box rises — was written out
+twice: once in `Card` `elevated`, once in `DataSourceCard` (now `IconCard`, §97). Three classes each,
+and two chances to change the shadow in one of them.
 
-That is fine for an `IconButton`: it has a box, and hover fills the box. It is
-not fine for an icon **without** a box — an ⓘ beside a name, a sort arrow in a
-header. There is nothing to fill, so colour is the only thing that can answer the
-pointer, and nothing in the system said which colour.
-
-```css
---ink-icon: var(--ink-secondary);        /* #5A6A80 */
---ink-icon-hover: var(--ink-primary);    /* #0F172A */
+```ts
+export const liftOnHover = (distance: 1 | 2 = 1) => cn(
+  'transition-[box-shadow,border-color,transform] duration-base',
+  distance === 1 ? 'hover:-translate-y-px' : 'hover:-translate-y-0.5',
+  'hover:border-card-lift-border hover:shadow-lift-hover'
+);
 ```
 
-Both alias Layer-2 roles, so neither needs a `.dark` twin. Exposed as
-`text-ink-icon` / `text-ink-icon-hover`.
+The distance is a parameter because it is the one part that legitimately
+differs — the kit lifts a catalog tile 1px and a larger card 2px, since the
+same travel reads bigger on a smaller box. Everything else is fixed.
 
-Rule: **a standalone interactive icon changes colour only.** If it also needs a
-fill, it is an `IconButton` and should be one.
+`Card` changed behaviour slightly with it: `transition-all` became the scoped
+list the tile already used. A card that animates every property also animates
+its own content reflowing.
 
-## 6. `TableHead` — the sort glyph did not hover with its label
+**Not a component.** The two are not the same thing — `Card` is a `<div>`
+surface, the tile is a `<button>` with a hover scrim and a revealed action — so
+the shared part is a recipe both import, not a base component both extend.
 
-`src/components/Table/TableHead.tsx`
+## 60. `Card` — two variants had no box, and one had a shape a card cannot take
+
+`src/components/Card/index.tsx`
+
+**Padding.** `secondary` and `outline` draw `flex flex-col gap-3 p-4`.
+`elevated` and `ghost` drew neither layout nor padding — so the card that lifts
+on hover was the one every page had to pad itself, and an `outline` card beside
+an `elevated` one sat on a different inset. Both now carry the same box.
+`ghost` also had `items-center justify-center` with no `flex` for them to act
+on; they work now.
+
+**`rounded="full"` removed.** A pill is a shape for something whose height is
+its own — a chip, an avatar. On a card it makes the corner radius a function of
+how much text the card happens to hold, and the 40px sample in the radius story
+showed exactly that. The step was added on this branch, so nothing published
+loses it.
+
+## 78. A list item that could only ever be one line
+
+`Card variant="row"` is the product’s clickable list item, and it carried `h-11`.
+44px is right for the row it was drawn from — one line of `text-sm` — but a fixed
+height states it as a ceiling as well as a floor, so the first consumer with a
+name over a description had two bad choices: clip, or argue the component out of
+its own height at the call site. The connection form did the second, with
+`h-auto min-h-11 items-start py-3` — three layout classes to undo one.
+
+The size is **padding** now: `px-4 py-3`, and no height at all. One line of
+`text-sm` is 20px, plus 12 above and below, is the same 44 — so nothing that used
+the row before changes height — and two lines grow to 64 instead of being cut off.
+A list item does not know how many lines its consumer has; it knows how much air
+belongs around them.
+
+The horizontal inset is its own decision and it is 16, not the 12 the fixed-height
+version carried: 12 read as tight the moment the row held two lines, and 16 is
+where text starts from the edge in every other card in the system.
+
+Nothing else in the variant changes: the pointer, the hover fill, the focus ring,
+the press scale and the `:has()` guard that keeps the press off the card while a
+button inside it is pressed or its menu is open are what make this a component
+rather than a bordered div, and they are why the call site should not have been
+reaching for its own box in the first place.
+
+## 123. `CardFooter` — `sticky` · **DRAFT**
+
+`src/components/Card/CardFooter.tsx`
+
+```ts
+sticky?: boolean   // default false; true → sticky bottom-0 z-10 bg-surface-card
+```
+
+A card taller than the window keeps its actions in reach. Without it the footer
+scrolls with the card, so the actions of a long card sit below the fold until
+the reader reaches its end. With `sticky` the footer sticks to the bottom of
+the scroller while the card scrolls under it, and settles in place at the
+card's end. It carries the card's own surface, so the content passing under it
+does not show through, and `z-10`, so that content stays under it.
+
+`cardFooterVariants` is exported from `@devart/ui-react/Card` now — it was
+declared and never reachable — so a consumer can tell whether its build has
+the variant (`cardFooterVariants({ sticky: true })` yields `sticky`).
+
+**Both products.** Additive; every existing footer keeps scrolling with its
+card.
+
+---
+
+# `Checkbox`
+
+## 57. `Checkbox` — the tick and the bar were two different weights
+
+`src/components/Checkbox/Checkbox.tsx`, `Insightis/legacy-html/pages/kit-theme.css`
 
 ```diff
-- 'transition-colors hover:text-ink-body',
-+ 'group transition-colors hover:text-ink-icon-hover',
+- <span className="… h-0.5 w-2.5 …" />   /* 2px */
++ <span className="… h-[1.5px] w-2.5 …" /> /* 1.5px */
 ```
 
-The label moved to `--ink-body` on hover and the chevrons stayed at
-`--ink-inactive`, so a header read as two controls. `group` on the button and
-`group-hover:text-ink-icon-hover` on the glyph move them together.
+The tick is a 12px lucide glyph at `strokeWidth={3}`; in a 24-unit viewBox that
+renders at **1.5px**. The indeterminate mark was not a glyph at all — it was a
+`<span>` — and it took `h-0.5`, the nearest step Tailwind offers, which is
+**2px**. One control, two states, two weights.
 
-No press state. A sort commits on click and the feedback is the table
-reordering; a press colour on a control with no box reads as a flicker.
+Equalising the numbers was not enough: at 1.5px the bar then read **thinner**
+than the tick. A diagonal stroke with a round cap antialiases across more pixels
+than a rectangle of the same height, so the two are only comparable if they go
+through the same renderer. The bar is now drawn as a stroke — same viewBox, same
+`stroke-width: 3`, same cap — with `M2 12h20`, which is 10px long at this size,
+the width the bar always had. (Lucide’s own `Minus` is `M5 12h14` = 7px.)
 
-## 6a. Interaction states were absolute colours, and two were the same colour
+1.5 rather than 2, because the bar follows the tick, and the tick’s weight is
+the checkbox’s own — a mark below 16px keeps the weight its component gives it
+(§92) — while the bar’s 2px came from a spacing scale that has no 1.5 step. `h-[1.5px]` is an
+arbitrary value on purpose — the alternative is to bend the glyph to the
+spacing scale, which would make one checkbox heavier than every icon beside it.
 
-`globals.css`, `src/lib/constants.ts`, `src/components/Table/TableCell.tsx`
+**The kit had the same mismatch**, and for the same reason: its tick is
+`<svg width="12" stroke-width="3">` and `.cbx.is-indeterminate::before` was
+`height:2px`. Both are 1.5px now.
 
-| theme | `--state-hover` | `--tbl-row-pressed` |
+---
+
+# `ChoiceCard`
+
+## 118. New — `ChoiceGroup` · `ChoiceCard` · **DRAFT**
+
+`src/components/ChoiceCard/`
+
+A card-sized answer to a question: a title, an optional description, badge
+and leading icon, and the chosen state — the Brand/Primary border over a 5%
+brand wash. The chat's question card and the onboarding wizard's role and goal
+pickers are the same row.
+
+- **`ChoiceGroup`** — `type` `single` | `multiple`, `value`,
+  `onValueChange`, `columns` 1 | 2 (side by side from 640px up),
+  `aria-label` / `aria-labelledby`, `disabled`, `name`. `single` is a
+  radiogroup with a roving tab stop: the arrow keys move and choose, wrapping
+  and skipping disabled cards. `onPick` (single only) reports a deliberate
+  pick — a click, Enter or Space — and not an arrow key walking the group, so a
+  one-answer question can move on by itself; `onValueChange` reports both.
+  `multiple` is a group of checkbox cards.
+- **`ChoiceCard`** — `value`, `title`, `description`, `badge`, `icon`,
+  `indicator` (`auto` | `none` | `radio` | `checkbox`), `disabled`. `auto`
+  is a checkbox in a multiple group and nothing anywhere else: in a single
+  group the card itself shows the choice and still carries `role="radio"`
+  and `aria-checked`. `radio` draws the RadioButton mark on request.
+  Standalone (no group) the card is a button with `aria-pressed` —
+  `selected` + `onSelect` — or, with `indicator="checkbox"`, a label around
+  a Checkbox.
+- **`children`** — content revealed inside the card while it is chosen (an
+  "Other" answer's field). The head becomes the button, with `aria-expanded`.
+
+The leading icon is a 36px disc on the same wash. It leads the row,
+top-aligned, and does not re-centre it: the padding stays the same and the
+indicator stays on the title line, icon or not. A chosen card holds steady
+under the pointer — only an unchosen one takes the hover recipe; pressed
+shows on both.
+
+The single group's keyboard is the card's own rather than Radix
+`RadioGroup`, kept from the Insightis bridge it was ported from: Enter
+chooses, and a click on the chosen card reports it again. Radix does
+neither.
+
+**Both products.** New components, no call sites in the package.
+
+---
+
+# `Coachmark`
+
+## 120. New — `Coachmark` · **DRAFT**
+
+`src/components/Coachmark/index.tsx`
+
+The explanation next to what a spotlight lights: a popover-surface card
+(Surface/Card, Stroke/Border, `shadow-dropdown`) with an arrow at the
+target. `header` (a `StepProgress size="sm" fill`), `icon` (a 32px disc),
+`title`, the body, `footer`; `width` `md` (352px) | `lg` (464px); `side` —
+the preferred sides in order, default bottom, top, right, left.
+
+It takes the first preferred side where it fits whole without covering the
+target, 14px off it and 8px inside the bounds. When no side fits it takes
+the first with 75% of the card free, else the roomiest, and pins to that
+edge. It re-places itself as the page moves and reports where it went
+(`onPlace`). At 640px and below it is a bottom sheet with no arrow.
+
+`role="dialog"`, non-modal, labelled by its title, `tabIndex={-1}` so a tour
+can move focus to it. `nudge` is a number; each change shakes the card once.
+The shake keeps the entry animation in the `animation` list while it runs —
+swapped out for the shake alone, the entry restarts when the shake ends and
+the card blinks out and fades back in after every click on the scrim.
+`leaving` fades it out and drops it 8px, taking no clicks.
+
+**Both products.** New component, no call sites in the package.
+
+---
+
+# `CodeBlock`
+
+## 48. New — `CodeBlock` · **DRAFT**
+
+`src/components/CodeBlock/index.tsx`
+
+A snippet the user is meant to paste somewhere else, and the button that copies
+it, are one object. Separating them is how a page ends up with a copy control
+that is not obviously attached to anything, and the MCP setup panel needs four
+of these.
+
+`code` is both what is rendered and what is copied, so they cannot drift. The
+confirmation is the control itself — the glyph becomes a tick for two seconds —
+rather than a toast, which is a page-level interruption for something the user
+is already watching happen.
+
+One thing worth knowing: `navigator.clipboard` needs a **secure context**, and a
+page opened from the filesystem is not one. The component falls back to the
+deprecated `execCommand`, so the button keeps its promise instead of silently
+doing nothing. Any product that ships an offline or `file://` surface hits this.
+
+**Both products.** New component, no call sites.
+
+## 81. `CodeBlock` scrolled with the browser's own bar
+
+`src/components/CodeBlock/index.tsx`
+
+A command wider than the block got a horizontal scrollbar, and it was the
+platform's: on Windows a 16px trough with stepper arrows at both ends, drawn
+under a block whose own radius is 4px and whose only other control is a 20px
+copy button. Every other scroller the package ships is the kit's hairline —
+`DropdownMenuContent`, `Autocomplete`'s list, `UploadTray`'s rows all carry
+`scrollbar-thin` — so the code block was the one place where a scroller looked
+like the operating system rather than like the kit.
+
+It is not a new decision. The preset's own note says `scrollbar-thin` was copied
+from `.cl-menu-scroll` / `.cl-mention-list` / **`.cp-code-pre`** in
+`kit-theme.css`: the code block is one of the three rules the utility came FROM,
+and the React component simply never applied it. One class on the `<pre>`:
+
+```
+'scrollbar-thin overflow-x-auto whitespace-pre'
+```
+
+10px track, 4px thumb inset by a transparent 3px border, `--stroke-border` at
+rest and `--ink-inactive` on hover — the same bar as every menu in the package,
+with the hit area a pointer can still find.
+
+## 127. `CodeBlock` — a header, line numbers, a height, wrapping
+
+`src/components/CodeBlock/index.tsx`
+
+A chat answer that ran code shows the source and what it printed, and the block
+had none of what that needs. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+- `header` — a bar above the code (`data-slot="code-block-header"`) on
+  Surface/Card with a hairline under it, for a file name, a language glyph or a
+  status `Badge`. Copy moves into it, at its end, and lands on the spot it held
+  in the corner: the bar is 40px at `md`, so the button stays 8px from the top
+  and the end. A bare `<svg>` in it is set at 14px.
+- `lineNumbers` — a gutter in Ink/Inactive that a selection and a screen reader
+  both skip (`select-none`, `aria-hidden`). It counts the lines of `code`; a
+  trailing newline is not a line and CRLF is one break. Not meant with `wrap`.
+- `maxHeight` — the code scrolls inside it; the header stays put.
+- `wrap` — output read as prose wraps instead of scrolling sideways.
+
+The padding moved from the root to the `<pre>` and the root clips, so the header
+and both scrollbars reach the edges. **One visible change to the default:** the
+horizontal scrollbar sits on the box's bottom edge, not 16px inside it.
+
+## 128. `CodeBlock` — `variant="error"`
+
+`src/components/CodeBlock/index.tsx`
+
+A traceback is tinted: Feedback/Red-text at the 8% step over the block's own
+Surface/Page (`[&>[data-slot=code-block-body]]:bg-fb-red-text/8`), the same mix
+the kit used, and no new token. The border and the header stay neutral — the
+header is where the failure is named, the code under it is what failed.
+
+## 129. `CodeBlock` — syntax colours: `--code-*` and `codeSyntaxVariants`
+
+`globals.css` · `src/lib/constants.ts` · `src/components/CodeBlock/index.tsx`
+
+The library ships no parser and still does not. What it adds is the palette a
+caller's highlighter paints with, so highlighted code looks the same in every
+product: `codeSyntaxVariants({ variant: 'keyword' | 'string' | 'number' | 'comment' })`
+returns the class for a span, and `code` stays the plain text Copy copies.
+
+| Token | Light | Dark |
 |---|---|---|
-| light | `slate-100` = **#F1F5F9** | `surface-card2` = **#F1F5F9** |
-| dark | `grey-800` = **#21212C** | `surface-card2` = **#21212C** |
+| `--code-keyword` | Violet-600 #7C3AED | Violet-400 #A78BFA |
+| `--code-string` | Green-700 #047857 | Green-500 #10B981 |
+| `--code-number` | Blue-600 #2563EB | Blue-400 #60A5FA |
+| `--code-comment` | Text/Secondary | Text/Secondary |
 
-Identical in both themes, so a control's hover inside a selected row painted the
-colour already under it — invisible. On prod that was ten ⋮ buttons on one page.
+All four are AA on Surface/Page (light 4.9–5.5:1, dark 7.1–7.6:1). Three
+primitives are new — `--violet-400`, `--violet-600`, `--green-700` — because
+Chart Violet is 4.6:1 on dark and Green-600 is 3.6:1 on light. **One departure
+from the kit:** comments are Text/Secondary, not Ink/Inactive, which is 3.3:1 and
+fails AA. `--code-comment` joins the scoped-theme mirrors (43 → 44).
 
-Not a tuning miss: an absolute colour eventually equals the surface it lands on,
-and absolute colours cannot stack. A control has no way to be "one step deeper
-than whatever is under it".
+New props, a new export and new tokens: **minor** (`.changeset/code-block-header.md`).
 
-Each state is now a translucent wash, so states composite. One base and four
-strengths per theme; the four state tokens read them, so retuning a theme needs
-no `.dark` copy of a state token.
+---
 
-- **`--state-overlay`** — `--brand-300` on light, `--slate-400` on dark. A
-  coloured wash over the near-black card reads as a cast, not a lift.
-- **4 / 8 / 8 / 12**, one set for both themes: `--slate-400` moves against the
-  dark card at roughly the rate `--brand-300` moves against white.
-- **`--brand-300` retuned** `#5DA0A8` → `#46A6B9` (190°, 45%), no consumers.
-  The old step had the right hue at 29% saturation, and a desaturated wash reads
-  dirty rather than soft.
-- **`--tbl-row-selected-hover` removed**, with the two `TableCell` utilities
-  that named it. A selected row keeps its surface and controls composite on top;
-  the old token made a row read as *less* selected the moment you touched it.
+# `ConnectorLogo`
 
-Rows are lighter than controls: a row is wide and sits in a stack, where a heavy
-wash turns a list into stripes. Inside a row the two composite, so a control on
-a hovered row is always the deeper of the pair.
+## 16. `ConnectorLogo` · **DRAFT**
 
-Composited over the card, measured from `globals.css`:
+`src/components/ConnectorLogo/` + `scripts/gen-connector-logos.mjs`
 
-| | strength | light | Δ | dark | Δ |
-|---|---|---|---|---|---|
-| row hover | `--tint-4` | `#F8FBFC` | 7 | `#1C1D24` | 5 |
-| row pressed / selected | `--tint-8` | `#F0F8F9` | 15 | `#21222A` | 10 |
-| control hover | `--tint-8` | `#F0F8F9` | 15 | `#21222A` | 10 |
-| control pressed | `--tint-12` | `#E9F4F7` | 22 | `#262830` | 15 |
+Connector marks are embedded as data-URIs: nothing is fetched at runtime, so a
+logo cannot arrive as a broken image in a consumer's build, in Storybook, or on a
+design canvas. An unknown connector renders a monogram, not an empty square.
+Names resolve loosely — `PostgreSQL`, `postgresql`, `Postgres` all find the same
+mark — so a page never needs to know the slug.
 
-`--tbl-row-pressed` and `--state-hover` are the same declaration on purpose: a
-control hovering on a selected row lands at 8% over 8% ≈ 15% and reads a clear
-step deeper. A check asserting the four raw values are distinct tests the wrong
-thing.
+The pack is deliberately small: it is generated from the app's SVG folder by a
+script, so extending it is a re-run, not a code change.
 
-**The Tailwind mapping is the part that fails silently.** A `color-mix()` token
-must be exposed as a bare `var()`; wrapped in `hsl(var(…))` it emits invalid
-CSS and the declaration is dropped whole. The four state keys in
-`src/lib/constants.ts` are bare `var()` for that reason, which also means they
-take no alpha modifier.
+## 108. `ConnectorLogo` — the DB2 mark
+
+- **`ConnectorLogo`** — `db2` added to `logos.ts`, between `databricks` and
+  `dynamics`, encoded as `gen-connector-logos.mjs` encodes a mark. Before,
+  `connector="DB2"` had no mark and fell back to a letter.
+
+The mark is Devart's own, from the dotConnect pages
+(`cdn0.devart.com/images/logo/database/logo-db2.svg`, 60×60), not from the
+Insightis app's folder the generator reads — that folder has no DB2. Its tile
+filled 90% of the file and stood a size larger than the marks beside it, so it
+is drawn in a 94-unit box (`viewBox="-17 -17 94 94"`): the tile takes 57% of
+it, as FreshBooks' does (146 of 256). Before
+the generator is next run against it, put the same file there as `db2.svg`,
+or the run drops the mark.
+
+## 115. `ConnectorLogo` — the SQLite mark
+
+- **`ConnectorLogo`** — `sqlite` added to `logos.ts`, between `sqlazure` and
+  `sqlserver`, encoded as `gen-connector-logos.mjs` encodes a mark. Before,
+  `connector="SQLite"` had no mark and fell back to an "S" on a grey tile —
+  in the LinkAI catalog, the one source of the six with no logo.
+
+Devart's own mark again, from the same place as §108
+(`cdn0.devart.com/images/logo/database/logo-sqlite.svg`, 60×60): the blue
+square and the feather, the vendor's colours. The figure filled 81% of its
+file where the marks beside it fill 64–70% (measured off the rendered images:
+PostgreSQL 64, MySQL 63, SQL Server 70, Oracle 70), so it is drawn in a
+74-unit box (`viewBox="-7 -7 74 74"`) and fills 66%. Before the generator is
+next run against the app's folder, put the same file there as `sqlite.svg`,
+or the run drops the mark.
+
+---
+
+# `Datepicker`
+
+## 29. `Datepicker` — one bespoke focus ring, not three missing states
+
+**Mostly retracted.** Filed as "no hover, no today, no disabled" after reading
+`CalendarDayButton.tsx` alone. The per-day classes do not live there — they live
+in `Calendar.tsx`'s `classNames` map, and all three are present:
+
+```
+day:      [&:not([data-selected=true])]:hover:bg-state-hover   ← the kit's State/Hover
+today:    bg-state-hover text-ink-primary
+outside:  text-ink-secondary                                    ← matches the kit exactly
+disabled: text-ink-secondary opacity-50
+```
+
+So the kit's three ⚠ *needed* rows are answered. Two real items survive:
+
+**The focus ring is the only one in the package that is not the shared recipe.**
+The kit specifies *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring
+Button, IconButton, Switch, SegmentedControl and StepSlider all use, and which
+`focusRing` / `formFocusRing` in `src/lib/utils.ts` now exist to enforce. The day
+button rolls its own:
+
+```
+group-data-[focused=true]/day:ring-[3px]
+group-data-[focused=true]/day:ring-focus-ring-brand/50
+```
+
+3px at 50% alpha with no offset gap. A calendar is precisely where a keyboard
+user lives, and it is the one grid where "which cell am I on" is the entire
+interaction.
+
+**`disabled` fades at `opacity-50`** — §22, along with the two month-nav chevrons.
+
+`dark:hover:text-ink-primary` on `CalendarDayButton` is also one of the two
+`dark:`-class holdouts SPEC lists under *Creating a New Theme*. Now that the light
+hover is a token (`bg-state-hover`), that line is the last piece of the day cell
+that a third theme would not reach.
+
+---
+
+# `DropdownMenu`
+
+## 43. `DropdownMenu` — two kinds of row it could not draw · **DRAFT**
+
+`src/components/DropdownMenu/DropdownMenuItem.tsx`,
+`src/components/DropdownMenu/DropdownMenuRow.tsx` (new)
+
+A menu could only draw one kind of row: an item that highlights on hover and
+does something when clicked. Two shapes the kit specifies had nowhere to go, so
+pages built them out of a `Popover` instead.
+
+**`variant="accent"`** — the one row in a menu that *is* the action, such as
+"Choose File" or "Manage Connections":
+
+```
+accent: 'font-medium text-ink-highlight'   // + the same hover/pressed as any row
+```
+
+Ink and weight, on the same rail as everything else. Not a bordered button: at
+4px of menu padding a second edge lands against the divider and outweighs the
+list it belongs to. `--ink-highlight` is Brand-600 on light and Tertiary-400 on
+dark, so one value holds AA in both.
+
+**`DropdownMenuRow`** — a label with its own control (a switch, a badge, a
+counter) or a plain reading. Same `px-3 py-1.5` as an item, so every label in
+the menu shares one left edge. **No hover fill, no pointer cursor** — a hover
+surface promises the row does something.
+
+`DropdownMenuLabel` is not this: it is the 10px caps heading that captions a
+group.
+
+## 55. `DropdownMenu` — a link may open a menu · **DRAFT**
+
+`src/components/DropdownMenu/DropdownMenu.md`, `changes/Harness.tsx`
+
+**Nothing in the library changed.** `DropdownMenuTrigger asChild` already
+accepts any child and `Link` already inherits its font-size from the line it
+sits in. What is new is the statement that this is allowed, and the two rules
+that go with it — one menu whatever the handle, and the state glyph outside the
+trigger, because it marks the row rather than the destination.
+
+**Why it is marked draft.** It is written down for one of three design concepts
+for the Connections list. The concept that keeps a Workspaces *column* hangs
+the menu off a disclosure control and has no use for this; the concept that
+carries the answer as a sentence under the connection's name has no other
+handle that fits. If that concept is not chosen the section goes and nothing
+else moves, so nothing should be built on it meanwhile.
+
+The storybook harness gained a `draft` state for exactly this
+(`changes/Harness.tsx`), distinct from `proposed`: a proposal has not been
+made yet, a draft has — what is undecided is whether it gets to stay. It paints
+on the attention tokens, which is what this system already uses for "needs a
+decision".
+
+**Both products.** Documentation and a storybook state; no component code.
+
+## 74. The focus ring a closed menu left behind
+
+Reported from the connections list: open a row’s Workspaces menu with the
+mouse, close it, and the trigger is left wearing a focus ring — on one row of
+a table nobody is navigating with the keyboard, until the next click somewhere
+else. It reads as "this row is selected", which is a state that column already
+uses for something else.
+
+Radix returns focus to the trigger when an overlay closes, and it has to: a
+keyboard user who opened a menu from a row must land back on that row. It does
+it with a programmatic `focus()`, and Chrome answers a programmatic focus with
+`:focus-visible` — so the ring appears whether or not a keyboard was ever
+involved. The browser’s own heuristic is what is wrong here, which is why no
+stylesheet can fix it after the fact: by the time the ring is painted, the two
+cases are indistinguishable in CSS.
+
+So the component asks the question the heuristic cannot: `lib/focus-modality`
+keeps one boolean — was the last interaction this document saw a keystroke or a
+pointer — from a capture-phase `keydown`/`pointerdown` pair (modifier-only
+presses do not count, or holding Shift before a click would make that click a
+keyboard interaction). `DropdownMenuContent` now defaults `onCloseAutoFocus` to
+restoring focus **only for the keyboard**; for the pointer it calls
+`preventDefault`, which leaves focus where the click put it and no ring. A
+consumer’s own handler runs first and its `preventDefault` still wins.
+
+Kept deliberately narrow: this is the surface where it was reported, and the
+helper is exported so `Modal`, `Popover` and `Select` can take the same
+default when each one is looked at. `Autocomplete` already prevents the
+restore outright — which is the right answer for a field that keeps its own
+focus, and the wrong one for a menu on a table row.
+
+## 130. `DropdownMenuItem` — `isExternal`
+
+`src/components/DropdownMenu/DropdownMenuItem.tsx`
+
+A menu row that opens a new tab — Help, Terms — says so the way
+`SidebarMenuRow` already does: a 14px trailing arrow in Text/Secondary, and
+visually hidden text, `externalLabel` (default "(opens in new tab)"). With
+`asChild` both go inside the caller's link. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+## 131. New — `DropdownMenuSegmentedItem` · **DRAFT**
+
+`src/components/DropdownMenu/DropdownMenuSegmentedItem.tsx`
+
+A menu row holding a segmented choice — the theme in an account menu — changed
+without closing the menu. `label`, `options` (`{ value, label, icon? }`),
+`value` / `defaultValue` / `onValueChange`, `hint`, `disabled`.
+
+- ←/→ step and wrap; Enter and Space step forward; the menu stays open. A click
+  picks the segment under it.
+- A screen reader hears "Theme: Light" and the hint.
+- Icon-only options name themselves in a tooltip, so it needs a
+  `TooltipProvider` above.
+
+The label sits on the left and the control on the right. The kit's row was the
+control alone, full width, so the Insightis account menu changes when it moves
+onto this. Both are **minor** (`.changeset/dropdown-menu-external-and-segmented.md`).
+
+---
+
+# `HighlightText`
+
+## 109. `HighlightText` — what a search matched, marked · **DRAFT**
+
+- **`HighlightText`** — new: `text`, `query`, `className`. Every occurrence of
+  the query, case-insensitive, plain substring, as a `<mark>`:
+  `bg-badge-brand-bg text-ink-primary font-medium rounded-sm`
+  (`data-slot="highlight-text-match"`). An empty query renders the text as it is.
+- **Stories** — `Default`, `InATree`.
+
+**Where it goes: a tree, or text long enough to hide the match** — not a flat
+list of short names filtered by name. There the filter already says why a row
+stayed, and most products leave the rows unmarked; a mark on every row is
+noise. In a tree a search shows each match with the path above it (catalog,
+schema, table), and only the mark tells the matching row from the rows shown
+to place it — a table kept for a column inside it, a schema kept for one of a
+thousand tables.
+
+A highlighter, because that is what a reader recognises as "this is what you
+searched for": the brand tint behind the match — `--badge-brand-bg`, the
+`brand` badge's fill, 1.34:1 against the card in light and 1.31:1 in dark —
+under the name's own ink (`text-ink-primary`, 13:1 and 11:1 on it), with one
+step of weight so the mark does not rest on colour alone. No new token: the
+fill is the one the system already uses for a brand chip.
+
+Two tries went before it, both not seen on the connections list: ink alone
+(`--ink-highlight`, no fill) on a 500-weight name, and the Primary badge's
+Brand-50 fill (1.14:1 against white). The `brand` badge's own text is not
+used — 4.30:1 on its fill in dark. The kit's weight-only `.cl-mention-hl`
+says even less on a 400 body.
+
+What is marked is the test the list keeps a row by (`includes`, lowercased), so
+the mark is exactly why the row is there. No regular expressions: a query is
+text, and `a.b` means a, a dot, b.
+
+Used in the AI connectivity prototype's data trees — the Data model, the
+configure window and page, Permissions — and the connection form's scope tree.
+Tried on the flat lists and pickers too, and taken off them again.
+
+---
+
+# `InlineRename`
+
+## 132. New — `InlineRename` · **DRAFT**
+
+`src/components/InlineRename/index.tsx`
+
+A row's title becomes a 24px field in place — Rename in a row menu. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+`defaultValue`, `aria-label` (required), `onCommit(trimmed)`, `onCancel()`.
+Enter or blur commits, once; Esc, an empty value and an unchanged one cancel;
+Enter while an IME is composing is ignored. Its clicks and keys never reach the
+row it sits in.
+
+It focuses and selects one tick after mounting: Radix runs a menu item's
+`onSelect` while the menu's focus trap still holds, so focusing at once would
+blur and commit before the person typed anything. Built on the bare `Input` at
+24px with `-my-0.5`, so a 44px row stays 44px — `InputGroup`'s smallest is 28px.
+
+**minor** (`.changeset/list-row-actions.md`).
+
+---
+
+# `InputGroup`
 
 ## 7. `InputGroupAddon` resized glyphs it did not own
 
@@ -369,18 +1322,6 @@ written on the icon (§44): a class on the glyph loses to the addon's child
 selector in one direction and to the IconButton's own descendant selector in the
 other, so the icon's own `className` was never going to decide anything.
 
-## 8. `TabsContent` — the inactive panel came back as an empty box
-
-`src/components/Tabs/TabsContent.tsx`
-
-```diff
-+ 'data-[state=inactive]:!hidden',
-```
-
-Radix hides the inactive panel with the `hidden` attribute — a UA-stylesheet
-`display:none`, which any display class from the consumer (`flex`, `grid`)
-beats. The panel came back as an empty block and pushed the active one down.
-
 ## 9. A field label as loud as the hint beneath it
 
 `src/components/InputGroup/index.tsx`, `src/components/TextArea/index.tsx`
@@ -398,9 +1339,749 @@ step below (`--ink-inactive`) is the placeholder/disabled role — a hint render
 in it says "this field is switched off". Moving the label up gives the pair a
 clean step of hierarchy with no new token.
 
+## 28. `InputGroup` — the search clear button is a recipe, not a part
+
+The kit reveals the × only when there is something to clear:
+
+```css
+.igrp .igrp-clear                                          { display: none; }
+.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear { display: inline-flex; }
+```
+
+A clear button on an empty field is a control that does nothing, and one keyed to
+focus flickers on every tab-through; `:placeholder-shown` keys it to content.
+
+**Downgraded from a gap.** The package reproduces this exactly — as a Storybook
+story, not as a component feature:
+`group-has-[input:placeholder-shown]/input-group:hidden` on the trailing addon
+(`InputGroup.stories.tsx`). Together with the recipe in `InputGroup.md` (where the
+button goes: `align="inline-end"`, `IconButton size="2xs"`) the behaviour is fully
+specified and reachable.
+
+What is left is a judgement call, not a defect: whether a search field is common
+enough to deserve a `clearable` prop rather than four classes at each call site.
+The classes are load-bearing and easy to get subtly wrong — the rule needs a
+`placeholder` on the input to key off, and a search field without one silently
+keeps the button on. That trap belongs in the `.md`, and is not there yet.
+
+## 45. New — `InputGroupAction` · **DRAFT**
+
+`src/components/InputGroup/InputGroupAction.tsx`
+
+The trailing control of a field: a clear ✕, a password toggle, a unit picker.
+
+A 24px box around the field's own 16px glyph, 8px from the edge, with **no
+surface** — no background, no border, no hover pill. The field already owns
+hover, focus and press, and a second filled box inside it reads as a control on
+top of a control. It answers the pointer with colour instead:
+`--ink-icon` → `--ink-icon-hover`.
+
+```css
+/* the kit's rule, which this is */
+.igrp .igrp-act      { width: calc(var(--icon-md) + 8px); background: none }
+.igrp .igrp-act svg  { width: var(--icon-md) }
+.igrp .igrp-act:hover{ color: var(--ink-body) }
+```
+
+Not `IconButton size="2xs"`: that is the same 24px box with a 14px glyph and a
+hover fill, one step small and one surface too many.
+
+**The field yields its inset to it.** `InputGroup` swaps its own `px-3` for
+`pe-2` when a `data-slot="input-group-action"` is present — a `has-` selector
+rather than a prop, because the markup already says whether there is one.
+Without it the shell's 12px and the action's own box stack, and the ✕ sits
+further from the border than the glyph opposite it.
+
+Used by `Autocomplete` (§62) and by the search field's clear button (§28).
+
+## 102. `InputGroup` `xs` — the clear ✕ where the search icon is
+
+- **`InputGroupAction`** — at `xs` (read from the group) the box is the
+  14px glyph itself (`size-3.5 [&>svg]:size-3.5`), with the field's own 8px
+  trailing inset (`pe-2`, unchanged); every other size keeps the 24px box and
+  16px glyph. (A first pass used an 18px `size-4.5` box with `pe-1.5`; the
+  shipped scale has no `size-4.5`, so the box collapsed and the ✕ sat 6px in.)
+
+The leading glyph at `xs` is 14px, 8px from the border (`px-2`). The action
+kept the `sm`+ geometry — 8px of field inset plus 4px inside its 24px box —
+so the ✕ sat 12px in and a size larger than the search icon opposite it.
+From `sm` up both are 12px in, so only `xs` showed it. Seen on the
+workspaces prototype's list search beside a tree.
+
+## 106. `InputGroupAddon` — the glyph in the placeholder's grey
+
+- **`InputGroupAddon`** — `[&>svg]:text-ink-inactive`: a decorative glyph (the
+  search icon) takes the placeholder's colour. A text addon keeps
+  `text-ink-secondary`; a docked button keeps `ink-icon` / `ink-icon-hover`.
+
+The glyph inherited the addon's `--ink-secondary` (the kit's `.igrp-add`) while
+the placeholder beside it is `--ink-inactive`: a step darker in light theme,
+a step lighter in dark (rgb 209 213 219 against 148 163 184) — two greys for
+one hint. The rule existed once and was taken out as unasked-for; it was asked
+for now.
+
 ---
 
-# The sidebar
+# `LinkButton`
+
+## 46. New — `LinkButton` · **DRAFT**
+
+`src/components/LinkButton/index.tsx`
+
+The kit ships `.link`; the package did not, so "Permissions →" and "Manage
+connections →" were built out of `Button variant="transparent"` — which is a
+control with a hit box and a size ladder, dropped into a card heading it then
+failed to line up with.
+
+```
+text-ink-highlight · font-medium · no underline at rest
+hover:underline · text-underline-offset:25% · text-decoration-thickness:1px
+font-size, line-height and font-family all inherited
+```
+
+The inheritance is the point and is why it is not on the size ladder: a link
+belongs to a sentence or to a heading, and a size of its own is a licence to
+disagree with the line it sits in. The underline sits a quarter of the font-size
+below the baseline so it clears descenders, and is pinned to 1px so it does not
+thicken as the inherited size grows — both straight from the kit's note.
+
+Three tones, because the ink has to survive its background: `brand`
+(`--ink-highlight`, the default — Brand-600 light, Tertiary-400 dark, AA in
+both), `body` (inside copy, highlighting only on hover), `onSolid` (on a brand
+fill, where the highlight would vanish). `asChild` renders a router link or a
+button in its place.
+
+**Both products.** New surface area; nothing to break. Insightis gets, as a
+component, what it has as a class.
+
+**Named `LinkButton`, not `Link`.** It renders an `<a>` but it is a control in
+the kit’s sense — it has hover, focus and disabled states and is often not
+navigation at all (“Select all”). A bare `Link` in a React codebase reads as the
+router’s.
+
+**Two variants.** `standalone` (default) carries no rule until hover — in a
+column of row actions a permanent underline reads as a table of contents.
+`inline` is for a link inside a sentence, where nothing else marks it: the rule
+is always there at **25% of the ink**, and hover brings it to full strength
+rather than adding it. Measured: `color(srgb … / 0.25)`, thickness 1px.
+
+---
+
+# `ListPageLayout`
+
+## 133. `ListPageLayout` — the header condenses, and the body takes a class
+
+`src/components/ListPageLayout/index.tsx` · `use-list-header-height.ts`
+
+The layout owns the scroller, so it is where condensing is decided; `PageHeader`
+still has no scroll listener (§67). Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+- `condenseAfter` — past that many pixels, below `lg`, the header condenses: its
+  padding tightens to 6px over `--motion-slow` and the wrapper carries
+  `data-condensed`. From `lg` up the header scrolls away and never condenses.
+- `stickyHeader` also takes a function, `({ condensed }) => node`, so the header
+  can pass `condensed` on to `PageHeader`. No context, no new hook, no
+  `cloneElement` guessing which child is the header. The type is
+  `ListPageLayoutHeaderState`.
+- `bodyClassName` reaches the body's own `pb-3` and `gap-3`, which
+  `contentClassName` cannot — it sits on the column that also holds the header,
+  so its padding stacks. A page's 4rem bottom room is `bodyClassName="pb-16"`.
+- `data-slot` on both parts: `list-page-layout-header`, `list-page-layout-body`.
+
+**A flicker the simple rule has.** `scrollTop > 60` — what the Insightis kit did
+— loops under scroll anchoring: stop just past the line, the header shrinks, the
+browser takes the difference off `scrollTop`, the header grows back, and it
+repeats every frame (62 ↔ 48, measured in Chromium). The layout adds back the
+height the header lost since it condensed, so the test is stable; a unit test
+holds it there.
+
+**minor** (`.changeset/list-page-condense.md`).
+
+---
+
+# `MetaRow`
+
+## 52. New — `MetaRow` · **DRAFT**
+
+`src/components/MetaRow/index.tsx`
+
+The line above a list — "5 connections · Select all", and the Delete that
+appears once something is ticked. Every list in both products has one, none of
+them came from anywhere, and so no two of them agreed on the distance to the
+list underneath.
+
+It is deliberately **not** a toolbar. No background, no border, no card: the
+row belongs to the list under it, and a surface of its own turns it into a
+strip that sits *above* the list rather than introducing it. Everything in it
+reads at one typographic level, so it is one sentence rather than three
+controls that happen to share a line.
+
+**The spacing contract is the reason the component exists**, and it has two
+halves:
+
+| | |
+|---|---|
+| the row's own padding | 6px top and bottom |
+| **minimum height** | **44px** |
+| between the row and the list | **4px**, as a stack gap |
+| outer margin | **none** |
+
+A gap on the stack, not a margin on either, and **never both** — a row with its
+own padding, a margin under it and a gap around it is three answers to one
+question, which is exactly how this distance drifts from page to page.
+
+The 44px floor is not decoration. 44px is the height the row has **with**
+actions in it — a 32px `sm` button plus the padding — so the row is already
+that tall when empty and the list does not jump the moment a selection appears.
+A shorter floor was tried first and did exactly that.
+
+**`onClear` is part of the component, not something each page adds.** A
+selection changes what the row says and what the list under it means, so the
+row that announces the selection is also the row that ends it; the alternative
+is untick-every-row. It renders at the very end, outside `MetaRow.End`,
+because everything in that cluster *acts on* the selection and leaving one is
+not one of those actions.
+
+**Both products.** New component, no call sites. Insightis has the same row in
+CSS; this is where it becomes a part.
+
+## 134. `MetaRow` — `sticky` and `stickyOffset`
+
+`src/components/MetaRow/index.tsx`
+
+The line above a list can stay at the top of its scroller, on the page colour,
+the way `ListSelectionBar` does — the two stay separate components. `sticky` is
+a recipe axis (`true` → `sticky z-10 bg-surface-page`, `false` →
+`bg-transparent`, moved out of the base); `stickyOffset` sets `top` (default
+0) and merges with `style`. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time. **minor** (`.changeset/list-row-actions.md`).
+
+---
+
+# `Modal`
+
+## 71. `Modal` — `size="xl"` · **DRAFT**
+
+The ladder stopped at `lg`, 36rem, described as "for a multi-step wizard" —
+which is a column of fields, the widest thing a form needs. A dialog holding
+a **tree** or a **table** is not that: a row of the connection-scope tree
+carries a disclosure, a name, a row count and a two-state control, and the
+control alone is 150px. At 36rem the table names truncated to one word.
+
+`xl` is 56rem — the same ratio step as 30 → 36 — and still leaves a page
+gutter on a 1280px window, which is inside the 900px minimum this product
+declares only because the dialog caps at the viewport anyway.
+
+It is a last resort, and the docblock says so: a surface this wide covering
+the page is usually the sign that the thing belongs on a screen of its own.
+The case for using it has to say why the context behind must not be lost.
+
+`--modal-w-xl` in `globals.css`, `max-w-modal-xl` in the preset, and the class
+listed in `gen-classlist.mjs` — a `max-w` the enumeration does not know about
+compiles to nothing (§19), and the ladder is enumerated by name.
+
+### And a height it cannot pass
+
+Widening the ladder made the other axis the problem: a dialog holding a tree
+grows with its content, and `ModalContent` had `max-h-[90dvh]` — 10% of the
+window left over, split between two ends, so on a 900px window the dialog
+stopped 45px short of each edge and read as a page with a hairline round it.
+A dialog has to be visibly ON something.
+
+`--modal-max-h: 80dvh` in `globals.css`, `maxHeight: { modal: … }` in the
+preset, `max-h-modal` on `ModalContent`, and `modal` in the `max-h` cross in
+`gen-classlist.mjs`. Measured on a 900px window: 720px, with the tree
+scrolling inside its own body. The arbitrary value had to go for the same
+reason `max-w-[56rem]` could not stay — `max-h-[90dvh]` is not enumerated, so
+it compiled to nothing and the cap was never applied at all.
+
+`dvh`, not `vh`: on a window whose chrome can retract, `vh` measures the
+larger state and a dialog sized against it is clipped in the smaller one.
+
+---
+
+# `PageHeader`
+
+## 15. `PageHeader` · **DRAFT**
+
+> **§97:** the title is an `h2` and the row has no inset of its own — the
+> developers' shape; the page pads it.
+
+`src/components/PageHeader/index.tsx`
+
+A page title with a back arrow was hand-assembled on every page, differently each
+time. Now a component with fixed metrics: the arrow glyph is 20px and sits 8px
+from the title, not the 12px used between the rest of the row — at 12px the arrow
+visually detaches from the text it belongs to.
+
+It later gained a **`badge` slot** inside the title cluster. The component had
+`leading` (before the arrow) and `actions` (pushed to the opposite edge), and a
+badge that belongs to the title — the source a form connects to, an environment
+tag — fits neither: in `actions` it lands at the right edge and reads as one more
+control next to Save. The badge renders right after the `h1`, at the same `gap-2`
+the arrow uses, for the same reason.
+
+```jsx
+<PageHeader
+  title="Connect to DB2"
+  onBack={…}
+  badge={<Badge variant="secondary" leftSlot={<ConnectorLogo connector="DB2" size="2xs" />}>DB2</Badge>}
+/>
+```
+
+## 67. `PageHeader` — `condensed` · **DRAFT**
+
+> **§97:** the row no longer has padding to halve — the page owns it.
+> `condensed` is now the `title16` and the smaller back control.
+
+A header that stays on screen while the page scrolls spends window on a line
+already read. On a 900px window — the minimum this product supports — the
+72px header plus a 32px window bar is a fifth of the height, in front of the
+form the person came for.
+
+`condensed` is the same row at 40px: `py-2.5` instead of `py-5`, and the `h1`
+at `title16` instead of `title24`. The back control, the title cluster and the
+actions keep their columns, so it is a shrink and not a relayout — nothing moves
+sideways as it changes, which is what would have made it read as two different
+headers.
+
+The row changes while it is on screen, so the change animates: the consumer's
+padding, and since §111 the title and the back control too, over
+`--motion-slow`.
+
+**The consumer decides when.** The component has no scroll listener and should
+not: which element scrolls is the page's fact, not the header's. A page that
+does not scroll has no use for the prop.
+
+**The back arrow steps down with the title.** The docblock's rule is that the
+arrow is sized against the TITLE and not against the row, so `condensed` takes
+it from a 36px box with a 24px glyph to 32/16 — beside 16px type a 24px arrow
+stops reading as the title's own control and starts reading as one that outgrew
+it. Measured: full 24px title / 36px box / 24px glyph / 76px header; condensed
+16 / 32 / 16 / 52.
+
+Draft because the flow it was built for is a concept: if that concept is not the
+one chosen, this state is not needed either.
+
+## 110. `PageHeader` — the title is the kit's page title · **DRAFT**
+
+The title was `title24` (600), `title16` condensed — a size no product page
+uses. Insightis drew this row first, as `.cl-page` + `.cl-page-head` +
+`.cl-page-title`, and its title is `heading30` (500), stepping to `heading24`
+below `md` and to `heading20` once the sticky head has scrolled. That is what
+the component now renders: `heading24` + `md:text-3xl`, the same
+`text-2xl md:text-3xl` Typography's `h2` variant already carries, and `heading20`
+when `condensed`.
+
+The back control keeps its sizes (36/24 full, 32/16 condensed): it is still the
+larger arrow beside the larger title, and the condensed arrow now sits beside
+20px type instead of 16.
+
+## 111. `PageHeader` — the collapse animates whole · **DRAFT**
+
+- **`PageHeader`** — the title takes `transition-all duration-slow`; the back
+  control's box `duration-slow` (over its own `transition-all`) and its glyph
+  `transition-all duration-slow`. All three `motion-reduce:transition-none`.
+
+Condensing moved the title 30 → 20px and the arrow 24 → 16px in one frame,
+while the consumer's padding glided: the header read as a jump. Now the title,
+the arrow's box and its glyph move over `--motion-slow` (240ms) on the standard
+curve, and a consumer animates its padding over the same — the AI connectivity
+shell does (`duration-slow`, `transitionProperty: padding`) — so the header
+shrinks as one thing. The kit's own `.cl-page-title` animates its size too
+(`transition: font-size .18s, line-height .18s`).
+
+§67 held the type still on the argument that a font-size transition reflows
+every frame. It does, for one line of one header, for a quarter of a second;
+the jump was the cost that showed. Asked for in review of the AI connectivity
+prototype, where it replaces a page-level bridge.
+
+## 135. `PageHeader` — `wrapTitle`, and the back control as built
+
+`src/components/PageHeader/index.tsx` · `PageHeader.md`
+
+`wrapTitle` wraps the title instead of truncating it (`min-w-0 break-words` in
+place of `truncate`), so on a phone "Data Sources" beside Create Connection no
+longer reads "Data So…". The kit got the same with a `whitespace-normal` span
+inside a truncating heading. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+`PageHeader.md` said the back control is a 32px box with a 16px glyph that keeps
+every header one height. The code has been 36px with a 24px glyph (32/16
+condensed) since the arrow was sized against the title, so a header with a back
+arrow is 4px taller; the doc and the `WithBack` story now say so. **minor**
+(`.changeset/list-page-condense.md`).
+
+---
+
+# `Pagination`
+
+## 82. `Pagination` — a stream read in order has no use for page numbers · **DRAFT**
+
+`src/components/Pagination/index.tsx`
+
+New prop: `showPageNumbers` (default `true`, so nothing that exists moves).
+
+The component always drew the numbered buttons. That is right wherever a page
+number is a DESTINATION — a table somebody searches, sorts and comes back to,
+where "page 4" is a place you meant to be. It is wrong for a stream that is read
+in order. A connection's log is the case that raised it: three pages, three
+number buttons, all of them doing what Next does, and the one that is current
+doing nothing at all. What keeps the reader's place there is the range beside
+the control — *Showing 51–100 of 118* — and what moves it is Prev and Next.
+
+```jsx
+<Pagination
+  currentPage={page}
+  totalPages={pages}
+  onPageChange={setPage}
+  showFirstLast={false}
+  showPageNumbers={false}
+/>
+```
+
+Pair it with `showFirstLast={false}`: First and Last are jumps of the same kind,
+and leaving them in while the numbers go is half a decision.
+
+## 93. `Pagination` takes a rung, and the page gets a floor · **DRAFT**
+
+- **`Pagination`** — new `size` prop: `sm` (32px, default) · `xs` (24px).
+  Threaded to `PageButton`, `NavButton` and `EllipsisIndicator`; the row gap
+  closes with it (8px → 4px). New `Pagination/size.ts` holds the type and the
+  box map, so one file decides what a rung measures.
+- **`lib/utils`** — new `pageFloor` recipe (`pb-8`), beside `focusRing` and
+  `glyphStroke`.
+
+### The rung
+
+Every part was hard-coded to `size-8` with `size="sm"` underneath it. That is
+right when the pager is the page’s own control, and wrong under a table: there
+it shares a footer band with the range it annotates — "Showing 1–20 of 300" at
+`body12` — and a 32px control beside 12px text is the loudest thing in a strip
+whose whole job is to be quiet. 24px is the floor for the hit target, so the
+ladder is two rungs and stops.
+
+### The floor
+
+Raised by the connections prototype, where the last table row finished flush
+against the bottom of the window — for the second time.
+
+The reason it comes back is that the padding looks present and does nothing.
+A page puts `pb-8` on its content box, that box is `min-h-0 flex-1`, and such
+a box is sized to the SCROLLPORT: its padding is drawn at its own bottom edge,
+which is the bottom of the window, and the content scrolls straight past it.
+
+Padding on the scroll container is the other wrong answer — it moves the sticky
+constraint rectangle, and a `sticky bottom-0` commit bar then stops short of the
+window with the form scrolling visibly underneath it.
+
+So the recipe names where it goes as much as what it is: the element that GROWS
+with the content. `lib/utils` is re-exported into the design-sync bundle, so a
+consumer gets the name rather than a number it picks for itself.
+
+---
+
+# `PinToggle`
+
+## 136. New — `PinToggle` · **DRAFT**
+
+`src/components/PinToggle/index.tsx`
+
+Pin a row: an outline glyph when off (`tertiary`), a filled brand glyph turned
+30° when on (`primaryTertiary`), both keyed on `aria-pressed`. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+`pressed` / `defaultPressed` / `onPressedChange`, `pinLabel` ("Pin"),
+`unpinLabel` ("Unpin"), `size` (default `2xs`). The accessible name stays
+"Pin" in both states — the pressed state says the rest — and only the tooltip
+flips. Its clicks and keys never open the row. Not taken from the kit: the glyph
+straightening on hover. **minor** (`.changeset/list-row-actions.md`).
+
+---
+
+# `Popover`
+
+## 34. `PopoverContent` — a closed panel stayed painted
+
+`src/components/Popover/PopoverContent.tsx`
+
+```diff
+  'data-[state=closed]:animate-out',
++ 'data-[state=closed]:fill-mode-forwards',
+  'data-[state=closed]:fade-out-0',
+  'data-[state=closed]:zoom-out-95',
+```
+
+Measured in the browser with the page's bridge removed: after clicking a second
+row's trigger, the first popover held `display: block` and **`opacity: 1`** for
+over 700ms before Radix unmounted it — two panels on screen at once, one of them
+belonging to a row already left.
+
+The cause is in the compiled rule:
+
+```css
+.data-\[state\=closed\]\:animate-out[data-state=closed]{animation-name:exit;animation-duration:.15s}
+@keyframes exit{to{opacity:var(--tw-exit-opacity,1); transform:…}}
+```
+
+`exit` has only a `to` frame and nothing sets `animation-fill-mode`, so the
+moment the 150ms run ends the element **snaps back** to its own opacity and sits
+there fully painted until the unmount lands. `forwards` holds the faded-out end
+frame instead.
+
+The page's bridge was `[role='dialog'][data-state='closed'] { display: none }`,
+which is worse than it looks: `display:none` also stops the animation, and the
+`animationend` Radix is waiting on to unmount never fires.
+
+**Both products.** Purely additive — it changes nothing while the popover is
+open or opening. The same pattern (`animate-out` with no fill mode) is on
+`DropdownMenuContent`, `TooltipContent` and `SheetContent`; none of them was
+reported, so they are left alone and noted here rather than changed blind.
+
+## 88. `Popover` floated on the page colour
+
+- **`PopoverContent`** — background `bg-surface-page` → **`bg-surface-card`**.
+
+Surface/Page is the colour the page is painted. A popover wearing it had no
+surface of its own: over the page body only the 1px border said where the
+panel began, and over a card — which is where most of them open — it read as
+a hole cut in the card rather than a panel above it.
+
+`DropdownMenuContent` has always been `bg-surface-card`, and the two are the
+same family of floating panel with the same elevation shadow. One of them
+wearing the page colour was the defect; the shade itself was never the
+decision.
+
+Raised by the connections prototype, where a popover carrying a connection’s
+description and its problems opens over the catalog table.
+
+---
+
+# `ProgressBar`
+
+## 105. `ProgressBar` — `trackVariant` · draft
+
+- **`ProgressBar`** — new `trackVariant?: 'default' | 'destructive'`. The
+  track's `bg-surface-chips` moves from the base into `default`;
+  `destructive` is `bg-fb-red`. The indicator's `variant` is unchanged.
+
+For a bar that splits a whole into two answers — the workspaces prototype's
+"Members with access": 12 Allowed · 12 Denied — the grey track read as "nothing
+yet", so the Denied half looked empty. With `variant="green"` and
+`trackVariant="destructive"` both halves show.
+
+---
+
+# `PromoCard`
+
+## 91. New — `PromoCard`
+
+- **`PromoCard`** — a small offer card, first used in the sidebar directly above the footer.
+
+A glyph, what is on offer, one line of what it gives, and a dismiss. Products
+were building it by hand: the Insightis prototype had a one-line pill first,
+which said almost nothing in a 15rem column, and then a card of its own CSS.
+It is named for the job rather than for a plan: an upgrade, an invitation or an ending
+trial all fit the same shape. The consuming kit calls the same part `.promo-card`, so the
+two systems name it identically.
+
+Two rules the component enforces, because both were got wrong by hand first:
+
+- **It does not name the plan the person is on.** The account row directly
+  below already does, and the same word twice in 40px of column is noise rather
+  than emphasis. The title is the offer; the line under it is what the money
+  buys.
+- **The dismiss is a sibling of the link, never nested inside it** — a button
+  inside an anchor is not markup, and the whole card is the link's hit area.
+
+Hover is the package's card recipe. The hand-built version recoloured the title
+on hover, which read as the heading turning into a link under the pointer.
+
+## 116. `PromoCard` — the hover holds over the dismiss
+
+The dismiss is a sibling of the link laid over its corner (§91), and the hover
+was `hover:bg-state-hover` on the link. So the pointer moving from the card onto
+the ✕ left the link — and the card dropped its hover while the pointer was still
+on it. The Insightis original does the same (`.promo-card:hover` on the anchor,
+the ✕ beside it, and there the card also fell 1px as its lift went), which is
+how it reached the package.
+
+The hover now hangs on the root: `group/promo-card` there,
+`group-hover/promo-card:bg-state-hover` on the link. Over the ✕ the card keeps
+its fill and the ✕ adds its own tertiary wash on top. The hit areas do not change:
+the link is still the card, the ✕ still its own control.
+
+---
+
+# `RowMenuButton`
+
+## 137. New — `RowMenuButton` · **DRAFT**
+
+`src/components/RowMenuButton/index.tsx`
+
+The ⋮ at the end of a list row and the menu it opens — what every list with a
+row menu hand-rolled. It is not a new look (`IconButton` `tertiary` `2xs`),
+so it is not a variant, and it is not a part of `SelectableListCard`: exports
+are by subpath, and a `TableRow` would otherwise import a list card to get a
+kebab. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+- `reveal` (default on) fades it in off `group/row` — hover, focus inside the
+  row, open — by opacity only, so nothing in the row moves. Below `md` and with
+  `(hover:none)` it is always there.
+- Its clicks and keys, and the portalled menu's, never reach the row.
+- A menu item that moves focus keeps it: Radix hands focus back to the trigger
+  only when it went nowhere (`document.body`), so Rename's field is not robbed.
+- It names itself in a tooltip, the same as `SidebarChatItem`'s ⋮, so the two
+  row menus read alike. Needs a `TooltipProvider` above.
+
+**minor** (`.changeset/list-row-actions.md`).
+
+---
+
+# `SearchField`
+
+## 116. `SearchField` — a search field of its own · **DRAFT**
+
+- **`SearchField`** — new: `value`, `onValueChange`, `onClear`,
+  `placeholder`, `clearLabel` (`Clear search`), `size`, `variant`,
+  `autoFocus`, `disabled`, `onKeyDown`, `ref`. The search glyph (the
+  placeholder's grey, §106), the input, and the ✕ while there is text — the
+  field every list, tree and catalog was assembling from `InputGroup` by hand,
+  the same way each time.
+- **With `results`** — `getResultLabel`, `renderResult`, `onSelect`,
+  `emptyText` (`No matches`), `maxVisibleResults` (5.5). What matches the
+  query, in a list under the field that opens only while something is typed:
+  not on focus, not on a click into the field, not with the picked name still
+  in it — there is no whole list to browse, so there is no chevron. At most
+  five and a half rows, measured off the rendered rows; the half says there is
+  more and typing on narrows it. Picking puts the result's name in the field
+  and calls `onSelect`. The caller matches; the field shows what it is given.
+- **Stories** — `Default`, `Sizes`, `WithResults`.
+
+A search holds a query, not a value. The first cut put the Effective access
+search on `Autocomplete` and switched its picker parts off with two new props
+(the chevron, a row cap). That made a picker that pretended to be a search; the
+props are gone again and `Autocomplete` is as it was. The results list reuses
+the combobox mechanics `Autocomplete` is built on (`useAutocomplete` — keys,
+highlight, ARIA) and its option row, so the two lists look and behave alike;
+the API and the states are a search's.
+
+First call sites: every search field in the LinkAI prototype, and its
+Effective access search with results.
+
+---
+
+# `SegmentedControl`
+
+## 73. `SegmentedControlTrigger` — `tone` · **DRAFT**
+
+The control had one selected state: a raised card-tone pill. That is right
+when the two options are alternatives of the same kind — Read / Read & write,
+Light / Dark, Create / Edit — where which half is selected means nothing
+beyond "this one".
+
+It is not right when the control states a **fact with a consequence**.
+Included / Excluded on a row of a connection-scope tree is the case that
+raised it: a column of forty of those is read down at a glance, and with a
+neutral pill on every row the reader has to parse the label on each one to
+find the exceptions — which is the only reason anybody scans a scope.
+
+`tone="positive"` fills the selected half `--fb-green`, `tone="negative"`
+fills it `--fb-red`, both with `--content-on-solid` and no pill shadow. Both
+fills are theme-independent, like the destructive button: one green and one
+red in both themes, so there is no `dark:` pair to keep in step.
+
+**The tone is on the TRIGGER, not on the control.** Only the option itself
+knows whether it is the permissive one; a control-level prop would have to be
+told which of its children means "yes". Unselected, both tones are the same
+neutral text as any other trigger — the colour is the answer, not the offer.
+
+Listed in `gen-classlist.mjs`, because `CV` carries
+`data-[state=open|on|checked]` and not `active`, which is the state Radix Tabs
+stamps — a new colour on that state compiles to nothing otherwise (§19).
+
+## 96. `SegmentedControlTrigger` — `tinted`, and tone fills in dark · **DRAFT**
+
+- **`SegmentedControlTrigger`** — new `tinted?: boolean`: a value in effect
+  without being chosen on this row (inherited, a default), on an unselected
+  option — the tone's fill at 15% with the tone's text: `positive`
+  `bg-fb-green/15 text-fb-green`, `negative` `bg-fb-red/15 text-fb-red-text`
+  (the success / error Badge fills), `neutral` `bg-surface-card/60
+  text-ink-primary`. Sets `data-tinted`. Inactive only. The solid pill stays
+  "chosen here". Hovered, a tinted option deepens to 30% and keeps its tone's
+  text, no rim — "confirm it here"; the base white lift bleached it, which
+  read as a fault. A plain unselected option keeps the neutral hover whatever
+  its tone: a grey option turning red under the pointer offered a Deny nobody
+  had chosen.
+- **`SegmentedControlTrigger`** — `positive` / `negative` add
+  `dark:data-[state=active]:bg-fb-green` / `bg-fb-red`. The base recipe's
+  `dark:data-[state=active]:bg-surface-chips` is more specific than the tone's
+  bare `data-[state=active]:`, so in dark theme the selected Included / Allow
+  was a grey chip with white text instead of green.
+
+Raised by the workspaces prototype's Data model and Permissions trees.
+
+## 103. `SegmentedControl` — `deselectable` · draft
+
+- **`SegmentedControl`** — new `deselectable?: boolean`. `value` may be `''`;
+  the root holds the value beside Radix (controlled or not) and puts
+  `deselectable`, `value` and `clear()` on the context.
+- **`SegmentedControlTrigger`** — with `deselectable`, a press (mouse down,
+  or Enter / Space) on the selected, enabled option calls `clear()` →
+  `onValueChange('')`. The consumer's own `onMouseDown` / `onKeyDown` run
+  first; Radix's handler is stopped with `preventDefault`.
+- **`SegmentedControl.md`** — the "exactly one active" rule now names its one
+  exception; new sections **Tones**, **Nothing selected — `deselectable`**,
+  **Disabled** (keeps tone and tint, dimmed) and **A tooltip on a trigger**
+  (wrap it: `TooltipTrigger asChild` overwrites `data-state`).
+- **Stories** — `Tones`, `Deselectable`, `Disabled`; `Tinted` is
+  deselectable.
+
+The docs said a segmented control always has one segment active, while §96's
+own `tinted` example started from none. The workspaces prototype went back to
+Inherit by catching the press on the selected half itself — on Permissions
+only, so the Data model had no way back, and the two trees disagreed. The way
+back is now the control's.
+
+---
+
+# `SelectableListCard`
+
+## 138. `SelectableListCard` — keyboard, `aria-selected`, `menu`
+
+`src/components/SelectableListCard/index.tsx`
+
+The item opened on a click and nothing else. Now it is a tab stop; Enter and
+Space call `onCardClick`, but only when the item itself has focus — a key from a
+control inside it is that control's. It carries `aria-selected`, and the card
+layout gets the system `focusRing`. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+
+The row layout takes `menu` (`DropdownMenuItem`s) and `menuLabel` (default
+"More actions"): a `RowMenuButton` (§137) at the right edge, with `-my-0.5`
+so a row with a menu stays 44px. The card layout puts one in `rightSlot`.
+`aria-selected` means something to assistive tech only under a list or grid
+role, which the caller gives. **minor** (`.changeset/list-row-actions.md`).
+
+---
+
+# `Sheet`
+
+## 24. `Sheet` — the default side is the one without a border
+
+`src/components/Sheet/index.tsx`, `sheetVariants`
+
+```
+top    → 'inset-x-0 top-0',    'border-b'
+bottom → 'inset-x-0 bottom-0', 'border-t'
+left   → 'inset-y-0 left-0',   'border-r'
+right  → 'inset-y-0 right-0'            ← nothing
+```
+
+The kit lists all four: *"Right · right (default) · `border-l` · slide-from-right"*.
+`right` is the default side, so the drawer most consumers get is the only one
+with no edge against the scrim. It is a one-token omission that reads as a
+rendering bug on a light theme, where panel and page are both near-white.
+
+---
+
+# `Sidebar`
 
 ## 10. `SidebarHeader` lost its horizontal inset
 
@@ -471,26 +2152,6 @@ alone rather than blanked.
 Verified: every mark centres at **24** regardless of its own size — 16px icons,
 the 28px avatar, and the window-bar logo.
 
-## 13. `Tooltip` — the arrow put the gap off the 4px scale
-
-`src/components/Tooltip/TooltipContent.tsx`
-
-Radix's default arrow is 10×5 and is drawn **into** the `sideOffset` gap rather
-than beside it. The distance a reader sees is `sideOffset - arrowHeight` = 8 − 5
-= **3px**; neither 5 nor 3 is on the 4px scale. The arrow is now **8×4**, putting
-the tip exactly 4px from the trigger — all three numbers on the grid.
-
-**A second cause, in the consumer.** Radix measures `sideOffset` from the
-trigger, not from the glyph inside it. An icon-only trigger left as a plain
-inline `<span>` grows to the line box — **20px around a 14px icon** — so the tip
-drifted a further 6px. `inline-flex` makes the box hug the icon.
-
-That half is not fixed in the package because the trigger belongs to the
-consumer, but it is a consequence of a package decision:
-`.design-sync/tailwind-export.css` overrides preflight with `svg { display:
-inline-block }`. That is one of the two reasons a component can behave
-differently in a bundle than in Storybook — see §20.
-
 ## 14. Collapsing could remove the only way to expand
 
 `src/components/Sidebar/Sidebar.md`, shell example
@@ -505,417 +2166,6 @@ New rule, plus `SidebarRail` in the example: a `SidebarTrigger` may not be the
 only way back if it hides when collapsed. Either render the rail, keep the
 trigger visible, or move it outside the sidebar entirely — a page
 header — where collapsing cannot take it away.
-
----
-
-# New in the system
-
-## 15. `PageHeader` · **DRAFT**
-
-`src/components/PageHeader/index.tsx`
-
-A page title with a back arrow was hand-assembled on every page, differently each
-time. Now a component with fixed metrics: the arrow glyph is 20px and sits 8px
-from the title, not the 12px used between the rest of the row — at 12px the arrow
-visually detaches from the text it belongs to.
-
-It later gained a **`badge` slot** inside the title cluster. The component had
-`leading` (before the arrow) and `actions` (pushed to the opposite edge), and a
-badge that belongs to the title — the source a form connects to, an environment
-tag — fits neither: in `actions` it lands at the right edge and reads as one more
-control next to Save. The badge renders right after the `h1`, at the same `gap-2`
-the arrow uses, for the same reason.
-
-```jsx
-<PageHeader
-  title="Connect to DB2"
-  onBack={…}
-  badge={<Badge variant="secondary" leftSlot={<ConnectorLogo connector="DB2" size="2xs" />}>DB2</Badge>}
-/>
-```
-
-## 16. `ConnectorLogo` · **DRAFT**
-
-`src/components/ConnectorLogo/` + `scripts/gen-connector-logos.mjs`
-
-Connector marks are embedded as data-URIs: nothing is fetched at runtime, so a
-logo cannot arrive as a broken image in a consumer's build, in Storybook, or on a
-design canvas. An unknown connector renders a monogram, not an empty square.
-Names resolve loosely — `PostgreSQL`, `postgresql`, `Postgres` all find the same
-mark — so a page never needs to know the slug.
-
-The pack is deliberately small: it is generated from the app's SVG folder by a
-script, so extending it is a re-run, not a code change.
-
-## 17. `TextArea` character counter
-
-`src/components/TextArea/index.tsx`
-
-There was none, so pages wrote it by hand: "0 characters / 4000 max".
-
-```tsx
-<TextArea label="AI instructions" maxLength={4000} showCount />
-```
-
-- **Digits only — `0/4000`.** A worded phrase reads as a sentence, and a screen
-  reader re-reads it on every keystroke. `0/4000` is a readout: the eye catches
-  the changing number without parsing words around it.
-- `tabular-nums`, so the number does not jitter as digit widths change.
-- Error text and counter share one line under the field — both describe the same
-  field, and a separate line would shift the next field down on every appearance.
-- Works controlled (measured from `value`, so a programmatic change updates it)
-  and uncontrolled (`defaultValue` plus internal state).
-
-## 18. `StatusView` — `EmptyStateIllustration`
-
-`src/components/StatusView/index.tsx`
-
-`StatusView` offered only a lucide glyph in a tinted halo, which at page scale
-reads as a notification icon rather than an empty region.
-
-The new export is a 150×104 SVG: a crisp top card fading into two ghosts — the
-shape of the very list that is missing. Deliberately not a magnifier: "nothing
-found" is already said by the title, and a magnifier repeats it while saying
-nothing about *what* is absent.
-
-Every colour is a token (`--surface-card`, `--stroke-border`, `--ink-inactive`),
-so it re-themes with the page and needs no dark variant. Use it as
-`icon={<EmptyStateIllustration />}` with `withIconHalo={false}`.
-
----
-
-# Documentation that was missing or wrong
-
-These are not code changes. Each is a place where every page was inventing its
-own answer, which is how two products drift apart without either being "wrong".
-
-- **`Card.md` — `ghost`.** ~~Documented as a drop target.~~ **Withdrawn.** The
-  doc and the implementation did disagree, but the correction went the wrong
-  way: `ghost` is the dashed *"browse more" tile* — `Card.stories.tsx` has
-  always called it that, and `CardIcon variant="ghost"` is its centred dashed
-  icon well, which is not the anatomy of a drop target. A dashed edge in this
-  system means *nothing here yet*; sometimes that empty thing accepts a drop and
-  sometimes you click it. `Card.md` now says so, and `DropZone` (§32) is the
-  component that owns the drop case.
-- **`Table.md` — the empty state.** The doc asked for "a single row with
-  `colSpan` and `h-24 text-center`" and stopped, so every page improvised. Now
-  specified: `StatusView` with `surface="embedded" tone="transparent"` in that
-  row, `py-12` on the cell, and three things spelled out — the empty state lives
-  *inside* the table so the header and toolbar stay put; a first run and a
-  filtered miss are two different texts; both carry an action, because an empty
-  state is never a dead end.
-- **`Switch.md` — which size where.** Both sizes existed (`default` 36×20, `sm`
-  28×16); what was missing was the choice. In a table row the default toggle sits
-  a step louder than everything around it and pulls the eye off the name it
-  belongs to — you end up reading a column of switches instead of a list of
-  connections. **`sm` in a table or dense list row, `default` in forms and
-  settings.** The doc also covers when a toggle should confirm: only when
-  switching **off** has a consequence invisible from where the user stands, and
-  then in that direction only — switching back on is its own undo, and a dialog
-  in both directions teaches people to dismiss it.
-- **`InputGroup.md` — where the clear button goes.** `InputGroupAddon` defaults
-  to `align="inline-start"`, so an addon written without an explicit `align`
-  lands **before** the input, beside the magnifier. Every search field in the
-  prototype had its × there. The documented recipe is `align="inline-end"` with
-  `IconButton size="2xs"` — a 24px box and a 14px glyph, the row-action step.
-  `InputGroup`'s existing `has-[>[data-align=inline-end]]:[&>input]:pr-2` supplies
-  the gap, so nothing else is needed.
-
----
-
-# Build and tooling
-
-## 19. A variant that is not enumerated is never compiled
-
-`.design-sync/gen-classlist.mjs`
-
-`ds-bundle` — the CSS the products load — is compiled from an enumerated list
-of classes, not scraped from the components. A variant missing from that list
-produces no rule and no error.
-
-`empty:` was missing, so `empty:pb-0` (§11) worked in Storybook and did nothing
-in the products. `empty:pb-0`, `empty:pt-0` and `empty:hidden` are now
-enumerated.
-
-## 20. `pnpm bundle` and `pnpm check-bundle-css`
-
-**`pnpm bundle`** runs the six-command chain that used to be typed by hand. The
-order is load-bearing — `package-build` reads `dist`, so an edit made after
-`pnpm build` never reached the bundle — and a skipped step does not fail:
-skipping the Storybook build once dropped `FilterChips` from a bundle that
-reported no diagnostics, because the roster comes from the Storybook index.
-
-It decides the Storybook step itself, by diffing the component directories
-against what the last bundle holds. `--storybook` / `--no-storybook` override
-it; skipping warns if the roster did change.
-
-**`pnpm check-bundle-css`** catches the two ways a component looks right in
-Storybook and wrong on a page:
-
-1. Storybook compiles Tailwind from the sources; the bundle compiles from an
-   enumerated class list, so a missing class produces no CSS and no error (§19).
-2. `tailwind-export.css` overrides preflight with `svg { display: inline-block }`,
-   which Storybook does not have. That is what made a tooltip trigger 20px in a
-   bundle and 14px under preflight (§13).
-
-It compiles a second stylesheet with the built components as Tailwind's content
-and diffs the class selectors, letting Tailwind's own extractor decide what is a
-class — a regex first attempt produced 163 false positives from import
-specifiers and `data-slot` values. One-directional: the vocabulary is
-deliberately wider than what components use.
-
-A class assembled at runtime from a variable is in no compiled text, so this
-narrows the gap rather than closing it. The pixel comparison in
-`.ds-sync/storybook/compare.mjs` is what would close it.
-
-## The matrix — every component in the Storybook, against the kit
-
-All 44 components the published Storybook exposes, each walked against its kit
-section. **✅** the kit is satisfied · **⚠** it is not · **—** the kit has no
-counterpart. Where a row says ⚠ the detail is in the numbered section it names;
-where it says *undoc.* the package already satisfies the kit but the change is
-written down nowhere — that is the coverage audit that follows.
-
-| # | Component | Kit section | Verdict |
-|---|---|---|---|
-| 1 | `Accordion` | `#accordion` | ⚠ kit calls open/close *"instant … no CSS transition"*; the package animates (`accordion-up/down`). Ratify or revert — Open questions |
-| 2 | `Autocomplete` | `#autocomplete` | ✅ highlighted = `State/Hover`, selected distinct (§3) · ⚠ `aria-disabled:opacity-50` (§22) |
-| 3 | `Avatar` | `#avatar` | ✅ deliberate divergence: kit says `--brand-primary`, package uses `--avatar-bg` because brand lifts on dark and white initials fell to 3.94:1. In `theme-contrast.md` |
-| 4 | `Badge` | `#badge` | ✅ hairline now the base (§21 → shipped in §33) · the `sm` radius is in the archive · glyph 16→14px *undoc.* |
-| 5 | `Banner` | `#banner` | ⚠ kit agrees **one** gradient (`.banner-grad`, `--grad-teal-dark`); package ships four (`horizontalWide`, `diagonalAiry`, `diagonalFade`, `horizontalSlab`). Geometry matches — icon 60→40px at `sm`, radius 12px |
-| 6 | `Button` | `#button` | ✅ §40 **fixed** — `lg`/`xl` now hold 12px padding and grow the label to 16/18; gap 8, glyph 20/24 · ⚠ §25 `tertiaryBrand` still missing |
-| 7 | `Card` | `#card` | ⚠ §32 `Card.md` redefines `ghost` as a drop target · hover/press deliberately removed (§4) · kit's focus + disabled still ⚠ *to define* |
-| 8 | `Checkbox` | `#checkbox` | ✅ hover, neutral focus ring, 10×2 indeterminate bar, `aria-invalid` error, `opacity-disabled` — all five |
-| 9 | `CircularProgress` | `#circularprogress` | ✅ size 40, stroke 2.5, track `--surface-page`, indicator brand |
-| 10 | `Collapsible` | `#collapsible` | ✅ pure Radix re-export on both sides; nothing to diverge |
-| 11 | `Datepicker` | `#datepicker` | ⚠ §29 the one focus ring in the package that is not the shared recipe · §22 `opacity-50`. Hover, `today`, `outside` and `disabled` are all present — my earlier "three missing states" was wrong |
-| 12 | `DropdownMenu` | `#dropdown` | ✅ 6/12 padding, 8px gap, 16px glyph @2 (was 1.75 — §92), 4-inside-8 radius, disabled = ink only · radius, disabled recipe, focus removal and `portalContainer` all *undoc.* |
-| 13 | `File` | `#file` | ✅ 4/8 padding, card surface, medium name, interactive hover/press/focus · all of it *undoc.* |
-| 14 | `IconButton` | `#iconbutton` | ✅ `2xs` rung present; §40 **fixed** — glyph now 14/16/16/20/24, the same ladder Button and the field carry |
-| 15 | `Input` | `#input` | ✅ §40 **fixed** — padding, field text and glyph now match at all five steps |
-| 16 | `InputGroup` | `#inputgroup` | ✅ §40 **fixed** — padding, `sm` text 12→14, addon glyph and the 4px `xs` gap · ⚠ §28 clear button is still a story recipe |
-| 17 | `Modal` | `#modal` | ✅ 360/480/576 sizes, 14px radius (filed as a defect, retracted — in the archive), `min-h-0` body, scrim token · footer divider *undoc.* |
-| 18 | `Pagination` | `#pagination` | ✅ active = Button `primary`, other pages `secondary`, nav = IconButton `secondary` |
-| 19 | `PasswordInput` | `#passwordinput` | ✅ delegates to InputGroup, toggle sits in the field's trailing slot · `Eye`/`EyeOff` were inverted and are now fixed — *undoc.* |
-| 20 | `Popover` | `#popover` | ✅ **retracted** — the kit’s base `.pop` is `--surface-page` too; I measured a composed variant by mistake. In the archive |
-| 21 | `ProgressBar` | `#progress` | ✅ kit states no component change |
-| 22 | `RadioButton` | — | — no kit section. Its raw `opacity-50` was already fixed and is in the audit changeset |
-| 23 | `Resizable` | `#resizable` | ⚠ kit draws a 6px handle, the package a 1px line plus a grip; hover/drag tints match exactly. Neither clears 24px — Open questions |
-| 24 | `ScrollShadow` | `#scrollshadow` | ✅ size 40 / offset 0 / orientation / visibility; the gradient tracks the surface |
-| 25 | `SegmentedControl` | `#segctrl` | ✅ sm 20 / md 32, container tokens, all five states · type 11→12 and 13→14 is the agreed scale winning over the kit's own numbers · new `rounded` axis *undoc.* · list is `inline-flex` where the kit is `width:100%` |
-| 26 | `Separator` | `#separator` | ✅ three variants × two orientations · kit's `muted` still ⚠ *optional* |
-| 27 | `Sheet` | `#sheet` | ⚠ §24 `side="right"` — the default side is the only one with no edge border · scrim token, card surface and the `2xs` close button all match now, *undoc.* |
-| 28 | `Sidebar` | `#sidebar`, `#sidebar-subparts` | ⚠ §27 no menu badge / counter · §22 `opacity-50` and no `Text/Inactive` on disabled · states, insets and sub-parts otherwise match (§10–16) |
-| 29 | `Skeleton` | `#skeleton` | ✅ shimmer is the default, pulse and none opt-in, radius `md` |
-| 30 | `Spinner` | `#spinner` | ✅ |
-| 31 | `StatusView` | `#statusview` | ✅ ladder re-scaled to 32/40/56 circles and 16/24/32 padding, `neutral` halo fixed, `EmptyStateIllustration` (§18) · the rescale is *undoc.* |
-| 32 | `StepSlider` | `#stepslider` | ⚠ **new** — four measured mismatches, §38 |
-| 33 | `Stepper` | `#stepper` | ✅ headless on both sides; the consumer styles it |
-| 34 | `Switch` | `#switch` | ✅ 36×20 / 28×16, `--switch-off-bg` pair, 44×44 hit area, neutral ring, `opacity-disabled` · label ink + disabled treatment *undoc.* |
-| 35 | `Table` | `#table` | ✅ 10/16 padding, 12px header, selection holds under the pointer · §42 **fixed** — the cell wraps again, so the row height follows its content |
-| 36 | `Tabs` | `#tabs` | ⚠ §26 no flush tabset, so two bottom rules stack · underline, hover, focus and disabled match · kit's counter/badge still ⚠ *to define* |
-| 37 | `TextArea` | `#textarea` | ✅ §40 **fixed** — padding at four steps and font at three · ⚠ §30 counter ink still `--ink-secondary` |
-| 38 | `Timeline` | — | — no kit section |
-| 39 | `Toast` | `#toast` | ⚠ §31 close button off the `2xs` rung · stack gap 8 vs 10 · §23 width **mostly retracted** — a stacked kit toast is 360px, Sonner’s is 356px |
-| 40 | `Toggle` | `#chip` | ⚠ §32 `ghost` is `Button`'s removed variant under another name · the kit's chip hover also shifts text to `--ink-primary`; the package only fills |
-| 41 | `ToggleGroup` | `#chip` | ⚠ the kit specifies the count as part of the chip (`.chip-n` — 11px tabular-nums, `--ink-inactive`, 70% `--ink-highlight` when active); the package renders it in a story |
-| 42 | `Tooltip` | `#tooltip` | ✅ 288px ceiling with `w-max`, 8×4 arrow, Surface/Card ink (§13) |
-| 43 | `TruncatedTitleTooltip` | `#truncated` | ✅ default side is now `top` as the kit states, and it inherits Tooltip's surface instead of re-declaring `max-w-52` — *undoc.* |
-| 44 | `Typography` | `#typography` | ✅ **fixed in §44** — `label16` added and the 18px rungs taken out again; the named scale and the control ladder now agree |
-
-**Fourteen components need work** — 4, 5, 6, 7, 11, 16, 20, 23, 27, 28, 32, 36,
-37, 39, 40, 41, 44, which is seventeen rows and fourteen distinct components once
-`Toggle` / `ToggleGroup` and the paired tooltip rows collapse. **Two have no kit
-counterpart** (`RadioButton`, `Timeline`). The remaining twenty-eight satisfy the
-kit today — but eleven of them only through changes that nobody wrote down.
-
-### Where each says what
-
-Both sides quoted, both addressed. Package lines are this repository; kit lines
-are `Insightis/pages/kit-theme.css` — the stylesheet the kit renders from, not
-its prose, because on three of these the prose and the stylesheet disagree and
-**the stylesheet is what the design actually ships**.
-
-| § | The package says | The kit says |
-|---|---|---|
-| 25 | `tertiary: cn('border-transparent bg-transparent text-ink-body', 'hover:bg-state-hover', …)` — one tertiary, neutral label<br>`Button/index.tsx:57`, `IconButton/index.tsx:48` | `.btn-tertiary.is-brand{color:var(--brand-primary)}`<br>`.btn-tertiary.is-brand:hover{background:var(--state-hover);color:var(--brand-hover)}`<br>`.btn-tertiary.is-brand:active{…color:var(--brand-press)}` — a second tertiary whose *label* moves<br>`kit-theme.css`, `#button` (kit html 513) |
-| 24 | `right: cn('inset-y-0 right-0', 'h-full w-3/4 sm:max-w-sm', /* no border */)`<br>`Sheet/index.tsx:122`<br>…while `top` has `border-b`, `bottom` `border-t`, `left` `border-r` | *"Right · right (default) · `border-l` · slide-from-right"*<br>kit html `#sheet` (2731), side-variants block |
-| 26 | `'inline-flex items-center gap-2 border-stroke border-b'` — unconditional<br>`Tabs/TabsList.tsx:17` | `.tabset.var-flush{border-bottom:none}`<br>`kit-theme.css:1206` |
-| 27 | no `SidebarMenuBadge` — the string `MenuBadge` does not occur in `src/components/Sidebar/` | `.sbx-nav-item .nav-badge{margin-left:auto;background:color-mix(in srgb,var(--brand-primary) var(--tint-15),transparent);color:var(--brand-primary);font-size:var(--ts-label-s-size);padding:1px 6px;border-radius:var(--radius-full);font-variant-numeric:tabular-nums}`<br>`kit-theme.css`, `#sidebar` (1986) |
-| 22 | `'disabled:opacity-50'`, `'aria-disabled:opacity-50'` — `SidebarMenuButton.tsx:59,61`<br>`'aria-disabled:opacity-50'` — `Autocomplete/OptionItem.tsx:52`<br>`'…aria-disabled:opacity-50'` ×2 and `'text-ink-secondary opacity-50'` — `Datepicker/Calendar.tsx:70,75,158` | *"opacity:`--opacity-disabled` (.65) + pointer-events:none — same recipe as Switch / Checkbox / Button"*, stated under `#checkbox`, `#switch`, `#segctrl`, `#tabs`. `--opacity-disabled` is `.65`, not `.5` |
-| 28 | `className="group-has-[input:placeholder-shown]/input-group:hidden"` — in a **story**<br>`InputGroup/InputGroup.stories.tsx:210`; `InputGroup/index.tsx` has no `clearable` | `.igrp .igrp-clear{display:none}`<br>`.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear{display:inline-flex}` — in the **component's own stylesheet**<br>`kit-theme.css:2462-2463` |
-| 29 | `'group-data-[focused=true]/day:ring-[3px]'`<br>`'group-data-[focused=true]/day:ring-focus-ring-brand/50'` — 3px at 50%, no gap<br>`Datepicker/CalendarDayButton.tsx:74-75` | *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring `focusRing` in `src/lib/utils.ts` now exists to enforce<br>kit html `#datepicker` (3004), day-cell state table |
-| 30 | `textColor="secondary"` → `--ink-secondary`<br>`TextArea/index.tsx:256` | `.ta-count{text-align:right;font-size:var(--ts-body-s-size);color:var(--ink-inactive);margin-top:.25rem}`<br>`kit-theme.css:1087` — everything else (12px, right-aligned, 4px above) already matches |
-| 31 | `variant="transparent" size="sm"` + the `mt-0.5 text-ink-body` those force<br>`Toast/ToastMessage/index.tsx:100-101` | `.toast-x` is enumerated on the **24px `2xs` rung** — *"the row kebab, `.toast-x`, `.sht-x`"*. `Sheet/index.tsx:186` already took it (`variant="tertiary" size="2xs"`) |
-| 32 | `ghost: cn('border-transparent bg-transparent text-ink-body','hover:bg-state-hover active:bg-state-pressed', …)`<br>`Toggle/index.tsx:63` | the same recipe is `Button`'s **`tertiary`**; `Button.md:9` says *"There is **no `ghost`** — use `tertiary`"*. The kit's chip itself is `.chip{height:1.75rem;border-radius:var(--radius-full);border:1px solid var(--stroke-border);background:var(--surface-card);color:var(--ink-body)}` — `kit-theme.css:2706` |
-| 32 | `Card.md:14-15`: *"a dashed edge means a drop target, so `ghost` is for an area that **receives something**"* | `Card.stories.tsx:98`: *"Ghost — dashed 'browse more' tile."* — **both are ours**; the doc contradicts the story, and the story is right |
-| — | count rendered in a story: `{option.count}` in a plain `<span>`<br>`ToggleGroup/ToggleGroup.stories.tsx:273` | `.chip-n{font-size:var(--ts-label-m-size);color:var(--ink-inactive);font-variant-numeric:tabular-nums}`<br>`.chip.is-active .chip-n{color:color-mix(in srgb,var(--ink-highlight) var(--tint-70),transparent)}`<br>`kit-theme.css:2713-2714` — part of the component |
-| 32 | `body16`, `body14`, `body12` · `label14`, `label12`, `label10`<br>`Typography/index.tsx:60-67` | the nineteen include **Body XL 18/28**, **Label 2XL 18/28**, **Label XL 16/24** — kit html `#typography` (311), *"UI text — the 19 named styles"* |
-| 38 | track `bg-surface-chips` · dot `size-1` (4px) `bg-ink-secondary` · `w-20` (80px) · hit ring `before:-inset-2` (20×20)<br>`StepSlider/index.tsx:18, 56, 32, 60` | `.stps{height:1.25rem;padding:0 2px;background:var(--surface-card2);gap:.5rem;flex:none}`<br>`.stps-dot{width:6px;height:6px;background:var(--ink-inactive)}`<br>`kit-theme.css:1132, 1140` — and the kit derives its width from content rather than fixing it |
-| — | five variants: `default` + `horizontalWide` + `diagonalAiry` + `diagonalFade` + `horizontalSlab`, each repeated across five cva maps<br>`Banner/index.tsx:75-78, 102-105, 115-118, 130-133, 152-155` | one: `.banner-grad{background:var(--grad-teal-dark);border:none}` — `kit-theme.css:1307`, with the comment at `:277` *"override `--grad-teal-dark` per-instance to swap the fill"*. The kit's answer to "four gradients" is one variant and an instance override |
-
-### Two entries above were wrong, and quoting both sides is what exposed them
-
-**`Popover` — retracted, and archived.** I reported the package painting `--surface-page`
-where the kit painted Surface/Card. The kit's base popover is
-`.pop{…background:var(--surface-page);…}` (`kit-theme.css:2530`) — **the same
-token the package uses**. What I actually measured was `#sbx-pop-account`, one of
-the two *composed* variants (`.sbx-pop{background:var(--surface-card)…}`,
-`kit-theme.css:2058`), because my selector listed three candidates and matched
-the wrong one. Those variants are app-level compositions, not the primitive.
-`PopoverContent.tsx:31` is correct as written.
-
-**§23 `Toast` width — mostly retracted.** `.toast{min-width:280px;max-width:600px}`
-(`kit-theme.css:2596`) is the standalone toast. In the stacking context the kit
-constrains it: `.toast-stack{…width:min(360px,calc(100vw - 3rem))}` and
-`.toast-stack .toast{width:100%}` (`:2594-2595`). So a stacked kit toast is
-**360px**, and Sonner's default is 356px — a 4px difference, not a 244px one.
-What survives is the gap: `.toast-stack{gap:.625rem}` = 10px against
-`Toaster.tsx:10`'s `gap = 8`.
-
-Both errors came from reading a rendered page instead of the stylesheet, and
-both were caught the moment the two sides had to be quoted side by side rather
-than summarised.
-
-## 21. `Badge` — the hairline is the default, not a second variant
-
-`src/components/Badge/index.tsx`
-
-The kit defines one token and applies it to every chip:
-
-```css
---badge-border: color-mix(in srgb, currentColor 25%, transparent);
-```
-
-Because it mixes from `currentColor`, the border *is* the chip: teal on Primary,
-neutral on Secondary, green on Success, red on Error — never a uniform grey, and
-never a per-variant token. Measured on the kit, all six rendered badges carry it.
-`.badge-flat` is the borderless opt-out.
-
-The package inverted that. Five of seven variants are `border-transparent`, and
-the two bordered forms exist as *extra variants* — `brand` and `green` — each
-with its own pair of tokens (`--badge-brand-border`, `--badge-green-border`).
-There is no `--badge-border`, so `attention`, `success` and `error` have no way
-to be bordered at all, and a consumer who wants a bordered secondary chip has to
-reach for `brand`, which also changes the fill.
-
-The cost is not decorative, and the Table section of the kit names it: a
-Secondary badge is filled with `--surface-card2`, which is what a selected row
-lands on. With the hairline the chip stays defined on a hover/selected row; with
-`border-transparent` it dissolves into the row, and every table would need its
-own context rule to put the edge back.
-
-Shape of the fix: add `--badge-border` (Layer 3, `color-mix` from
-`currentColor`), make it the base of `badgeVariants`, and turn `brand`/`green`
-into what they actually are — fill choices — with a `flat` variant dropping the
-border.
-
-## 22. Five controls still fade at `opacity-50`
-
-The audit produced one unified disabled recipe — `opacity: var(--opacity-disabled)`
-(0.65) plus `pointer-events: none` — and the kit repeats it under Checkbox,
-Switch, SegmentedControl, Tabs, Button and IconButton: *"same recipe as Switch /
-Checkbox / Button"*. Five call sites never took it:
-
-| File | Line |
-|---|---|
-| `src/components/Sidebar/SidebarMenuButton.tsx` | `disabled:opacity-50`, `aria-disabled:opacity-50` |
-| `src/components/Autocomplete/OptionItem.tsx` | `aria-disabled:opacity-50` |
-| `src/components/Datepicker/Calendar.tsx` | `aria-disabled:opacity-50` ×2, `text-ink-secondary opacity-50` |
-
-0.50 against 0.65 is a visible step, and it lands on exactly the controls a
-keyboard user tabs through fastest. The Sidebar row misses the other half of the
-kit's rule as well: *"text `Text/Inactive`, `aria-disabled="true"`"* — the
-package only dims.
-
-The Datepicker's third case is different and should not simply be swapped: it is
-the outside-month day, which the kit specifies as `text content-secondary` with
-no opacity at all.
-
-## 23. `Toast` has no width, so Sonner's does
-
-`src/components/Toast/Toaster.tsx`
-
-The kit's toast is fluid inside a band — measured `min-width: 280px;
-max-width: 600px`, with `width: 100%` between them. That band is the whole point:
-*"Metric not saved — the alias @mrr_growth already belongs to another metric"* is
-a sentence, and it wants the 600.
-
-`ToastMessage` is `w-full`, which is correct, but nothing sets the band. Sonner
-owns the width of the `<li>` it renders the message into and defaults it to a
-fixed **356px**, so the kit's long toasts wrap into four lines and its short ones
-never shrink. The fix is one variable on the `Toaster` (`--width`), not a change
-to `ToastMessage`.
-
-Same file, same reason: the kit's stack gap is `.625rem` (10px, measured); the
-package passes `gap={8}`.
-
-## 24. `Sheet` — the default side is the one without a border
-
-`src/components/Sheet/index.tsx`, `sheetVariants`
-
-```
-top    → 'inset-x-0 top-0',    'border-b'
-bottom → 'inset-x-0 bottom-0', 'border-t'
-left   → 'inset-y-0 left-0',   'border-r'
-right  → 'inset-y-0 right-0'            ← nothing
-```
-
-The kit lists all four: *"Right · right (default) · `border-l` · slide-from-right"*.
-`right` is the default side, so the drawer most consumers get is the only one
-with no edge against the scrim. It is a one-token omission that reads as a
-rendering bug on a light theme, where panel and page are both near-white.
-
-## 25. `tertiaryBrand` — a brand label on the neutral tertiary pill · **DRAFT**
-
-`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
-
-The kit ships this as `.btn-tertiary.is-brand`, marked **new**, in four rules:
-
-```css
-.btn-tertiary.is-brand          { color: var(--brand-primary); }
-.btn-tertiary.is-brand:hover    { background: var(--state-hover);   color: var(--brand-hover); }
-.btn-tertiary.is-brand:active   { background: var(--state-pressed); color: var(--brand-press); }
-.btn-tertiary.is-brand:disabled { color: var(--ink-inactive); background: transparent; }
-```
-
-**Shipped.** `Button` and `IconButton` both carry it:
-
-```
-border-transparent bg-transparent text-brand-primary
-hover:bg-state-hover hover:text-brand-hover
-pressed:bg-state-pressed pressed:text-brand-press
-disabled:bg-transparent disabled:text-ink-inactive
-```
-
-Measured on `Components/Button → Variants`: label `rgb(7 128 126)` =
-`--brand-primary`, surface transparent.
-
-The label moves through the brand ramp; the pill and the focus ring stay the
-plain tertiary recipe. It exists for standalone brand text actions — the
-connection sidepanel's *Test Connection* is the named case — and the kit is
-explicit that the global tertiary stays neutral, so this has to be a variant
-rather than a redefinition.
-
-This is the mirror of `destructiveTertiary`, which the package already has (§1's
-sibling). Both are tertiary ghosts that recolour the label only; shipping one and
-not the other is why pages keep hand-rolling a `text-brand-primary` button.
-
-## 26. `Tabs` — no flush tabset, so two rules stack
-
-`src/components/Tabs/TabsList.tsx`
-
-`TabsList` always carries `border-b`. The kit adds `.tabset.var-flush`, which
-drops it:
-
-```css
-.tabset.var-flush { border-bottom-style: none; }
-```
-
-Its reason is the common layout, not an exotic one — tabs on the left, controls
-on the right, inside a row that already draws its own hairline. *"Without it the
-two rules stack into a 2px edge."* The DS Connections tab row is the shipped
-case. A `bordered` boolean variant on `TabsList` covers it.
 
 ## 27. `Sidebar` — no badge or counter on a nav row
 
@@ -938,221 +2188,6 @@ one. Every tint it needs is already in the package (`bg-brand-primary/15`,
 `text-brand-primary`, `label10`, `rounded-full`, `tabular-nums`), so the part is
 assembly, not new tokens — but without it each product invents its own, and the
 numeral alignment (`tabular-nums`) is the detail everyone forgets.
-
-## 28. `InputGroup` — the search clear button is a recipe, not a part
-
-The kit reveals the × only when there is something to clear:
-
-```css
-.igrp .igrp-clear                                          { display: none; }
-.igrp:has(.igrp-input:not(:placeholder-shown)) .igrp-clear { display: inline-flex; }
-```
-
-A clear button on an empty field is a control that does nothing, and one keyed to
-focus flickers on every tab-through; `:placeholder-shown` keys it to content.
-
-**Downgraded from a gap.** The package reproduces this exactly — as a Storybook
-story, not as a component feature:
-`group-has-[input:placeholder-shown]/input-group:hidden` on the trailing addon
-(`InputGroup.stories.tsx`). Together with the recipe in `InputGroup.md` (where the
-button goes: `align="inline-end"`, `IconButton size="2xs"`) the behaviour is fully
-specified and reachable.
-
-What is left is a judgement call, not a defect: whether a search field is common
-enough to deserve a `clearable` prop rather than four classes at each call site.
-The classes are load-bearing and easy to get subtly wrong — the rule needs a
-`placeholder` on the input to key off, and a search field without one silently
-keeps the button on. That trap belongs in the `.md`, and is not there yet.
-
-## 29. `Datepicker` — one bespoke focus ring, not three missing states
-
-**Mostly retracted.** Filed as "no hover, no today, no disabled" after reading
-`CalendarDayButton.tsx` alone. The per-day classes do not live there — they live
-in `Calendar.tsx`'s `classNames` map, and all three are present:
-
-```
-day:      [&:not([data-selected=true])]:hover:bg-state-hover   ← the kit's State/Hover
-today:    bg-state-hover text-ink-primary
-outside:  text-ink-secondary                                    ← matches the kit exactly
-disabled: text-ink-secondary opacity-50
-```
-
-So the kit's three ⚠ *needed* rows are answered. Two real items survive:
-
-**The focus ring is the only one in the package that is not the shared recipe.**
-The kit specifies *"Focus (keyboard) → `--shadow-focus` 2px + 2px gap"* — the ring
-Button, IconButton, Switch, SegmentedControl and StepSlider all use, and which
-`focusRing` / `formFocusRing` in `src/lib/utils.ts` now exist to enforce. The day
-button rolls its own:
-
-```
-group-data-[focused=true]/day:ring-[3px]
-group-data-[focused=true]/day:ring-focus-ring-brand/50
-```
-
-3px at 50% alpha with no offset gap. A calendar is precisely where a keyboard
-user lives, and it is the one grid where "which cell am I on" is the entire
-interaction.
-
-**`disabled` fades at `opacity-50`** — §22, along with the two month-nav chevrons.
-
-`dark:hover:text-ink-primary` on `CalendarDayButton` is also one of the two
-`dark:`-class holdouts SPEC lists under *Creating a New Theme*. Now that the light
-hover is a token (`bg-state-hover`), that line is the last piece of the day cell
-that a third theme would not reach.
-
-## 30. `TextArea` counter — one ink step too loud
-
-`src/components/TextArea/index.tsx`
-
-```diff
-- <Typography variant="span" textColor="secondary" …>
-+ <Typography variant="span" textColor="inactive" …>
-```
-
-The kit: *"`.ta-count`, Body 12 in `--ink-inactive`, right-aligned, 4px above."*
-Everything else matches — `text-xs`, `gap-1`, `ms-auto`, `aria-live="polite"`,
-digits only. Only the ink step is off, and it is the step that decides whether
-the counter reads as *information about the field* or as *part of the field's
-content*. `--ink-secondary` is the hint's own colour; §9 moved the label up
-precisely so the hint would be subordinate, and the counter should sit below the
-hint, not beside it.
-
-## 31. The toast close button is off the 24px ladder
-
-`src/components/Toast/ToastMessage/index.tsx`
-
-The kit's `IconButton` section enumerates what lives on the `2xs` rung: *"the row
-kebab `[data-kbp]` (chats, files, metrics, connections, sidebar), `.toast-x`,
-`.sht-x`"*. `Sheet` already took it — `variant="tertiary" size="2xs"`, with a
-comment saying so. `Toast` did not:
-
-```
-<IconButton variant="transparent" size="sm" className="mt-0.5 shrink-0 text-ink-body">
-```
-
-`transparent` has no box, so it has no hover pill and no press state; `size="sm"`
-is 32px, off the rung; `mt-0.5` and `text-ink-body` are the bespoke corrections
-that having neither forces. Matching `Sheet` deletes all three.
-
----
-
-The fixes are in the source, so both products get them — but propagation is a
-**copy, not a subscription**:
-
-- `ds-bundle` must be rebuilt and copied into each product.
-- **Insightis' copy is older than AI Connectivity's** and will not pick these up
-  until it is re-synced.
-- The corporate repository `devart/components/devart.ui.react` has none of this;
-  the work sits on `design-sync/insightis-audit` in `katerynak/design-system`.
-
-Any bridge duplicating a fix in a product's own CSS — `_shared/pages.css` carries
-a few, each signed with a comment — must be removed once the bundle lands. Left
-in place it does not merely duplicate, it **masks**: the next regression in the
-library would look fine on the page carrying the override and ship broken to the
-one without it.
-
-## 32. `ghost` — one of the three "unrelated" ones is not
-
-`Button`'s `ghost` was removed in favour of `tertiary`, and the changeset says
-`Card`, `CardIcon` and `Toggle` keep their own **unrelated** `ghost`. Two of
-those are unrelated. `Toggle`'s is the removed variant under another name:
-
-| | |
-|---|---|
-| `Button` `tertiary` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `pressed:bg-state-pressed` |
-| `Toggle` `ghost` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `active:bg-state-pressed` |
-
-Class for class the same, except `active:` where `Button` uses `pressed:`.
-`Toggle` sits on the same variant scale, so a consumer reads in `Button.md` that
-the name does not exist and finds it on the sibling meaning what it used to.
-
-**To do:** rename to `tertiary`, switch `active:` → `pressed:`.
-
-`Card.ghost` stays: it is the dashed "browse more" tile — an empty slot that
-adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
-`Card.md` describes it as a drop target, which is a different component
-(`DropZone`); that line is what needs fixing, not the variant.
-
-## 33. `Badge` — the hairline is the base, not a second variant
-
-`globals.css`, `src/lib/constants.ts`, `src/components/Badge/index.tsx`
-
-§21 diagnosed this from the kit and stopped at "shape of the fix". This round
-shipped it, because the page could not stop drawing the border by hand until it
-did — `.sync-chip` in `_shared/pages.css` was exactly the kit's rule, written
-out on the consumer:
-
-```css
-.sync-chip { border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
-```
-
-```css
-/* globals.css */
---badge-border: color-mix(in srgb, currentColor 25%, transparent);
-```
-
-```diff
-- 'inline-flex items-center gap-2 border',
-+ 'inline-flex items-center gap-2 border border-badge-border',
-...
--   primary: 'border-transparent bg-badge-primary-bg text-badge-primary-text',
-+   primary: 'bg-badge-primary-bg text-badge-primary-text',
-```
-
-`brand` and `green` keep their own opaque border tokens — their fill is opaque
-too, so a `currentColor` mix would read differently there. A new `flat` variant
-puts `border-transparent` back for a chip on a surface it already contrasts
-with.
-
-**Why it is not decoration.** `secondary` is filled with `--surface-card2`,
-which is also where a hovered or selected table row lands. On the Last check
-column the pill and the row underneath it became one shape on hover. Any table
-in either product hits this, which is why the answer is a token and not a rule
-in one page's stylesheet.
-
-**Both products.** The border is mixed from `currentColor` at 25% alpha, so it
-is per-variant and per-theme by construction and needs no `.dark` twin and no
-per-product value. Every existing call site gains a hairline it did not have;
-none loses a fill or changes size — `border` was already in the base class, so
-the box model is untouched.
-
-## 34. `PopoverContent` — a closed panel stayed painted
-
-`src/components/Popover/PopoverContent.tsx`
-
-```diff
-  'data-[state=closed]:animate-out',
-+ 'data-[state=closed]:fill-mode-forwards',
-  'data-[state=closed]:fade-out-0',
-  'data-[state=closed]:zoom-out-95',
-```
-
-Measured in the browser with the page's bridge removed: after clicking a second
-row's trigger, the first popover held `display: block` and **`opacity: 1`** for
-over 700ms before Radix unmounted it — two panels on screen at once, one of them
-belonging to a row already left.
-
-The cause is in the compiled rule:
-
-```css
-.data-\[state\=closed\]\:animate-out[data-state=closed]{animation-name:exit;animation-duration:.15s}
-@keyframes exit{to{opacity:var(--tw-exit-opacity,1); transform:…}}
-```
-
-`exit` has only a `to` frame and nothing sets `animation-fill-mode`, so the
-moment the 150ms run ends the element **snaps back** to its own opacity and sits
-there fully painted until the unmount lands. `forwards` holds the faded-out end
-frame instead.
-
-The page's bridge was `[role='dialog'][data-state='closed'] { display: none }`,
-which is worse than it looks: `display:none` also stops the animation, and the
-`animationend` Radix is waiting on to unmount never fires.
-
-**Both products.** Purely additive — it changes nothing while the popover is
-open or opening. The same pattern (`animate-out` with no fill mode) is on
-`DropdownMenuContent`, `TooltipContent` and `SheetContent`; none of them was
-reported, so they are left alone and noted here rather than changed blind.
 
 ## 35. `Sidebar` — the fixed panel was pinned to the viewport
 
@@ -1184,6 +2219,439 @@ resolves to exactly what `h-svh` was giving it. Nothing changes there. This is
 the §8-class check the constraint at the top of this file asks for, and it comes
 out clean: one product is fixed, the other is unaffected, because the removed
 declaration was redundant in the case that still works.
+
+## 39. `SidebarMenu` — nav rows 4px apart where the kit says 2
+
+`src/components/Sidebar/SidebarMenu.tsx`
+
+```diff
+- 'flex w-full min-w-0 flex-col gap-1',
++ 'flex w-full min-w-0 flex-col gap-0.5',
+```
+
+Reported by eye, confirmed against the kit, which states both halves:
+
+```css
+.sbx-nav      { display:flex; flex-direction:column; gap:2px; padding:0 8px 16px }
+.sbx-nav-item { height:2rem; padding:0 .5rem; border-radius:.375rem; … }
+```
+
+and, in its spacing section, *"Spacing on a 4px step with a **2px fine
+sub-step**"* — so 2 is on the scale, not an exception to it. Everything else on
+that row already matched: 32px height, 8px inset, 6px radius, 16px glyph.
+
+4px between 32px rows reads as a list of separate buttons; 2px reads as one
+navigation block, which is what it is. The difference is small per row and
+compounds: seven rows put the account footer 14px lower than the design.
+
+Worth noting **how this was missed**. Both bundles — the one committed and the
+one rebuilt — carry `gap-1`, so this is not a regression and no rebuild
+introduced it; the value has been wrong since the component was written, and the
+kit↔package audit walked components rather than composed screens, where
+a 2px difference in a list of seven is what you actually see.
+
+**Both products.** The kit is the shared reference — Insightis' own sidebar is
+built from `.sbx-nav`, which is already at 2px, so this moves the package
+towards what that product ships rather than away from it.
+
+## 64. `SidebarContent` — the nav column had no gutter
+
+`src/components/Sidebar/SidebarContent.tsx`
+
+```diff
+- 'flex min-h-0 flex-1 flex-col gap-2'
++ 'flex min-h-0 flex-1 flex-col gap-2 px-2 pb-4'
+```
+
+Nothing between the sidebar edge and a row button supplied a horizontal inset,
+so the nav sat on 8px while §10 had moved the brand mark to 16. The catalog
+story hid it by giving its own wrapper `p-2`, which meant the story certified a
+rail the library does not draw.
+
+Measured after: the row fill starts 8px from the edge and the glyph lands on
+16 — the brand mark’s line, and what the product renders.
+
+## 72. The collapsed rail was never finished
+
+Reported from the catalog's own `Collapsed Icon` story, where the product name
+ran straight across a 48px rail and over the page behind it. Three things, one
+cause: the rail had been given its width and nothing else.
+
+**Nav rows had no tooltip.** `SidebarMenuButton` has carried a `tooltip` prop all
+along — it renders the label to the side and hides it unless the sidebar is
+collapsed — and `SidebarNavigationItems` passed it on none of the three rows it
+can render collapsed. So the one state where a row has no label was the state
+with nothing to supply one. Every collapsed row now passes its own title.
+
+**The delay was overridden to 500ms.** `SidebarProvider` wrapped the shell in
+`TooltipProvider delayDuration={500}`, with no note saying why. The package's
+own value is 300, the kit's. A collapsed rail has the strongest claim on the
+shorter one: the tooltip there is not extra information about the row, it is the
+name of it. The override is gone.
+
+**The header leaned 4px right of its own column.** `SidebarHeader` carries
+`ps-4 pe-2` — correct expanded, where the mark lines up with the nav glyphs.
+Collapsed, an asymmetric inset in a 48px rail stops being an inset: it put the
+surviving control's centre on 28 while every nav glyph below centres on 24.
+`group-data-[collapsible=icon]:px-2` makes it the same 8px gutter the nav column
+uses. Measured after: both on 24.
+
+**The story was the fourth thing, and it is why none of this showed.** The
+catalog's header row was a hand-rolled `div` with its own `px-2` and an `h5`,
+not `SidebarBrand` — so it stacked an inset on `SidebarHeader`'s own and had
+nothing to hide its label with, which is the overflow in the report. A story
+that does not use the part cannot demonstrate the part. It uses `SidebarBrand`
+now, with `SidebarTrigger` as the trailing control, the shape `SidebarPanelHeader` now
+takes (§97).
+
+## 94. The product sidebar — Pinned / Recent, the chat row, the promo slot, the compact footer
+
+`src/components/Sidebar/SidebarSection.tsx`, `SidebarChatItem.tsx`, `SidebarAccount.tsx`
+
+Storybook showed the old prod shape — Home / Search / a `Chats` row with a nested,
+left-railed sub-list, a Settings line for a footer — long after Insightis had
+replaced it. §10–§14, §35, §39, §64 and §72 ported the **shell**: insets, rows,
+gutter, the collapsed rail. The redesign inside the shell (`Insightis/legacy-html/changes/Sidebar.md`)
+is information architecture, and it never came across, because it needed parts the
+package did not have. A `PromoCard` (§91) existed, but only as a separate story with
+nowhere in the sidebar to put it.
+
+**New parts**
+
+- **`SidebarSection`** — a flat list with an overline label (`Text/Inactive`,
+  brightening to `Text/Primary` under the pointer), a chevron that only appears on
+  hover and stays when closed, and an `action` slot for "See all" that reveals on
+  hover or focus and is always visible below `lg` and on touch. The whole label
+  toggles; the action is a sibling and never collapses. Spacing is the
+  component's: 16px under the nav, 12px between sections.
+- **`SidebarChatItem`** — h28, 14px `Text/Secondary`, radius `md`; hover
+  `State/Hover`, pressed and active `State/Pressed`, active ink `Text/Body`. The
+  title **fades** rather than ellipsising: a 36px gradient in the row's own
+  surface colour, widening to 72px on hover so the kebab sits on solid fill. The
+  gradient takes a *pre-composited* colour — `--state-hover` is a translucent
+  overlay, and a gradient ending in it would let the letters through.
+  `status="loading" | "new"` (each with a spoken label) or a queue `count`
+  (`Counter sm`, the fade off so the title stops before the number) share the
+  right-edge slot and fade out for the kebab. `menu` takes `DropdownMenuItem`s;
+  the kebab is the shared `IconButton` tertiary `2xs` and a **sibling** of the
+  link.
+- **`SidebarPromo`** — the slot for one `PromoCard`, above the footer rule, 8px
+  gutter, hidden on the collapsed rail. No sidebar prop decides whether it shows:
+  that is the product's (free plan, not yet dismissed).
+- **`SidebarStat`** and **`SidebarUser`** — the compact footer. One figure,
+  label left and value right with a 12px glyph on a round `State/Hover` chip; and
+  the account row — 24px avatar, 12px semibold name, 10px meta, 14px up-down
+  chevron at 70%. Both are buttons with the neutral hover / pressed recipe.
+  Collapsed, the stat leaves and the account row keeps its avatar.
+
+Measured against the kit's `chat-landing` at 1280×800: section, promo, footer, stat
+and avatar boxes land on the same pixels.
+
+**`PromoCard` fixes.** Its focus ring named `shadow-focus`, which the preset does not
+generate — keyboard focus on the card drew nothing. It now uses the package's ring
+recipe. The dismiss was a hand-drawn button with its own hover; it is the shared
+`IconButton` tertiary `2xs`. Padding is the kit's 10/12 with the text kept clear of
+the dismiss, instead of a 32px right pad on the whole card.
+
+**Stories.** Expanded, CollapsedIcon, Floating, Inset, AppShell and MobileOverlay
+render the product shape; **Promo card** is a control on every one, and `WithPromo`
+has it on. The nested-group tree moved to `NestedGroup`, since `NavigationGroup`
+stays for consumers whose second level really is navigation.
+
+**Not ported**, deliberately: the collapsed rail's single "Chats" icon that stands in
+for the lists. It is a product affordance (where it links), not a sidebar part —
+a `SidebarMenuButton` in the consumer's nav does it.
+
+## 139. `SidebarUser` — the rail kept the avatar and lost the name
+
+`src/components/Sidebar/SidebarAccount.tsx`
+
+On the icon rail the name and the meta were `hidden`, so the account-menu
+button had no name. They are `sr-only` there now: off the screen, still spoken.
+**patch** (`.changeset/sidebar-small-fixes.md`).
+
+## 140. `SidebarProvider` — the sheet outlived the phone layout
+
+`src/components/Sidebar/SidebarProvider.tsx`
+
+Widening the window past `sheetBreakpoint` left `openMobile` true: the sheet
+stayed open behind the rail and came back the next time the window narrowed. It
+closes when the layout stops being the phone one. **patch**
+(`.changeset/sidebar-small-fixes.md`).
+
+## 141. `SidebarChatItem` — the ⋮ where there is no hover, and `countLabel`
+
+`src/components/Sidebar/SidebarChatItem.tsx`
+
+On a touch screen and below `lg` (the sheet) a ⋮ that waits for the pointer is
+a ⋮ that is not there. It now stays, the link keeps 32px for it (`pr-8`), and
+the title's fade ends where that room begins; the status stays beside it. The
+breakpoint is `SidebarSection`'s "See all" one, so a 768–1023px window does not
+show one always and the other on hover. The ⋮ names itself in a tooltip
+(`menuLabel`). `countLabel` says what the queue count means — "3 messages
+queued, still sending" — in a tooltip, and is spoken in place of the bare
+number; the count is inside the link, so it is not a tab stop. Insightis carried its own copy of this in its custom kit; owner's call (2026-10-19): what the kit duplicates comes from the library, and what the library lacks is added here, one capability at a time.
+**minor** (`.changeset/sidebar-rows-and-triggers.md`).
+
+## 142. `SidebarNavItem` — `badge`, and an element as `icon`
+
+`src/components/Sidebar/SidebarNavItem.tsx`
+
+Closes §27. A nav row takes a trailing `badge` — a `Counter` or a `Badge` —
+hidden on the rail and read as the row's description (`aria-describedby`).
+`icon` also takes an element, a product mark, set in the same 16/14px box as a
+component icon. **minor** (`.changeset/sidebar-rows-and-triggers.md`).
+
+## 143. `SidebarTrigger`, `SidebarMobileTrigger` — their tooltips
+
+`src/components/Sidebar/SidebarTrigger.tsx` · `SidebarMobileTrigger.tsx`
+
+Opening the sheet focuses its trigger, and the panel trigger's tooltip popped up
+over the sheet; it has none while `isMobile`. The mobile trigger can name
+itself the same way: `tooltip` and `tooltipSide` (default `bottom`). **minor**
+(`.changeset/sidebar-rows-and-triggers.md`).
+
+## 144. `SidebarStat` — `asChild`
+
+`src/components/Sidebar/SidebarAccount.tsx`
+
+A figure that opens nothing — a balance — was still a `<button>`. With
+`asChild` the label and the value go inside the caller's element, a `<div>` or
+a router link, with no `type` put on it. **minor**
+(`.changeset/sidebar-rows-and-triggers.md`).
+
+---
+
+# `Spotlight`
+
+## 119. New — `Spotlight` and `useTargetRect` · **DRAFT**
+
+`src/components/Spotlight/index.tsx` · `src/hooks/use-target-rect/`
+
+Dims and blurs the page around one or more targets. The cutout stays sharp
+and live — clicks reach the controls inside it — and everything else takes
+no clicks. The scrim is ONE layer over the bounds, the modal scrim under a
+3px blur, with a rounded hole cut by its `clip-path` (an `evenodd` path), so
+the dim follows the ring's corners and no corner is left undimmed. A 2px
+Brand/Primary ring with a halo and a glow frames the cutout, concentric with
+what it lights, pulses, and glides to the next target: the hole and the
+ring's position and corner move on one curve.
+
+`target` (a selector, an element, a ref, or an array of them — lit as one
+union) or a measured `rect`; `radius` — the corner, by default the
+targets' own radius + `padding`, else 12; `padding` (8); `boundary`, the
+area the scrim may cover, so a strip above it stays uncovered;
+`onScrimClick`; `pulse`; `leaving` — fades out and lets every click through
+while a tour closes. Portalled to `document.body`, or the nearest
+`PortalContainer`.
+
+`useTargetRect(target, { padding, boundary })` →
+`{ rect, bounds, radius, vw, vh }` comes from the same entry: the
+measurement the whole tour family shares, kept current through resize,
+scroll, document resize, DOM changes and font loading. `radius` is the
+targets' `border-radius` — or, for a part with square corners such as a
+table row, that of the nearest rounded ancestor up to four levels up — plus
+the padding.
+
+**Tokens.** `--spotlight-blur` (3px, `backdrop-blur-spotlight`);
+`--spotlight-halo` and `--spotlight-glow` (Brand/Primary at `--tint-20` and
+`--tint-30`) composed into `--shadow-spotlight` (`shadow-spotlight`);
+`--spotlight-move`, one duration and curve for every move, read by a
+`transition` shorthand; `--spotlight-z` (70 — annotations +1, the coachmark
++2). The halo, the glow and the shadow are mirrored in `.dark` for scoped
+themes. The scrim has no colour of its own: it is `--overlay-scrim`
+(`bg-overlay-scrim`), which gives that token a call site at last.
+
+The layer fades in and the ring breathes every 2.2s; all of it stops under
+`prefers-reduced-motion`.
+
+**Both products.** New component, no call sites in the package.
+
+---
+
+# `StatTile`
+
+## 47. New — `StatTile` · **DRAFT**
+
+`src/components/StatTile/index.tsx`
+
+A workspace's Overview is three numbers — Users, Connections, Queries — each
+with a caption above and a sentence below. There was nothing to build them
+from, which is how a dashboard ends up with three different number styles on one
+row.
+
+```
+label        overline · Text/Secondary        what you are looking at
+value        title20 (sm) / title24 (md)      the answer
+description  body12 · Text/Secondary          why the answer matters
+```
+
+The order is the reading, and it is fixed: a tile that puts the number first and
+the label under it reads as a score. The value is `tabular-nums`, because a row
+of tiles whose digits are different widths shifts every time the data refreshes.
+
+Sizes are the two rungs the other padded surfaces use — `sm` 16px inset, `md`
+20px — rather than a ladder of its own. `rightSlot` takes a badge or a trend, so
+"3 · 1 not configured" is one tile and not two.
+
+**Both products.** New component, no call sites.
+
+---
+
+# `StatusView`
+
+## 51. `StatusView` — the illustration is a pack, not a rule — **revised**
+
+`src/components/StatusView/index.tsx`
+
+`EmptyStateIllustration` came first — a 150×104 SVG, a crisp top card fading
+into two ghosts, the shape of the very list that is missing — and read as
+though the system had picked the artwork. It had not, and should not: `StatusView` takes whatever goes in its
+`icon` slot — a lucide glyph, one of these, or a product's own drawing — and
+that was already true before it.
+
+What was actually missing is that **one picture cannot say two things**. "There
+is nothing here yet" and "your search matched nothing" are different states, and
+a list that shows the same artwork for both is telling the user the query made
+no difference. So the pack is two:
+
+| | |
+|---|---|
+| `EmptyStateIllustration` | three list rows fading out — the shape of the list that is missing |
+| `EmptySearchIllustration` | a search field with a query in it, over two dashed empty rows |
+
+The magnifier in the second one is **part of the depicted field**, not a symbol
+standing in for "not found" — which is the objection to using a magnifier as the
+whole picture, and it still stands.
+
+Every colour is a token, so both re-theme with the page and neither needs a dark
+variant. Use either as `icon={<EmptyStateIllustration />}` with
+`withIconHalo={false}`.
+
+## 104. `StatusView` — a wider message
+
+- **`StatusView`** — the description's cap `max-w-[32ch]` → `max-w-[48ch]`;
+  `text-balance` unchanged. `StatusView.md`'s anatomy table says so, beside
+  the kit's 32ch.
+
+At 32ch a message of two short sentences — what is empty, what to do — broke
+into three or four lines of a few words each and read as fragments (the
+workspaces prototype's empty Data model: "The linked connections returned no /
+catalogs, schemas or tables. Check / what their user can read, then refresh.").
+48ch keeps it to two lines; balancing still keeps a last word off a line of its
+own. A departure from the kit's `.empty-msg`, on purpose.
+
+## 107. `EmptySearchIllustration` — visible on a white card
+
+- **`EmptySearchIllustration`** — the field's outline `stroke-stroke` →
+  `stroke-stroke-hover`; the magnifier `stroke-ink-inactive/60` →
+  `stroke-ink-inactive` (the field glyph's own grey, §106); the query bar
+  `fill-ink-inactive/35` → `/55`. The two dashed rows under it: outline
+  `stroke-stroke` → `stroke-stroke-hover`, opacity 0.4 / 0.2 → 1 / 0.5.
+
+Every line of it was the lightest border grey, and the rows under the field were
+that grey again at 40% and 20%, dashed, white on white: in the workspaces
+prototype's "Find somebody" window only the field showed, and barely. Still the
+same drawing — a search over rows that came back empty, fading — at the
+strength `EmptyStateIllustration` beside it already has.
+
+---
+
+# `StepProgress`
+
+## 117. New — `StepProgress` · **DRAFT**
+
+`src/components/StepProgress/index.tsx`
+
+A bar per step and "Step N of M": where a multi-step flow stands. The
+chat's question card, the onboarding wizard's header and a tour's coachmark
+each carry this read-out; it is one atom now.
+
+```ts
+steps: { id: string; label?: string }[];
+current?: number;                        // 0-based
+isStepDone?: (i: number) => boolean;     // default i < current
+counter?: (n, total) => ReactNode;       // default "Step n of total"
+showStepLabel?: boolean;   fill?: boolean;   size?: 'md' | 'sm';
+onStepSelect?: (i: number) => void;
+getStepAriaLabel?: (i, { done, current }) => string;
+```
+
+Done and current bars are Brand/Primary over the Stroke/Border track: 24px
+bars inline, or sharing the full width under the header with `fill`. The
+current step's name is a caption at both sizes — Text/Secondary 400; `sm`
+only steps the type down. With `onStepSelect` every bar is a button (its
+tooltip is its label, its name comes from `getStepAriaLabel`) and answers
+the pointer: Brand/Hover over a filled bar, the card hover border over an
+empty one. Read-only, the bars are hidden from assistive tech and the
+counter speaks (`aria-live="polite"`).
+
+Not `StepperIndicator` (§36): that is a numbered rail to travel along; this
+is a read-out that fits on a header line.
+
+**Both products.** New component, no call sites in the package.
+
+---
+
+# `StepSlider`
+
+## 38. `StepSlider` — four measurements against a spec that argues for each one
+
+*Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
+colliding with it.*
+
+`src/components/StepSlider/index.tsx`
+
+The kit's StepSlider entry is the most closely argued in the whole document: it
+builds the control as a member of the Switch family and gives a reason for every
+number. Four of them do not match.
+
+| | Kit | Package |
+|---|---|---|
+| Track fill | `--surface-card2` | `bg-surface-chips` |
+| Dot, at rest | 6px, `--ink-inactive` (4px at `sm`) | `size-1` = **4px**, `bg-ink-secondary` |
+| Dot, on hover | lifts to `--ink-secondary` | — no hover rule |
+| Width, default | **68px** (`2 + 3×1rem + 2×.5rem + 2`) | `w-20` = **80px** |
+| Hit area | 24×24 via `::before {inset:-4px}` on a 1rem slot | `before:-inset-2` on a 4px dot = **20×20** |
+
+The thumb is right — `size-4` / `size-3` matching Switch's 16/12px, with
+`shadow-thumb`, which is the part the kit cares most about ("the mark grows to
+fill its slot and becomes exactly the paired Switch's thumb"). So the family
+resemblance holds; the rail it sits on does not.
+
+**The dot colour is the one to fix first, because it collapses two states into
+one.** The kit picks `--ink-inactive` deliberately and shows its work: the
+obvious family choice, Switch's `--switch-off-bg`, gives *"1.34:1 on the
+`--surface-card2` rail (1.10:1 dark)"*, and since the dots **are** the other
+steps — the only cue that the control has three positions — WCAG 1.4.11's 3:1
+applies to them. Hover then *"lifts one step along the ink ramp → `--ink-secondary`"*.
+
+The package starts at `--ink-secondary`, which is where the kit's hover ends. So
+the rest state is one step too loud and the hover step does not exist: pointing
+at a dot changes nothing.
+
+**The hit area misses the floor the kit claims it clears.** `before:-inset-2`
+expands 8px around a 4px dot — 20×20, under WCAG 2.5.8's 24×24. The kit reaches
+24 by insetting 4px around a **16px slot**, not around the mark: *"the slot plus
+an invisible `::before` ring clears 24×24 on both axes without changing layout."*
+Same trick as `.swt::before`, which the package did implement correctly (§28 of
+the kit's Switch entry, `-inset-x-1 -inset-y-3`). The gap is that the dot here is
+the mark, not the slot — the constant-slot layer the kit describes was not built,
+which is also why the width came out at 80px instead of 68px.
+
+**The track token matters for one reason the kit names.** `--surface-card2` is
+*"one notch recessed from the popover's Surface/Card"*; `--surface-chips` is a
+step further still. On the composer popover — the shipped consumer — the control
+sits on Surface/Card, so the package's track reads as a deeper well than the
+design intends, and the 4px dots on it are what has to carry the contrast.
+
+None of these are visible in the published Storybook, which predates the
+component's current form; all four were read off the kit's rendered CSS and the
+package source side by side.
+
+---
+
+# `Stepper`
 
 ## 36. New — `StepperIndicator` · **DRAFT**
 
@@ -1238,257 +2706,96 @@ as not-yet-reached. TypeScript catches it in the library; it cannot in a `.jsx`
 prototype, which is an argument for the rail living in the library and not on
 the page.
 
-## 37. Build — `bg-surface-card/85` is a class that compiles to nothing
+---
 
-`.design-sync/gen-classlist.mjs`
+# `Table`
 
-`--surface-card` is an HSL triplet exposed with `<alpha-value>`, so
-`bg-surface-card/85` is valid Tailwind. The enumerated class list does not carry
-it, the bundle therefore has no rule for it, and the element renders with **no
-background at all** — no error, no warning, nothing in `check-bundle-css`,
-because the class was never asked for.
+## 6. `TableHead` — the sort glyph did not hover with its label
 
-This is the §19 failure mode on a different axis: §19 was a *variant* that was
-not enumerated, this is a *modifier*. `_shared/card-scrim` writes the mix by
-hand for that reason.
-
-Not fixed here, because enumerating an opacity ladder for every colour is a
-decision about bundle size rather than a defect: the useful shape is probably a
-short list of steps the system actually uses. Recorded so the next person who
-finds a silently unpainted element has somewhere to look.
-
-## 39. `SidebarMenu` — nav rows 4px apart where the kit says 2
-
-`src/components/Sidebar/SidebarMenu.tsx`
+`src/components/Table/TableHead.tsx`
 
 ```diff
-- 'flex w-full min-w-0 flex-col gap-1',
-+ 'flex w-full min-w-0 flex-col gap-0.5',
+- 'transition-colors hover:text-ink-body',
++ 'group transition-colors hover:text-ink-icon-hover',
 ```
 
-Reported by eye, confirmed against the kit, which states both halves:
+The label moved to `--ink-body` on hover and the chevrons stayed at
+`--ink-inactive`, so a header read as two controls. `group` on the button and
+`group-hover:text-ink-icon-hover` on the glyph move them together.
+
+No press state. A sort commits on click and the feedback is the table
+reordering; a press colour on a control with no box reads as a flicker.
+
+## 42. `TableCell` — a row that could not grow, under a comment saying it could
+
+`src/components/Table/TableCell.tsx`, `.design-sync/gen-classlist.mjs`
+
+Against the published catalog the cell is one clipped line —
+`h-9 whitespace-nowrap p-2 text-xs`. This branch had already replaced that with
+a scoped truncation rule and a comment claiming it only bit under
+`layout="fixed"`; both are quoted below, and the comment was wrong:
+
+```diff
+- // Truncate rather than wrap. In an auto-layout table the column just
+- // widens, so this only bites under `layout="fixed"` — which is exactly
+- // where a long value must not blow its column open.
+- 'overflow-hidden text-ellipsis whitespace-nowrap',
++ '[[data-layout=fixed]_&]:overflow-hidden',
++ '[[data-layout=fixed]_&]:text-ellipsis',
++ '[[data-layout=fixed]_&]:whitespace-nowrap',
+```
+
+`white-space: nowrap` stops text wrapping whatever `table-layout` is in effect.
+Under `auto` the column widened instead and the table scrolled sideways; under
+`fixed` it ellipsised. **A two-line cell was unreachable in both modes** — so the
+row height was always one line plus padding, never the content.
+
+Twelve lines further down the same file says the opposite:
+
+> Height comes from the padding, never from an `h-*` lock — a two-line cell has
+> to be free to grow.
+
+Both comments were in the file at once. The class string won, and nothing
+contradicted it, because a row that never wraps looks deliberate.
+
+### What the reference does
 
 ```css
-.sbx-nav      { display:flex; flex-direction:column; gap:2px; padding:0 8px 16px }
-.sbx-nav-item { height:2rem; padding:0 .5rem; border-radius:.375rem; … }
+table.tbl td { padding: .625rem 1rem; border-bottom: 1px solid var(--stroke-border); color: var(--ink-body) }
 ```
 
-and, in its spacing section, *"Spacing on a 4px step with a **2px fine
-sub-step**"* — so 2 is on the scale, not an exception to it. Everything else on
-that row already matched: 32px height, 8px inset, 6px radius, 16px glyph.
+No `white-space`, no `overflow`, no `text-overflow`. The cell wraps and the row
+grows. Truncation exists in the kit twice, and both are opt-ins next to the thing
+they affect:
 
-4px between 32px rows reads as a list of separate buttons; 2px reads as one
-navigation block, which is what it is. The difference is small per row and
-compounds: seven rows put the account footer 14px lower than the design.
+- `.ds-conn-tbl .ds-conn-cell-desc` — the one description column in the
+  Connections table, with `max-width:0` to make the ellipsis land;
+- `.cp-tbl-scroll table.tbl th, td` — the horizontally scrolling variant, where
+  wrapping would defeat the scroll.
 
-Worth noting **how this was missed**. Both bundles — the one committed and the
-one rebuilt — carry `gap-1`, so this is not a regression and no rebuild
-introduced it; the value has been wrong since the component was written, and the
-kit↔package audit (§21–40) walked components rather than composed screens, where
-a 2px difference in a list of seven is what you actually see.
+### Where the clamp belongs
 
-**Both products.** The kit is the shared reference — Insightis' own sidebar is
-built from `.sbx-nav`, which is already at 2px, so this moves the package
-towards what that product ships rather than away from it.
+`layout="fixed"`, and only there. That mode takes its column widths from the
+first row and never re-measures, which is the case where a long value genuinely
+must not blow its column open — it is also the reason the prop exists (see
+`table-composition.md`). The scope is a descendant selector on the `data-layout`
+attribute the `Table` root already stamps, so the cell needs no new prop and no
+context.
 
-## 41. `TextArea` — the counter row had a slot nothing could fill
+### The enumeration is part of the fix, not an afterthought
 
-`src/components/TextArea/index.tsx`
+`[[data-layout=fixed]_&]:` is an arbitrary variant. Nothing in
+`gen-classlist.mjs` generates that prefix, so all three classes are listed by
+hand — §19's failure mode exactly: un-enumerated, they compile to nothing in the
+`ds-bundle` and a fixed-layout table silently stops truncating, with Storybook
+still showing it working because Storybook compiles from source.
 
-`showCount` (§17) draws the counter into a two-column row whose left half only
-ever held `errorText`. F-25 in the connections PRD wants a standing caveat
-there — *"Do not include passwords, API tokens, or personal data…"* — beside the
-counter, and the component had no way to put it there. So the page turned
-`showCount` off and rebuilt the row by hand:
+### Breaking
 
-```jsx
-<div className="-mt-2 flex items-start justify-between gap-4">
-  <Typography … className="min-w-0 flex-1">{AI_WARNING}</Typography>
-  <Typography … className="shrink-0 whitespace-nowrap tabular-nums">
-    {instructions.length}/4000
-  </Typography>
-</div>
-```
-
-Three utilities and a negative margin to reproduce a row the component already
-draws, and a counter the component already counts — including the
-`aria-live="polite"` the hand-built one lost.
-
-```ts
-hintText?: ReactNode;
-```
-
-It takes the left half, and **yields it to `errorText` when the field is
-invalid**: an error about what you just typed outranks advice about what to
-type. That ordering is the reason it is one slot and not two.
-
-**Both products.** Additive; a `TextArea` without `hintText` renders exactly as
-before. Any field with a limit and a caveat stops hand-building the row.
-
-## 43. `DropdownMenu` — two kinds of row it could not draw · **DRAFT**
-
-`src/components/DropdownMenu/DropdownMenuItem.tsx`,
-`src/components/DropdownMenu/DropdownMenuRow.tsx` (new)
-
-A menu could only draw one kind of row: an item that highlights on hover and
-does something when clicked. Two shapes the kit specifies had nowhere to go, so
-pages built them out of a `Popover` instead.
-
-**`variant="accent"`** — the one row in a menu that *is* the action, such as
-"Choose File" or "Manage Connections":
-
-```
-accent: 'font-medium text-ink-highlight'   // + the same hover/pressed as any row
-```
-
-Ink and weight, on the same rail as everything else. Not a bordered button: at
-4px of menu padding a second edge lands against the divider and outweighs the
-list it belongs to. `--ink-highlight` is Brand-600 on light and Tertiary-400 on
-dark, so one value holds AA in both.
-
-**`DropdownMenuRow`** — a label with its own control (a switch, a badge, a
-counter) or a plain reading. Same `px-3 py-1.5` as an item, so every label in
-the menu shares one left edge. **No hover fill, no pointer cursor** — a hover
-surface promises the row does something.
-
-`DropdownMenuLabel` is not this: it is the 10px caps heading that captions a
-group.
-
-## 45. New — `InputGroupAction` · **DRAFT**
-
-`src/components/InputGroup/InputGroupAction.tsx`
-
-The trailing control of a field: a clear ✕, a password toggle, a unit picker.
-
-A 24px box around the field's own 16px glyph, 8px from the edge, with **no
-surface** — no background, no border, no hover pill. The field already owns
-hover, focus and press, and a second filled box inside it reads as a control on
-top of a control. It answers the pointer with colour instead:
-`--ink-icon` → `--ink-icon-hover`.
-
-```css
-/* the kit's rule, which this is */
-.igrp .igrp-act      { width: calc(var(--icon-md) + 8px); background: none }
-.igrp .igrp-act svg  { width: var(--icon-md) }
-.igrp .igrp-act:hover{ color: var(--ink-body) }
-```
-
-Not `IconButton size="2xs"`: that is the same 24px box with a 14px glyph and a
-hover fill, one step small and one surface too many.
-
-**The field yields its inset to it.** `InputGroup` swaps its own `px-3` for
-`pe-2` when a `data-slot="input-group-action"` is present — a `has-` selector
-rather than a prop, because the markup already says whether there is one.
-Without it the shell's 12px and the action's own box stack, and the ✕ sits
-further from the border than the glyph opposite it.
-
-Used by `Autocomplete` (§62) and by the search field's clear button (§28).
-
-## 46. New — `LinkButton` · **DRAFT**
-
-`src/components/LinkButton/index.tsx`
-
-The kit ships `.link`; the package did not, so "Permissions →" and "Manage
-connections →" were built out of `Button variant="transparent"` — which is a
-control with a hit box and a size ladder, dropped into a card heading it then
-failed to line up with.
-
-```
-text-ink-highlight · font-medium · no underline at rest
-hover:underline · text-underline-offset:25% · text-decoration-thickness:1px
-font-size, line-height and font-family all inherited
-```
-
-The inheritance is the point and is why it is not on the size ladder: a link
-belongs to a sentence or to a heading, and a size of its own is a licence to
-disagree with the line it sits in. The underline sits a quarter of the font-size
-below the baseline so it clears descenders, and is pinned to 1px so it does not
-thicken as the inherited size grows — both straight from the kit's note.
-
-Three tones, because the ink has to survive its background: `brand`
-(`--ink-highlight`, the default — Brand-600 light, Tertiary-400 dark, AA in
-both), `body` (inside copy, highlighting only on hover), `onSolid` (on a brand
-fill, where the highlight would vanish). `asChild` renders a router link or a
-button in its place.
-
-**Both products.** New surface area; nothing to break. Insightis gets, as a
-component, what it has as a class.
-
-**Named `LinkButton`, not `Link`.** It renders an `<a>` but it is a control in
-the kit’s sense — it has hover, focus and disabled states and is often not
-navigation at all (“Select all”). A bare `Link` in a React codebase reads as the
-router’s.
-
-**Two variants.** `standalone` (default) carries no rule until hover — in a
-column of row actions a permanent underline reads as a table of contents.
-`inline` is for a link inside a sentence, where nothing else marks it: the rule
-is always there at **25% of the ink**, and hover brings it to full strength
-rather than adding it. Measured: `color(srgb … / 0.25)`, thickness 1px.
-
-## 47. New — `StatTile` · **DRAFT**
-
-`src/components/StatTile/index.tsx`
-
-A workspace's Overview is three numbers — Users, Connections, Queries — each
-with a caption above and a sentence below. There was nothing to build them
-from, which is how a dashboard ends up with three different number styles on one
-row.
-
-```
-label        overline · Text/Secondary        what you are looking at
-value        title20 (sm) / title24 (md)      the answer
-description  body12 · Text/Secondary          why the answer matters
-```
-
-The order is the reading, and it is fixed: a tile that puts the number first and
-the label under it reads as a score. The value is `tabular-nums`, because a row
-of tiles whose digits are different widths shifts every time the data refreshes.
-
-Sizes are the two rungs the other padded surfaces use — `sm` 16px inset, `md`
-20px — rather than a ladder of its own. `rightSlot` takes a badge or a trend, so
-"3 · 1 not configured" is one tile and not two.
-
-**Both products.** New component, no call sites.
-
-## 48. New — `CodeBlock` · **DRAFT**
-
-`src/components/CodeBlock/index.tsx`
-
-A snippet the user is meant to paste somewhere else, and the button that copies
-it, are one object. Separating them is how a page ends up with a copy control
-that is not obviously attached to anything, and the MCP setup panel needs four
-of these.
-
-`code` is both what is rendered and what is copied, so they cannot drift. The
-confirmation is the control itself — the glyph becomes a tick for two seconds —
-rather than a toast, which is a page-level interruption for something the user
-is already watching happen.
-
-One thing worth knowing: `navigator.clipboard` needs a **secure context**, and a
-page opened from the filesystem is not one. The component falls back to the
-deprecated `execCommand`, so the button keeps its promise instead of silently
-doing nothing. Any product that ships an offline or `file://` surface hits this.
-
-**Both products.** New component, no call sites.
-
-## 49. `AccordionItem` — an item that is its own surface
-
-`src/components/Accordion/AccordionItem.tsx`
-
-```ts
-variant: 'divided' | 'standalone'   // default 'divided'
-```
-
-`divided` is what it always did: `not-last:border-b`, items stacked inside one
-surface. `standalone` drops the rule, for one `Card` per section.
-
-The two are not a style choice. A shut section inside a shared surface reads as
-a gap in that surface; a shut section that IS a card reads as a closed object,
-which is what it is. Without the variant the consumer cancels the divider with
-`border-b-0` on every item — a page overriding a component because the component
-has one layout and the page needs two.
-
-**Both products.** Additive; every existing item keeps the divider.
+A table relying on single-line rows gets taller rows the moment a value wraps.
+Two ways back, and the second is the better one: `layout="fixed"` on the table,
+or `truncate` on the specific cells that should clamp — which is what the kit
+does, and it keeps the decision beside the column it applies to.
 
 ## 50. `TableCell` — pressed belonged to whatever was pressed
 
@@ -1515,76 +2822,6 @@ the press that was lying about what had been pressed.
 
 **Both products.** Strictly narrows when the fill paints; no row loses a state
 it should have had.
-
-## 51. `StatusView` — the illustration is a pack, not a rule — **revised**
-
-`src/components/StatusView/index.tsx`
-
-§18 added `EmptyStateIllustration` and read as though the system had picked the
-artwork. It had not, and should not: `StatusView` takes whatever goes in its
-`icon` slot — a lucide glyph, one of these, or a product's own drawing — and
-that was already true before §18.
-
-What was actually missing is that **one picture cannot say two things**. "There
-is nothing here yet" and "your search matched nothing" are different states, and
-a list that shows the same artwork for both is telling the user the query made
-no difference. So the pack is two:
-
-| | |
-|---|---|
-| `EmptyStateIllustration` | three list rows fading out — the shape of the list that is missing |
-| `EmptySearchIllustration` | a search field with a query in it, over two dashed empty rows |
-
-The magnifier in the second one is **part of the depicted field**, not a symbol
-standing in for "not found" — which is the objection §18 raised against using a
-magnifier as the whole picture, and it still stands.
-
-Every colour is a token, so both re-theme with the page and neither needs a dark
-variant.
-
-## 52. New — `MetaRow` · **DRAFT**
-
-`src/components/MetaRow/index.tsx`
-
-The line above a list — "5 connections · Select all", and the Delete that
-appears once something is ticked. Every list in both products has one, none of
-them came from anywhere, and so no two of them agreed on the distance to the
-list underneath.
-
-It is deliberately **not** a toolbar. No background, no border, no card: the
-row belongs to the list under it, and a surface of its own turns it into a
-strip that sits *above* the list rather than introducing it. Everything in it
-reads at one typographic level, so it is one sentence rather than three
-controls that happen to share a line.
-
-**The spacing contract is the reason the component exists**, and it has two
-halves:
-
-| | |
-|---|---|
-| the row's own padding | 6px top and bottom |
-| **minimum height** | **44px** |
-| between the row and the list | **4px**, as a stack gap |
-| outer margin | **none** |
-
-A gap on the stack, not a margin on either, and **never both** — a row with its
-own padding, a margin under it and a gap around it is three answers to one
-question, which is exactly how this distance drifts from page to page.
-
-The 44px floor is not decoration. 44px is the height the row has **with**
-actions in it — a 32px `sm` button plus the padding — so the row is already
-that tall when empty and the list does not jump the moment a selection appears.
-A shorter floor was tried first and did exactly that.
-
-**`onClear` is part of the component, not something each page adds.** A
-selection changes what the row says and what the list under it means, so the
-row that announces the selection is also the row that ends it; the alternative
-is untick-every-row. It renders at the very end, outside `MetaRow.End`,
-because everything in that cluster *acts on* the selection and leaving one is
-not one of those actions.
-
-**Both products.** New component, no call sites. Insightis has the same row in
-CSS; this is where it becomes a part.
 
 ## 53. `TableHead` — a column width is a share, not a size
 
@@ -1689,33 +2926,8 @@ carries for its fills.
 **Both products.** Additive; a row without the prop is the row it always was.
 Shipped in parallel as `table.tbl tbody tr[data-nested] td` in the kit and
 recorded in the prod migration report
-(`Insightis/reports/2026-09-19-prod-interaction-states-migration.md`) — zero
+(`Insightis/legacy-html/reports/2026-09-19-prod-interaction-states-migration.md`) — zero
 visual delta, since the only rows carrying it today already had the 8px.
-
-## 55. `DropdownMenu` — a link may open a menu · **DRAFT**
-
-`src/components/DropdownMenu/DropdownMenu.md`, `changes/Harness.tsx`
-
-**Nothing in the library changed.** `DropdownMenuTrigger asChild` already
-accepts any child and `Link` already inherits its font-size from the line it
-sits in. What is new is the statement that this is allowed, and the two rules
-that go with it — one menu whatever the handle, and the state glyph outside the
-trigger, because it marks the row rather than the destination.
-
-**Why it is marked draft.** It is written down for one of three design concepts
-for the Connections list. The concept that keeps a Workspaces *column* hangs
-the menu off a disclosure control and has no use for this; the concept that
-carries the answer as a sentence under the connection's name has no other
-handle that fits. If that concept is not chosen the section goes and nothing
-else moves, so nothing should be built on it meanwhile.
-
-The storybook harness gained a `draft` state for exactly this
-(`changes/Harness.tsx`), distinct from `proposed`: a proposal has not been
-made yet, a draft has — what is undecided is whether it gets to stay. It paints
-on the attention tokens, which is what this system already uses for "needs a
-decision".
-
-**Both products.** Documentation and a storybook state; no component code.
 
 ## 56. `Table` — `density` · **DRAFT**
 
@@ -1743,326 +2955,131 @@ why this is a prop and not a new number for everybody.
 chosen yet. Nothing changes for any existing table, since `comfortable` is
 what they all render today.
 
-## What this round did **not** change, and why
+## 76. A clickable row kept the text cursor
 
-- **`ScrollShadow` and `scrollbar-gutter`.** The prototype reserves the
-  scrollbar gutter on its own scroll container. That is page layout, not a
-  component override — and `ScrollShadow` also paints edge shadows the container
-  does not want. Left on the page.
-- **`DropdownMenuContent` / `TooltipContent` / `SheetContent` exit animations.**
-  Same missing fill mode as §34, no reported symptom. Changing three more
-  floating surfaces on the strength of one measurement is how a fix becomes a
-  regression.
-- **`Badge size="sm"` radius.** Archived — the request against `Badge` was the hairline, and this was never part of it.
-  Out of scope for a round that was about where components come from.
+`data-interactive` on `TableRow` is how a table says a row opens something, and
+it already carried three fills: hover, pressed and focus, all painted on the
+cells because a `<tr>` background renders under every `<td>`. It carried no
+**cursor**. So the one row state whose entire meaning is "this is pressable"
+answered the pointer with a text caret: the fill said pressable and the cursor
+said selectable text, on the same pixel.
 
-## 57. `Checkbox` — the tick and the bar were two different weights
+It went unnoticed because consumers documented it as though it were there — the
+connections list has a comment promising "`data-interactive` — the hover fill
+and the pointer cursor" — and no rule emitted one.
 
-`src/components/Checkbox/Checkbox.tsx`, `Insightis/pages/kit-theme.css`
+`data-[interactive]:cursor-pointer` on the row, and the class enumerated in
+`gen-classlist.mjs`: the `cursor-*` cross there carries `disabled:` and nothing
+else, so a `data-[…]` variant of it is never compiled unless it is named (§19).
+
+On the row rather than on the cells, unlike the fills: a cursor is not painted,
+so it inherits, and the row is the thing being described.
+
+---
+
+# `Tabs`
+
+## 8. `TabsContent` — the inactive panel came back as an empty box
+
+`src/components/Tabs/TabsContent.tsx`
 
 ```diff
-- <span className="… h-0.5 w-2.5 …" />   /* 2px */
-+ <span className="… h-[1.5px] w-2.5 …" /> /* 1.5px */
++ 'data-[state=inactive]:!hidden',
 ```
 
-The tick is a 12px lucide glyph at `strokeWidth={3}`; in a 24-unit viewBox that
-renders at **1.5px**. The indeterminate mark was not a glyph at all — it was a
-`<span>` — and it took `h-0.5`, the nearest step Tailwind offers, which is
-**2px**. One control, two states, two weights.
+Radix hides the inactive panel with the `hidden` attribute — a UA-stylesheet
+`display:none`, which any display class from the consumer (`flex`, `grid`)
+beats. The panel came back as an empty block and pushed the active one down.
 
-Equalising the numbers was not enough: at 1.5px the bar then read **thinner**
-than the tick. A diagonal stroke with a round cap antialiases across more pixels
-than a rectangle of the same height, so the two are only comparable if they go
-through the same renderer. The bar is now drawn as a stroke — same viewBox, same
-`stroke-width: 3`, same cap — with `M2 12h20`, which is 10px long at this size,
-the width the bar always had. (Lucide’s own `Minus` is `M5 12h14` = 7px.)
+## 26. `Tabs` — no flush tabset, so two rules stack
 
-1.5 rather than 2, because the bar follows the tick, and the tick’s weight is
-the checkbox’s own — a mark below 16px keeps the weight its component gives it
-(§92) — while the bar’s 2px came from a spacing scale that has no 1.5 step. `h-[1.5px]` is an
-arbitrary value on purpose — the alternative is to bend the glyph to the
-spacing scale, which would make one checkbox heavier than every icon beside it.
+`src/components/Tabs/TabsList.tsx`
 
-**The kit had the same mismatch**, and for the same reason: its tick is
-`<svg width="12" stroke-width="3">` and `.cbx.is-indeterminate::before` was
-`height:2px`. Both are 1.5px now.
+`TabsList` always carries `border-b`. The kit adds `.tabset.var-flush`, which
+drops it:
 
-## 58. `DataSourceCard` — the tile could be narrower than its own action
+```css
+.tabset.var-flush { border-bottom-style: none; }
+```
 
-`src/components/DataSourceCard/index.tsx`
+Its reason is the common layout, not an exotic one — tabs on the left, controls
+on the right, inside a row that already draws its own hairline. *"Without it the
+two rules stack into a 2px edge."* The DS Connections tab row is the shipped
+case. A `bordered` boolean variant on `TabsList` covers it.
 
-The scrim that reveals **Connect** was `absolute inset-0`, and an absolutely
-positioned child contributes nothing to its parent’s intrinsic size. So the
-tile’s minimum width was set by a connector name — “DB2” — while the thing that
-has to fit inside it is a 104px button. On the narrow steps of the catalog grid
-the action reached the tile’s edges, and the first fix was a 16px gutter on the
-scrim, which moved the clipping rather than removing it.
+---
 
-The two layers now stack in one grid cell (`[grid-area:1/1]`) instead of one
-floating over the other, so the action counts:
+# `TextArea`
 
-| | before | after |
-|---|---|---|
-| tile min-content width | the connector name | **122px** = the action + 8px either side |
-| does the grid respect it | — | `min-w-fit`, because Tailwind’s `grid-cols-N` is `minmax(0, 1fr)` and a track may shrink below its item’s min-content |
-| scrim gutter | 16px | **8px**, the kit’s |
-| width above the minimum | `w-full` | `w-full` — unchanged, the grid decides |
+## 17. `TextArea` character counter
 
-Measured in `Components/DataSourceCard → CatalogGrid`. 8px rather than 16 is
-the kit’s number; the minimum is not a number at all any more but the action’s
-own width plus that pair, so a longer `connectLabel` moves it without anybody
-editing a constant.
+`src/components/TextArea/index.tsx`
 
-> **Why this is its own component and not a `Card` variant.** `Card` is a
-> surface: five variants, all of them a box with padding and a border. A
-> catalog tile is a *control* — a `<button>` with a hover scrim, a revealed
-> action, a popular badge and a fixed 8rem height — and putting it behind
-> `Card variant="tile"` would mean `Card` renders a button for one of its six
-> values and a div for the other five. The two do share their lift recipe, and
-> that is the part worth keeping in sync by hand.
+There was none, so pages wrote it by hand: "0 characters / 4000 max".
 
-## 59. `liftOnHover` — one elevation recipe instead of two copies
+```tsx
+<TextArea label="AI instructions" maxLength={4000} showCount />
+```
 
-`src/lib/utils.ts`, `src/components/Card/index.tsx`,
-`src/components/DataSourceCard/index.tsx`
+- **Digits only — `0/4000`.** A worded phrase reads as a sentence, and a screen
+  reader re-reads it on every keystroke. `0/4000` is a readout: the eye catches
+  the changing number without parsing words around it.
+- `tabular-nums`, so the number does not jitter as digit widths change.
+- Error text and counter share one line under the field — both describe the same
+  field, and a separate line would shift the next field down on every appearance.
+- Works controlled (measured from `value`, so a programmatic change updates it)
+  and uncontrolled (`defaultValue` plus internal state).
 
-The lift — border tints toward brand, shadow grows, box rises — was written out
-twice: once in `Card` `elevated`, once in `DataSourceCard`. Three classes each,
-and two chances to change the shadow in one of them.
+## 30. `TextArea` counter — one ink step too loud
+
+`src/components/TextArea/index.tsx`
+
+```diff
+- <Typography variant="span" textColor="secondary" …>
++ <Typography variant="span" textColor="inactive" …>
+```
+
+The kit: *"`.ta-count`, Body 12 in `--ink-inactive`, right-aligned, 4px above."*
+Everything else matches — `text-xs`, `gap-1`, `ms-auto`, `aria-live="polite"`,
+digits only. Only the ink step is off, and it is the step that decides whether
+the counter reads as *information about the field* or as *part of the field's
+content*. `--ink-secondary` is the hint's own colour; §9 moved the label up
+precisely so the hint would be subordinate, and the counter should sit below the
+hint, not beside it.
+
+## 41. `TextArea` — the counter row had a slot nothing could fill
+
+`src/components/TextArea/index.tsx`
+
+`showCount` (§17) draws the counter into a two-column row whose left half only
+ever held `errorText`. F-25 in the connections PRD wants a standing caveat
+there — *"Do not include passwords, API tokens, or personal data…"* — beside the
+counter, and the component had no way to put it there. So the page turned
+`showCount` off and rebuilt the row by hand:
+
+```jsx
+<div className="-mt-2 flex items-start justify-between gap-4">
+  <Typography … className="min-w-0 flex-1">{AI_WARNING}</Typography>
+  <Typography … className="shrink-0 whitespace-nowrap tabular-nums">
+    {instructions.length}/4000
+  </Typography>
+</div>
+```
+
+Three utilities and a negative margin to reproduce a row the component already
+draws, and a counter the component already counts — including the
+`aria-live="polite"` the hand-built one lost.
 
 ```ts
-export const liftOnHover = (distance: 1 | 2 = 1) => cn(
-  'transition-[box-shadow,border-color,transform] duration-base',
-  distance === 1 ? 'hover:-translate-y-px' : 'hover:-translate-y-0.5',
-  'hover:border-card-lift-border hover:shadow-lift-hover'
-);
+hintText?: ReactNode;
 ```
 
-The distance is a parameter because it is the one part that legitimately
-differs — the kit lifts a catalog tile 1px and a larger card 2px, since the
-same travel reads bigger on a smaller box. Everything else is fixed.
+It takes the left half, and **yields it to `errorText` when the field is
+invalid**: an error about what you just typed outranks advice about what to
+type. That ordering is the reason it is one slot and not two.
 
-`Card` changed behaviour slightly with it: `transition-all` became the scoped
-list the tile already used. A card that animates every property also animates
-its own content reflowing.
-
-**Not a component.** The two are not the same thing — `Card` is a `<div>`
-surface, the tile is a `<button>` with a hover scrim and a revealed action — so
-the shared part is a recipe both import, not a base component both extend.
-
-## 60. `Card` — two variants had no box, and one had a shape a card cannot take
-
-`src/components/Card/index.tsx`
-
-**Padding.** `secondary` and `outline` draw `flex flex-col gap-3 p-4`.
-`elevated` and `ghost` drew neither layout nor padding — so the card that lifts
-on hover was the one every page had to pad itself, and an `outline` card beside
-an `elevated` one sat on a different inset. Both now carry the same box.
-`ghost` also had `items-center justify-center` with no `flex` for them to act
-on; they work now.
-
-**`rounded="full"` removed.** A pill is a shape for something whose height is
-its own — a chip, an avatar. On a card it makes the corner radius a function of
-how much text the card happens to hold, and the 40px sample in the radius story
-showed exactly that. The step was added on this branch, so nothing published
-loses it.
-
-## 61. `DataSourceCard` — the popular flame is gone
-
-`src/components/DataSourceCard/index.tsx`
-
-The `isPopular` prop, the inlined `FlameMark` and the 18px ring it sat in are
-removed, with the `Popular` story. The tile is a connector and its name; a
-second mark on the logo was an editorial signal the catalog does not need.
-
-It also took the last positioned element out of the content layer, which is
-what had made the scrim ordering fragile.
-
-## 62. `Autocomplete` — the clear and the chevron painted as placeholders
-
-`src/components/Autocomplete/index.tsx`
-
-Both controls were `IconButton asChild`, which renders the child instead of a
-button — so what reached the addon was a bare `<svg>`, and the addon’s rules
-read that literally. `[&>svg]:text-ink-inactive` is the DECORATIVE glyph rule,
-while `[&>button]:text-ink-secondary` and its hover step matched nothing at
-all. Two clickable controls painted at the placeholder step and never answered
-the pointer. Measured: `rgb(124 140 162)` — `--ink-inactive`.
-
-Both are `InputGroupAction` now (§45), which is also a real `<button>` under
-the `aria-label`: an `<svg>` with a label and a click handler is not a control
-to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
-`--ink-icon`, and no bare `svg` left as a direct child of the addon.
-
-Separate from §22, which lists Autocomplete for a different defect — its
-disabled option still fades at `opacity-50`.
-
-## 63. `Tooltip` — the delay before it opens
-
-`src/components/Tooltip/index.tsx`
-
-`TooltipProvider` was a bare re-export of Radix’s, so the delay was whatever
-each call site passed: 200ms in `ModalContent` and three stories, 500ms in the
-sidebar rail, and Radix’s own 700ms anywhere a consumer forgot.
-
-It now defaults to **300ms**, the kit’s value — `[data-tip]` opens on
-`transition: opacity .12s .3s`. At 200 the bubble appears while the pointer is
-still crossing the row; at 700 it reads as never coming.
-
-The three 200s are removed so they take the default. The sidebar keeps 500:
-there the pointer crosses eight icons on the way to one.
-
-Unchanged, and worth knowing: the bubble itself is not a transition but a
-`tailwindcss-animate` keyframe — 150ms `ease`, `fade-in-0 zoom-in-95` plus an
-8px slide from the trigger’s side. That 150 is the plugin’s default, not
-`--motion-*`.
-
-## 64. `SidebarContent` — the nav column had no gutter
-
-`src/components/Sidebar/SidebarContent.tsx`
-
-```diff
-- 'flex min-h-0 flex-1 flex-col gap-2'
-+ 'flex min-h-0 flex-1 flex-col gap-2 px-2 pb-4'
-```
-
-Nothing between the sidebar edge and a row button supplied a horizontal inset,
-so the nav sat on 8px while §10 had moved the brand mark to 16. The catalog
-story hid it by giving its own wrapper `p-2`, which meant the story certified a
-rail the library does not draw.
-
-Measured after: the row fill starts 8px from the edge and the glyph lands on
-16 — the brand mark’s line, and what the product renders.
-
-## 65. `Badge` — a fixed-height pill whose label could wrap
-
-`src/components/Badge/index.tsx`
-
-```diff
-  'inline-flex items-center border border-badge-border',
-+ 'whitespace-nowrap overflow-hidden',
-```
-
-```diff
-- <span className="inline-block align-text-top leading-none">
-+ <span className="inline-block min-w-0 truncate align-text-top leading-none">
-    {children}
-  </span>
-```
-
-with `leftSlot` and `rightSlot` wrapped in `shrink-0` spans, as the dot and the
-delete control already were.
-
-Every size sets the height (`xs`/`sm` 20px, `md` 28px, `lg` 32px, `xl` 36px), so a
-label that wraps does not make the pill taller — the second line is drawn
-outside it, across the border and whatever sits below. Found on a dashboard
-tile: `1 not configured` in a 213px tile broke across two lines and the chip
-read as a rendering fault.
-
-`Badge.md` already carried the rule in prose — "keep the label to one or two
-words; a chip that wraps is a sentence wearing a chip's clothes" — which holds
-only while the author can see the narrow case. A three-digit count, a longer
-locale or a column the page did not size is exactly where they cannot.
-
-**When a badge does not fit, the one allowed outcome is a truncated label.** Not
-a second line, and not text running out over the neighbour: `nowrap` alone would
-have swapped one broken frame for another. `overflow-hidden` is what makes the
-pill able to give way at all — a flex item's automatic minimum size is its
-content width until the item hides its overflow, and then it is 0 — and
-`truncate` on the label span puts the ellipsis inside the border. The glyphs
-hold their size, so a squeezed chip reads `⚠ Not config…`, never half a glyph.
-
-The ellipsis is a fallback, not a layout: it says the label wants shortening or
-the column widening, and a badge whose text can be cut should carry `tooltip`.
-
-## 66. `Button` / `IconButton` — a switched-off control lit up under the pointer
-
-Reported plainly: *"a disabled button cannot hover."* It did. `:hover` matches a
-disabled button — it is not focusable and it does not fire, but it is still hit
-by the pointer — and each variant's hover recipe was a plain `hover:` utility,
-so a disabled Secondary took the hover border and the hover fill and then sat
-there looking pressable with an inactive label.
-
-Every variant now switches its own hover recipe off again, at the same
-specificity the state deserves: `disabled:hover:*` is `:disabled:hover`, three
-compound selectors against `hover:*`'s two, so the disabled recipe wins without
-`!important`.
-
-**Not `disabled:pointer-events-none`**, which is the one-line version of this
-fix and would have been wrong. A disabled control is exactly the one that needs
-a tooltip saying why it is disabled, and a tooltip needs the pointer events it
-would have removed — the same reason the `aria-disabled` form of these variants
-is the one that carries `pointer-events-none`, where the control keeps focus and
-a screen reader reads the reason instead.
-
-`cursor-not-allowed` stays on both forms, and now means something: the cursor is
-the only thing that changes under the pointer.
-
-## 67. `PageHeader` — `condensed` · **DRAFT**
-
-A header that stays on screen while the page scrolls spends window on a line
-already read. On a 900px window — the minimum this product supports — the
-72px header plus a 32px window bar is a fifth of the height, in front of the
-form the person came for.
-
-`condensed` is the same row at 40px: `py-2.5` instead of `py-5`, and the `h1`
-at `title16` instead of `title24`. The back control, the title cluster and the
-actions keep their columns, so it is a shrink and not a relayout — nothing moves
-sideways as it changes, which is what would have made it read as two different
-headers.
-
-The padding transition is animated (`duration-fast`) because the row is on
-screen while it changes; the type is not, because a font-size transition is a
-reflow every frame to smooth one 8px step.
-
-**The consumer decides when.** The component has no scroll listener and should
-not: which element scrolls is the page's fact, not the header's. A page that
-does not scroll has no use for the prop.
-
-**The back arrow steps down with the title.** The docblock's rule is that the
-arrow is sized against the TITLE and not against the row, so `condensed` takes
-it from a 36px box with a 24px glyph to 32/16 — beside 16px type a 24px arrow
-stops reading as the title's own control and starts reading as one that outgrew
-it. Measured: full 24px title / 36px box / 24px glyph / 76px header; condensed
-16 / 32 / 16 / 52.
-
-Draft because the flow it was built for is a concept: if that concept is not the
-one chosen, this state is not needed either.
-
-## 68. `SidebarBrand` — the collapsed state was undefined
-
-The brand row had no answer for `collapsible="icon"`. At 32px wide it cannot
-hold a 20px mark, a product name and a 24px control, so all three stayed and the
-row overflowed its own column — the mark pushed off the icon grid the navigation
-rows below it sit on.
-
-Collapsed, the row now keeps its **trailing control**, centred, and hides the
-leading cluster. Which survives is not arbitrary: in that state the control is
-what the row is for — it is the way back out of a collapsed sidebar — while the
-name is the part the width was taken from. It is the same trade
-`SidebarMenuButton` already makes when it drops its label and keeps its icon.
-
-Two classes, on the component rather than on the page:
-`group-data-[collapsible=icon]:justify-center` and
-`group-data-[collapsible=icon]:[&>*:first-child]:hidden`. They belong here for a
-reason beyond tidiness — **a page cannot add them**. The bundle compiles only
-the utilities the components name (§19), so a consumer writing
-`group-data-[collapsible=icon]:hidden` on its own markup gets a class with no
-CSS behind it, which is what the AI connectivity prototype had: labels that were
-supposed to disappear when the sidebar collapsed, and did not.
-
-## 69. `AccordionTrigger` — `size` · **DRAFT**
-
-One size, `text-sm`, which is right for an accordion inside a card and wrong for
-an accordion that IS the section. In the connection form each settings group is
-its own card with the trigger as its heading, so the heading of a section read
-one step smaller than the `title16` headings of the sections around it — the
-reviewer's note was that the section names had to be *more prominent*.
-
-`size="md"` puts the trigger on `text-base`, matching `title16`. `sm` stays the
-default, so nothing that exists changes.
-
-Draft for the same reason as §67: it exists for one concept's form.
+**Both products.** Additive; a `TextArea` without `hintText` renders exactly as
+before. Any field with a limit and a caveat stops hand-building the row.
 
 ## 70. `TextArea` — the hint under a field was 500, and nothing asked for it
 
@@ -2085,132 +3102,26 @@ prop and every one of its values carries a weight. `variant="span"` reads like
 "render a span" and means "render medium 14px". Use `element` for the tag and
 `textStyle` for the type, and the two cannot drift.
 
-## 71. `Modal` — `size="xl"` · **DRAFT**
+---
 
-The ladder stopped at `lg`, 36rem, described as "for a multi-step wizard" —
-which is a column of fields, the widest thing a form needs. A dialog holding
-a **tree** or a **table** is not that: a row of the connection-scope tree
-carries a disclosure, a name, a row count and a two-state control, and the
-control alone is 150px. At 36rem the table names truncated to one word.
+# `Toast`
 
-`xl` is 56rem — the same ratio step as 30 → 36 — and still leaves a page
-gutter on a 1280px window, which is inside the 900px minimum this product
-declares only because the dialog caps at the viewport anyway.
+## 31. The toast close button is off the 24px ladder
 
-It is a last resort, and the docblock says so: a surface this wide covering
-the page is usually the sign that the thing belongs on a screen of its own.
-The case for using it has to say why the context behind must not be lost.
+`src/components/Toast/ToastMessage/index.tsx`
 
-`--modal-w-xl` in `globals.css`, `max-w-modal-xl` in the preset, and the class
-listed in `gen-classlist.mjs` — a `max-w` the enumeration does not know about
-compiles to nothing (§19), and the ladder is enumerated by name.
+The kit's `IconButton` section enumerates what lives on the `2xs` rung: *"the row
+kebab `[data-kbp]` (chats, files, metrics, connections, sidebar), `.toast-x`,
+`.sht-x`"*. `Sheet` already took it — `variant="tertiary" size="2xs"`, with a
+comment saying so. `Toast` did not:
 
-### And a height it cannot pass
+```
+<IconButton variant="transparent" size="sm" className="mt-0.5 shrink-0 text-ink-body">
+```
 
-Widening the ladder made the other axis the problem: a dialog holding a tree
-grows with its content, and `ModalContent` had `max-h-[90dvh]` — 10% of the
-window left over, split between two ends, so on a 900px window the dialog
-stopped 45px short of each edge and read as a page with a hairline round it.
-A dialog has to be visibly ON something.
-
-`--modal-max-h: 80dvh` in `globals.css`, `maxHeight: { modal: … }` in the
-preset, `max-h-modal` on `ModalContent`, and `modal` in the `max-h` cross in
-`gen-classlist.mjs`. Measured on a 900px window: 720px, with the tree
-scrolling inside its own body. The arbitrary value had to go for the same
-reason `max-w-[56rem]` could not stay — `max-h-[90dvh]` is not enumerated, so
-it compiled to nothing and the cap was never applied at all.
-
-`dvh`, not `vh`: on a window whose chrome can retract, `vh` measures the
-larger state and a dialog sized against it is clipped in the smaller one.
-## 72. The collapsed rail was never finished
-
-Reported from the catalog's own `Collapsed Icon` story, where the product name
-ran straight across a 48px rail and over the page behind it. Three things, one
-cause: the rail had been given its width and nothing else.
-
-**Nav rows had no tooltip.** `SidebarMenuButton` has carried a `tooltip` prop all
-along — it renders the label to the side and hides it unless the sidebar is
-collapsed — and `SidebarNavigationItems` passed it on none of the three rows it
-can render collapsed. So the one state where a row has no label was the state
-with nothing to supply one. Every collapsed row now passes its own title.
-
-**The delay was overridden to 500ms.** `SidebarProvider` wrapped the shell in
-`TooltipProvider delayDuration={500}`, with no note saying why. The package's
-own value is 300, the kit's. A collapsed rail has the strongest claim on the
-shorter one: the tooltip there is not extra information about the row, it is the
-name of it. The override is gone.
-
-**The header leaned 4px right of its own column.** `SidebarHeader` carries
-`ps-4 pe-2` — correct expanded, where the mark lines up with the nav glyphs.
-Collapsed, an asymmetric inset in a 48px rail stops being an inset: it put the
-surviving control's centre on 28 while every nav glyph below centres on 24.
-`group-data-[collapsible=icon]:px-2` makes it the same 8px gutter the nav column
-uses. Measured after: both on 24.
-
-**The story was the fourth thing, and it is why none of this showed.** The
-catalog's header row was a hand-rolled `div` with its own `px-2` and an `h5`,
-not `SidebarBrand` — so it stacked an inset on `SidebarHeader`'s own and had
-nothing to hide its label with, which is the overflow in the report. A story
-that does not use the part cannot demonstrate the part. It uses `SidebarBrand`
-now, with `SidebarTrigger` as the trailing control, which is the shape §68
-defined.
-
-## 73. `SegmentedControlTrigger` — `tone` · **DRAFT**
-
-The control had one selected state: a raised card-tone pill. That is right
-when the two options are alternatives of the same kind — Read / Read & write,
-Light / Dark, Create / Edit — where which half is selected means nothing
-beyond "this one".
-
-It is not right when the control states a **fact with a consequence**.
-Included / Excluded on a row of a connection-scope tree is the case that
-raised it: a column of forty of those is read down at a glance, and with a
-neutral pill on every row the reader has to parse the label on each one to
-find the exceptions — which is the only reason anybody scans a scope.
-
-`tone="positive"` fills the selected half `--fb-green`, `tone="negative"`
-fills it `--fb-red`, both with `--content-on-solid` and no pill shadow. Both
-fills are theme-independent, like the destructive button: one green and one
-red in both themes, so there is no `dark:` pair to keep in step.
-
-**The tone is on the TRIGGER, not on the control.** Only the option itself
-knows whether it is the permissive one; a control-level prop would have to be
-told which of its children means "yes". Unselected, both tones are the same
-neutral text as any other trigger — the colour is the answer, not the offer.
-
-Listed in `gen-classlist.mjs`, because `CV` carries
-`data-[state=open|on|checked]` and not `active`, which is the state Radix Tabs
-stamps — a new colour on that state compiles to nothing otherwise (§19).
-## 74. The focus ring a closed menu left behind
-
-Reported from the connections list: open a row’s Workspaces menu with the
-mouse, close it, and the trigger is left wearing a focus ring — on one row of
-a table nobody is navigating with the keyboard, until the next click somewhere
-else. It reads as "this row is selected", which is a state that column already
-uses for something else.
-
-Radix returns focus to the trigger when an overlay closes, and it has to: a
-keyboard user who opened a menu from a row must land back on that row. It does
-it with a programmatic `focus()`, and Chrome answers a programmatic focus with
-`:focus-visible` — so the ring appears whether or not a keyboard was ever
-involved. The browser’s own heuristic is what is wrong here, which is why no
-stylesheet can fix it after the fact: by the time the ring is painted, the two
-cases are indistinguishable in CSS.
-
-So the component asks the question the heuristic cannot: `lib/focus-modality`
-keeps one boolean — was the last interaction this document saw a keystroke or a
-pointer — from a capture-phase `keydown`/`pointerdown` pair (modifier-only
-presses do not count, or holding Shift before a click would make that click a
-keyboard interaction). `DropdownMenuContent` now defaults `onCloseAutoFocus` to
-restoring focus **only for the keyboard**; for the pointer it calls
-`preventDefault`, which leaves focus where the click put it and no ring. A
-consumer’s own handler runs first and its `preventDefault` still wins.
-
-Kept deliberately narrow: this is the surface where it was reported, and the
-helper is exported so `Modal`, `Popover` and `Select` can take the same
-default when each one is looked at. `Autocomplete` already prevents the
-restore outright — which is the right answer for a field that keeps its own
-focus, and the wrong one for a menu on a table row.
+`transparent` has no box, so it has no hover pill and no press state; `size="sm"`
+is 32px, off the rung; `mt-0.5` and `text-ink-body` are the bespoke corrections
+that having neither forces. Matching `Sheet` deletes all three.
 
 ## 75. A stack of toasts, each a different width
 
@@ -2227,334 +3138,266 @@ so it fell through to fitting its content. `createToast` now passes
 `style: { width: var(--width) }`, so the Toaster keeps ownership of the number
 and an explicit `width` option still overrides it.
 
-## 76. A clickable row kept the text cursor
+Still open, same file: the kit's stack gap is 10px (`.toast-stack{gap:.625rem}`)
+where the `Toaster` passes `gap={8}`.
 
-`data-interactive` on `TableRow` is how a table says a row opens something, and
-it already carried three fills: hover, pressed and focus, all painted on the
-cells because a `<tr>` background renders under every `<td>`. It carried no
-**cursor**. So the one row state whose entire meaning is "this is pressable"
-answered the pointer with a text caret: the fill said pressable and the cursor
-said selectable text, on the same pixel.
+---
 
-It went unnoticed because consumers documented it as though it were there — the
-connections list has a comment promising "`data-interactive` — the hover fill
-and the pointer cursor" — and no rule emitted one.
+# `Toggle`
 
-`data-[interactive]:cursor-pointer` on the row, and the class enumerated in
-`gen-classlist.mjs`: the `cursor-*` cross there carries `disabled:` and nothing
-else, so a `data-[…]` variant of it is never compiled unless it is named (§19).
+## 32. `ghost` — one of the three "unrelated" ones is not
 
-On the row rather than on the cells, unlike the fills: a cursor is not painted,
-so it inherits, and the row is the thing being described.
+`Button`'s `ghost` was removed in favour of `tertiary`, and the changeset says
+`Card`, `CardIcon` and `Toggle` keep their own **unrelated** `ghost`. Two of
+those are unrelated. `Toggle`'s is the removed variant under another name:
 
-## 77. The one control on a catalog tile could not be hovered
+| | |
+|---|---|
+| `Button` `tertiary` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `pressed:bg-state-pressed` |
+| `Toggle` `ghost` | `border-transparent bg-transparent text-ink-body` · `hover:bg-state-hover` · `active:bg-state-pressed` |
 
-`DataSourceCard` reveals its `Connect` action on hover inside a scrim, and the
-scrim is `pointer-events-none` so the tile itself stays the click target. The
-action inherited that, so the only button in the system that stayed completely
-flat under the cursor was the one the whole tile exists to offer. Reported as
-*"why is there no hover on the buttons"*.
+Class for class the same, except `active:` where `Button` uses `pressed:`.
+`Toggle` sits on the same variant scale, so a consumer reads in `Button.md` that
+the name does not exist and finds it on the sibling meaning what it used to.
 
-`pointer-events-auto` on the action. It is still not the click target — a
-click on it bubbles to the tile, which is the button, and it keeps
-`tabIndex={-1}` and stays a `<span>` because a button inside a button is
-invalid. All it takes back is the pointer, which is all a hover state needs.
+**To do:** rename to `tertiary`, switch `active:` → `pressed:`.
 
-## 78. A list item that could only ever be one line
+`Card.ghost` stays: it is the dashed "browse more" tile — an empty slot that
+adds the thing the grid is full of — and `CardIcon.ghost` is its icon well.
+`Card.md` describes it as a drop target, which is a different component
+(`DropZone`); that line is what needs fixing, not the variant.
 
-`Card variant="row"` is the product’s clickable list item, and it carried `h-11`.
-44px is right for the row it was drawn from — one line of `text-sm` — but a fixed
-height states it as a ceiling as well as a floor, so the first consumer with a
-name over a description had two bad choices: clip, or argue the component out of
-its own height at the call site. The connection form did the second, with
-`h-auto min-h-11 items-start py-3` — three layout classes to undo one.
+---
 
-The size is **padding** now: `px-4 py-3`, and no height at all. One line of
-`text-sm` is 20px, plus 12 above and below, is the same 44 — so nothing that used
-the row before changes height — and two lines grow to 64 instead of being cut off.
-A list item does not know how many lines its consumer has; it knows how much air
-belongs around them.
+# `Tooltip`
 
-The horizontal inset is its own decision and it is 16, not the 12 the fixed-height
-version carried: 12 read as tight the moment the row held two lines, and 16 is
-where text starts from the edge in every other card in the system.
+## 13. `Tooltip` — the arrow put the gap off the 4px scale
 
-Nothing else in the variant changes: the pointer, the hover fill, the focus ring,
-the press scale and the `:has()` guard that keeps the press off the card while a
-button inside it is pressed or its menu is open are what make this a component
-rather than a bordered div, and they are why the call site should not have been
-reaching for its own box in the first place.
+`src/components/Tooltip/TooltipContent.tsx`
 
-## 79. New — `UploadTray` · **DRAFT**
+Radix's default arrow is 10×5 and is drawn **into** the `sideOffset` gap rather
+than beside it. The distance a reader sees is `sideOffset - arrowHeight` = 8 − 5
+= **3px**; neither 5 nor 3 is on the 4px scale. The arrow is now **8×4**, putting
+the tip exactly 4px from the trigger — all three numbers on the grid.
 
-`src/components/UploadTray/index.tsx`
+**A second cause, in the consumer.** Radix measures `sideOffset` from the
+trigger, not from the glyph inside it. An icon-only trigger left as a plain
+inline `<span>` grows to the line box — **20px around a 14px icon** — so the tip
+drifted a further 6px. `inline-flex` makes the box hug the icon.
 
-The plate production raises on `/files` after an upload — a summary bar that
-expands into the per-file list, plus a dismiss ✕. The kit specifies it in full
-(`.upl-tray`); the package had nothing, so any page needing it would have built
-a card, a header row and a list by hand.
+That half is not fixed in the package because the trigger belongs to the
+consumer, but it is a consequence of a package decision:
+`.design-sync/tailwind-export.css` overrides preflight with `svg { display:
+inline-block }`. That is one of the two reasons a component can behave
+differently in a bundle than in Storybook — see §20.
 
-Copied rather than designed. Two parts of the kit's contract are load-bearing
-and both are easy to lose:
+## 63. `Tooltip` — the delay before it opens
 
-**The whole bar except the ✕ is the expand target, and the ✕ is its sibling.**
-Nesting the dismiss inside the head is invalid markup and unreachable by
-keyboard. The chevron is a state indicator only — it flips off the head's own
-`aria-expanded`, so the visual cannot disagree with what is announced.
+`src/components/Tooltip/index.tsx`
 
-**The plate is positioning-neutral.** A width and a cap, no placement. The page
-docks it, the same division of labour `MetaRow` uses, and that is what lets one
-plate serve a drawer, a panel and the bottom of a screen.
+`TooltipProvider` was a bare re-export of Radix’s, so the delay was whatever
+each call site passed: 200ms in `ModalContent` and three stories, 500ms in the
+sidebar rail, and Radix’s own 700ms anywhere a consumer forgot.
 
-**Nothing in it is colour-only.** The summary glyph carries the batch outcome —
-brand and spinning while uploading, green complete, red failed — and the title
-says it in words beside it ("1 of 5 uploads failed"). A failed row says it three
-ways: glyph, a 5% red tint, and the sentence in `error`.
+It now defaults to **300ms**, the kit’s value — `[data-tip]` opens on
+`transition: opacity .12s .3s`. At 200 the bubble appears while the pointer is
+still crossing the row; at 700 it reads as never coming.
 
-**The spinner is a prop: `spinner` (draft, default `true`).** The three
-statuses the kit specifies all assume a transfer — something is moving, or it
-finished, or it broke — and the glyph for the first of them turns. A batch can
-also be open and stopped on the PERSON, and the first such plate outside
-`/files` is one: a connection form tracking which workspaces still have no
-scope, where nothing advances until somebody goes and sets one. There the
-loader promised progress nothing was making and, left on screen, read as an
-upload that had hung — the one meaning a spinner must never carry. So the
-status stays `uploading` and the turning is what the page decides: same ring,
-same place, and the title still counts in words beside it.
+The three 200s are removed so they take the default. The sidebar keeps 500:
+there the pointer crosses eight icons on the way to one.
 
-A fourth status (`waiting`, still glyph, neutral ink) was tried first and
-replaced by this: the fact in question is whether anything is moving, not what
-kind of outcome the batch has, and a status is for outcomes.
+Unchanged, and worth knowing: the bubble itself is not a transition but a
+`tailwindcss-animate` keyframe — 150ms `ease`, `fade-in-0 zoom-in-95` plus an
+8px slide from the trigger’s side. That 150 is the plugin’s default, not
+`--motion-*`.
 
-One deviation from the package's own habits, and it is the kit's reasoning: the
-head's focus ring is **inset**. The plate is `overflow: hidden` so its corners
-clip, and the package's usual offset ring on a full-bleed bar would be clipped
-away with them.
+---
 
-**It can clear itself, and that is a prop rather than a habit.** `autoDismiss`
-is off by default: a plate that empties itself is right for a background upload
-nobody is watching and wrong for one they are, so the page decides. With it on,
-a row that reaches `done` is marked, waits, then fades out taking its own height
-with it; when the last row goes the plate follows and `onDismiss` fires. A
-`failed` row never retires — it is the only row still waiting for an answer.
+# `Tour`
 
-Two details there are the kind that pass review and fail in use. Reduced motion
-**shortens** the exit rather than removing it, because a row retires on
-`animationend` and `motion-reduce:animate-none` would leave every row on screen
-for ever. And `animationend` bubbles, so the plate accepts only its own — the
-first row to finish would otherwise dismiss the whole plate.
+## 122. New — `Tour` · **DRAFT**
 
-**A row can say its state in words.** `statusLabel` puts a pill at the row’s end
-in place of the glyph, and the consumer supplies only the sentence: the variant
-follows `status` (`attention` / `secondary` / `error`) and the size and radius
-are the component’s. The AI connectivity prototype had been building that pill
-itself — variant, `sm`, `rounded="full"` — which is three copies of one decision
-and the reason the same state could read amber in the plate and grey on the
-panel behind it. The override is gone from the prototype.
+`src/components/Tour/index.tsx`
 
-Three classes are enumerated in `gen-classlist.mjs` — `max-w-[26rem]`,
-`rounded-[0.625rem]` and the chevron's `aria-expanded` selector. All three are
-values the kit states and no scale carries, so nothing derives them and §19
-would otherwise ship the plate full-width with square corners.
+A guided walk over the real interface: per step a `Spotlight`, a
+`Coachmark` and, when the step has annotations, an `AnnotationGroup`. The
+caller holds the step (`step`, `onStepChange`); the tour reports how it
+ended (`onClose('finish' | 'skip' | 'escape')`).
 
-## 80. A disabled `secondary` still had a surface
+`steps` — `{ id, target, title, icon?, content, label?, side?, width?,
+annotations? }`. `progress` — `{ steps, offset }`, the longer flow the tour
+is part of, read out in the coachmark as `StepProgress size="sm" fill`;
+default: the tour's own steps. `onBeforeFirst` — Back on the first step, for
+a tour that continues an onboarding. `labels` (Back · Next · Skip · Done),
+`boundary`, `padding`. Back is a plain tertiary button, like the question
+card's.
 
-`src/components/Button/index.tsx`, `src/components/IconButton/index.tsx`
+Keyboard: → next, ← back, Esc closes — ignored while typing in a field.
+Focus moves to the coachmark on every step, and a click on the scrim nudges
+it. On a phone the annotations become a list inside the bottom-sheet
+coachmark. Closing never just vanishes: `open` → false keeps the tour
+mounted for 300ms while the scrim and the annotations fade, the coachmark
+fades and drops 8px, and nothing takes a click.
 
-Reported as 'disable secondary should have no fill'. It had one — just not the
-obvious one. The package had already refused the kit's `--state-disabled` here,
-on the reasoning that swapping an opaque grey in for the chip's own surface
-reads as a different control rather than as this one switched off. What it kept
-instead was `--surface-card`: white.
+**Both products.** New component, no call sites in the package.
 
-Which is a fill, and a worse one for being conditional on where it lands. On a
-white card it is invisible and the argument for keeping it never comes up; on a
-tinted surface — a chips row, a banner, a table header — the same disabled
-button reads as a white card of its own, switched off and yet the brightest
-thing in the row.
+---
 
-Transparent is the one answer that holds on every surface, and it is what
-`outline` has always done. The border and the inactive label carry the state.
-Measured after: `rgba(0, 0, 0, 0)` with the border at `--btn-secondary-border`
-and the label at `--ink-inactive`; `primary` still takes `--state-disabled`,
-because a filled button switched off has nothing else to be.
+# `Typography`
 
-**Still a divergence from the kit**, now a wider one: `.s-disabled.btn-secondary`
-paints `--state-disabled`. It is recorded here rather than argued in a class
-string.
+## 100. `Typography` — an 18px rung, as prod sets it
 
-## 81. `CodeBlock` scrolled with the browser's own bar
+- **`Typography`** — new `textStyle` values `heading18` (500) and `title18`
+  (600): `text-lg` with a 24px leading (`leading-6`). No `body18`.
 
-`src/components/CodeBlock/index.tsx`
+The type-scale audit (Insightis, 2026-09-04) took 18 out of the set and moved
+it to 20. Prod still sets it, measured on insightis-app.devart.info: the
+profile dialog's **Manage plan** panel — "Choose a plan" at 18 / 500, the plan
+names at 18 / 600 — and its **Balance** panel — the credit amounts at 18 / 600,
+"left" at 18 / 400. The approved `user_profile-modal.ds.html` hand-rolls the
+same credit amount (`.pack-credits`: `--font-size-lg`, semibold), because the
+scale had no style for it. No other page in the app renders 18.
 
-A command wider than the block got a horizontal scrollbar, and it was the
-platform's: on Windows a 16px trough with stepper arrows at both ends, drawn
-under a block whose own radius is 4px and whose only other control is a 20px
-copy button. Every other scroller the package ships is the kit's hairline —
-`DropdownMenuContent`, `Autocomplete`'s list, `UploadTray`'s rows all carry
-`scrollbar-thin` — so the code block was the one place where a scroller looked
-like the operating system rather than like the kit.
+All four prod elements declare `leading-6`. On the plan panel they render 28px
+anyway: `md:text-lg` comes later in the stylesheet and brings Tailwind's paired
+28px with it. The style takes the 24px that was asked for.
 
-It is not a new decision. The preset's own note says `scrollbar-thin` was copied
-from `.cl-menu-scroll` / `.cl-mention-list` / **`.cp-code-pre`** in
-`kit-theme.css`: the code block is one of the three rules the utility came FROM,
-and the React component simply never applied it. One class on the `<pre>`:
+## 113. `Typography` — `lineThrough` ran along the tops of the lowercase
 
-```
-'scrollbar-thin overflow-x-auto whitespace-pre'
+`src/components/Typography/index.tsx`
+
+```diff
+- lineThrough: { true: 'line-through' }
++ lineThrough: { true: 'bg-[linear-gradient(currentColor,currentColor)]
++   bg-[length:100%_max(1px,0.075em)] bg-[position:0_calc(50%+0.107em)] bg-no-repeat' }
 ```
 
-10px track, 4px thumb inset by a transparent 3px border, `--stroke-border` at
-rest and `--ink-inactive` on hover — the same bar as every menu in the package,
-with the hit area a pointer can still find.
+`line-through` draws where the font says: DM Sans's strikeout position sits at
+the top of its x-height. Measured at 200px: the stroke at 70px from the top of
+the line, the x-height from 62 to 120 — on the tops of the lowercase, not
+through them. At 14px, in a struck-through tree row, it read as off-centre.
 
-## 85. The banner's dismiss was a tertiary button on a painting
+CSS cannot move a `line-through` (`text-underline-offset` is for underlines
+only), so the stroke is a background band now. From the font's own metrics
+(ascent 1.0em, descent 0.29em, x-height 0.5em): the middle of the x-height is
+0.107em below the middle of the line box, at any line height, since leading is
+added evenly above and below. Thickness `max(1px, 0.075em)` — 1px at 14, 2px
+at 30, about what the browser drew.
 
-`src/components/Banner/index.tsx`
+Tied to DM Sans: another face would need its own offset.
 
-`.banner-close` fills on hover in the kit (`--state-hover`). On the solid
-variant that is quiet enough to pass unnoticed; on the gradient ones it is a
-pale box sitting on the artwork, and the ✕ stops reading as part of the banner
-and starts reading as a control stuck onto it.
+---
 
-It answers with colour now and nothing else — `--ink-icon` to
-`--ink-icon-hover` on the solid variant, `--banner-grad-sub` to
-`--banner-grad-text` on the gradients. The 32px box stays: it is the hit area,
-and a 16px glyph is not one. Measured after: background `rgba(0, 0, 0, 0)` on
-both, ink `rgb(90, 106, 128)` solid and white at 80% on the gradient.
+# Tokens and colour
 
-Third component on the same rule, after `InputGroupAction` (§45) and
-`UploadTray`: an icon docked on a surface that already owns hover does not get
-a surface of its own. Deliberate divergence from the kit, recorded here rather
-than argued in a class string.
+## 2. Dark destructive border — hover made the control *less* visible
 
-## 82. `Pagination` — a stream read in order has no use for page numbers · **DRAFT**
+`globals.css`, `.dark`
 
-`src/components/Pagination/index.tsx`
+Dark inherited the light values as-is: Red-700 at rest, Red-800 on hover. On
+white that works — darker reads as more prominent. On the near-black Card
+`#17171E` it inverts: **hover dropped contrast 2.76 → 2.15**. It was the only
+place in the kit where pointing at a control made it fainter; everything else
+goes lighter on dark (`--btn-secondary-border`: Grey-600 → Grey-500, 2.30 →
+3.69).
 
-New prop: `showPageNumbers` (default `true`, so nothing that exists moves).
+The border had also drifted from its own label: after §1 the dark label is
+Red-400, while the frame stayed Red-700 — text lighter than the frame around it.
 
-The component always drew the numbered buttons. That is right wherever a page
-number is a DESTINATION — a table somebody searches, sorts and comes back to,
-where "page 4" is a place you meant to be. It is wrong for a stream that is read
-in order. A connection's log is the case that raised it: three pages, three
-number buttons, all of them doing what Next does, and the one that is current
-doing nothing at all. What keeps the reader's place there is the range beside
-the control — *Showing 51–100 of 118* — and what moves it is Prev and Next.
-
-```jsx
-<Pagination
-  currentPage={page}
-  totalPages={pages}
-  onPageChange={setPage}
-  showFirstLast={false}
-  showPageNumbers={false}
-/>
+```diff
+- --btn-outline-destructive-border: var(--red-700);       /* #B91C1C */
+- --btn-outline-destructive-border-hover: var(--red-800); /* #991B1B */
++ --btn-outline-destructive-border: var(--red-500);       /* #EF4444 — CR 4.74 */
++ --btn-outline-destructive-border-hover: var(--red-400); /* #F25555 — CR 5.27 */
 ```
 
-Pair it with `showFirstLast={false}`: First and Last are jumps of the same kind,
-and leaving them in while the numbers go is half a decision.
+Same rule as light — **border = label colour, hover one step more prominent** —
+with the direction of the step mirrored because the ground is dark.
 
-**Numbering.** This took §82 while a `Banner` dismiss, written in a parallel
-session, had also taken §81 — `CodeBlock`'s scrollbar already held it. The rule
-applied when the three collisions were resolved: the section whose commit is
-older keeps the number, the later one moves to the next free one. `CodeBlock`
-keeps §81 and the banner is now §85.
+> **Revised.** The first fix used Red-400 → Red-300. Red-300 is a pale pink, and
+> measured against its own rest state it gave a **×1.79** jump where light rises
+> by ×1.22 — the step was correct in direction and far too big in size. Red-500 →
+> Red-400 keeps the direction and matches light's proportion. The earlier
+> document still quoted the 400/300 pair; it was wrong at the time of reading.
 
-## 86. `Badge` — a step that was not a step
+## 5. No token for a standalone icon — new `--ink-icon` / `--ink-icon-hover`
 
-`src/components/Badge/index.tsx`
+`globals.css` (Layer 2), `src/lib/constants.ts`
 
-Reported from a call site moving a pill from `sm` to `xs`: the result looked
-like a mistake, because nothing anyone could see had changed.
+The system had no colour token for a glyph. The ink ladder is primary / body /
+secondary / inactive / highlight, and icons simply inherited their container's
+text colour.
 
-Measured, it had not. Both steps were **20px tall with 12px text** and differed
-only in their sides — and backwards at that: the step named smaller carried the
-LARGER inset.
+That is fine for an `IconButton`: it has a box, and hover fills the box. It is
+not fine for an icon **without** a box — an ⓘ beside a name, a sort arrow in a
+header. There is nothing to fill, so colour is the only thing that can answer the
+pointer, and nothing in the system said which colour.
 
-| | Height | Sides |
+```css
+--ink-icon: var(--ink-secondary);        /* #5A6A80 */
+--ink-icon-hover: var(--ink-primary);    /* #0F172A */
+```
+
+Both alias Layer-2 roles, so neither needs a `.dark` twin. Exposed as
+`text-ink-icon` / `text-ink-icon-hover`.
+
+Rule: **a standalone interactive icon changes colour only.** If it also needs a
+fill, it is an `IconButton` and should be one.
+
+## 6a. Interaction states were absolute colours, and two were the same colour
+
+`globals.css`, `src/lib/constants.ts`, `src/components/Table/TableCell.tsx`
+
+| theme | `--state-hover` | `--tbl-row-pressed` |
 |---|---|---|
-| `xs` | 20px | 8px |
-| `sm` | 20px | 6px |
-| `md` | 28px | 10px |
+| light | `slate-100` = **#F1F5F9** | `surface-card2` = **#F1F5F9** |
+| dark | `grey-800` = **#21212C** | `surface-card2` = **#21212C** |
 
-`xs` is gone and `sm` keeps its own 6px. Nothing in the kit is contradicted by
-either half: the kit has **one** badge — 28px with 10px sides, which is this
-ladder's `md` — so `xs`, `sm`, `lg` and `xl` are all the package's own, and
-the one that was indistinguishable from its neighbour is the one that went.
+Identical in both themes, so a control's hover inside a selected row painted the
+colour already under it — invisible. On prod that was ten ⋮ buttons on one page.
 
-Call sites: `BADGE_SIZE_MAP` in `Autocomplete/BadgeList.tsx` now maps the
-field's two smallest steps onto the same badge step, since there is no second
-20px rung to tell them apart with; the catalogue's `Sizes` story and its
-`size` control lost the rung; the AI connectivity prototype moved 12 pills.
+Not a tuning miss: an absolute colour eventually equals the surface it lands on,
+and absolute colours cannot stack. A control has no way to be "one step deeper
+than whatever is under it".
 
-## 83. `Badge` — the pill cut the tail off a g
+Each state is now a translucent wash, so states composite. One base and four
+strengths per theme; the four state tokens read them, so retuning a theme needs
+no `.dark` copy of a state token.
 
-`src/components/Badge/index.tsx`
+- **`--state-overlay`** — `--brand-300` on light, `--slate-400` on dark. A
+  coloured wash over the near-black card reads as a cast, not a lift.
+- **4 / 8 / 8 / 12**, one set for both themes: `--slate-400` moves against the
+  dark card at roughly the rate `--brand-300` moves against white.
+- **`--brand-300` retuned** `#5DA0A8` → `#46A6B9` (190°, 45%), no consumers.
+  The old step had the right hue at 29% saturation, and a desaturated wash reads
+  dirty rather than soft.
+- **`--tbl-row-selected-hover` removed**, with the two `TableCell` utilities
+  that named it. A selected row keeps its surface and controls composite on top;
+  the old token made a row read as *less* selected the moment you touched it.
 
-Reported as text being cut in a badge, and it was — downward, not sideways.
-`PostgreSQL` lost the bottom of its **g** while every other letter looked
-whole, which is why it read as a rendering fault rather than as a measurement.
+Rows are lighter than controls: a row is wide and sits in a stack, where a heavy
+wash turns a list into stripes. Inside a row the two composite, so a control on
+a hovered row is always the deeper of the pair.
 
-The label carried `leading-none`: a line box exactly the size of the font, 14px
-for a 14px label. A descender lives BELOW that box, and the pill hides its
-overflow (§Badge nowrap) — so the tail was clipped by the chip that was
-supposed to contain it. Nothing was wrong with the width, which is where the
-first look goes.
+Composited over the card, measured from `globals.css`:
 
-`leading-none` and the `align-text-top` beside it are gone. The label now takes
-the line-height the type scale pairs with its size, which is also what the kit
-states for `.badge` — `line-height: var(--ts-label-m-lh)`. Measured across the
-four sizes, every line box is 4px taller than its font and sits clear of both
-edges:
+| | strength | light | Δ | dark | Δ |
+|---|---|---|---|---|---|
+| row hover | `--tint-4` | `#F8FBFC` | 7 | `#1C1D24` | 5 |
+| row pressed / selected | `--tint-8` | `#F0F8F9` | 15 | `#21222A` | 10 |
+| control hover | `--tint-8` | `#F0F8F9` | 15 | `#21222A` | 10 |
+| control pressed | `--tint-12` | `#E9F4F7` | 22 | `#262830` | 15 |
 
-| Pill | Font | Line box | Clearance |
-|---|---|---|---|
-| 20px | 12 | 16 | 2 / 2 |
-| 28px | 12 | 16 | 6 / 6 |
-| 32px | 14 | 20 | 6 / 6 |
-| 36px | 14 | 20 | 8 / 8 |
+`--tbl-row-pressed` and `--state-hover` are the same declaration on purpose: a
+control hovering on a selected row lands at 8% over 8% ≈ 15% and reads a clear
+step deeper. A check asserting the four raw values are distinct tests the wrong
+thing.
 
-The pill does not grow: its height comes from `size` and the row is
-`items-center`, so the taller line box centres inside the same chip.
-
-## 84. The class list — a list with markers, and the last band of a stack
-
-`.design-sync/gen-classlist.mjs`
-
-Six utilities added, because a consumer had no way to write two ordinary things
-and the compiled sheet turned both into silent no-ops:
-
-```
-list-disc  list-decimal  list-none
-last:border-b-0  last:border-0  first:border-t-0
-```
-
-**The list.** The preflight strips markers from every `ul`, which is right —
-navigation and menus are lists too — but it leaves prose with no way back. The
-case that raised it is a troubleshooting panel whose *Potential causes* and
-*Suggested actions* are bulleted lists; they were written as `list-disc` and
-have been rendering without markers since, because the class was never
-enumerated.
-
-**The stack.** `border-b` on every band and `last:border-b-0` on the stack is
-the standard way to rule between bands without a trailing rule against the
-container's own edge. Without the `last:` half a consumer either builds the
-divider out of a separate element, or reaches for `not-last:` — a Tailwind v4
-variant this v3 bundle compiles to nothing. The settings panel in the
-connections prototype has been missing its dividers for exactly that reason.
-
-**Why enumeration and not a safelist**: the file's own note at the top. A class
-that is not in the list does not exist in the sheet, and nothing warns — which
-is what both of these were.
-
-**Numbering.** This file is written by several sessions at once, and three
-numbers had collided by taking "the next free one" simultaneously: §81
-(`CodeBlock`'s scrollbar / a `Banner` dismiss), §82 (`Pagination` / a `Badge`
-step) and §84 (the class list / this section). All three are resolved on the
-same rule — the older commit keeps the number — so the banner is §85, the badge
-step §86, and the colour packs §87. §83 was never duplicated; the note that said
-so was counting the two adjacent `Badge` sections.
+**The Tailwind mapping is the part that fails silently.** A `color-mix()` token
+must be exposed as a bare `var()`; wrapped in `hsl(var(…))` it emits invalid
+CSS and the declaration is dropped whole. The four state keys in
+`src/lib/constants.ts` are bare `var()` for that reason, which also means they
+take no alpha modifier.
 
 ## 87. New — colour packs (`palettes.css`) · **DRAFT**
 
@@ -2573,7 +3416,7 @@ component can name a ramp step, so no component is touched to change the colour
 of the system.
 
 ```html
-<html data-palette="iris">
+<html data-palette="blue">
 ```
 
 One pack — `blue` — and no attribute leaves teal, which the file does not
@@ -2596,80 +3439,155 @@ rather than a convenience: it is the only way to see a component that pinned
 itself to a ramp step, because that one stays teal while the page around it
 moves.
 
-## 88. `Popover` floated on the page colour
+## 124. The chat-landing backgrounds were one product's, not the system's — removed
 
-- **`PopoverContent`** — background `bg-surface-page` → **`bg-surface-card`**.
+`globals.css` (`:root` and `.dark`), `src/tailwind-preset.ts`
 
-Surface/Page is the colour the page is painted. A popover wearing it had no
-surface of its own: over the page body only the 1px border said where the
-panel began, and over a card — which is where most of them open — it read as
-a hole cut in the card rather than a panel above it.
+`--chat-shell-bg` (a radial brand-tertiary tint at the top, 2% light / 4% dark)
+and `--chat-glow-fill` (the soft pool behind the composer, `--tint-8` / `--tint-20`)
+came over from the Insightis kit's `.cl-shell` together with two utilities,
+`bg-chat-shell` and `bg-chat-glow`. No component here reads them: they paint one
+screen of one product. Owner's call (2026-10-16) — the background is an Insightis
+element, so its tokens live in the Insightis kit (`devart-ui/insightis-kit/core/ik-core.css`),
+not in the system every product inherits.
 
-`DropdownMenuContent` has always been `bg-surface-card`, and the two are the
-same family of floating panel with the same elevation shadow. One of them
-wearing the page colour was the defect; the shade itself was never the
-decision.
+```diff
+- --chat-shell-bg: radial-gradient(at 50% 0%, color-mix(… --brand-tertiary 2%|4% …), … 55%);
+- --chat-glow-fill: color-mix(in srgb, hsl(var(--brand-tertiary)) var(--tint-8|20), transparent);
+- 'chat-shell': 'var(--chat-shell-bg)',
+- 'chat-glow': 'radial-gradient(ellipse 55vw 45vh at 50% 50%, var(--chat-glow-fill), transparent 65%)',
+```
 
-Raised by the connections prototype, where a popover carrying a connection’s
-description and its problems opens over the catalog table.
+A removed public token and utility: **major** (`.changeset/chat-backgrounds-to-insightis.md`).
+The built `dist/` and `ds-bundle/` still carry them until the next `pnpm bundle`.
 
-## 89. `Alert` had one size, and does two jobs
+## 125. Dark scrim — on the page's grey, not on a navy
 
-- **`Alert`** — new `size="sm" | "md"`, default `sm`.
+`globals.css`, `.dark`
 
-Tucked inside another surface — a queue band, a card — an Alert is a footnote
-and reads at 12. Standing on a page, above a table, speaking about the whole
-screen, it occupies a full row, and 12px there is a whisper from something
-large. Consumers were reaching for `titleClassName` and `descriptionClassName`
-to say that, which puts the type scale back in the page.
+Every dark surface is the Grey ramp (`--surface-page` Grey-950 `#0F0E14`, cards
+Grey-900/800), but the scrim behind a Modal, a Sheet and the Spotlight tour was
+**Slate-950** — `hsl(229 84% 5%)`, a saturated navy. At 60% over the grey page
+everything outside the dialog or the lit target went visibly blue, sidebar
+included (found in Insightis, step 4 of the onboarding tour). The scrim now
+darkens with the page's own grey.
 
-Every rung moves together — type 12→14, glyph 16→20, padding 10/12→12/14, gap
-10→12 — so `md` is a size and not an Alert with a bigger font. The glyph box
-equals the title's line box at both sizes, which is what aligns them.
+```diff
+- --overlay-scrim: hsl(var(--slate-950) / 60%); /* #020617 @60% */
++ --overlay-scrim: hsl(var(--grey-950) / 60%);  /* #0F0E14 @60% */
+```
 
-The gap between title and description does **not** move with the size: each
-line box already carries its own half-leading, and 2px is what the pair wants
-at 12/16 and at 14/20 alike.
+Light keeps Slate-950 — over white it reads as a neutral dim, not as a colour.
+Every reader of the token follows (`ModalOverlay`, `Sheet`, `Spotlight`,
+`constants.ts` `scrim`). A token value change in `globals.css`: **minor**
+(`.changeset/dark-scrim-neutral.md`).
 
-Raised by the plan-gating prototype, where the read-only notice stands over a
-table on one screen and inside a chat thread on another.
+---
 
-## 90. `Banner` — `sm` kept a line gap chosen for a larger title
+# Sizes and glyphs
 
-- **`Banner`** — `size="sm"`: title→description gap `gap-1.5` → **`gap-0.5`**.
-- **`Banner`** — the body gains `data-slot="banner-body"`, so the size can reach it.
+## 40. The size ladder
 
-`sm` already steps the title down to 14/20, but the gap under it stayed at the
-default's 6px — a value chosen for a 16px title. Beside an `Alert size="md"`,
-which states the same kind of thing at the same type with 2px between its
-lines, the two read as different components rather than as two sizes of one
-system.
+**The canonical ladder. Four sources carry this table and must agree:** this
+file, `Insightis/legacy-html/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
+`Insightis/legacy-html/reports/2026-09-19-prod-interaction-states-migration.md` and
+`Insightis/legacy-html/pages/kit-theme.css`.
 
-The default size is untouched: its 16px title and taller block still want the
-air.
+| step | height | button padding | field padding | gap | label | glyph |
+|---|---|---|---|---|---|---|
+| xs | 28 | 8 | 8 | 4 | 12 | 14 |
+| sm | 32 | 12 | 12 | 6 | 14 | 16 |
+| md | 36 | 12 | 12 | 8 | 14 | 16 |
+| lg | 40 | **16** | 12 | 8 | 16 | 20 |
+| xl | 44 | **20** | 12 | 8 | 16 | 20 |
 
-## 91. New — `PromoCard`
+The button opens out at `lg` and `xl`; the field family — `Input`,
+`InputGroup`, `Autocomplete`, `TextArea` — holds 12px. They share an edge at
+`xs`, `sm` and `md`, which is every step the product uses. The gap has three
+steps, not two. No half-steps.
 
-- **`PromoCard`** — a small offer card, first used in the sidebar directly above the footer.
+### What the package had
 
-A glyph, what is on offer, one line of what it gives, and a dismiss. Products
-were building it by hand: the Insightis prototype had a one-line pill first,
-which said almost nothing in a 15rem column, and then a card of its own CSS.
-It is named for the job rather than for a plan: an upgrade, an invitation or an ending
-trial all fit the same shape. The consuming kit calls the same part `.promo-card`, so the
-two systems name it identically.
+| | was | is |
+|---|---|---|
+| `Button` padding | `px-2.5` = 10 at every step | 8 / 12 / 12 / 16 / 20 |
+| `Button` gap | `gap-1.5` = 6 at every step | 4 / 6 / 8 / 8 / 8 |
+| `Button` label | 12 at `xs`, 14 above it | 12 / 14 / 14 / 16 / 16 |
+| `Button` glyph | 12 at `xs`, 16 above it | 14 / 16 / 16 / 20 / 20 |
+| `IconButton` glyph | 16 / 12 / 16 / 20 / 20 / 20 for `2xs`…`xl` | 14 / 14 / 16 / 16 / 20 / 20 |
 
-Two rules the component enforces, because both were got wrong by hand first:
+Only the height was on a ladder. `IconButton` had no glyph ladder at all: 12px
+at `xs`, one step *below* the 16px it gave `2xs`.
 
-- **It does not name the plan the person is on.** The account row directly
-  below already does, and the same word twice in 40px of column is noise rather
-  than emphasis. The title is the offer; the line under it is what the money
-  buys.
-- **The dismiss is a sibling of the link, never nested inside it** — a button
-  inside an anchor is not markup, and the whole card is the link's hit area.
+### The field is built differently from the kit, deliberately
 
-Hover is the package's card recipe. The hand-built version recoloured the title
-on hover, which read as the heading turning into a link under the pointer.
+The kit has two field implementations and they put the inset in different
+places: `.field` carries it on the shell, `.igrp` carries it on the parts
+(`.igrp-add{padding-left:12px}`, `.igrp-input{padding:0 12px 0 8px}`). The
+package puts it on the shell in both cases, so one component owns the field
+edge. Rendered result is what has to match, and does.
+
+Field text also moved: `sm` 12 → 14, `lg`/`xl` 14 → 16. The `sm` step is a
+correction in its own right — the earlier "13 → 14" migration rounded it down to
+12, where the kit's `sm` field has always been Body M.
+
+## 44. The icon surface
+
+Three things, one of which is the reason the other two would not have shipped.
+
+(A fourth — an ink rule on the leading glyph — is in the archive: it was
+invented inside the package and stepped away from the kit.)
+
+### The ladder stops at 20px, and the type at 16px
+
+The kit's `--icon-xl` is 24px. On a 44px field that reads as an icon that
+outgrew its control. The ladder repeats at both ends — **14 / 16 / 16 / 20 / 20** —
+the way it already repeats 16 across `sm` and `md`.
+
+The type took the same cap: `xl` was 18px, now 16, the same rung as `lg`. So
+`Typography` keeps `label16` and the two 18px control rungs are gone again —
+§100 brought `heading18` / `title18` back for headings, the one place prod still
+sets 18.
+
+Changed in three places, because the ladder exists in three: the package,
+`Insightis/legacy-html/pages/kit-theme.css` (`.btn-xl`, `.igrp.is-xl .igrp-input`,
+`.field.is-xl input`, `.ta.is-xl`) and this file.
+
+`Typography`'s prose scale keeps `text-lg` in `h4`, `h5` and `large` — headings
+in running text, not control labels.
+
+### A field's two glyphs were sized by two mechanisms
+
+`PasswordInput`: the leading lock grew with the field, the trailing eye stayed
+16px at every step.
+
+The lock is a direct child of `InputGroupAddon`, so `[&>svg]:size-*` reaches it
+and beats the `size-4` written on the icon. The eye sits inside an
+`IconButton`, which the addon does not reach (§7), and whose own
+`[&_svg]:size-*` beats any class on the glyph. Either way the icon's own
+`className` did nothing.
+
+Fix: stop writing sizes on icons. The lock carries no size class; the toggle
+takes the field's step as the `IconButton`'s `size` prop.
+
+### `xs` field edge — 6px, reverted to 8px
+
+Moved to 6px on the argument that an 8px edge crowds a 14px glyph at 28px tall.
+Reverted: `Button` `xs` stayed at 8, so a field and a button beside it stopped
+lining up, and the package was the only one of four sources carrying 6. The
+ladder has no half-steps.
+
+### The glyph rules were absent from the bundle
+
+`.design-sync/.cache/ds-classlist.txt` contained zero `svg`-scoped classes.
+Every glyph rule in the library is a child or descendant selector —
+`[&_svg]:size-4` in `Button`, `IconButton`, `Badge`, `File`; `[&>svg]:size-*`
+in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` (now `stroke-2`, §92) in `DropdownMenuItem` — and the
+enumerated vocabulary generated none of them.
+
+So in the bundle no glyph ladder existed, no shrink guard, no menu stroke
+weight: every icon fell back to whatever `lucide-react` renders, and nothing
+failed. §19 at library scale.
 
 ## 92. Glyph stroke — 1.75 → 2, the weight prod draws
 
@@ -2713,325 +3631,280 @@ gives it, and anything new matches its neighbours.
 The `StatusView` illustrations draw at 1.5 in a 150-unit viewBox. They are
 artwork, not UI glyphs, and stay out of this rule.
 
-## 93. `Pagination` takes a rung, and the page gets a floor · **DRAFT**
+---
 
-- **`Pagination`** — new `size` prop: `sm` (32px, default) · `xs` (24px).
-  Threaded to `PageButton`, `NavButton` and `EllipsisIndicator`; the row gap
-  closes with it (8px → 4px). New `Pagination/size.ts` holds the type and the
-  box map, so one file decides what a rung measures.
-- **`lib/utils`** — new `pageFloor` recipe (`pb-8`), beside `focusRing` and
-  `glyphStroke`.
+# Across components
 
-### The rung
+## 22. Five controls still fade at `opacity-50`
 
-Every part was hard-coded to `size-8` with `size="sm"` underneath it. That is
-right when the pager is the page’s own control, and wrong under a table: there
-it shares a footer band with the range it annotates — "Showing 1–20 of 300" at
-`body12` — and a 32px control beside 12px text is the loudest thing in a strip
-whose whole job is to be quiet. 24px is the floor for the hit target, so the
-ladder is two rungs and stops.
+The audit produced one unified disabled recipe — `opacity: var(--opacity-disabled)`
+(0.65) plus `pointer-events: none` — and the kit repeats it under Checkbox,
+Switch, SegmentedControl, Tabs, Button and IconButton: *"same recipe as Switch /
+Checkbox / Button"*. Five call sites never took it:
 
-### The floor
+| File | Line |
+|---|---|
+| `src/components/Sidebar/SidebarMenuButton.tsx` | `disabled:opacity-50`, `aria-disabled:opacity-50` |
+| `src/components/Autocomplete/OptionItem.tsx` | `aria-disabled:opacity-50` |
+| `src/components/Datepicker/Calendar.tsx` | `aria-disabled:opacity-50` ×2, `text-ink-secondary opacity-50` |
 
-Raised by the connections prototype, where the last table row finished flush
-against the bottom of the window — for the second time.
+0.50 against 0.65 is a visible step, and it lands on exactly the controls a
+keyboard user tabs through fastest. The Sidebar row misses the other half of the
+kit's rule as well: *"text `Text/Inactive`, `aria-disabled="true"`"* — the
+package only dims.
 
-The reason it comes back is that the padding looks present and does nothing.
-A page puts `pb-8` on its content box, that box is `min-h-0 flex-1`, and such
-a box is sized to the SCROLLPORT: its padding is drawn at its own bottom edge,
-which is the bottom of the window, and the content scrolls straight past it.
+The Datepicker's third case is different and should not simply be swapped: it is
+the outside-month day, which the kit specifies as `text content-secondary` with
+no opacity at all.
 
-Padding on the scroll container is the other wrong answer — it moves the sticky
-constraint rectangle, and a `sticky bottom-0` commit bar then stops short of the
-window with the form scrolling visibly underneath it.
+## 98. `Table`, `ModalBody` — the system's scrollbar
 
-So the recipe names where it goes as much as what it is: the element that GROWS
-with the content. `lib/utils` is re-exported into the design-sync bundle, so a
-consumer gets the name rather than a number it picks for itself.
+- **`Table`** — the frame (`data-slot="table-container"`) adds
+  `scrollbar-thin`. It is a scroller: across for a wide table, and down
+  wherever a parent gives it a height — in a dialog it shrinks to the body and
+  scrolls itself, with the platform's bar: 16px, arrows on Windows.
+- **`ModalBody`** — adds `scrollbar-thin`. It wraps `ScrollShadow`, which sets
+  no bar of its own, so a long dialog body scrolled with the platform's too.
 
-## 94. The product sidebar — Pinned / Recent, the chat row, the promo slot, the compact footer
+Both now draw the bar the system's own lists draw (DropdownMenu,
+Autocomplete, CodeBlock). Raised by the workspaces prototype's table preview
+(PRD Workspaces F-21), twenty rows in a dialog.
 
-`src/components/Sidebar/SidebarSection.tsx`, `SidebarChatItem.tsx`, `SidebarAccount.tsx`
+## 99. Disabled controls — the not-allowed cursor
 
-Storybook showed the old prod shape — Home / Search / a `Chats` row with a nested,
-left-railed sub-list, a Settings line for a footer — long after Insightis had
-replaced it. §10–§16, §39, §64, §68 and §72 ported the **shell**: insets, rows,
-gutter, the collapsed rail. The redesign inside the shell (`Insightis/changes/Sidebar.md`)
-is information architecture, and it never came across, because it needed parts the
-package did not have. A `PromoCard` (§91) existed, but only as a separate story with
-nowhere in the sidebar to put it.
+- **`SegmentedControlTrigger`**, **`TabsTrigger`**, **`Toggle`**,
+  **`AccordionTrigger`**, **`Checkbox`**, **`RadioButton`**, **`Switch`**,
+  **`DropdownMenuItem`**, **`DropdownMenuCheckboxItem`**,
+  **`DropdownMenuRadioItem`** — drop `disabled:pointer-events-none`
+  (`data-[disabled]:` on the menu items). It stood beside
+  `cursor-not-allowed` and cancelled it: with no pointer events the cursor is
+  never asked for, so a switched-off control showed the arrow. It also kept
+  a tooltip from opening on one. Hover recipes were already behind
+  `enabled:`, so nothing lights up.
+- **`Switch`** `tertiary` row — `has-[:disabled]:pointer-events-none` →
+  `has-[:disabled]:cursor-not-allowed`, and the row neither lights nor presses.
 
-**New parts**
+`Button` and `IconButton` already worked this way (their comment says why);
+the rest now follow them. Raised by the workspaces prototype: a Permissions
+row out of the data model scope, whose Allow / Deny is switched off.
 
-- **`SidebarSection`** — a flat list with an overline label (`Text/Inactive`,
-  brightening to `Text/Primary` under the pointer), a chevron that only appears on
-  hover and stays when closed, and an `action` slot for "See all" that reveals on
-  hover or focus and is always visible below `lg` and on touch. The whole label
-  toggles; the action is a sibling and never collapses. Spacing is the
-  component's: 16px under the nav, 12px between sections.
-- **`SidebarChatItem`** — h28, 14px `Text/Secondary`, radius `md`; hover
-  `State/Hover`, pressed and active `State/Pressed`, active ink `Text/Body`. The
-  title **fades** rather than ellipsising: a 36px gradient in the row's own
-  surface colour, widening to 72px on hover so the kebab sits on solid fill. The
-  gradient takes a *pre-composited* colour — `--state-hover` is a translucent
-  overlay, and a gradient ending in it would let the letters through.
-  `status="loading" | "new"` (each with a spoken label) or a queue `count`
-  (`Counter sm`, the fade off so the title stops before the number) share the
-  right-edge slot and fade out for the kebab. `menu` takes `DropdownMenuItem`s;
-  the kebab is the shared `IconButton` tertiary `2xs` and a **sibling** of the
-  link.
-- **`SidebarPromo`** — the slot for one `PromoCard`, above the footer rule, 8px
-  gutter, hidden on the collapsed rail. No sidebar prop decides whether it shows:
-  that is the product's (free plan, not yet dismissed).
-- **`SidebarStat`** and **`SidebarUser`** — the compact footer. One figure,
-  label left and value right with a 12px glyph on a round `State/Hover` chip; and
-  the account row — 24px avatar, 12px semibold name, 10px meta, 14px up-down
-  chevron at 70%. Both are buttons with the neutral hover / pressed recipe.
-  Collapsed, the stat leaves and the account row keeps its avatar.
+---
 
-Measured against the kit's `chat-landing` at 1280×800: section, promo, footer, stat
-and avatar boxes land on the same pixels.
+# Build and tooling
 
-**`PromoCard` fixes.** Its focus ring named `shadow-focus`, which the preset does not
-generate — keyboard focus on the card drew nothing. It now uses the package's ring
-recipe. The dismiss was a hand-drawn button with its own hover; it is the shared
-`IconButton` tertiary `2xs`. Padding is the kit's 10/12 with the text kept clear of
-the dismiss, instead of a 32px right pad on the whole card.
+## 19. A variant that is not enumerated is never compiled
 
-**Stories.** Expanded, CollapsedIcon, Floating, Inset, AppShell and MobileOverlay
-render the product shape; **Promo card** is a control on every one, and `WithPromo`
-has it on. The nested-group tree moved to `NestedGroup`, since `NavigationGroup`
-stays for consumers whose second level really is navigation.
+`.design-sync/gen-classlist.mjs`
 
-**Not ported**, deliberately: the collapsed rail's single "Chats" icon that stands in
-for the lists. It is a product affordance (where it links), not a sidebar part —
-a `SidebarMenuButton` in the consumer's nav does it.
+`ds-bundle` — the CSS the products load — is compiled from an enumerated list
+of classes, not scraped from the components. A variant missing from that list
+produces no rule and no error.
 
-## 38. `StepSlider` — four measurements against a spec that argues for each one
+`empty:` was missing, so `empty:pb-0` (§11) worked in Storybook and did nothing
+in the products. `empty:pb-0`, `empty:pt-0` and `empty:hidden` are now
+enumerated.
 
-*Kit ↔ Storybook audit, finished after round 4 landed; numbered here to avoid
-colliding with it.*
+## 20. `pnpm bundle` and `pnpm check-bundle-css`
 
-`src/components/StepSlider/index.tsx`
+**`pnpm bundle`** runs the six-command chain that used to be typed by hand. The
+order is load-bearing — `package-build` reads `dist`, so an edit made after
+`pnpm build` never reached the bundle — and a skipped step does not fail:
+skipping the Storybook build once dropped `FilterChips` from a bundle that
+reported no diagnostics, because the roster comes from the Storybook index.
 
-The kit's StepSlider entry is the most closely argued in the whole document: it
-builds the control as a member of the Switch family and gives a reason for every
-number. Four of them do not match.
+It decides the Storybook step itself, by diffing the component directories
+against what the last bundle holds. `--storybook` / `--no-storybook` override
+it; skipping warns if the roster did change.
 
-| | Kit | Package |
-|---|---|---|
-| Track fill | `--surface-card2` | `bg-surface-chips` |
-| Dot, at rest | 6px, `--ink-inactive` (4px at `sm`) | `size-1` = **4px**, `bg-ink-secondary` |
-| Dot, on hover | lifts to `--ink-secondary` | — no hover rule |
-| Width, default | **68px** (`2 + 3×1rem + 2×.5rem + 2`) | `w-20` = **80px** |
-| Hit area | 24×24 via `::before {inset:-4px}` on a 1rem slot | `before:-inset-2` on a 4px dot = **20×20** |
+**`pnpm check-bundle-css`** catches the two ways a component looks right in
+Storybook and wrong on a page:
 
-The thumb is right — `size-4` / `size-3` matching Switch's 16/12px, with
-`shadow-thumb`, which is the part the kit cares most about ("the mark grows to
-fill its slot and becomes exactly the paired Switch's thumb"). So the family
-resemblance holds; the rail it sits on does not.
+1. Storybook compiles Tailwind from the sources; the bundle compiles from an
+   enumerated class list, so a missing class produces no CSS and no error (§19).
+2. `tailwind-export.css` overrides preflight with `svg { display: inline-block }`,
+   which Storybook does not have. That is what made a tooltip trigger 20px in a
+   bundle and 14px under preflight (§13).
 
-**The dot colour is the one to fix first, because it collapses two states into
-one.** The kit picks `--ink-inactive` deliberately and shows its work: the
-obvious family choice, Switch's `--switch-off-bg`, gives *"1.34:1 on the
-`--surface-card2` rail (1.10:1 dark)"*, and since the dots **are** the other
-steps — the only cue that the control has three positions — WCAG 1.4.11's 3:1
-applies to them. Hover then *"lifts one step along the ink ramp → `--ink-secondary`"*.
+It compiles a second stylesheet with the built components as Tailwind's content
+and diffs the class selectors, letting Tailwind's own extractor decide what is a
+class — a regex first attempt produced 163 false positives from import
+specifiers and `data-slot` values. One-directional: the vocabulary is
+deliberately wider than what components use.
 
-The package starts at `--ink-secondary`, which is where the kit's hover ends. So
-the rest state is one step too loud and the hover step does not exist: pointing
-at a dot changes nothing.
+A class assembled at runtime from a variable is in no compiled text, so this
+narrows the gap rather than closing it. The pixel comparison in
+`.ds-sync/storybook/compare.mjs` is what would close it.
 
-**The hit area misses the floor the kit claims it clears.** `before:-inset-2`
-expands 8px around a 4px dot — 20×20, under WCAG 2.5.8's 24×24. The kit reaches
-24 by insetting 4px around a **16px slot**, not around the mark: *"the slot plus
-an invisible `::before` ring clears 24×24 on both axes without changing layout."*
-Same trick as `.swt::before`, which the package did implement correctly (§28 of
-the kit's Switch entry, `-inset-x-1 -inset-y-3`). The gap is that the dot here is
-the mark, not the slot — the constant-slot layer the kit describes was not built,
-which is also why the width came out at 80px instead of 68px.
+## 37. Build — `bg-surface-card/85` is a class that compiles to nothing
 
-**The track token matters for one reason the kit names.** `--surface-card2` is
-*"one notch recessed from the popover's Surface/Card"*; `--surface-chips` is a
-step further still. On the composer popover — the shipped consumer — the control
-sits on Surface/Card, so the package's track reads as a deeper well than the
-design intends, and the 4px dots on it are what has to carry the contrast.
+`.design-sync/gen-classlist.mjs`
 
-None of these are visible in the published Storybook, which predates the
-component's current form; all four were read off the kit's rendered CSS and the
-package source side by side.
+`--surface-card` is an HSL triplet exposed with `<alpha-value>`, so
+`bg-surface-card/85` is valid Tailwind. The enumerated class list does not carry
+it, the bundle therefore has no rule for it, and the element renders with **no
+background at all** — no error, no warning, nothing in `check-bundle-css`,
+because the class was never asked for.
 
-## 40. The size ladder
+This is the §19 failure mode on a different axis: §19 was a *variant* that was
+not enumerated, this is a *modifier*. `_shared/card-scrim` writes the mix by
+hand for that reason.
 
-**The canonical ladder. Four sources carry this table and must agree:** this
-file, `Insightis/reports/2026-09-04-insightis-ux-audit.md` (#15, #36),
-`Insightis/reports/2026-09-19-prod-interaction-states-migration.md` and
-`Insightis/pages/kit-theme.css`.
+Not fixed here, because enumerating an opacity ladder for every colour is a
+decision about bundle size rather than a defect: the useful shape is probably a
+short list of steps the system actually uses. Recorded so the next person who
+finds a silently unpainted element has somewhere to look.
 
-| step | height | button padding | field padding | gap | label | glyph |
-|---|---|---|---|---|---|---|
-| xs | 28 | 8 | 8 | 4 | 12 | 14 |
-| sm | 32 | 12 | 12 | 6 | 14 | 16 |
-| md | 36 | 12 | 12 | 8 | 14 | 16 |
-| lg | 40 | **16** | 12 | 8 | 16 | 20 |
-| xl | 44 | **20** | 12 | 8 | 16 | 20 |
+## 84. The class list — a list with markers, and the last band of a stack
 
-The button opens out at `lg` and `xl`; the field family — `Input`,
-`InputGroup`, `Autocomplete`, `TextArea` — holds 12px. They share an edge at
-`xs`, `sm` and `md`, which is every step the product uses. The gap has three
-steps, not two. No half-steps.
+`.design-sync/gen-classlist.mjs`
 
-### What the package had
+Six utilities added, because a consumer had no way to write two ordinary things
+and the compiled sheet turned both into silent no-ops:
 
-| | was | is |
-|---|---|---|
-| `Button` padding | `px-2.5` = 10 at every step | 8 / 12 / 12 / 16 / 20 |
-| `Button` gap | `gap-1.5` = 6 at every step | 4 / 6 / 8 / 8 / 8 |
-| `Button` label | 12 at `xs`, 14 above it | 12 / 14 / 14 / 16 / 16 |
-| `Button` glyph | 12 at `xs`, 16 above it | 14 / 16 / 16 / 20 / 20 |
-| `IconButton` glyph | 16 / 12 / 16 / 20 / 20 / 20 for `2xs`…`xl` | 14 / 14 / 16 / 16 / 20 / 20 |
-
-Only the height was on a ladder. `IconButton` had no glyph ladder at all: 12px
-at `xs`, one step *below* the 16px it gave `2xs`.
-
-### The field is built differently from the kit, deliberately
-
-The kit has two field implementations and they put the inset in different
-places: `.field` carries it on the shell, `.igrp` carries it on the parts
-(`.igrp-add{padding-left:12px}`, `.igrp-input{padding:0 12px 0 8px}`). The
-package puts it on the shell in both cases, so one component owns the field
-edge. Rendered result is what has to match, and does.
-
-Field text also moved: `sm` 12 → 14, `lg`/`xl` 14 → 16. The `sm` step is a
-correction in its own right — the earlier "13 → 14" migration rounded it down to
-12, where the kit's `sm` field has always been Body M.
-
-## 42. `TableCell` — a row that could not grow, under a comment saying it could
-
-`src/components/Table/TableCell.tsx`, `.design-sync/gen-classlist.mjs`
-
-Against the published catalog the cell is one clipped line —
-`h-9 whitespace-nowrap p-2 text-xs`. This branch had already replaced that with
-a scoped truncation rule and a comment claiming it only bit under
-`layout="fixed"`; both are quoted below, and the comment was wrong:
-
-```diff
-- // Truncate rather than wrap. In an auto-layout table the column just
-- // widens, so this only bites under `layout="fixed"` — which is exactly
-- // where a long value must not blow its column open.
-- 'overflow-hidden text-ellipsis whitespace-nowrap',
-+ '[[data-layout=fixed]_&]:overflow-hidden',
-+ '[[data-layout=fixed]_&]:text-ellipsis',
-+ '[[data-layout=fixed]_&]:whitespace-nowrap',
+```
+list-disc  list-decimal  list-none
+last:border-b-0  last:border-0  first:border-t-0
 ```
 
-`white-space: nowrap` stops text wrapping whatever `table-layout` is in effect.
-Under `auto` the column widened instead and the table scrolled sideways; under
-`fixed` it ellipsised. **A two-line cell was unreachable in both modes** — so the
-row height was always one line plus padding, never the content.
+**The list.** The preflight strips markers from every `ul`, which is right —
+navigation and menus are lists too — but it leaves prose with no way back. The
+case that raised it is a troubleshooting panel whose *Potential causes* and
+*Suggested actions* are bulleted lists; they were written as `list-disc` and
+have been rendering without markers since, because the class was never
+enumerated.
 
-Twelve lines further down the same file says the opposite:
+**The stack.** `border-b` on every band and `last:border-b-0` on the stack is
+the standard way to rule between bands without a trailing rule against the
+container's own edge. Without the `last:` half a consumer either builds the
+divider out of a separate element, or reaches for `not-last:` — a Tailwind v4
+variant this v3 bundle compiles to nothing. The settings panel in the
+connections prototype has been missing its dividers for exactly that reason.
 
-> Height comes from the padding, never from an `h-*` lock — a two-line cell has
-> to be free to grow.
+**Why enumeration and not a safelist**: the file's own note at the top. A class
+that is not in the list does not exist in the sheet, and nothing warns — which
+is what both of these were.
 
-Both comments were in the file at once. The class string won, and nothing
-contradicted it, because a row that never wraps looks deliberate.
+---
 
-### What the reference does
+# Synced from upstream
 
-```css
-table.tbl td { padding: .625rem 1rem; border-bottom: 1px solid var(--stroke-border); color: var(--ink-body) }
-```
+## 97. The developers' names — synced from `upstream` 1.1.0
 
-No `white-space`, no `overflow`, no `text-overflow`. The cell wraps and the row
-grows. Truncation exists in the kit twice, and both are opt-ins next to the thing
-they affect:
+`upstream/master` 81596ad (their 1.1.0), and `ActivityTray` from their
+AIINS-1948 branch, ported by hand. Names, exports, props and variant keys are
+now the developers'; visual classes stay the kit's wherever this package
+already carried them.
 
-- `.ds-conn-tbl .ds-conn-cell-desc` — the one description column in the
-  Connections table, with `max-width:0` to make the ellipsis land;
-- `.cp-tbl-scroll table.tbl th, td` — the horizontally scrolling variant, where
-  wrapping would defeat the scroll.
+| Was | Now |
+|---|---|
+| `Button` / `IconButton` `tertiaryBrand` | `primaryTertiary` — same recipe (§25) |
+| `DataSourceCard` | `IconCard`, `IconCardSkeleton` — `icon`, `label`, `badge`, `actionLabel`, `actionIcon`, `onActivate`, `disabled` |
+| `UploadTray`, `UploadTrayItem` | `ActivityTray`, `ActivityTrayItem` |
+| `FilterChips` + `FilterChip` + `filterChipVariants` | `FilterChips` with `items`, `value`, `onValueChange` |
+| `SidebarBrand` | `SidebarPanelHeader` |
+| `formFocusRing` | `focusRing` |
 
-### Where the clamp belongs
+**`IconCard`** replaces `DataSourceCard`, and what was written about that tile
+went with it. What holds: the floor is on the grid, where the kit puts it —
+`repeat(auto-fill, minmax(max(7rem, (100% - 7 * .75rem)/8), 1fr))`, never under
+7rem, at most 8 a row; a `min-w-fit` on the tile does not hold, because
+`IconCard` is `content-visibility: auto` and a skipped tile keeps its remembered
+width. The action is a styled span inside the `role="button"` card, so there is
+no second control to hover; no popular flame — the `badge` slot is theirs.
 
-`layout="fixed"`, and only there. That mode takes its column widths from the
-first row and never re-measures, which is the case where a long value genuinely
-must not blow its column open — it is also the reason the prop exists (see
-`table-composition.md`). The scope is a descendant selector on the `data-layout`
-attribute the `Table` root already stamps, so the cell needs no new prop and no
-context.
+**`SidebarPanelHeader`** replaces `SidebarBrand`. Collapsed, the mark and the
+trigger share one square and swap on hover or keyboard focus — the kit's
+`.sbx.is-collapsed .sbx-brand-id` / `.sbx-collapse`.
 
-### The enumeration is part of the fix, not an afterthought
+**New, as the developers ship them:** `AsyncList`, `ListPageLayout`,
+`ListSelectionBar`, `ResizableMainSideLayout`, `SelectableListCard`,
+`SidebarNavItem`, `SidebarMenuRow`, `SidebarMobileTrigger`; `SidebarTrigger`
+takes `icon`, `tooltip`, `tooltipSide`. Fifteen module-private recipes are
+exported.
 
-`[[data-layout=fixed]_&]:` is an arbitrary variant. Nothing in
-`gen-classlist.mjs` generates that prefix, so all three classes are listed by
-hand — §19's failure mode exactly: un-enumerated, they compile to nothing in the
-`ds-bundle` and a fixed-layout table silently stops truncating, with Storybook
-still showing it working because Storybook compiles from source.
+**Fixes taken from the developers**
 
-### Breaking
+- **`Checkbox`, `Switch`, `RadioButton`** focus on the brand ring. The kit says
+  so: `.cbx` and `.swt` take `--shadow-focus`, whose colour is `--focus-ring` =
+  `--focus-ring-brand`. Fields keep the neutral `--input-focus` border, also the
+  kit. Measured: 2px `#FFFFFF` gap + 2px `rgb(7 128 126)`.
+- **`AccordionItem divided`** drew no divider — `not-last:` is a Tailwind v4
+  variant. Now `border-b last:border-b-0`.
+- **`File`** — no `role="div"`, and no button inside a button: the row's action
+  sits on the content area, beside retry and dismiss. The chip still draws the
+  ring (`:has()`) and now takes the pressed fill only when the content area is
+  pressed, not when dismiss is.
+- **`Autocomplete`** — one combobox (the input), not two; empty and loading
+  announce as one unselectable option; the disabled-option walk is bounded — it
+  hung when every option was disabled.
+- **`CheckboxGroup`** ignored `value` after a parent rejected a change.
+- **`ScrollShadow`** is focusable, so it scrolls without a pointer.
 
-A table relying on single-line rows gets taller rows the moment a value wraps.
-Two ways back, and the second is the better one: `layout="fixed"` on the table,
-or `truncate` on the specific cells that should clamp — which is what the kit
-does, and it keeps the decision beside the column it applies to.
+**Kit over the developers' values in the ported parts:** `FilterChips` — 6px
+between chips, 8px inside one, the selected count at 70%, scrolling at ≤767px
+(`.chip-row`, `.chip`, `.chip-n`). `Sidebar` — 120ms transitions
+(`.sbx-nav-item`, `.sbx-brand-id`), the external arrow at `--icon-xs` 14px, the
+burger glyph at 18px (`.cl-burger`). `ActivityTray` — `pointer-events-none`
+while a row or the plate leaves (`.animate-row-out`, `.animate-panel-out`).
 
-## 44. The icon surface
+**Gates:** `pnpm lint:tokens` and a recipe snapshot
+(`src/__tests__/__snapshots__/recipes.md`), plus the developers' unit tests.
+`lint:tokens` found one: `CodeBlock`'s `bg-surface-bg` had no token here, so the
+block had no background; it is `bg-surface-page` — their `--bg` is Slate-50 /
+Grey-950, the same as `--surface-page`. The script read prose in comments as
+classes and missed hex-escaped commas; both are fixed.
 
-Three things, one of which is the reason the other two would not have shipped.
+**`PageHeader`** takes the developers' shape: the title is an `h2` (the
+product's level too) and the row has no inset of its own — the page pads it, as
+the kit's `.cl-page` pads `.cl-page-head` and `ListPageLayout`'s sticky header
+does. `condensed`, the back control, `leading` and `badge` stay.
 
-(A fourth — an ink rule on the leading glyph — is in the archive: it was
-invented inside the package and stepped away from the kit.)
+**Not brought back:** the developers' `Button ghost`, `Badge xs` and the tokens
+`surface-bg`, `stroke-border-hover`, `tbl-row-selected-hover` — this package
+removed them as duplicates, and that stands.
 
-### The ladder stops at 20px, and the type at 16px
+---
 
-The kit's `--icon-xl` is 24px. On a 44px field that reads as an icon that
-outgrew its control. The ladder repeats at both ends — **14 / 16 / 16 / 20 / 20** —
-the way it already repeats 16 across `sm` and `md`.
+# Documentation that was missing or wrong
 
-The type took the same cap: `xl` was 18px, now 16, the same rung as `lg`. So
-`Typography` keeps `label16` and the two 18px rungs are gone again.
+These are not code changes. Each is a place where every page was inventing its
+own answer, which is how two products drift apart without either being "wrong".
 
-Changed in three places, because the ladder exists in three: the package,
-`Insightis/pages/kit-theme.css` (`.btn-xl`, `.igrp.is-xl .igrp-input`,
-`.field.is-xl input`, `.ta.is-xl`) and this file.
+- **`Card.md` — `ghost`.** ~~Documented as a drop target.~~ **Withdrawn.** The
+  doc and the implementation did disagree, but the correction went the wrong
+  way: `ghost` is the dashed *"browse more" tile* — `Card.stories.tsx` has
+  always called it that, and `CardIcon variant="ghost"` is its centred dashed
+  icon well, which is not the anatomy of a drop target. A dashed edge in this
+  system means *nothing here yet*; sometimes that empty thing accepts a drop and
+  sometimes you click it. `Card.md` now says so, and `DropZone` (§32) is the
+  component that owns the drop case.
+- **`Table.md` — the empty state.** The doc asked for "a single row with
+  `colSpan` and `h-24 text-center`" and stopped, so every page improvised. Now
+  specified: `StatusView` with `surface="embedded" tone="transparent"` in that
+  row, `py-12` on the cell, and three things spelled out — the empty state lives
+  *inside* the table so the header and toolbar stay put; a first run and a
+  filtered miss are two different texts; both carry an action, because an empty
+  state is never a dead end.
+- **`Switch.md` — which size where.** Both sizes existed (`default` 36×20, `sm`
+  28×16); what was missing was the choice. In a table row the default toggle sits
+  a step louder than everything around it and pulls the eye off the name it
+  belongs to — you end up reading a column of switches instead of a list of
+  connections. **`sm` in a table or dense list row, `default` in forms and
+  settings.** The doc also covers when a toggle should confirm: only when
+  switching **off** has a consequence invisible from where the user stands, and
+  then in that direction only — switching back on is its own undo, and a dialog
+  in both directions teaches people to dismiss it.
+- **`InputGroup.md` — where the clear button goes.** `InputGroupAddon` defaults
+  to `align="inline-start"`, so an addon written without an explicit `align`
+  lands **before** the input, beside the magnifier. Every search field in the
+  prototype had its × there. The documented recipe is `align="inline-end"` with
+  `IconButton size="2xs"` — a 24px box and a 14px glyph, the row-action step.
+  `InputGroup`'s existing `has-[>[data-align=inline-end]]:[&>input]:pr-2` supplies
+  the gap, so nothing else is needed.
 
-`Typography`'s prose scale keeps `text-lg` in `h4`, `h5` and `large` — headings
-in running text, not control labels.
+---
 
-### A field's two glyphs were sized by two mechanisms
-
-`PasswordInput`: the leading lock grew with the field, the trailing eye stayed
-16px at every step.
-
-The lock is a direct child of `InputGroupAddon`, so `[&>svg]:size-*` reaches it
-and beats the `size-4` written on the icon. The eye sits inside an
-`IconButton`, which the addon does not reach (§7), and whose own
-`[&_svg]:size-*` beats any class on the glyph. Either way the icon's own
-`className` did nothing.
-
-Fix: stop writing sizes on icons. The lock carries no size class; the toggle
-takes the field's step as the `IconButton`'s `size` prop.
-
-### `xs` field edge — 6px, reverted to 8px
-
-Moved to 6px on the argument that an 8px edge crowds a 14px glyph at 28px tall.
-Reverted: `Button` `xs` stayed at 8, so a field and a button beside it stopped
-lining up, and the package was the only one of four sources carrying 6. The
-ladder has no half-steps.
-
-### The glyph rules were absent from the bundle
-
-`.design-sync/.cache/ds-classlist.txt` contained zero `svg`-scoped classes.
-Every glyph rule in the library is a child or descendant selector —
-`[&_svg]:size-4` in `Button`, `IconButton`, `Badge`, `File`; `[&>svg]:size-*`
-in `InputGroupAddon`; `[&_svg]:stroke-[1.75]` (now `stroke-2`, §92) in `DropdownMenuItem` — and the
-enumerated vocabulary generated none of them.
-
-So in the bundle no glyph ladder existed, no shrink guard, no menu stroke
-weight: every icon fell back to whatever `lucide-react` renders, and nothing
-failed. §19 at library scale.
+# Open against the kit
 
 ## Raised by the kit ↔ Storybook audit
 
@@ -3041,7 +3914,7 @@ either side until the design answers:
 | | |
 |---|---|
 | **`--tbl-row-pressed`** | Prose says neutral, `--tint-6` of `--ink-primary`. CSS says `color-mix(in srgb, #07807E 4%, transparent)` — brand teal, off the tint scale. |
-| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §44. |
+| **18px in the type scale** | `Body XL` and `Label 2XL` are 18/28 and on the list of nineteen; the same section lists 18px under *не на шкалі* with migration 18→20. See §44 and §100. |
 | **Sidebar active ink** | The row table says active is *"`Text/Body` (no brand colour)"*; the Collapsed row two lines down says *"(active = teal icon)"*. The package follows the first. |
 
 Eight more are the kit's own ⚠ markers — agreed to be *needed*, never specified,
@@ -3064,3 +3937,16 @@ than "fixed": the kit's `Accordion` is *"an instant show/hide (no CSS
 transition)"*, while the package animates with `accordion-up` / `accordion-down`.
 The kit is describing production; the animation is an improvement, but it is a
 divergence from the agreed reference and should be ratified, not assumed.
+
+## What this round did **not** change, and why
+
+- **`ScrollShadow` and `scrollbar-gutter`.** The prototype reserves the
+  scrollbar gutter on its own scroll container. That is page layout, not a
+  component override — and `ScrollShadow` also paints edge shadows the container
+  does not want. Left on the page.
+- **`DropdownMenuContent` / `TooltipContent` / `SheetContent` exit animations.**
+  Same missing fill mode as §34, no reported symptom. Changing three more
+  floating surfaces on the strength of one measurement is how a fix becomes a
+  regression.
+- **`Badge size="sm"` radius.** Archived — the request against `Badge` was the hairline, and this was never part of it.
+  Out of scope for a round that was about where components come from.

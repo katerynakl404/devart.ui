@@ -5,6 +5,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -56,6 +57,13 @@ function SidebarProvider({
   const isMobile = useMaxWidth(sheetBreakpoint);
 
   const [openMobile, setOpenMobile] = useState(false);
+
+  // Crossing back to the desktop layout closes the sheet. Left open, it waits
+  // unseen behind the rail and springs back over the content the next time
+  // the window narrows — a drawer nobody opened.
+  useEffect(() => {
+    if (!isMobile) setOpenMobile(false);
+  }, [isMobile]);
 
   const [_open, _setOpen] = useState(defaultOpen);
   const open = openProp ?? _open;

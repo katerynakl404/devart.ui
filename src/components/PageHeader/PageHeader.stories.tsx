@@ -20,7 +20,10 @@ type Story = StoryObj<typeof meta>;
 /** A top-level page: no back control. */
 export const Default: Story = {};
 
-/** A drill-down page. The arrow is 20px and sits 8px from the title. */
+/**
+ * A drill-down page. The arrow is a 24px glyph in a 36px box, sized against the
+ * title, and the box sits 6px from it.
+ */
 export const WithBack: Story = {
   args: { title: 'PostgreSQL', onBack: fn(), backLabel: 'Back to connections' },
 };
@@ -68,8 +71,36 @@ export const LongTitle: Story = {
 };
 
 /**
+ * `wrapTitle` — the same long title on as many lines as it needs. The arrow
+ * stays centred on the wrapped title and the action keeps its edge; only the
+ * row grows taller.
+ */
+export const WrapTitle: Story = {
+  args: { ...LongTitle.args, wrapTitle: true },
+};
+
+/**
+ * `wrapTitle` where it matters most: a phone, where a two-word title beside a
+ * button would otherwise read "Data So…".
+ */
+export const WrapTitleOnPhone: Story = {
+  name: 'Wrap title (phone)',
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
+  args: {
+    title: 'Data Sources',
+    wrapTitle: true,
+    actions: (
+      <Button size="sm" variant="primary">
+        <Plus />
+        Create Connection
+      </Button>
+    ),
+  },
+};
+
+/**
  * DRAFT — `condensed`. What a sticky header becomes once the page has scrolled:
- * the same row at 40px instead of 72px, the `h1` at `title16`. The back
+ * the same row with the `h2` at `heading20` and the back control a step smaller. The back
  * control, the title and the actions keep their columns, so the change is a
  * shrink and not a relayout.
  */
@@ -89,4 +120,9 @@ export const Condensed: Story = {
       </>
     ),
   },
+};
+
+/** Condensed and wrapping: every line of the title steps down to `heading20`. */
+export const CondensedWrapTitle: Story = {
+  args: { ...LongTitle.args, condensed: true, wrapTitle: true },
 };

@@ -1,8 +1,8 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import type { HTMLAttributes } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { IconButton } from '../IconButton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
@@ -18,9 +18,9 @@ const metaRowVariants = cva(
     // shorter floor let the row grow the moment a selection appeared and the
     // list under it jumped. 44 is the row at its tallest, always.
     'min-h-11 py-1.5',
-    // Transparent on purpose: no background, no border, no card. It belongs to
-    // the list under it, and a surface of its own would make it a toolbar.
-    'border-none bg-transparent',
+    // No border and no card: it belongs to the list under it, and a surface of
+    // its own would make it a toolbar. (No background either — see `sticky`.)
+    'border-none',
     // One typographic group — the count, the link and the buttons all read at
     // the same Body level rather than as three separate things.
     'text-sm leading-5'
@@ -37,8 +37,19 @@ const metaRowVariants = cva(
         /** The action belongs on the far edge. */
         split: 'justify-between',
       },
+      sticky: {
+        /** Transparent on purpose — the row is a reading, not a surface. */
+        false: 'bg-transparent',
+        /**
+         * Pinned to the top of the scroller while the list runs under it, so
+         * the count and the selection actions stay in reach. It takes the
+         * PAGE colour, not a card's: the rows must not show through it, and it
+         * must still not read as a toolbar laid over them.
+         */
+        true: 'sticky z-10 bg-surface-page',
+      },
     },
-    defaultVariants: { variant: 'cluster' },
+    defaultVariants: { variant: 'cluster', sticky: false },
   }
 );
 
@@ -56,6 +67,13 @@ export interface MetaRowProps
   onClear?: () => void;
   /** @default 'Clear selection' */
   clearLabel?: string;
+  /**
+   * CSS length for the sticky `top` — a page whose header is itself sticky
+   * passes its height here. A length rather than a custom property, so the
+   * page's layout variables stay out of this component's contract. Read only
+   * with `sticky`. @default 0
+   */
+  stickyOffset?: string;
 }
 
 /**
@@ -91,16 +109,20 @@ export interface MetaRowProps
  */
 function MetaRow({
   variant,
+  sticky,
+  stickyOffset,
   onClear,
   clearLabel = 'Clear selection',
   className,
+  style,
   children,
   ...props
 }: MetaRowProps) {
   return (
     <div
       data-slot="meta-row"
-      className={cn(metaRowVariants({ variant }), className)}
+      className={cn(metaRowVariants({ variant, sticky }), className)}
+      style={sticky ? { top: stickyOffset ?? 0, ...style } : style}
       {...props}
     >
       {children}

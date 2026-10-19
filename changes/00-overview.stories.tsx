@@ -32,12 +32,6 @@ interface Row {
  */
 const ROWS: Row[] = [
   {
-    n: '1',
-    area: 'Button, IconButton',
-    change: 'destructiveOutline — a neutral label under a red border',
-    page: '1. Colour and state',
-  },
-  {
     n: '2',
     area: 'globals.css',
     change: 'dark destructive border — hover made the control less visible',
@@ -100,7 +94,7 @@ const ROWS: Row[] = [
   },
   {
     n: '10',
-    area: 'SidebarHeader, SidebarBrand',
+    area: 'SidebarHeader, SidebarPanelHeader',
     change: 'the header lost its horizontal inset',
     page: '3. The sidebar',
   },
@@ -249,9 +243,9 @@ const ROWS: Row[] = [
     page: '10. The cards',
   },
   {
-    n: '57',
-    area: 'DataSourceCard',
-    change: 'a tile could be narrower than its own action',
+    n: '123',
+    area: 'CardFooter',
+    change: 'sticky — a tall card keeps its actions in reach',
     page: '10. The cards',
   },
   {

@@ -1,7 +1,7 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 /* Counter — one small round count, for wherever the product says "N of these are
@@ -23,7 +23,7 @@ const counterVariants = cva(
   cn(
     'inline-flex shrink-0 items-center justify-center',
     'box-border rounded-full',
-    'font-medium leading-none tabular-nums'
+    'font-medium tabular-nums leading-none'
   ),
   {
     variants: {
@@ -50,7 +50,14 @@ export interface CounterProps
   ref?: Ref<HTMLSpanElement>;
 }
 
-const Counter = ({ active, size, className, children, ref, ...props }: CounterProps) => (
+const Counter = ({
+  active,
+  size,
+  className,
+  children,
+  ref,
+  ...props
+}: CounterProps) => (
   <span
     ref={ref}
     className={cn(counterVariants({ active, size }), className)}

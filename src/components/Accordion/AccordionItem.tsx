@@ -1,15 +1,15 @@
 'use client';
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const accordionItemVariants = cva('', {
   variants: {
     variant: {
       /** Items stacked inside one surface, separated by a hairline. */
-      divided: 'not-last:border-stroke not-last:border-b',
+      divided: 'border-stroke border-b last:border-b-0',
       /**
        * The item IS the surface — one `Card` per section, spaced by the
        * accordion's own gap. No divider: the card edges already separate them,

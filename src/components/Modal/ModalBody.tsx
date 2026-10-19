@@ -18,7 +18,10 @@ export function ModalBody({
   return (
     <ScrollShadow
       size={shadowSize}
-      className={cn('-mr-4 flex min-h-0 flex-1 flex-col gap-3 pr-2', className)}
+      // `scrollbar-thin`: the bar the system draws on every list it ships
+      // (DropdownMenu, Autocomplete, CodeBlock). Without it a dialog's body
+      // scrolled with the platform's own — wide, and with arrows on Windows.
+      className={cn('-mr-4 flex min-h-0 flex-1 flex-col gap-3 pr-2 scrollbar-thin', className)}
       {...props}
     >
       {children}

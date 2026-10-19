@@ -1,8 +1,8 @@
 'use client';
 
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
-import type { VariantProps } from 'class-variance-authority';
 import { type ReactNode, useMemo } from 'react';
+import type { VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { toggleVariants } from '../Toggle';
 import { ToggleGroupContext } from './ToggleGroupContext';

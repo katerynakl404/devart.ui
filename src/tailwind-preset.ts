@@ -31,7 +31,7 @@ const breakpointVarsPlugin = plugin(({ addBase }) => {
  * The two scrollbars the kit draws, copied from it rather than restated.
  *
  * `scrollbar-thin` is `.cl-menu-scroll` / `.cl-mention-list` / `.cp-code-pre`
- * in `Insightis/pages/kit-theme.css`, which carry identical declarations. The
+ * in `Insightis/legacy-html/pages/kit-theme.css`, which carry identical declarations. The
  * 3px transparent border with `background-clip: padding-box` is what makes a
  * 10px track hold a 4px thumb — it is inset, not narrow, so the hit area stays
  * 10px while the thumb reads as a hairline.
@@ -125,6 +125,11 @@ export const preset: Partial<Config> = {
         'plan-card-featured': 'var(--plan-card-featured-shadow)',
         thumb: 'var(--shadow-thumb)',
         'thumb-hover': 'var(--shadow-thumb-hover)',
+        spotlight: 'var(--shadow-spotlight)',
+      },
+      backdropBlur: {
+        /* The tour's scrim — see `--spotlight-blur`. */
+        spotlight: 'var(--spotlight-blur)',
       },
       fontSize: {
         xxs: 'var(--font-size-xxs)',
@@ -269,6 +274,24 @@ export const preset: Partial<Config> = {
           from: { opacity: '1', transform: 'translateY(0)' },
           to: { opacity: '0', transform: 'translateY(4px)' },
         },
+        /* The tour family. The scrim and the annotations fade in; the ring
+           around a lit target breathes outward and fades; the coachmark
+           rises 8px into place, and shakes once when the scrim is clicked. */
+        'spotlight-fade': { from: { opacity: '0' } },
+        'spotlight-ring': {
+          '0%': { opacity: '0.7', transform: 'scale(1)' },
+          '70%, 100%': { opacity: '0', transform: 'scale(1.03)' },
+        },
+        'coachmark-in': {
+          from: { opacity: '0', transform: 'translateY(8px)' },
+        },
+        'coachmark-nudge': {
+          '20%, 60%': { transform: 'translateX(-4px)' },
+          '40%, 80%': { transform: 'translateX(4px)' },
+        },
+        /* Closing: the layers fade as one; the coachmark also drops 8px. */
+        'spotlight-out': { to: { opacity: '0' } },
+        'coachmark-out': { to: { opacity: '0', transform: 'translateY(8px)' } },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -286,15 +309,24 @@ export const preset: Partial<Config> = {
         'row-swap-out': 'row-swap-out var(--motion-fast) ease-in-out forwards',
         'row-swap-in': 'row-swap-in var(--motion-slow) ease-in-out both',
         'panel-out': 'panel-out var(--motion-slow) ease-in-out forwards',
+        'spotlight-in': 'spotlight-fade 0.5s 0.1s ease both',
+        'annotation-in': 'spotlight-fade 0.4s 0.35s ease both',
+        'spotlight-ring': 'spotlight-ring 2.2s ease-out infinite',
+        'coachmark-in':
+          'coachmark-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        /* The entry animation stays in the list while the nudge runs. Swapping
+           it OUT for the nudge alone restarts it when the nudge ends — the
+           card blinks out and fades back in after every scrim click. */
+        'coachmark-nudge':
+          'coachmark-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both, coachmark-nudge 0.4s',
+        'spotlight-out': 'spotlight-out 0.3s ease forwards',
+        'coachmark-out': 'coachmark-out 0.3s ease forwards',
       },
       backgroundImage: {
         'skeleton-shimmer':
           'linear-gradient(90deg, transparent 0%, transparent 30%, hsl(var(--brand-primary) / 0.1) 50%, transparent 70%, transparent 100%)',
         'primary-gradient':
           'linear-gradient(90deg, hsl(var(--brand-primary)) 50%, hsl(var(--brand-secondary)) 120.71%)',
-        'chat-shell': 'var(--chat-shell-bg)',
-        'chat-glow':
-          'radial-gradient(ellipse 55vw 45vh at 50% 50%, var(--chat-glow-fill), transparent 65%)',
         'banner-grad-horizontal-wide': 'var(--banner-grad-horizontal-wide)',
         'banner-grad-diagonal-airy': 'var(--banner-grad-diagonal-airy)',
         'banner-grad-diagonal-fade': 'var(--banner-grad-diagonal-fade)',

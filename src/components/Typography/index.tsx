@@ -1,6 +1,5 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type {
   ComponentPropsWithoutRef,
   ComponentRef,
@@ -9,9 +8,10 @@ import type {
   ReactNode,
   Ref,
 } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
-const typographyVariants = cva(null, {
+export const typographyVariants = cva(null, {
   variants: {
     variant: {
       h1: 'scroll-m-20 font-medium text-3xl md:text-4xl',
@@ -30,7 +30,7 @@ const typographyVariants = cva(null, {
     },
     /**
      * The named type scale: size + weight + line-height decided together, so
-     * no call site re-decides them. Nineteen styles on eight size rungs —
+     * no call site re-decides them. Twenty-one styles on nine size rungs —
      * Heading carries 500 and Title carries 600 across the same rungs, so a
      * heading and a title at 20px differ by weight, not size.
      *
@@ -46,12 +46,17 @@ const typographyVariants = cva(null, {
       heading30: 'font-medium text-3xl',
       heading24: 'font-medium text-2xl',
       heading20: 'font-medium text-xl',
+      // 18 is prod's: the plan and balance panels of the profile dialog. Its
+      // leading is the 24px prod declares there (`leading-6`), not the 28px
+      // Tailwind pairs with `text-lg`.
+      heading18: 'font-medium text-lg leading-6',
       heading16: 'font-medium text-base',
 
       // Title · 600
       title30: 'font-semibold text-3xl',
       title24: 'font-semibold text-2xl',
       title20: 'font-semibold text-xl',
+      title18: 'font-semibold text-lg leading-6',
       title16: 'font-semibold text-base',
       title14: 'font-semibold text-sm',
       title12: 'font-semibold text-xs',
@@ -113,8 +118,15 @@ const typographyVariants = cva(null, {
       true: 'underline',
       false: null,
     },
+    /* Not `line-through`: DM Sans puts its strikeout at the top of the
+       x-height, so the browser's stroke ran along the tops of the lowercase
+       letters instead of through them. Drawn instead: a band 0.075em thick
+       (1px at 14) whose middle is 0.107em below the middle of the line box —
+       where the middle of DM Sans's x-height falls, at any line height (the
+       leading is added evenly above and below). `box-decoration-break` is
+       left at `slice`, so a wrapped run is struck on every line. */
     lineThrough: {
-      true: 'line-through',
+      true: 'bg-[linear-gradient(currentColor,currentColor)] bg-[length:100%_max(1px,0.075em)] bg-[position:0_calc(50%+0.107em)] bg-no-repeat',
       false: null,
     },
     overline: {

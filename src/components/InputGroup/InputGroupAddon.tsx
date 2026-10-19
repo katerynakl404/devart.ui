@@ -1,7 +1,7 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke } from '../../lib/utils';
 import { useInputGroup } from './InputGroupContext';
 
@@ -18,15 +18,15 @@ const inputGroupAddonVariants = cva(
     // Kbd shortcut styling
     '[&>kbd]:rounded-[calc(var(--radius)-5px)]',
 
-    /* NO ink rule on the glyph. It inherits the addon's own `--ink-secondary`,
-       which is what the kit states: `.igrp-add` sets `color: var(--ink-secondary)`
-       and has no separate rule for its `svg`.
-
-       There was one — `[&>svg]:text-ink-inactive` — on the reasoning that a
-       decorative glyph reads as part of the placeholder and an empty field
-       should be one weight of grey. Nobody asked for it and no case called for
-       it; it was a step away from the kit argued from inside the package, which
-       is the one thing a package that mirrors a kit may not do. */
+    /* The decorative glyph in the placeholder's grey (`--ink-inactive`), so
+       an empty field — a search icon and "Search…" — is one weight of grey.
+       Left on the addon's `--ink-secondary` (the kit's `.igrp-add`), the glyph
+       stood a step darker than the words beside it, and in dark theme a step
+       lighter — two greys for one hint, asked about in review of the
+       workspaces prototype. A text addon (a unit, a prefix) keeps
+       `--ink-secondary`: only the svg changes. A departure from the kit, on
+       purpose — see DESIGN-SYSTEM-CHANGES §106. */
+    '[&>svg]:text-ink-inactive',
     glyphStroke,
 
     /* A docked control is not decoration: it answers the pointer. The kit names

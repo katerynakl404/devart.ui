@@ -1,7 +1,7 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps, ReactNode } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const skeletonVariants = cva(

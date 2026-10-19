@@ -56,6 +56,7 @@ hangs from the right edge of the kebab rather than overflowing the table.
 | A reading | `DropdownMenuRow` | item rail, **no hover fill**, no pointer | nothing — it is a label and its own control (switch, badge, counter) |
 | An action | `DropdownMenuItem` | item rail, neutral hover | what its label says |
 | **The** action | `DropdownMenuItem variant="accent"` | brand ink + medium weight, leading glyph | the thing the menu exists to offer |
+| A setting | `DropdownMenuSegmentedItem` | item rail, neutral hover, a `SegmentedControl` at the end | changes a value in place; the menu stays open |
 
 A hover fill in a menu is a promise that the row does something, so a row that
 does nothing must not have one — that is the whole reason `DropdownMenuRow`
@@ -86,6 +87,60 @@ the eye catches first.
 Selection lists are the exception: a source picker or a model list already has a
 leading element and expresses a *choice*, not a command, so a second glyph there
 reads as a competing affordance.
+
+## A row that opens a new tab
+
+```jsx
+<DropdownMenuItem asChild isExternal>
+  <a href="https://docs.example.com" target="_blank" rel="noopener">
+    <CircleHelp />
+    Resources
+  </a>
+</DropdownMenuItem>
+```
+
+`isExternal` draws a trailing 14px arrow in `Text/Secondary` — the affordance
+`SidebarMenuRow` already uses — and appends `externalLabel` ("(opens in new
+tab)" by default) to the row's name as visually hidden text. It only says so:
+the link and its `target="_blank"` are the caller's, and with `asChild` the
+arrow and the words are injected into that link, so they stay inside the one
+focusable element.
+
+## A setting inside the menu
+
+```jsx
+<DropdownMenuSegmentedItem
+  label={<><SunMoon />Theme</>}
+  value={theme}
+  onValueChange={setTheme}
+  options={[
+    { value: 'light', label: 'Light', icon: <Sun /> },
+    { value: 'dark', label: 'Dark', icon: <Moon /> },
+    { value: 'system', label: 'System', icon: <Monitor /> },
+  ]}
+/>
+```
+
+One menu row holding a choice between two or three values: the label on the
+item rail, a `SegmentedControl` (`sm`) at the end. It is **one item, not a
+group**: ↑ / ↓ reach it like any other row, ← / → change the value while it
+has focus, and Enter or Space step to the next value, wrapping. None of them
+closes the menu — a setting is adjusted and watched, not chosen once and
+dismissed.
+
+- **The segments are a pointer shortcut.** A press on one chooses that one and
+  stops there, so the row never reads it as "select the item" and steps again;
+  focus stays on the row.
+- **The row is what assistive technology reads.** The segments are hidden
+  from it; the row's name is the label plus the current value ("Theme:
+  Light"), and its description is `hint` ("Left and right arrows change it."
+  by default).
+- **An option with an `icon` shows the glyph alone** and carries its `label`
+  as a tooltip — hung on a wrapper, because a tooltip on the segment would
+  overwrite the segment's `data-state` and the selected pill would never paint.
+  The page provides the `TooltipProvider`; `SidebarProvider` already does.
+- The row is 4px top and bottom rather than the rail's 6px: with the 26px
+  control it comes to 34px, 2px over its 32px neighbours rather than 6px.
 
 ## A link may open a menu — **draft**
 

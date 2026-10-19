@@ -20,7 +20,8 @@ const OptionItem = <T extends { id: string }>({
   getOptionLabel,
   renderOption,
 }: OptionItemProps<T>) => {
-  const optionProps = getOptionProps({ option, index });
+  // `key` cannot travel in a spread — React reads it before props exist.
+  const { key, ...optionProps } = getOptionProps({ option, index });
   const isSelected = optionProps['aria-selected'];
 
   const content = (
@@ -31,6 +32,7 @@ const OptionItem = <T extends { id: string }>({
 
   return (
     <DropdownMenuItem
+      key={key}
       {...optionProps}
       onSelect={(e) => e.preventDefault()}
       asChild={!!renderOption}

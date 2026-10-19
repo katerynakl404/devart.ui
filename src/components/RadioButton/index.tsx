@@ -1,10 +1,10 @@
 'use client';
 
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Circle } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
-import { cn, formFocusRing } from '../../lib/utils';
+import { cva, type VariantProps } from '../../lib/cva';
+import { cn, focusRing } from '../../lib/utils';
 
 const radioVariants = cva(
   [
@@ -15,12 +15,14 @@ const radioVariants = cva(
     'border-[1.5px]',
     'rounded-full',
 
-    // Focus state — neutral ring with a Surface/Card gap, matching
-    // Checkbox / Switch. Brand colour never visualises form-control focus.
-    formFocusRing,
+    // Focus state — the brand ring with a Surface/Card gap, matching
+    // Checkbox / Switch.
+    focusRing,
 
     // Disabled state — unified opacity recipe
-    'disabled:pointer-events-none',
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
     'disabled:cursor-not-allowed',
     'disabled:opacity-disabled',
 
@@ -170,4 +172,9 @@ RadioButton.displayName = 'RadioButton';
 
 export type { RadioGroupProps } from './RadioGroup';
 export { RadioGroup } from './RadioGroup';
-export { RadioButton, radioVariants };
+export {
+  RadioButton,
+  radioContainerVariants,
+  radioIndicatorVariants,
+  radioVariants,
+};

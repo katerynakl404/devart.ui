@@ -171,3 +171,47 @@ export const FullWidth: Story = {
     </Card>
   ),
 };
+
+/**
+ * DRAFT. `CardFooter sticky` — a card taller than its scroller keeps its
+ * actions in reach: the footer sticks to the bottom of the scroller while the
+ * card scrolls under it, and settles in place at the card's end. Scroll the
+ * box.
+ */
+export const StickyFooter: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => (
+    <div className="h-80 w-96 overflow-y-auto rounded-lg border border-stroke bg-surface-page p-4">
+      <Card {...args} fullWidth>
+        <CardHeader>
+          <CardTitle>Connection settings</CardTitle>
+          <CardDescription>Taller than the box it scrolls in.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3">
+          {[
+            'Host',
+            'Port',
+            'Database',
+            'Schema',
+            'User',
+            'Password',
+            'SSL mode',
+            'Timeout',
+            'Pool size',
+            'Read only',
+            'Time zone',
+            'Encoding',
+          ].map((setting) => (
+            <p key={setting}>{setting} — a row of the form.</p>
+          ))}
+        </CardContent>
+        <CardFooter sticky variant="actions">
+          <Button variant="secondary" size="sm">
+            Cancel
+          </Button>
+          <Button size="sm">Save</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};

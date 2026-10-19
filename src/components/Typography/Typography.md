@@ -13,8 +13,8 @@ size.**
 | Family | Steps | Weight | Use |
 |---|---|---|---|
 | `display` | — | — | hero numerals only |
-| `heading` | `36 30 24 20 16` | 500 | section headings |
-| `title` | `30 24 20 16 14 12` | 600 | page and card titles |
+| `heading` | `36 30 24 20 18 16` | 500 | section headings |
+| `title` | `30 24 20 18 16 14 12` | 600 | page and card titles |
 | `body` | `16 14 12` | 400 | prose, table cells, descriptions |
 | `label` | `14 12 10` | 500 | form labels, chips, metadata |
 | `overline` | — | — | small-caps section eyebrows |
@@ -22,9 +22,15 @@ size.**
 Each style carries size, weight **and** line-height together — so never pair a
 `textStyle` with your own `text-*` or `leading-*` class.
 
-There are exactly eight sizes in the system: 10 / 12 / 14 / 16 / 20 / 24 / 30 /
-36. **13px and 11px are not part of it** — if a design shows one, it is
+There are exactly nine sizes in the system: 10 / 12 / 14 / 16 / 18 / 20 / 24 /
+30 / 36. **13px and 11px are not part of it** — if a design shows one, it is
 pre-migration. Never write `text-[13px]`.
+
+**18 is back** for what prod sets at 18: the profile dialog's plan panel
+("Choose a plan" at 500, the plan names at 600) and its balance panel (the
+credit amounts at 600) — `heading18` and `title18`. There is no `body18`. Its
+leading is 24px, the `leading-6`
+prod declares there — not the 28px Tailwind pairs with `text-lg`.
 
 ## Element vs style
 

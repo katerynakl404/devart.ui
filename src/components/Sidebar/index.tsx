@@ -10,7 +10,6 @@ import {
   SidebarUser,
   type SidebarUserProps,
 } from './SidebarAccount';
-import { SidebarBrand } from './SidebarBrand';
 import { SidebarChatItem, type SidebarChatItemProps } from './SidebarChatItem';
 import { SidebarContent } from './SidebarContent';
 import { SidebarFooter } from './SidebarFooter';
@@ -23,15 +22,31 @@ import {
   sidebarMenuButtonVariants,
 } from './SidebarMenuButton';
 import { SidebarMenuItem } from './SidebarMenuItem';
+import { SidebarMenuRow, type SidebarMenuRowProps } from './SidebarMenuRow';
 import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from './SidebarMenuSub';
 import {
+  SidebarMobileTrigger,
+  type SidebarMobileTriggerProps,
+} from './SidebarMobileTrigger';
+import {
+  SidebarNavItem,
+  type SidebarNavItemProps,
+  sidebarNavItemVariants,
+} from './SidebarNavItem';
+import {
   SidebarNavigationItems,
   type SidebarNavigationItemsProps,
 } from './SidebarNavigationItems';
+import {
+  SidebarPanelHeader,
+  type SidebarPanelHeaderProps,
+  sidebarPanelHeaderSlotClassName,
+  sidebarPanelHeaderTriggerSlotClassName,
+} from './SidebarPanelHeader';
 import {
   type SidebarContextProps,
   SidebarProvider,
@@ -191,17 +206,24 @@ export {
   type SidebarContextProps,
   SidebarFooter,
   SidebarGroup,
-  SidebarBrand,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuRow,
+  type SidebarMenuRowProps,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarMobileTrigger,
+  type SidebarMobileTriggerProps,
+  SidebarNavItem,
+  type SidebarNavItemProps,
   SidebarNavigationItems,
   type SidebarNavigationItemsProps,
+  SidebarPanelHeader,
+  type SidebarPanelHeaderProps,
   SidebarPromo,
   SidebarProvider,
   SidebarRail,
@@ -215,5 +237,8 @@ export {
   SidebarUser,
   type SidebarUserProps,
   sidebarMenuButtonVariants,
+  sidebarNavItemVariants,
+  sidebarPanelHeaderSlotClassName,
+  sidebarPanelHeaderTriggerSlotClassName,
   useSidebar,
 };

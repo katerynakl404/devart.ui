@@ -269,7 +269,10 @@ export const TheSidebar: Story = {
             hairlines are x = 8 (amber) and x = 16 (teal).
           </>
         }
-        files={['src/components/Sidebar/SidebarHeader.tsx', 'SidebarBrand.tsx']}
+        files={[
+          'src/components/Sidebar/SidebarHeader.tsx',
+          'SidebarPanelHeader.tsx',
+        ]}
         footnote={
           <>
             Why this is a library defect and not a page defect: the component
@@ -650,10 +653,11 @@ export const TheSidebar: Story = {
             </strong>{' '}
             <Code>Components/Sidebar</Code> built its header row as a plain{' '}
             <Code>div</Code> with its own <Code>px-2</Code> instead of{' '}
-            <Code>SidebarBrand</Code>, so it stacked an inset on the header's
-            own and had nothing to hide its label with — the product name ran
-            straight across the rail and over the page behind it. A story that
-            does not use the part cannot demonstrate the part.
+            <Code>SidebarPanelHeader</Code> (then <Code>SidebarBrand</Code>), so
+            it stacked an inset on the header's own and had nothing to hide its
+            label with — the product name ran straight across the rail and over
+            the page behind it. A story that does not use the part cannot
+            demonstrate the part.
           </>
         }
         n={72}

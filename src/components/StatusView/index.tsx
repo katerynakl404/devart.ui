@@ -1,8 +1,8 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import { CircleAlert, CircleCheck, Inbox, Info, RefreshCw } from 'lucide-react';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Button, type ButtonProps } from '../Button';
 import { Typography } from '../Typography';
@@ -226,7 +226,7 @@ const EmptySearchIllustration = ({ className }: { className?: string }) => (
   >
     <g className="[filter:drop-shadow(0_2px_5px_rgb(15_23_42/0.10))]">
       <rect
-        className="fill-surface-card stroke-stroke"
+        className="fill-surface-card stroke-stroke-hover"
         height="28"
         rx="8"
         width="132"
@@ -234,20 +234,20 @@ const EmptySearchIllustration = ({ className }: { className?: string }) => (
         y="4"
       />
       <circle
-        className="stroke-ink-inactive/60"
+        className="stroke-ink-inactive"
         cx="24"
         cy="17"
         r="5"
         strokeWidth="1.5"
       />
       <path
-        className="stroke-ink-inactive/60"
+        className="stroke-ink-inactive"
         d="M27.8 20.8 L31 24"
         strokeLinecap="round"
         strokeWidth="1.5"
       />
       <rect
-        className="fill-ink-inactive/35"
+        className="fill-ink-inactive/55"
         height="6"
         rx="3"
         width="52"
@@ -255,9 +255,9 @@ const EmptySearchIllustration = ({ className }: { className?: string }) => (
         y="15"
       />
     </g>
-    <g opacity="0.4">
+    <g>
       <rect
-        className="fill-surface-card stroke-stroke"
+        className="fill-surface-card stroke-stroke-hover"
         height="22"
         rx="8"
         width="132"
@@ -266,9 +266,9 @@ const EmptySearchIllustration = ({ className }: { className?: string }) => (
         strokeDasharray="4 4"
       />
     </g>
-    <g opacity="0.2">
+    <g opacity="0.5">
       <rect
-        className="fill-surface-card stroke-stroke"
+        className="fill-surface-card stroke-stroke-hover"
         height="22"
         rx="8"
         width="132"
@@ -400,9 +400,14 @@ const StatusView = ({
 
                The cap is on the MESSAGE, not on the block: the kit gives the
                title no max-width, because a title short enough to be a title
-               does not need one. */
+               does not need one.
+
+               48ch, not the kit's 32: a two-sentence message — what is empty
+               and what to do about it — broke into three or four short lines
+               at 32 and read as a column of fragments. `text-balance` stays,
+               so the wider measure still never leaves one word on a line. */
             className={cn(
-              'max-w-[32ch] text-balance',
+              'max-w-[48ch] text-balance',
               isCompact ? 'leading-normal' : 'leading-relaxed'
             )}
             element="p"
@@ -444,5 +449,6 @@ export {
   containerVariants,
   EmptySearchIllustration,
   EmptyStateIllustration,
+  haloVariants,
   StatusView,
 };

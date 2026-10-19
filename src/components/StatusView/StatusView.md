@@ -3,7 +3,7 @@
 One component for every "there is nothing to show" block. What changes between
 them is **which state it is**, and that decides the picture and the action.
 
-Every number below is quoted from `Insightis/pages/kit-theme.css`
+Every number below is quoted from `Insightis/legacy-html/pages/kit-theme.css`
 (`.empty-state`, `.empty-state.is-sm`, `.cl-menu-empty`) or from
 `reports/2026-09-04-insightis-ux-audit.md`. Where the package has no counterpart
 in either, it says so.
@@ -86,7 +86,7 @@ The action's offset is the kit's, not the block's gap: **12px below the text at
 | Glyph, no halo | 48 | 32 |
 | Illustration | 150px | 104px |
 | Title | Title 16 | |
-| Message | Body M, max 32ch, balanced | |
+| Message | Body M, max 48ch, balanced (the kit: 32ch) | |
 | CTA offset | 12 | 8 |
 
 `xs` and `md` have **no counterpart in the kit**. They are the package's own

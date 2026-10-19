@@ -1,6 +1,6 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { cva } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { useSegmentedControl } from './SegmentedControlContext';
 

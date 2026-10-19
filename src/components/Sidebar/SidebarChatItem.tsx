@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '../DropdownMenu';
 import { IconButton } from '../IconButton';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
 export interface SidebarChatItemProps
   extends Omit<ComponentProps<'a'>, 'children'> {
@@ -33,11 +34,20 @@ export interface SidebarChatItemProps
    */
   countActive?: boolean;
   /**
+   * What the count means — "3 messages queued, still sending". Spoken in
+   * place of the bare number, and shown as the count's tooltip. Without it
+   * the number is read as it is.
+   */
+  countLabel?: string;
+  /**
    * `DropdownMenuItem`s for the row menu — Pin / Rename / Delete. When given,
    * a kebab appears at the right edge on hover and focus, and the status or
-   * count steps aside for it.
+   * count steps aside for it. On touch, and below `lg` (the sheet), the kebab
+   * is always there and keeps its room: the title and the status end before
+   * it instead.
    */
   menu?: ReactNode;
+  /** The kebab's accessible name, and its tooltip. */
   menuLabel?: string;
   /** Spoken labels for `status`. */
   statusLabels?: { loading: string; new: string };
@@ -59,7 +69,15 @@ export interface SidebarChatItemProps
  *
  * **The kebab is a sibling of the link, never inside it** — a button inside an
  * anchor is not markup. It is the shared row kebab (`IconButton` tertiary
- * 2xs); the row adds only its position.
+ * 2xs); the row adds only its position. Its tooltip is `menuLabel`, the same
+ * string as its name.
+ *
+ * **Where there is no hover, the kebab never hides.** On a touch screen, and
+ * below `lg` where the sidebar is the sheet, a control that waits for the
+ * pointer is a control that is not there. So the kebab stays, the link keeps
+ * 32px of room for it, and the fade ends where that room begins; the status
+ * stays beside it rather than stepping aside, since there is room for both.
+ * The breakpoint and the media query are `SidebarSection`'s "See all" ones.
  *
  * ```jsx
  * <SidebarChatItem
@@ -82,6 +100,7 @@ function SidebarChatItem({
   status,
   count,
   countActive = false,
+  countLabel,
   menu,
   menuLabel = 'More actions',
   statusLabels = { loading: 'In progress', new: 'New activity' },
@@ -91,15 +110,33 @@ function SidebarChatItem({
 }: SidebarChatItemProps) {
   const Comp = asChild ? Slot : 'a';
   const hasCount = count !== undefined;
-  const indicator = hasCount ? (
-    <Counter active={countActive} size="sm">
+  // With a label, the label is what is spoken; the number is only drawn.
+  const counter = (
+    <Counter
+      active={countActive}
+      aria-hidden={countLabel ? true : undefined}
+      size="sm"
+    >
       {count}
     </Counter>
+  );
+  const indicator = hasCount ? (
+    countLabel ? (
+      // Not a tab stop: it sits inside the link, and a focusable element
+      // inside an anchor is not markup. The keyboard hears the same words.
+      <Tooltip>
+        <TooltipTrigger asChild>{counter}</TooltipTrigger>
+        <TooltipContent>{countLabel}</TooltipContent>
+      </Tooltip>
+    ) : (
+      counter
+    )
   ) : status === 'loading' ? (
     <span className="size-2.5 animate-spin rounded-full border-[1.5px] border-current border-r-transparent" />
   ) : status === 'new' ? (
     <span className="size-1.5 rounded-full bg-current" />
   ) : null;
+  const spoken = hasCount ? countLabel : status && statusLabels[status];
 
   return (
     <div
@@ -132,6 +169,9 @@ function SidebarChatItem({
           // Kept inside the row box, so it cannot overlap the rows above and
           // below in a 1px-gap list.
           'outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-inset',
+          // No hover to wait for: the kebab is always on, so its room is kept
+          // for good — the 24px button, its 4px inset and a 4px gap.
+          menu && 'max-lg:pr-8 [@media(hover:none)]:pr-8',
           // The fade. It is off on a row that carries a count, or the title
           // runs under the number instead of stopping before it.
           !hasCount &&
@@ -140,7 +180,14 @@ function SidebarChatItem({
               'after:bg-[linear-gradient(90deg,transparent_0,var(--chat-fade)_70%)]',
               'after:transition-[width] after:duration-fast',
               menu &&
-                'group-focus-within/chat:after:w-[72px] group-hover/chat:after:w-[72px] group-has-[[aria-expanded=true]]/chat:after:w-[72px]'
+                cn(
+                  'group-focus-within/chat:after:w-[72px] group-hover/chat:after:w-[72px] group-has-[[aria-expanded=true]]/chat:after:w-[72px]',
+                  // …where the fade ends at that room, and keeps its rest
+                  // width: a tap leaves `:hover` and focus behind, and the wide
+                  // fade would eat the open chat's title.
+                  'max-lg:after:!w-9 max-lg:after:right-8',
+                  '[@media(hover:none)]:after:!w-9 [@media(hover:none)]:after:right-8'
+                )
             ),
           className
         )}
@@ -158,36 +205,47 @@ function SidebarChatItem({
               hasCount && 'w-auto',
               'transition-opacity duration-fast',
               menu &&
-                'group-focus-within/chat:opacity-0 group-hover/chat:opacity-0 group-has-[[aria-expanded=true]]/chat:opacity-0'
+                cn(
+                  'group-focus-within/chat:opacity-0 group-hover/chat:opacity-0 group-has-[[aria-expanded=true]]/chat:opacity-0',
+                  // Beside an always-on kebab there is room for both.
+                  'max-lg:!opacity-100 [@media(hover:none)]:!opacity-100'
+                )
             )}
           >
             {indicator}
           </span>
         ) : null}
-        {status && !hasCount ? (
-          <span className="sr-only">{statusLabels[status]}</span>
-        ) : null}
+        {spoken ? <span className="sr-only">{spoken}</span> : null}
       </Comp>
 
       {menu ? (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <IconButton
-              aria-label={menuLabel}
-              className={cn(
-                'absolute top-1/2 right-1 z-[2] -translate-y-1/2',
-                'pointer-events-none opacity-0',
-                'focus-visible:pointer-events-auto focus-visible:opacity-100',
-                'group-focus-within/chat:pointer-events-auto group-focus-within/chat:opacity-100',
-                'group-hover/chat:pointer-events-auto group-hover/chat:opacity-100',
-                'aria-expanded:pointer-events-auto aria-expanded:opacity-100'
-              )}
-              size="2xs"
-              variant="tertiary"
-            >
-              <EllipsisVertical />
-            </IconButton>
-          </DropdownMenuTrigger>
+          {/* The tooltip writes its own `data-state` onto the button; nothing
+              reads the menu's, because the open paint keys on `aria-expanded`. */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <IconButton
+                  aria-label={menuLabel}
+                  className={cn(
+                    'absolute top-1/2 right-1 z-[2] -translate-y-1/2',
+                    'pointer-events-none opacity-0',
+                    'focus-visible:pointer-events-auto focus-visible:opacity-100',
+                    'group-focus-within/chat:pointer-events-auto group-focus-within/chat:opacity-100',
+                    'group-hover/chat:pointer-events-auto group-hover/chat:opacity-100',
+                    'aria-expanded:pointer-events-auto aria-expanded:opacity-100',
+                    'max-lg:pointer-events-auto max-lg:opacity-100',
+                    '[@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100'
+                  )}
+                  size="2xs"
+                  variant="tertiary"
+                >
+                  <EllipsisVertical />
+                </IconButton>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent>{menuLabel}</TooltipContent>
+          </Tooltip>
           <DropdownMenuContent align="end">{menu}</DropdownMenuContent>
         </DropdownMenu>
       ) : null}

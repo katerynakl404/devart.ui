@@ -1,6 +1,6 @@
 import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 // The package's own Tooltip, not `@radix-ui/react-tooltip`. Importing the raw
 // primitives here rendered a collapsed rail's labels with no class at all — no
@@ -104,7 +104,7 @@ const sidebarMenuButtonVariants = cva(
           'active:bg-fb-red/12',
 
           //Focus state
-          'focus-visible:ring-state-focus-ring',
+          'focus-visible:ring-focus-ring-brand',
 
           'data-[active=true]:bg-transparent',
           'data-[active=true]:text-fb-red-text'

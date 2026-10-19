@@ -1,8 +1,8 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
 import { Typography } from '../Typography';
 
@@ -63,7 +63,7 @@ const SOLID_ICON = cn(
    (`--state-hover`), and on the solid variant that is invisible enough to pass;
    on a gradient it is a pale box sitting on the artwork, which reads as a
    control stuck onto the banner rather than as part of it. Same rule
-   `InputGroupAction` and `UploadTray` already follow. Deliberate divergence.
+   `InputGroupAction` already follows. Deliberate divergence.
 
    The 32px box stays — it is the hit area, and a 16px glyph is not one. */
 const GRADIENT_CLOSE = cn(

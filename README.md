@@ -173,6 +173,8 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 |---|---|---|
 | **Accordion** | Radix Accordion | — |
 | **Autocomplete** | Custom | — |
+| **ActivityTray** | Custom + CVA | — *(the floating tray of async operations — uploads and the like)* |
+| **AsyncList** | Custom | — *(empty / error / first-load / next-page states around a list; no data fetching)* |
 | **Avatar** | Radix Avatar | `size`, `rounded` |
 | **Badge** | CVA | `variant`, `size`, `rounded` |
 | **Banner** | CVA | `variant`, `size` |
@@ -186,11 +188,14 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **DialogTitleFallback** | Radix Dialog | — *(a11y helper: supplies a title when a dialog has none)* |
 | **DropdownMenu** | Radix DropdownMenu | `variant` |
 | **File** | CVA | `variant`, `size`, `rounded` |
-| **FilterChips** | Radix RadioGroup + CVA | `size` |
+| **FilterChips** | Radix ToggleGroup | — *(`items`, `value`, `onValueChange`)* |
 | **Foundations** | Custom | — *(docs-only token previews: Colors, Radius, Shadows, Spacing)* |
+| **IconCard** | CVA | `disabled` *(icon-and-caption catalog tile; `IconCardSkeleton`)* |
 | **IconButton** | CVA + Radix Slot | `variant`, `size`, `rounded` |
 | **Input** | HTML | — |
 | **InputGroup** | Custom | `variant`, `size`, `align` |
+| **ListPageLayout** | Custom | — *(one scroll container, centred column, sticky header)* |
+| **ListSelectionBar** | Custom | — *(count, select-all, actions, exit for a multi-select list)* |
 | **Modal** | Radix Dialog | `size`, `align`, `flexDirection` |
 | **PageHeader** | Custom | — |
 | **Pagination** | Custom | — |
@@ -200,7 +205,9 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **ProgressBar** | Radix Progress + CVA | `variant`, `size`, `rounded` |
 | **RadioButton** | Radix RadioGroup + CVA | `variant`, `size`, `labelPosition`, `gap` |
 | **Resizable** | react-resizable-panels | — |
+| **ResizableMainSideLayout** | react-resizable-panels | — *(main pane plus a side pane that collapses to nothing)* |
 | **ScrollShadow** | Custom | — |
+| **SelectableListCard** | CVA | `layout` (`card` | `row`) |
 | **SegmentedControl** | Radix Tabs + CVA | `variant`, `size`, `rounded` |
 | **Separator** | Radix Separator | `variant`, `orientation` |
 | **Sheet** | Radix Dialog | `side` |
@@ -227,17 +234,17 @@ entry the collision is resolved by renaming ToggleGroup's to
 `toggleGroupVariants`; under npm the two subpaths never meet, so neither is
 renamed.
 
-**FilterChips is a radio group, not a toggle group** — exactly one chip is
-always active, which is what "filter by status" means. `SegmentedControl` is a
-different component for a different job (switching the *view*, not narrowing the
-*data*); do not substitute one for the other.
+**FilterChips narrows the *data*; `SegmentedControl` switches the *view*** — they
+look alike and are not interchangeable. FilterChips is controlled: toggling the
+active chip off reports `''`, and a strip that must keep one chip active ignores
+that value rather than storing it.
 
 Per-component usage notes — anatomy, the states a page must wire up, and the
 patterns that go wrong — live next to the component as `<Name>.md` and ship into
-`ds-bundle/guidelines/`. **17 of the 50 carry one today** (Badge, Button, Card,
-Checkbox, DropdownMenu, FilterChips, IconButton, InputGroup, Modal, PageHeader,
-Pagination, SegmentedControl, Sidebar, Table, Tabs, ToggleGroup, Typography,
-plus the four Foundations pages). The rest are undocumented — and an undocumented
+`ds-bundle/guidelines/`. **21 of the 63 carry one today** (ActivityTray, Badge,
+Button, Card, Checkbox, DropdownMenu, FilterChips, IconButton, InputGroup,
+MetaRow, Modal, PageHeader, Pagination, SegmentedControl, Sidebar, StatusView,
+Switch, Table, Tabs, ToggleGroup, Typography, plus the four Foundations pages). The rest are undocumented — and an undocumented
 component is the one an agent assembles wrong, because it has no pattern to copy.
 
 ---

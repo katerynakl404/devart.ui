@@ -1,12 +1,12 @@
 'use client';
 
 import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke } from '../../lib/utils';
 import { Spinner } from '../Spinner';
 
-const iconButtonVariants = cva(
+export const iconButtonVariants = cva(
   cn(
     'inline-flex items-center justify-center',
     'cursor-pointer border',
@@ -70,7 +70,7 @@ const iconButtonVariants = cva(
         ),
         // The same pill as `tertiary`, with a brand glyph. Its label — the
         // glyph — moves through the brand ramp; the surface does not.
-        tertiaryBrand: cn(
+        primaryTertiary: cn(
           'border-transparent bg-transparent text-brand-primary',
           'hover:bg-state-hover hover:text-brand-hover',
           'pressed:bg-state-pressed pressed:text-brand-press',
@@ -125,6 +125,10 @@ const iconButtonVariants = cva(
         // `2xs` (24px) sits one step BELOW that ladder: the row-action size,
         // which an icon-only control reaches on the padded box around a 14px
         // glyph. Glyph is 16px everywhere and 14px on the two smallest steps.
+        // `3xs` (20px, 12px glyph) is a step under that again: the toggle of
+        // a tree row — expand / collapse beside a 14px name, many to a screen,
+        // where a 24px box beside every row outweighed the names.
+        '3xs': 'size-5 [&_svg]:size-3',
         '2xs': 'size-6 [&_svg]:size-3.5',
         xs: 'size-7 [&_svg]:size-3.5',
         sm: 'size-8 [&_svg]:size-4',
@@ -146,6 +150,7 @@ const iconButtonVariants = cva(
       // The radius tightens one step on the two smallest boxes so a 24/28px
       // square does not read as a pill. Scoped to the default `md` radius so an
       // explicit `rounded` prop still wins.
+      { size: '3xs', rounded: 'md', class: 'rounded' },
       { size: '2xs', rounded: 'md', class: 'rounded' },
       { size: 'xs', rounded: 'md', class: 'rounded' },
     ],
@@ -190,7 +195,8 @@ export function IconButton({
 
   // The spinner replaces the glyph, so it takes the glyph's size: one step
   // down on the two smallest boxes, 16px on every other step.
-  const spinnerSize = size === '2xs' || size === 'xs' ? 'xs' : 'sm';
+  const spinnerSize =
+    size === '3xs' || size === '2xs' || size === 'xs' ? 'xs' : 'sm';
 
   return (
     <Comp

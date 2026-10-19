@@ -39,7 +39,9 @@ const AccordionTrigger = ({
           'font-medium',
           focusRing,
           'transition-all',
-          'disabled:pointer-events-none',
+          // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+          // tooltip that says why the control is off. A disabled control fires
+          // nothing either way.
           'disabled:cursor-not-allowed',
           'disabled:opacity-disabled',
           '[&[data-state=open]>svg]:rotate-180',

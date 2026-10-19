@@ -1,7 +1,7 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const modalHeaderVariants = cva('mb-3 flex flex-shrink-0 flex-col gap-1.5', {

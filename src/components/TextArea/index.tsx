@@ -1,8 +1,8 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps, ReactNode, Ref } from 'react';
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 

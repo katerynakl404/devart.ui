@@ -264,21 +264,23 @@ export const findNextValidIndex = <T>({
 }) => {
   if (index === -1) return -1;
 
-  let nextFocus = index;
   const total = filteredOptions.length;
+  if (total === 0) return -1;
 
-  while (true) {
-    if (direction === 'next' && nextFocus === total) nextFocus = 0;
-    if (direction === 'previous' && nextFocus === -1) nextFocus = total - 1;
+  const step = direction === 'next' ? 1 : -1;
 
-    const option = filteredOptions[nextFocus];
+  // Bounded by the list length rather than by "did we arrive back where we
+  // started". The previous version compared after wrapping, so a search that
+  // began at an edge — index 0 going forward, the last index going back — with
+  // every option disabled stepped over its own start position and never
+  // terminated, hanging the tab.
+  for (let visited = 0; visited < total; visited++) {
+    const candidate = (((index + step * visited) % total) + total) % total;
+    const option = filteredOptions[candidate];
 
     if (!option) return -1;
-
-    if (!getOptionDisabled?.(option)) return nextFocus;
-
-    nextFocus += direction === 'next' ? 1 : -1;
-
-    if (nextFocus === index) return -1;
+    if (!getOptionDisabled?.(option)) return candidate;
   }
+
+  return -1;
 };

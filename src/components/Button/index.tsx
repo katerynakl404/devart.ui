@@ -1,8 +1,8 @@
 'use client';
 
 import { Slot, Slottable } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke } from '../../lib/utils';
 
 import { Spinner } from '../Spinner';
@@ -99,7 +99,7 @@ const buttonVariants = cva(
         // through the brand ramp. The kit ships it as `.btn-tertiary.is-brand`
         // for standalone brand text actions — "Test Connection" in a side
         // panel — where a bordered button would outweigh what it sits next to.
-        tertiaryBrand: cn(
+        primaryTertiary: cn(
           'border-transparent bg-transparent text-brand-primary',
           'hover:bg-state-hover hover:text-brand-hover',
           'pressed:bg-state-pressed pressed:text-brand-press',

@@ -1,5 +1,5 @@
-import { cva } from 'class-variance-authority';
 import { Circle, CircleAlert, CircleCheck } from 'lucide-react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Spinner } from '../Spinner';
 

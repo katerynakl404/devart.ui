@@ -1,8 +1,8 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import { LoaderCircleIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
 import { cn } from '../../lib/utils';
 

@@ -49,6 +49,44 @@ For the same reason everything in it reads at one typographic level — the
 count, the link and the buttons are all Body — so the row is one sentence
 rather than three controls that happen to be on a line.
 
+The one exception is `sticky`, below: a row the list scrolls under takes the
+**page** colour, so the rows passing behind it do not show through. Still not
+a card's surface, so it still does not read as a toolbar laid over them.
+
+## Sticky
+
+`sticky` pins the row to the top of its scroll container while the list runs
+under it, so the count and the selection actions stay in reach on a long list.
+
+```jsx
+<MetaRow sticky={selected.size > 0} stickyOffset="3.5rem" onClear={clear}>
+  <MetaRow.Count>{selected.size} selected</MetaRow.Count>
+  …
+</MetaRow>
+```
+
+| | |
+|---|---|
+| position | `sticky`, `top: stickyOffset` (default `0`) |
+| stacking | `z-10`, over the list's rows |
+| fill | Surface/Page |
+
+`stickyOffset` is a CSS length: a page whose header is itself sticky passes
+the header's height, and the row pins below it rather than behind it. A length
+rather than a custom property, so the page's layout variables stay out of the
+row's contract. It is read only with `sticky`.
+
+Sticky **while selecting** is the usual shape — `sticky={selected.size > 0}`.
+A list nobody is acting on scrolls its count away like any other content; a
+list with a selection keeps the actions on it, and the way out of it, in view.
+
+A `sticky` element sticks to its nearest scrolling ancestor, and does nothing
+under an ancestor that clips overflow without scrolling.
+
+`MetaRow` and `ListSelectionBar` both stick, the same way, and stay two
+components: `ListSelectionBar` owns its select-all toggle and exit control,
+`MetaRow` is the open row a page composes.
+
 ## What goes in it
 
 - **`MetaRow.Count`** — the reading. `Text/Secondary`, regular weight, never

@@ -2,6 +2,7 @@ import type {
   ButtonHTMLAttributes,
   HTMLAttributes,
   InputHTMLAttributes,
+  Key,
   KeyboardEvent,
   LabelHTMLAttributes,
   MouseEvent,
@@ -46,6 +47,7 @@ export type GetOptionProps<T> = (params: {
   option: T;
   index: number;
 }) => HTMLAttributes<HTMLElement> & {
+  key: Key;
   'data-option-index': number;
   'data-highlighted'?: true;
 };

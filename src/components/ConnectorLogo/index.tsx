@@ -1,5 +1,5 @@
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { CONNECTOR_LOGOS, type ConnectorSlug } from './logos';
 

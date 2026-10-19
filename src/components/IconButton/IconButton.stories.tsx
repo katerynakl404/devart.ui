@@ -23,7 +23,7 @@ const meta = {
         'secondary',
         'outline',
         'tertiary',
-        'tertiaryBrand',
+        'primaryTertiary',
         'destructive',
         'destructiveOutline',
         'destructiveTertiary',
@@ -32,7 +32,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl'],
     },
     rounded: {
       control: 'select',
@@ -55,7 +55,7 @@ const VARIANTS = [
   ['secondary', 'Edit'],
   ['outline', 'Edit'],
   ['tertiary', 'Edit'],
-  ['tertiaryBrand', 'Edit'],
+  ['primaryTertiary', 'Edit'],
   ['destructive', 'Delete'],
   ['destructiveOutline', 'Delete'],
   ['destructiveTertiary', 'Delete'],
@@ -82,17 +82,18 @@ export const Variants: Story = {
 };
 
 /**
- * Six steps. `xs`–`xl` mirror Button's heights (28 / 32 / 36 / 40 / 44), so an
- * icon-only control lines up next to a text button of the same size class.
+ * Seven steps. `xs`–`xl` mirror Button's heights (28 / 32 / 36 / 40 / 44), so
+ * an icon-only control lines up next to a text button of the same size class.
  * `2xs` (24px) sits one step BELOW that ladder — the row-action size, which an
  * icon-only control can reach because it only has to fit a padded box around a
- * 14px glyph. The glyph is 16px everywhere and 14px on the two smallest steps,
- * where the radius also tightens so a 24px box does not read as a pill.
+ * 14px glyph. `3xs` (20px, 12px glyph) is the tree-row toggle. The glyph is
+ * 16px from `sm` up and 14px on `xs` / `2xs`; on the three smallest the
+ * radius tightens so the box does not read as a pill.
  */
 export const Sizes: Story = {
   render: (args) => (
     <div className="flex flex-wrap items-end gap-4">
-      {(['2xs', 'xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+      {(['3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <div className="grid justify-items-center gap-1" key={size}>
           <IconButton {...args} size={size} />
           <span className="text-ink-secondary text-xxs">{size}</span>

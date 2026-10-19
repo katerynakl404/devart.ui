@@ -1,9 +1,9 @@
 'use client';
 
 import * as ModalPrimitive from '@radix-ui/react-dialog';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
 import type { ComponentProps, ComponentPropsWithRef } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
 import { cn } from '../../lib/utils';
 import { DialogTitleFallback } from '../DialogTitleFallback';

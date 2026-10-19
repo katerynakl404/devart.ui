@@ -21,3 +21,6 @@ which read as the heading turning into a link under the pointer.
 
 `<PromoCard icon={…} title description href onDismiss />`; renders an anchor when `href` is
 given and a button otherwise.
+
+The hover hangs on the root (`group/promo-card`), not on the link, so it holds while the pointer
+is on the dismiss — a sibling laid over the link's corner (§116).

@@ -1,13 +1,13 @@
 'use client';
 
 import * as SwitchPrimitives from '@radix-ui/react-switch';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
-import { cn, formFocusRing } from '../../lib/utils';
+import { cn, focusRing } from '../../lib/utils';
 
 // Both variants share the redesigned form-control recipe: brand on-track,
-// filled neutral off-track, neutral focus ring.
+// filled neutral off-track, brand focus ring.
 const switchTrackClasses = cn(
   // Checked states
   'data-[state=checked]:bg-brand-primary',
@@ -31,10 +31,12 @@ const switchVariants = cva(
     'before:-inset-x-1',
     'before:-inset-y-3',
     "before:content-['']",
-    // Focus state — neutral ring with a Surface/Card gap
-    formFocusRing,
+    // Focus state — the brand ring with a Surface/Card gap (kit `.swt`)
+    focusRing,
     // Disabled states — unified opacity recipe
-    'disabled:pointer-events-none',
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
     'disabled:cursor-not-allowed',
     'disabled:opacity-disabled',
   ],
@@ -113,7 +115,10 @@ const switchContainerVariants = cva('flex items-center', {
         'transition-colors duration-fast',
         'enabled:hover:bg-state-hover',
         'active:bg-state-pressed',
-        'has-[:disabled]:pointer-events-none'
+        // The row around a switched-off switch: the cursor says so, and the
+        // row neither lights nor presses (it used to take pointer events away,
+        // which took the cursor with them).
+        'has-[:disabled]:cursor-not-allowed has-[:disabled]:hover:bg-transparent has-[:disabled]:active:bg-transparent'
       ),
     },
   },
@@ -202,4 +207,4 @@ const Switch = ({
 
 Switch.displayName = 'Switch';
 
-export { Switch, switchVariants };
+export { Switch, switchContainerVariants, switchThumbVariants, switchVariants };

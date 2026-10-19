@@ -52,8 +52,8 @@ written on the icon loses to it.
 
 ## States
 
-Focus uses the **neutral** ring, not the brand one — brand never visualises form
-focus in this system. Hover is suppressed while the field is focused, pressed or
+Focus is a **neutral** border (`--input-focus`), not the brand ring — the kit
+keeps field focus neutral for Input, TextArea and InputGroup. Hover is suppressed while the field is focused, pressed or
 disabled, so the states never stack into a muddier border.
 
 `aria-invalid` is a first-class variant here: set it on the input and the error

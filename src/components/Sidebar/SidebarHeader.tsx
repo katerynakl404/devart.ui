@@ -8,7 +8,7 @@ import { cn } from '../../lib/utils';
  * leading icon on the same 16px line as the navigation icons below, and `pe-2`
  * matches the nav container so a trailing collapse button lines up with the
  * menu edge. Any content aligns correctly without knowing the rule — laying the
- * row out by hand is as safe as using `SidebarBrand`.
+ * row out by hand is as safe as using `SidebarPanelHeader`.
  *
  * A row that must reach the edges (a full-bleed banner, a search field) opts
  * out with negative margins — `className="-ms-4 -me-2"` — which is the rarer

@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { composeStories } from '@storybook/react-vite';
-import { ChevronDown, ChevronsUpDown, Info, Trash2, X } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, Info, X } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import * as AutocompleteStories from '../src/components/Autocomplete/Autocomplete.stories';
 import { Button } from '../src/components/Button';
-import { IconButton } from '../src/components/IconButton';
 import {
   InputGroup,
   InputGroupAddon,
@@ -32,9 +31,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-/** The old class string, reapplied through `className` so twMerge drops the new one. */
-const OLD_DESTRUCTIVE_LABEL = 'text-ink-body';
 
 /** The dark values this branch replaced — Red-700 at rest, Red-800 on hover. */
 const OLD_DARK_DESTRUCTIVE_BORDER = {
@@ -74,64 +70,13 @@ export const ColourAndState: Story = {
     <ChangePage
       intro={
         <>
-          Seven changes where the wrong colour — or no colour at all — was what
-          a user saw. Each panel renders live: hover and press where the case is
+          Five changes where the wrong colour — or no colour at all — was what a
+          user saw. Each panel renders live: hover and press where the case is
           about a state, and the instruction says which.
         </>
       }
       title="Colour and state"
     >
-      <ChangeCase
-        after={
-          <div className="flex items-center gap-3">
-            <Button variant="destructiveOutline">Delete connection</Button>
-            <IconButton aria-label="Delete" variant="destructiveOutline">
-              <Trash2 />
-            </IconButton>
-          </div>
-        }
-        afterNote="text-fb-red-text"
-        before={
-          <div className="flex items-center gap-3">
-            <Button
-              className={OLD_DESTRUCTIVE_LABEL}
-              variant="destructiveOutline"
-            >
-              Delete connection
-            </Button>
-            <IconButton
-              aria-label="Delete"
-              className={OLD_DESTRUCTIVE_LABEL}
-              variant="destructiveOutline"
-            >
-              <Trash2 />
-            </IconButton>
-          </div>
-        }
-        beforeNote="text-ink-body"
-        beforeSource={
-          <>
-            the real component with the old class reapplied through{' '}
-            <Code>className</Code> — twMerge keeps the last text colour, so this
-            is the old rendering, not a copy of it.
-          </>
-        }
-        files={[
-          'src/components/Button/index.tsx',
-          'src/components/IconButton/index.tsx',
-        ]}
-        n={1}
-        title="destructiveOutline — a neutral label under a red border"
-        why={
-          <>
-            Next to an ordinary secondary button the whole difference came down
-            to one thin line, and the control stopped reading as destructive.
-            IconButton keeps its own variant definition, so it needed the same
-            edit — it was missed the first time.
-          </>
-        }
-      />
-
       <ChangeCase
         after={
           <TryIt action="Switch the toolbar to dark, then hover">

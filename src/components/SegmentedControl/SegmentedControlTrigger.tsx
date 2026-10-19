@@ -1,8 +1,8 @@
 'use client';
 
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { useSegmentedControl } from './SegmentedControlContext';
 
@@ -32,7 +32,10 @@ const segmentedControlTriggerVariants = cva(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
 
     // Disabled — unified opacity recipe.
-    'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-disabled'
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
+    'disabled:cursor-not-allowed disabled:opacity-disabled'
   ),
   {
     variants: {
@@ -66,30 +69,81 @@ const segmentedControlTriggerVariants = cva(
        * to the control: only the option itself knows whether it is the
        * permissive one.
        *
-       * Unselected, both are the same neutral text as any other trigger. The
-       * colour is the answer, not the offer.
+       * Unselected, both are the same neutral text as any other trigger, and
+       * hovered they lift like any other: the colour is the answer, not the
+       * offer. A grey option turning red under the pointer announced a Deny
+       * nobody had chosen. Only a `tinted` option — already that colour —
+       * answers the pointer in its tone (below).
        */
       tone: {
         neutral: '',
         positive: cn(
-          // Theme-independent fills, like the destructive button: one green
-          // and one red in both themes, so there is no `dark:` pair to keep in
-          // step (and no stacked variant for the bundle to miss).
+          // One green and one red in both themes, like the destructive button.
+          // The `dark:` line is not a second colour: the base recipe's
+          // `dark:data-[state=active]:bg-surface-chips` is more specific than a
+          // bare `data-[state=active]:`, and painted the chip grey over the fill
+          // in dark theme — so the tone has to say it in dark as well.
           'data-[state=active]:bg-fb-green',
+          'dark:data-[state=active]:bg-fb-green',
           'data-[state=active]:text-content-on-solid',
           'data-[state=active]:shadow-none'
         ),
         negative: cn(
           'data-[state=active]:bg-fb-red',
+          'dark:data-[state=active]:bg-fb-red',
           'data-[state=active]:text-content-on-solid',
           'data-[state=active]:shadow-none'
         ),
       },
+      /**
+       * DRAFT. The value in effect on this row without being chosen on it —
+       * inherited from a level above, or a default. The tone's own fill at
+       * 15%, with the tone's text: the pale fill a success / error Badge
+       * carries. The solid pill stays "chosen here"; the pale one is the same
+       * value, arrived from elsewhere. Inactive only — a selected option is
+       * drawn selected. Hovered, the pale fill deepens and keeps its tone's
+       * text, with no rim — pressing it confirms the value on this row. The
+       * base recipe's white lift and primary text would have bleached it,
+       * which read as a fault.
+       */
+      tinted: {
+        true: '',
+        false: '',
+      },
     },
+    compoundVariants: [
+      {
+        tinted: true,
+        tone: 'neutral',
+        class:
+          'data-[state=inactive]:bg-surface-card/60 data-[state=inactive]:text-ink-primary',
+      },
+      {
+        tinted: true,
+        tone: 'positive',
+        class: cn(
+          'data-[state=inactive]:bg-fb-green/15 data-[state=inactive]:text-fb-green',
+          'enabled:data-[state=inactive]:hover:bg-fb-green/30',
+          'enabled:data-[state=inactive]:hover:text-fb-green',
+          'enabled:data-[state=inactive]:hover:shadow-none'
+        ),
+      },
+      {
+        tinted: true,
+        tone: 'negative',
+        class: cn(
+          'data-[state=inactive]:bg-fb-red/15 data-[state=inactive]:text-fb-red-text',
+          'enabled:data-[state=inactive]:hover:bg-fb-red/30',
+          'enabled:data-[state=inactive]:hover:text-fb-red-text',
+          'enabled:data-[state=inactive]:hover:shadow-none'
+        ),
+      },
+    ],
     defaultVariants: {
       size: 'md',
       rounded: 'md',
       tone: 'neutral',
+      tinted: false,
     },
   }
 );
@@ -97,21 +151,47 @@ const segmentedControlTriggerVariants = cva(
 const SegmentedControlTrigger = ({
   className,
   tone,
+  tinted,
   ref,
+  onMouseDown,
+  onKeyDown,
   ...props
 }: ComponentProps<typeof TabsPrimitive.Trigger> &
   VariantProps<typeof segmentedControlTriggerVariants>) => {
   /* `size` and `rounded` come from the control, because the track and its pills
      have to agree. `tone` does not: it is a property of the one option, so it
      is passed per trigger. */
-  const { size, rounded } = useSegmentedControl();
+  const { size, rounded, deselectable, value, clear } = useSegmentedControl();
+  // `deselectable`: a press on the selected option clears it. Handled before
+  // Radix's own handler, which ignores that press — `preventDefault` is what
+  // tells Radix to stand down.
+  const clears = deselectable && !props.disabled && value === props.value;
   return (
     <TabsPrimitive.Trigger
       ref={ref}
+      data-tinted={tinted ? '' : undefined}
       className={cn(
-        segmentedControlTriggerVariants({ size, rounded, tone }),
+        segmentedControlTriggerVariants({ size, rounded, tone, tinted }),
         className
       )}
+      onMouseDown={(e) => {
+        onMouseDown?.(e);
+        if (clears && !e.defaultPrevented && e.button === 0 && !e.ctrlKey) {
+          e.preventDefault();
+          clear();
+        }
+      }}
+      onKeyDown={(e) => {
+        onKeyDown?.(e);
+        if (
+          clears &&
+          !e.defaultPrevented &&
+          (e.key === 'Enter' || e.key === ' ')
+        ) {
+          e.preventDefault();
+          clear();
+        }
+      }}
       {...props}
     />
   );

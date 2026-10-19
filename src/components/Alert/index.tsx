@@ -117,7 +117,10 @@ const SIZE_ILLUSTRATION = {
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
-  title: string;
+  /** Optional. Without it the description is the whole message — an Alert
+   *  that explains rather than announces, where a title would only restate the
+   *  first sentence of the copy under it. */
+  title?: string;
   description?: ReactNode;
   titleClassName?: string;
   descriptionClassName?: string;
@@ -207,19 +210,27 @@ const Alert = ({
     ) : null}
 
     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-      <span
-        className={cn(
-          'font-semibold text-ink-primary',
-          SIZE_TITLE[size ?? 'sm'],
-          titleClassName
-        )}
-      >
-        {title}
-      </span>
+      {/* No title, no empty line box: the description takes the first line,
+          so the glyph — sized to that line — still sits on it. */}
+      {title ? (
+        <span
+          className={cn(
+            'font-semibold text-ink-primary',
+            SIZE_TITLE[size ?? 'sm'],
+            titleClassName
+          )}
+        >
+          {title}
+        </span>
+      ) : null}
       {description ? (
         <span
           className={cn(
-            'font-normal text-ink-secondary',
+            /* Under a title the description is the second line and reads
+               secondary. Without one it IS the message, and secondary ink made
+               a whole info block read as a footnote to a heading that is not
+               there. */
+            title ? 'font-normal text-ink-secondary' : 'font-normal text-ink-primary',
             SIZE_DESCRIPTION[size ?? 'sm'],
             descriptionClassName
           )}

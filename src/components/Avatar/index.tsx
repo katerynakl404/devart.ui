@@ -1,8 +1,8 @@
 'use client';
 
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentPropsWithRef } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { AvatarContext, useAvatarContext } from './AvatarProvider';
 
@@ -100,4 +100,10 @@ const AvatarFallback = ({
 };
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
-export { Avatar, AvatarFallback, AvatarImage, avatarVariants };
+export {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  avatarFallbackVariants,
+  avatarVariants,
+};

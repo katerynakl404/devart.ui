@@ -4,7 +4,7 @@ import { extendTailwindMerge } from 'tailwind-merge';
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
-      'font-size': [{ text: ['xxs'] }],
+      'font-size': [{ text: ['xxs', 'compact'] }],
     },
   },
 });
@@ -75,27 +75,14 @@ export const pageFloor = 'pb-8';
 export const glyphStroke = '[&_svg]:stroke-2';
 
 /**
- * Focus indicator for FORM controls — checkbox, radio, switch and friends.
- *
- * Identical geometry to {@link focusRing}, but a neutral ring: brand colour
- * never visualises form-control focus in this system. Actionable controls
- * (buttons, triggers, links) use {@link focusRing} instead.
- */
-export const formFocusRing = cn(
-  'focus-visible:outline-none',
-  'focus-visible:ring-2 focus-visible:ring-offset-2',
-  'focus-visible:ring-offset-surface-card',
-  'focus-visible:ring-state-focus-ring'
-);
-
-/**
  * The elevation lift: what a surface does when the pointer is over something
  * that will respond to a click.
  *
  * Three things move together — the border tints toward brand, the shadow grows,
  * and the box rises — and they are one gesture, so they belong in one place.
- * `Card variant="elevated"` and `DataSourceCard` had them written out
- * separately, which is two chances to change the shadow in one of them.
+ * `Card variant="elevated"` and the catalog tile (now `IconCard`) had them
+ * written out separately, which is two chances to change the shadow in one of
+ * them.
  *
  * The distance is the one part that legitimately differs: the kit lifts a
  * catalog tile 1px and a larger card 2px, because the same travel reads bigger

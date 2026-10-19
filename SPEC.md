@@ -4,14 +4,14 @@
 
 ```
 packages/ui/
-├── src/components/          — 46 component directories; each `<Name>/index.tsx` is the public entry, with co-located parts, `constants.ts`, `types.ts`, `*.stories.tsx`
+├── src/components/          — 75 component directories; each `<Name>/index.tsx` is the public entry, with co-located parts, `constants.ts`, `types.ts`, `*.stories.tsx`
 ├── src/hooks/               — `use-mobile.tsx` (exported); `use-autocomplete/`, `use-scroll-shadow/` (internal, reachable only through their components)
-├── src/lib/                 — `utils.ts` (`cn`), `constants.ts` (`THEME_COLORS`), `breakpoints.ts` (`BREAKPOINTS` — one source for `screens`, `--breakpoint-*` and the JS media queries)
+├── src/lib/                 — `utils.ts` (`cn`), `constants.ts` (`THEME_COLORS`), `breakpoints.ts` (`BREAKPOINTS` — one source for `screens`, `--breakpoint-*` and the JS media queries), `cva.ts` (`cva` with its config kept on the recipe — components import it from here, never from `class-variance-authority`), `button-keyboard.ts` (`onButtonKeyDown` for anything carrying `role="button"`)
 ├── src/tailwind-preset.ts   — the Tailwind v3 preset consuming apps spread in (`theme.extend`, the `pressed:` variant plugin, `tailwindcss-animate`) plus `contentGlobs` (absolute globs into the package's `src`/`dist`, since v3 presets can't carry `content`)
 ├── globals.css              — pure CSS-variable token system (`:root` + `.dark`) only; no `@tailwind` directives and no `@layer` block — the consumer owns Tailwind's own layers
 ├── tailwind.config.ts       — thin local config wrapping the preset; Storybook-only, not consumed by apps
 ├── tsconfig.base.json       — vendored TS config (was `@insightis/typescript-config`); package is self-contained
-├── vitest.config.ts         — local vitest config (was `@insightis/unit-tests`); `passWithNoTests` until unit tests land
+├── vitest.config.ts         — local vitest config (was `@insightis/unit-tests`): jsdom + `@testing-library/jest-dom` (`src/__tests__/setup.ts`); unit tests sit in each component's `__tests__/`, and `src/__tests__/recipes.test.ts` snapshots every recipe into `__snapshots__/recipes.md`
 ├── .npmignore               — forces npm to ignore `.gitignore` so a future `dist` ignore cannot drop the build from the tarball
 ├── fonts.css, fonts/        — self-hosted DM Sans `@font-face` rules plus the four `.woff2` files
 ├── .storybook/              — Storybook 10 (`@storybook/react-vite`); `tailwind.css` (the `@tailwind` directives) + `../globals.css` + `../fonts.css` + `preview.css`, all loaded from `preview.tsx`
@@ -22,7 +22,7 @@ packages/ui/
 
 ## Concept
 
-**ui** (`@devart/ui-react`) is the design-system package: 45 presentational primitives over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
+**ui** (`@devart/ui-react`) is the design-system package: 74 components (plus the docs-only `Foundations`) over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
 
 ---
 
@@ -149,7 +149,7 @@ Non-colour axes never touch `src/lib/constants.ts`:
 | `--font-weight-*` | `fontWeight` | `font-semibold` |
 | `--font-sans` | `fontFamily` | `font-sans` |
 | `--opacity-disabled` | `opacity` | `opacity-disabled` |
-| `--chat-*`, `--banner-grad-*`, `--plan-card-featured-bg` | `backgroundImage` | `bg-chat-shell` |
+| `--banner-grad-*`, `--plan-card-featured-bg` | `backgroundImage` | `bg-banner-grad-horizontal-wide` |
 | `--sidebar-width*` | *(none)* | read as `var()` in a `style` prop |
 
 ### Token Worked Examples
@@ -203,8 +203,10 @@ Nothing in `THEME_COLORS`; the class is `shadow-popover`.
 
 ### Token Invariants and Failure Modes
 
-Nothing in the build checks any of these — every violation surfaces as a wrong
-pixel, never as an error (decision 10).
+Only the first is checked: `pnpm lint:tokens` (`scripts/lint-tokens.mjs`)
+compiles `src/` through the real config and fails on any token-family class
+that produced no CSS. Every other violation still surfaces as a wrong pixel,
+never as an error (decision 10).
 
 - **A class naming a key absent from `THEME_COLORS` generates no CSS.** A typo in
   a token name is invisible.
@@ -243,13 +245,13 @@ pixel, never as an error (decision 10).
 
 ## Component Conventions
 
-- **CVA is the single source of variant truth** — 43 `cva()` definitions; the variants object is exported next to the component (`buttonVariants`, `badgeVariants`, `cardVariants`, `iconButtonVariants`, `bannerVariants`, …) so consumers can reuse classes without rendering. Base strings are themselves composed with `cn()`, one concern per line. `Toast` deliberately opts out — Sonner renders imperatively from a plain options object, so its variant styling lives in string maps (`VARIANT_COLOR_MAP`, `VARIANT_BG_MAP`, `VARIANT_BORDER_MAP` in `Toast/ToastMessage/constants.ts`).
+- **CVA is the single source of variant truth** — 89 `cva()` definitions; the variants object is exported next to the component (`buttonVariants`, `badgeVariants`, `cardVariants`, `iconButtonVariants`, `bannerVariants`, …) so consumers can reuse classes without rendering. Base strings are themselves composed with `cn()`, one concern per line. `Toast` deliberately opts out — Sonner renders imperatively from a plain options object, so its variant styling lives in string maps (`VARIANT_COLOR_MAP`, `VARIANT_BG_MAP`, `VARIANT_BORDER_MAP` in `Toast/ToastMessage/constants.ts`).
 - **The style discriminator prop is always `variant`, never `tone`** — where a variant must be reachable from CSS it is mirrored onto `data-variant` (`Sidebar`), and structural parts carry `data-slot` (47 occurrences across 25 files).
 - **One DOM marker is a behavioural contract, not styling** — `ModalOverlay` and `SheetOverlay` both stamp a bare `data-modal-overlay`, so a consumer can answer *"is any modal open?"* with a single selector (`[data-modal-overlay][data-state="open"]`, Radix supplying `data-state`) instead of reading every modal store. No CSS in the package targets it. A new overlay-backed primitive must stamp the same attribute, and removing it from either overlay changes consumer behaviour with nothing failing — see Cross-Feature Dependencies.
 - **`pressed:` instead of `active:`** — see decision 6. Applied in `Button` and `IconButton` recipes and by two `apps/web` rows.
 - **No `forwardRef`** — React 19; `ref` is an ordinary prop declared on the props interface (`ref?: Ref<HTMLButtonElement>`).
 - **Radix composition** — Radix-backed components re-export named parts from `index.tsx` (`Modal` exports 10; `Sidebar` exports 16 parts plus `useSidebar` and two type guards). `asChild` + `Slot` is the only sanctioned way to change the rendered element.
-- **Extend before adding** — a new visual treatment is a new variant on the existing primitive; a genuinely new primitive gets a directory under `src/components/`. `Button` and `IconButton` share one variant scale (12 and 9 variants respectively) by convention, not by code.
+- **Extend before adding** — a new visual treatment is a new variant on the existing primitive; a genuinely new primitive gets a directory under `src/components/`. `Button` and `IconButton` share one variant scale (10 and 9 variants respectively) by convention, not by code.
 - **Loading is not disabling** — `isLoading` on `Button`/`IconButton` swaps content for `Spinner`, sets `aria-busy`, and blocks interaction with `pointer-events-none opacity-disabled` while keeping the variant fill; it never toggles `disabled`, which would drop the control out of the tab order.
 - **`cn()` only** — `twMerge` is extended with a `font-size` class group covering `text-xxs`.
 
@@ -284,9 +286,9 @@ Three shapes, in rising cost:
 
 #### What a third theme must re-declare
 
-Start from the 43 Layer-2 tokens `.dark` touches — `--surface-*`,
+Start from the 45 Layer-2 tokens `.dark` touches — `--surface-*`,
 `--ink-*`, `--brand-*`, `--stroke-*`, `--state-*`, `--fb-*`, `--logo-*`,
-`--chart-series-*`, `--chat-*`, `--overlay-scrim`. Most of Layer 3 then follows
+`--chart-series-*`, `--code-*`, `--overlay-scrim`. Most of Layer 3 then follows
 for free: of the 118 Layer-2/3 tokens declared in `:root`, `.dark` leaves 46
 alone precisely because they reference Layer-2 roles or `color-mix()` over them.
 
@@ -421,7 +423,7 @@ block redeclaring one changes nothing.
 @import '@devart/ui-react/globals.css';
 
 .midnight {
-  /* Layer 2 — the 43 roles; abbreviated */
+  /* Layer 2 — the 45 roles; abbreviated */
   --surface-page: 258 30% 6%;
   --surface-card: 257 26% 11%;
   --surface-card2: 257 24% 15%;
@@ -448,7 +450,7 @@ block redeclaring one changes nothing.
 darkMode: ['variant', ['.dark &', '.midnight &']],
 ```
 
-Everything else — all 43 `cva()` recipes, every `color-mix()` tint, both Layer-1
+Everything else — all 89 `cva()` recipes, every `color-mix()` tint, both Layer-1
 ramps — is untouched.
 
 ---
@@ -468,7 +470,7 @@ No environment variables. The configuration surface is `tailwind-preset.ts`, whi
 | `theme.extend.colors` | `THEME_COLORS` — the whole token surface (see Design Tokens) |
 | `theme.extend.borderRadius` | `sm`/`DEFAULT`/`md`/`lg`/`xl` → `--radius-{sm,,md,lg,xl}` (Tailwind's own default values) |
 | `theme.extend.boxShadow` | `shadow-{rest,card-hover,dropdown,menu,lift-hover,overlay-soft,segctrl-hover,segctrl-active,banner-ic,banner-grad-ic,plan-card-featured,thumb,thumb-hover}` |
-| `theme.extend.backgroundImage` | `bg-{primary-gradient,skeleton-shimmer,chat-shell,chat-glow,banner-grad-*,plan-card-featured}` |
+| `theme.extend.backgroundImage` | `bg-{primary-gradient,skeleton-shimmer,banner-grad-*,plan-card-featured}` |
 | `theme.extend.fontSize` | `xs`/`sm`/`base`/`lg`/`xl`/`2xl`/`3xl`/`4xl` → `--font-size-*` paired with `--line-height-*` (Tailwind's own default values); `xxs`/`compact` → bare `--font-size-*`, no paired line-height; `5xl` through `9xl` omitted (zero usage), left at Tailwind's stock defaults via `theme.extend`'s per-key merge |
 | `theme.extend.fontWeight` | `light`/`normal`/`medium`/`semibold`/`bold`/`extrabold`/`black` → `--font-weight-*` (Tailwind's own default values); `thin`/`extralight` omitted (zero usage), left at Tailwind's stock defaults via `theme.extend`'s per-key merge |
 | `theme.extend.fontFamily` | `sans` → `var(--font-sans)` plus Tailwind's default sans fallback stack. A consumer redefines `--font-sans` or overrides `theme.fontFamily.sans` in its own preset extension to ship a different typeface; the `@font-face` rules themselves live in the package's `fonts.css` (opt-in) and in each consumer that needs its own preload path (`apps/web/src/index.css`, `.storybook/preview.tsx`) |
@@ -504,4 +506,4 @@ Hardcoded in the preset: `darkMode: ['class']` — a consumer that needs a diffe
 7. **Preset + `contentGlobs` instead of a spread config object** — a consumer used to import `tailwind.config.ts` directly; that entry is now `tailwind-preset.ts`, exporting a `preset` (`presets: [preset]` in the consumer's own config) plus `contentGlobs`. The split exists because Tailwind v3 presets carry `theme`/`plugins` but never `content` — a preset's own `content` array is silently ignored — so the package cannot ship one config object a consumer merely re-exports; `contentGlobs` is the explicit workaround, giving the consumer absolute globs into the package's `src` (dev) and `dist` (prod) to spread into its own `content`. Format of the public entry: monorepo `exports["./tailwind-preset"]` points at the TypeScript source so Tailwind's jiti (and `pnpm dev`) needs no ui build; `publishConfig.exports` points at compiled `dist/tailwind-preset.js` (+ `.d.ts`) so external consumers never transpile TS from `node_modules`. `tailwind.config.ts` at the package root is Storybook-only and is not part of the public surface — `apps/web` imports the preset and `contentGlobs` directly.
 8. **Token file is pure CSS; the consumer owns the Tailwind directives** — `globals.css` dropped its `@tailwind base/components/utilities` and its `@layer components` block; it is now `:root` + `.dark` custom-property declarations only. A consumer `@import`s it after its own three `@tailwind` lines, so Tailwind's preflight/reset runs exactly once no matter how many packages a project pulls tokens from. The trade-off is that the file alone gives a consumer nothing to render against — it must already own a Tailwind pipeline.
 9. **Geometry and typography folded into the token system at Tailwind's own default values** — `--radius-*`, `--sidebar-width*`, `--shadow-thumb*` and `--font-sans` are new CSS variables, each seeded with the value Tailwind (or the previously hardcoded `Sidebar/constants.ts`) already used, so adopting them is a visual no-op that only adds an override point. The type scale (`--font-size-*`, `--line-height-*`) follows the same template — seeded at Tailwind's own default values, so re-expressing `theme.extend.fontSize` through them is likewise a visual no-op. `5xl` through `9xl` are omitted: zero call sites in the repo use them, and since Tailwind v3's `theme.extend.fontSize` merges per key, the stock definitions simply remain in effect for those steps — adding one later is a two-line edit. `xxs` and `compact` stay bare strings with no paired line-height, since pairing either would change eight existing call sites; the standalone `leading-*` scale is therefore still not tokenized — only the line-heights Tailwind itself pairs with a font size are. `--font-weight-{light,normal,medium,semibold,bold,extrabold,black}` follow the same seeded-at-defaults rationale, re-expressing `theme.extend.fontWeight` at Tailwind's own values; `thin` and `extralight` are omitted as zero-usage, left at Tailwind's stock defaults via the same per-key merge. `spacing`, `letterSpacing` and z-index remain deliberately out. Breakpoints took a different shape, because a CSS variable cannot appear in a `@media` query and Tailwind resolves `screens` at build time: one TypeScript constant, `BREAKPOINTS` (`src/lib/breakpoints.ts`), feeds `theme.extend.screens`, the `--breakpoint-*` custom properties the preset emits into the base layer, and `use-mobile`'s JS media queries alike. Generating those variables instead of hand-writing them into the two token files is the deliberate part: they are the one token inert at the very place it invites editing, so a third hand-synced copy could contradict the media queries with nothing failing. The lever is the constant — `useIsMobile`, `DateRangePicker` and `SidebarProvider` still take an explicit pixel prop (`breakpoint` / `mobileBreakpoint` / `sheetBreakpoint`) for a consumer that overrides `screens` in its own config.
-10. **Storybook is the verification surface; there are no unit tests** — the package ships zero `__tests__` directories despite depending on `vitest` and `@testing-library/react`. Regressions in a declarative class-string recipe are visual, so the gate is Storybook: `@storybook/addon-a11y` and `addon-themes` in the preview, a build-only CI job on every MR touching `packages/ui` (`frontend/gitlab/storybook-pages.yml`), and a manual `pages` deploy from the default branch. The accepted gap is that Tailwind silently drops a class resolving to no theme key, so a misspelled token produces neither a build error nor a test failure — only a wrong pixel.
+10. **Storybook is the visual verification surface; tests and two gates back it** — regressions in a declarative class-string recipe are visual, so Storybook stays the primary gate: `@storybook/addon-a11y` and `addon-themes` in the preview, a build-only CI job on every MR touching `packages/ui` (`frontend/gitlab/storybook-pages.yml`), and a manual `pages` deploy from the default branch. Behaviour is covered by unit tests (jsdom, one `__tests__/` per component), adopted with the developers' 1.1.0. Two gates close what Storybook cannot see: `src/__tests__/recipes.test.ts` renders every variant of every recipe into `__snapshots__/recipes.md`, so a base-string edit shows as a diff on every variant it touched; and `pnpm lint:tokens` fails on a token-family class that Tailwind compiled to nothing — the gap this decision used to accept, where a misspelled token produced only a wrong pixel. A recipe built with `cva` straight from `class-variance-authority` carries no config and is invisible to the snapshot.

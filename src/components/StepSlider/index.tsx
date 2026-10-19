@@ -1,8 +1,8 @@
 'use client';
 
 import * as SliderPrimitive from '@radix-ui/react-slider';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
 import { cn } from '../../lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
@@ -189,4 +189,9 @@ const StepSlider = ({
 
 StepSlider.displayName = 'StepSlider';
 
-export { StepSlider };
+export {
+  StepSlider,
+  stepSliderStopsVariants,
+  stepSliderThumbVariants,
+  stepSliderVariants,
+};

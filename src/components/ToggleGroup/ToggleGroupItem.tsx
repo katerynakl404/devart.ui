@@ -1,8 +1,8 @@
 'use client';
 
 import * as ToggleGroupPrimitive from '@radix-ui/react-toggle-group';
-import type { VariantProps } from 'class-variance-authority';
 import type { ComponentProps, MouseEvent, Ref } from 'react';
+import type { VariantProps } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
 import { toggleVariants } from '../Toggle';
 import { useToggleGroup } from './ToggleGroupContext';

@@ -53,9 +53,12 @@ function Table({
     <div
       data-slot="table-container"
       // `overflow-x-auto` doubles as the clip that keeps the header band inside
-      // the rounded corners.
+      // the rounded corners. `scrollbar-thin`: this frame is a scroller — wide
+      // tables across, and down wherever a parent gives it a height, as in a
+      // dialog — and the system's own lists draw the thin bar, not the
+      // platform's 16px one with arrows.
       className={cn(
-        'relative w-full overflow-x-auto rounded-lg border border-stroke bg-surface-card',
+        'relative w-full overflow-x-auto rounded-lg border border-stroke bg-surface-card scrollbar-thin',
         wrapperClassName
       )}
     >

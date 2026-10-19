@@ -1,8 +1,8 @@
 'use client';
 
 import { Slot, Slottable } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const linkButtonVariants = cva(

@@ -35,6 +35,20 @@ export type {
   UseAutocompleteArgs,
 } from '../../hooks/use-autocomplete/types';
 
+/**
+ * Attributes Radix stamps onto whatever `DropdownMenuTrigger asChild` renders.
+ * None of them is allowed on a plain `div`, and the combobox semantics already
+ * live where they belong: `getInputProps()` puts `role="combobox"`,
+ * `aria-expanded` and `aria-controls` on the input itself, so repeating them on
+ * the wrapper would declare a second combobox. Child props win over the ones
+ * Radix injects, so spreading these removes them.
+ */
+const STRIPPED_TRIGGER_ARIA = {
+  'aria-expanded': undefined,
+  'aria-haspopup': undefined,
+  'aria-controls': undefined,
+} as const;
+
 const BADGE_LIST_PADDING_MAP: Record<
   NonNullable<InputGroupProps['size']>,
   string
@@ -140,6 +154,7 @@ export function Autocomplete<
 
   const inputProps = getInputProps();
 
+
   const tags = useMemo(
     () => (isMultipleSelect ? ((value || []) as T[]) : []),
     [isMultipleSelect, value]
@@ -147,8 +162,16 @@ export function Autocomplete<
 
   const memoizedOptions = useMemo(() => {
     if (filteredOptions.length === 0) {
+      // A `listbox` must own options, so the empty state announces as one
+      // that cannot be picked rather than as stray text inside an empty list.
       return (
-        <div className="px-4 py-5 text-center text-ink-secondary text-sm">
+        <div
+          role="option"
+          aria-disabled="true"
+          aria-selected="false"
+          tabIndex={-1}
+          className="px-4 py-5 text-center text-ink-secondary text-sm"
+        >
           {noOptionsText}
         </div>
       );
@@ -191,9 +214,11 @@ export function Autocomplete<
         <Typography
           element="label"
           variant="span"
-          textColor="secondary"
+          /* The same label as InputGroup / TextArea (§126): Text/Body, medium, 4px over the
+             field — Text/Secondary is the hint's colour, not a label's. */
+          textColor="body"
           weight="medium"
-          className="mb-1.5 block"
+          className="mb-1 block"
           {...getInputLabelProps()}
         >
           {label}
@@ -202,7 +227,7 @@ export function Autocomplete<
 
       <DropdownMenu open={open} modal={false} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild disabled={disabled}>
-          <div {...getRootProps()}>
+          <div {...STRIPPED_TRIGGER_ARIA} {...getRootProps()}>
             <InputGroup
               size={size}
               variant="outline"
@@ -308,7 +333,15 @@ export function Autocomplete<
             onFocusOutside={(e) => e.preventDefault()}
           >
             {isLoading ? (
-              <div className="flex items-center justify-center gap-2 px-4 py-5 text-center text-ink-secondary text-sm">
+              // Same as the empty state: one unselectable option, not an
+              // empty `listbox`.
+              <div
+                role="option"
+                aria-disabled="true"
+                aria-selected="false"
+                tabIndex={-1}
+                className="flex items-center justify-center gap-2 px-4 py-5 text-center text-ink-secondary text-sm"
+              >
                 <Spinner size="sm" color="inherit" aria-hidden />
                 {loadingText}
               </div>

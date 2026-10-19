@@ -8,13 +8,17 @@ id.
 
 ## Sizes
 
-`2xs` (24) `xs` (28) `sm` (32) `md` (36) `lg` (40) `xl` (44). The box ladder from
-`xs` up mirrors `Button` step for step, so an icon-only control lines up with a
-text button of the same size. The glyph is 16px everywhere and 14px on the two
-smallest steps.
+`3xs` (20) `2xs` (24) `xs` (28) `sm` (32) `md` (36) `lg` (40) `xl` (44). The box
+ladder from `xs` up mirrors `Button` step for step, so an icon-only control lines
+up with a text button of the same size. The glyph is 16px from `sm` up, 14px on
+`xs` and `2xs`, 12px on `3xs`.
 
 **`2xs` is the row-action size** — use it for a kebab or an inline edit/delete
 pair inside a table row or a list row, and nothing else.
+
+**`3xs` is the tree-row toggle** — expand / collapse at the start of a tree row,
+one on nearly every row, where a 24px box outweighed the names beside it. Not a
+row action: those stay `2xs`.
 
 ```jsx
 <TableActionsCell>

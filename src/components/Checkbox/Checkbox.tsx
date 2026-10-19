@@ -1,11 +1,11 @@
 'use client';
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { Check } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
-import { cn, formFocusRing } from '../../lib/utils';
+import { cn, focusRing } from '../../lib/utils';
 
 export type CheckedState = CheckboxPrimitive.CheckedState;
 
@@ -16,10 +16,12 @@ const checkboxVariants = cva(
     'shrink-0',
     'place-content-center',
     'border-[1.5px]',
-    // Focus state — neutral ring with a Surface/Card gap
-    formFocusRing,
+    // Focus state — the brand ring with a Surface/Card gap (kit `.cbx`)
+    focusRing,
     // Disabled state — unified opacity recipe
-    'disabled:pointer-events-none',
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
     'disabled:cursor-not-allowed',
     'disabled:opacity-disabled',
     // Transition

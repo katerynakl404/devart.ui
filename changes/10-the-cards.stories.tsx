@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Card } from '../src/components/Card';
-import { DataSourceCard } from '../src/components/DataSourceCard';
+import { Button } from '../src/components/Button';
+import { Card, CardContent, CardFooter } from '../src/components/Card';
 import { Typography } from '../src/components/Typography';
 import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
 
@@ -18,25 +18,25 @@ type Story = StoryObj<typeof meta>;
 /** The hover tint the published `outline` card carried. */
 const OLD_OUTLINE_HOVER = 'hover:border-card-border-hover';
 
-/**
- * The scrim as it was: floated over the tile rather than stacked with it, so it
- * contributed nothing to the tile's own minimum width, and a 16px gutter where
- * the kit uses 8.
- */
-const OLD_SCRIM =
-  '[&>span:last-child]:absolute [&>span:last-child]:inset-0 [&>span:last-child]:px-4';
+const SETTINGS = ['Host', 'Port', 'Database', 'Schema', 'User', 'Timeout'];
 
-/** A grid whose track can go narrower than the action inside the tile. */
-function NarrowGrid({ old }: { old?: boolean }) {
+/** A card taller than the box it scrolls in, its actions in the footer. */
+function TallCard({ sticky = false }: { sticky?: boolean }) {
   return (
-    <div className="grid w-[200px] grid-cols-2 gap-3">
-      {['PostgreSQL', 'DB2'].map((connector) => (
-        <DataSourceCard
-          className={old ? OLD_SCRIM : undefined}
-          connector={connector}
-          key={connector}
-        />
-      ))}
+    <div className="h-56 w-64 overflow-y-auto rounded-lg border border-stroke bg-surface-page p-3">
+      <Card fullWidth>
+        <Typography textStyle="title14">Connection</Typography>
+        <CardContent className="flex flex-col gap-3">
+          {SETTINGS.map((setting) => (
+            <Typography key={setting} textColor="secondary" textStyle="body12">
+              {setting} — a row of the form
+            </Typography>
+          ))}
+        </CardContent>
+        <CardFooter sticky={sticky} variant="actions">
+          <Button size="sm">Save</Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
@@ -45,7 +45,7 @@ export const TheCards: Story = {
   name: 'The cards',
   render: () => (
     <ChangePage
-      intro="Two changes to the surfaces. One took a promise off a card that could not keep it; the other stopped a tile from being narrower than the control inside it."
+      intro="Two changes to the surfaces: one took a promise off a card that could not keep it, one keeps a tall card's actions in reach."
       title="The cards"
     >
       <ChangeCase
@@ -91,7 +91,8 @@ export const TheCards: Story = {
             page of them, the pointer lit up whatever it crossed. Cards that are
             controls say so: <Code>ghost</Code> is the browse-more tile, a
             clickable row uses the table's own interactive states, and the
-            catalog tile below is a <Code>&lt;button&gt;</Code>.{' '}
+            catalog tile, <Code>IconCard</Code>, is a <Code>role="button"</Code>
+            .{' '}
             <strong className="font-medium text-ink-body">Filed wrong:</strong>{' '}
             the original entry said hover <em>and press</em>. The press half
             never existed in a published version — it was added and removed
@@ -102,64 +103,42 @@ export const TheCards: Story = {
         title="An outline card answered the pointer and then did nothing"
         why="The border tint is the affordance of a control. On a surface it is a promise nothing keeps."
       />
-
       <ChangeCase
         after={
-          <TryIt action="Hover a tile — the action sits inside it at any width">
-            <NarrowGrid />
+          <TryIt action="Scroll — Save stays at the bottom of the box">
+            <TallCard sticky />
           </TryIt>
         }
-        afterNote="122px at any grid width — the action plus 8px either side"
+        afterNote="sticky bottom-0 z-10 bg-surface-card"
         before={
-          <TryIt action="Hover a tile — the action reaches past the border">
-            <NarrowGrid old />
+          <TryIt action="Scroll — Save only arrives at the card's end">
+            <TallCard />
           </TryIt>
         }
-        beforeNote="94px, and the action spills 10px past the border"
+        beforeNote="the footer scrolls with the card"
         beforeSource={
           <>
-            the scrim put back to <Code>absolute inset-0</Code> with its 16px
-            gutter, through a child selector on the tile. Both halves are the
-            live component in a 200px two-column grid — a width narrower than
-            the action, which is where the two part company.
+            the live component without the prop — <Code>sticky</Code> defaults
+            to <Code>false</Code>, which is the published footer exactly.
           </>
         }
-        files={['src/components/DataSourceCard/index.tsx']}
+        files={[
+          'src/components/Card/CardFooter.tsx',
+          'src/components/Card/index.tsx',
+        ]}
         footnote={
           <>
-            An absolutely positioned child contributes nothing to its parent's
-            intrinsic size, so the tile's minimum width was set by the connector
-            name while the thing that has to fit inside it is a 104px button.
-            The two layers now stack in one grid cell —{' '}
-            <Code>[grid-area:1/1]</Code> — so the action counts: the tile cannot
-            be narrower than it plus the 8px the scrim keeps either side.
-            <br />
-            <br />
-            Stacking alone was not enough, and the panels above are how that
-            turned up: Tailwind’s <Code>grid-cols-2</Code> is{' '}
-            <Code>minmax(0, 1fr)</Code>, which lets a track shrink below its
-            item’s min-content, so the intrinsic minimum was a suggestion. With
-            <Code>min-w-fit</Code> the tile refuses: measured 122px in both
-            panels of the After half against 109 and 94 in the Before, where the
-            action spills 10px past the border. Above the minimum the grid still
-            decides, unchanged.
-            <br />
-            <br />
-            <strong className="font-medium text-ink-body">
-              Why this is its own component and not a Card variant:
-            </strong>{' '}
-            <Code>Card</Code> is a surface — five variants, each a box with
-            padding and a border. A catalog tile is a control: a{' '}
-            <Code>&lt;button&gt;</Code> with a hover scrim, a revealed action, a
-            popular badge and a fixed 8rem height. Behind{' '}
-            <Code>Card variant="tile"</Code> the component would render a button
-            for one of its six values and a div for the other five. They do
-            share the lift recipe, and that is the part kept in sync by hand.
+            The footer sticks to the bottom of the scroller while the card
+            scrolls under it, and settles in place at the card's end. It carries
+            the card's own surface so nothing shows through it.{' '}
+            <Code>cardFooterVariants</Code> is exported from the Card entry now,
+            so a consumer can tell whether its build has the variant.
           </>
         }
-        n={58}
-        title="A tile could be narrower than its own action"
-        why="The Connect scrim floated over the tile instead of sitting in it, so nothing stopped the grid from making the tile smaller than the button it reveals."
+        n={123}
+        state="draft"
+        title="CardFooter — sticky"
+        why="A card taller than the window put its actions below the fold, out of reach until the reader scrolled to its end."
       />
     </ChangePage>
   ),

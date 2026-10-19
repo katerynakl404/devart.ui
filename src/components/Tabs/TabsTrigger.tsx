@@ -1,8 +1,8 @@
 'use client';
 
 import * as TabsPrimitive from '@radix-ui/react-tabs';
-import { cva } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { useTabs } from './TabsContext';
 
@@ -28,7 +28,10 @@ const tabsTriggerVariants = cva(
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
 
     // Disabled — unified opacity recipe.
-    'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-disabled'
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
+    'disabled:cursor-not-allowed disabled:opacity-disabled'
   ),
   {
     variants: {

@@ -41,6 +41,12 @@ export const THEME_COLORS = {
   overlay: {
     scrim: 'var(--overlay-scrim)',
   },
+  // The Spotlight ring's washes — what `shadow-spotlight` is built of. Its
+  // scrim is `overlay.scrim`. color-mix values: bare var(), no alpha modifier.
+  spotlight: {
+    halo: 'var(--spotlight-halo)',
+    glow: 'var(--spotlight-glow)',
+  },
   state: {
     // Relative overlays — color-mix() values that carry their own alpha, so
     // they are passed through bare. Wrapping one in hsl() emits invalid CSS
@@ -60,6 +66,13 @@ export const THEME_COLORS = {
     attention: 'hsl(var(--fb-attention) / <alpha-value>)',
     green: 'hsl(var(--fb-green) / <alpha-value>)',
     info: 'hsl(var(--fb-info) / <alpha-value>)',
+  },
+  // Syntax colours for highlighted code — CodeBlock's `codeSyntaxVariants`.
+  code: {
+    keyword: 'hsl(var(--code-keyword) / <alpha-value>)',
+    string: 'hsl(var(--code-string) / <alpha-value>)',
+    number: 'hsl(var(--code-number) / <alpha-value>)',
+    comment: 'hsl(var(--code-comment) / <alpha-value>)',
   },
   logo: {
     ink: 'hsl(var(--logo-ink) / <alpha-value>)',

@@ -1,5 +1,5 @@
-The title row every screen starts with: an optional back control, the page's one
-`h1`, and trailing actions.
+The title row every screen starts with: an optional back control, the page title
+(an `h2`), and trailing actions.
 
 ```jsx
 <PageHeader
@@ -8,36 +8,60 @@ The title row every screen starts with: an optional back control, the page's one
 />
 ```
 
-Use it as the fixed header of the shell — `SidebarInset`'s first child, above
-the scrolling region. It is already `shrink-0`, so it stays put while the
-content below scrolls; see the Sidebar doc for the surrounding shape.
+It has **no inset of its own** — the developers' shape, and the kit's, where
+`.cl-page` pads `.cl-page-head`. The page pads it: `ListPageLayout`'s sticky
+header does, and a shell header wraps it in the same padding as the content
+below. It is `shrink-0`, so as the fixed header of the shell — `SidebarInset`'s
+first child, above the scrolling region — it stays put while the content below
+scrolls; see the Sidebar doc for the surrounding shape.
 
 ## Rules
 
-- **One `h1` per page**, and this is it. Do not put another heading at
-  `title24` under it — the next level down is `title20`.
+- **The title is an `h2`**, as in the developers' package and the product. Do
+  not put another heading at `heading30` under it — the next level down is
+  `title20`.
 - **`onBack` renders the back control.** Omit it on a top-level page rather
   than passing a no-op: a back arrow that goes nowhere is worse than none.
   `backLabel` names the destination ("Back to connections"), not the gesture.
 - **Actions go in `actions`**, not as loose children — they are pushed to the
   end of the row with `ms-auto` and spaced at 12px. The primary action is last.
 - The title truncates, so a long name shortens instead of pushing the actions
-  off the row.
+  off the row. **`wrapTitle`** wraps it onto more lines instead, for a title
+  that must be read whole — on a phone a two-word title beside a button
+  otherwise loses its second word to an ellipsis. The arrow and the badge stay
+  centred on the wrapped title and the actions keep their edge; only the row
+  grows taller.
+- **`condensed`** is the header once the page has scrolled under it: the title
+  at `heading20` and the back control a step smaller, animated over
+  `--motion-slow`. The page decides when — `ListPageLayout` does it for you
+  with `condenseAfter` and a render-function `stickyHeader`:
+
+```jsx
+<ListPageLayout
+  condenseAfter={60}
+  stickyHeader={({ condensed }) => (
+    <PageHeader title="Files" condensed={condensed} wrapTitle />
+  )}
+>
+  …
+</ListPageLayout>
+```
 
 ## Three details that are deliberate
 
-The back control is a **tertiary button and measures as one**: a 32px box with
-a 16px glyph, the same as `Button size="sm"`. That matters beyond looks — it is
-what keeps a header the same height whether or not a screen has a back arrow,
-so the page does not slide between two screens one step apart in a flow. An
-earlier version used a 36px box with a forced 24px glyph, and cost exactly that
-4px.
+The back control is a **tertiary button sized against the title, not the
+row**: a 36px box (`size="md"`) with a 24px glyph beside the full-size title,
+stepping to the component's own 32px box and 16px glyph once `condensed`. A
+16px arrow beside a 24–30px title reads as a stray icon rather than the page's
+own control. The cost is known and accepted: the control is 36px in a row whose
+other controls are 32, so a header with a back arrow is 4px taller than one
+without.
 
 Its **box sits 6px from the title** (the glyph, 12px) while everything else in
 the row is 12px apart. The arrow belongs to the title rather than being a
 sibling of it, and the tighter gap is what says so.
 
-**The box starts on the header's own inset** — it is not pulled outward to put
+**The box starts on the row's edge** — the page's inset — and is not pulled outward to put
 the *glyph* on that line. It was, once, on the principle that a tertiary control
 is measured by its glyph rather than by the box its hover state happens to
 paint. That holds for a control with no surface; this one has one, and a painted

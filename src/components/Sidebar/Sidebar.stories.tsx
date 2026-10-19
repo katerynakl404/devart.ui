@@ -16,6 +16,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { type ComponentProps, useEffect, useState } from 'react';
+import { expect, waitFor, within } from 'storybook/test';
 import { cn } from '../../lib/utils';
 import { Avatar, AvatarFallback } from '../Avatar';
 import { Button } from '../Button';
@@ -33,7 +34,6 @@ import {
 import { Typography } from '../Typography';
 import {
   Sidebar,
-  SidebarBrand,
   SidebarChatItem,
   SidebarContent,
   SidebarFooter,
@@ -42,10 +42,14 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuRow,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  SidebarMobileTrigger,
+  SidebarNavItem,
   SidebarNavigationItems,
+  SidebarPanelHeader,
   SidebarPromo,
   SidebarProvider,
   SidebarRail,
@@ -57,32 +61,71 @@ import {
 } from './index';
 import type { NavigationElement } from './types';
 
+/** The trigger's label tracks the open state, and doubles as its tooltip. */
+const StateAwareTrigger = () => {
+  const { open } = useSidebar();
+
+  return (
+    <SidebarTrigger
+      className="shrink-0"
+      label={open ? 'Collapse sidebar' : 'Expand sidebar'}
+      size="xs"
+      tooltip
+    />
+  );
+};
+
 /**
  * The header row, as the library ships it.
  *
- * `SidebarBrand` hides its first child when the rail collapses and keeps the
- * trailing control, which is the way back out.
+ * `SidebarPanelHeader` puts the mark on the leading edge and the trigger on
+ * the trailing one. On the rail the two share one square: the mark shows, and
+ * hover or keyboard focus swaps it for the trigger — the way back out.
  */
 const SidebarStoryHeader = () => (
-  <SidebarBrand>
-    <span className="flex min-w-0 items-center gap-2">
-      <Layers className="size-5 shrink-0 text-brand-primary" />
-      <Typography className="truncate" element="span" textStyle="title16">
-        Insightis
-      </Typography>
-    </span>
-    <SidebarTrigger size="xs" variant="tertiary" />
-  </SidebarBrand>
+  <SidebarPanelHeader
+    logoIcon={
+      // biome-ignore lint/a11y/useValidAnchor: story-only placeholder link
+      <a aria-label="Home" href="#">
+        <span className="flex min-w-0 items-center gap-2">
+          <Layers className="size-5 shrink-0 text-brand-primary" />
+          <Typography
+            className="truncate group-data-[collapsible=icon]:hidden"
+            element="span"
+            textStyle="title16"
+          >
+            Insightis
+          </Typography>
+        </span>
+      </a>
+    }
+    sidebarTrigger={<StateAwareTrigger />}
+  />
 );
 
 // The product's four rows: the way to start, then the three libraries. Chats
-// are not a nav row — they are the Pinned / Recent lists below.
-const navigation: NavigationElement[] = [
-  { id: 'new', title: 'New Chat', icon: CirclePlus, url: '#new' },
-  { id: 'sources', title: 'Data Sources', icon: Database, url: '#sources' },
-  { id: 'metrics', title: 'Metrics', icon: ChartPie, url: '#metrics' },
-  { id: 'files', title: 'Files', icon: Folder, url: '#files' },
+// are not a nav row — they are the Pinned / Recent lists below. "New Chat"
+// points at the chat page without being it, so it never paints as active.
+const NAV_ROWS = [
+  { href: '#new', icon: CirclePlus, label: 'New Chat', activatable: false },
+  { href: '#sources', icon: Database, label: 'Data Sources' },
+  { href: '#metrics', icon: ChartPie, label: 'Metrics' },
+  { href: '#files', icon: Folder, label: 'Files' },
 ];
+
+/** `SidebarNavItem` rows. On the rail the label moves into a tooltip. */
+const ProductNav = () => {
+  const { state, isMobile } = useSidebar();
+  const isRail = state === 'collapsed' && !isMobile;
+
+  return (
+    <nav className="flex shrink-0 flex-col gap-0.5 group-data-[collapsible=icon]:items-center">
+      {NAV_ROWS.map((row) => (
+        <SidebarNavItem key={row.href} withTooltip={isRail} {...row} />
+      ))}
+    </nav>
+  );
+};
 
 type Chat = {
   id: string;
@@ -161,7 +204,7 @@ const ProductSidebar = ({
       <SidebarStoryHeader />
     </SidebarHeader>
     <SidebarContent>
-      <SidebarNavigationItems items={navigation} />
+      <ProductNav />
       <SidebarSection action={<SeeAll />} label="Pinned">
         <ChatRows chats={PINNED} pinned />
       </SidebarSection>
@@ -238,14 +281,32 @@ const meta = {
 export default meta;
 type Story = StoryObj<StoryArgs>;
 
-const StoryInset = ({ title = 'New chat' }: { title?: string }) => (
-  <SidebarInset>
-    <div className="flex items-center gap-2 p-4">
-      <SidebarTrigger variant="tertiary" />
-      <Typography variant="h4">{title}</Typography>
-    </div>
-  </SidebarInset>
-);
+/**
+ * The page's title row. The trigger stands beside the title only while the
+ * sidebar is hidden — collapsed off-canvas, or the sheet on mobile. Collapsed
+ * to the icon rail, the rail's own header carries it, and a second one here is
+ * the same control twice.
+ */
+const StoryInset = ({
+  title = 'New chat',
+  collapsible = 'icon',
+}: {
+  title?: string;
+  collapsible?: StoryArgs['collapsible'];
+}) => {
+  const { isMobile, state } = useSidebar();
+  const hidden =
+    isMobile || (collapsible === 'offcanvas' && state === 'collapsed');
+
+  return (
+    <SidebarInset>
+      <div className="flex items-center gap-2 p-4">
+        {hidden ? <SidebarTrigger variant="tertiary" /> : null}
+        <Typography variant="h4">{title}</Typography>
+      </div>
+    </SidebarInset>
+  );
+};
 
 /**
  * The product sidebar. Toggle **Promo card** in Controls to add the offer
@@ -258,10 +319,32 @@ const StoryInset = ({ title = 'New chat' }: { title?: string }) => (
  * has new activity and another is still generating.
  */
 export const Expanded: Story = {
+  /**
+   * The open state lives in the provider and is published as `data-state`, so
+   * consumers can style against it. The trigger is the only thing that moves
+   * it, and it must move it both ways.
+   */
+  play: async ({ canvasElement, userEvent }) => {
+    const panel = canvasElement.querySelector('[data-state]') as HTMLElement;
+    await expect(panel).toHaveAttribute('data-state', 'expanded');
+
+    const trigger = canvasElement.querySelector(
+      '[data-sidebar="trigger"]'
+    ) as HTMLElement;
+    await userEvent.click(trigger);
+    await waitFor(() =>
+      expect(panel).toHaveAttribute('data-state', 'collapsed')
+    );
+
+    await userEvent.click(trigger);
+    await waitFor(() =>
+      expect(panel).toHaveAttribute('data-state', 'expanded')
+    );
+  },
   render: (args) => (
     <SidebarProvider defaultOpen>
       <ProductSidebar {...args} />
-      <StoryInset />
+      <StoryInset collapsible={args.collapsible} />
     </SidebarProvider>
   ),
 };
@@ -277,16 +360,32 @@ export const WithPromo: Story = {
 };
 
 /**
- * Collapsed to the icon rail: the brand keeps only its trigger, the nav keeps
- * its icons with tooltips, and the lists, the promo and the balance leave —
- * none of them has a 48px form. The account row keeps its avatar.
+ * Collapsed to the icon rail: the brand keeps its mark and swaps it for the
+ * trigger on hover or focus, the nav keeps its icons with tooltips, and the
+ * lists, the promo and the balance leave — none of them has a 48px form. The
+ * account row keeps its avatar, and its name as visually hidden text.
  */
 export const CollapsedIcon: Story = {
   args: { showPromo: true },
+  /**
+   * `data-collapsible` only carries a value while the panel is actually
+   * collapsed — that is what lets a consumer target the icon rail without also
+   * matching the expanded panel.
+   */
+  play: async ({ canvasElement }) => {
+    const panel = canvasElement.querySelector('[data-state]') as HTMLElement;
+    await expect(panel).toHaveAttribute('data-state', 'collapsed');
+    await expect(panel).toHaveAttribute('data-collapsible', 'icon');
+
+    // The avatar alone on screen, and still a button with a name.
+    await expect(
+      within(canvasElement).getByRole('button', { name: /^Kateryna K\./ })
+    ).toBeInTheDocument();
+  },
   render: (args) => (
     <SidebarProvider defaultOpen={false}>
       <ProductSidebar {...args} />
-      <StoryInset />
+      <StoryInset collapsible={args.collapsible} />
     </SidebarProvider>
   ),
 };
@@ -301,7 +400,7 @@ export const InsetVariant: Story = {
   render: (args) => (
     <SidebarProvider defaultOpen>
       <ProductSidebar {...args} />
-      <StoryInset title="Inset content" />
+      <StoryInset collapsible={args.collapsible} title="Inset content" />
     </SidebarProvider>
   ),
 };
@@ -339,7 +438,8 @@ const nestedNavigation: NavigationElement[] = [
  * lists of things the person made; use this for a genuine sub-tree.
  */
 export const NestedGroup: Story = {
-  render: (args) => (
+  // `showPromo` is a story arg, not a `Sidebar` prop — spread, it lands on the DOM.
+  render: ({ showPromo: _showPromo, ...args }) => (
     <SidebarProvider defaultOpen>
       <Sidebar {...args}>
         <SidebarHeader>
@@ -349,15 +449,10 @@ export const NestedGroup: Story = {
           <SidebarNavigationItems items={nestedNavigation} />
         </SidebarContent>
         <SidebarFooter>
-          <div className="flex items-center gap-2 px-2">
-            <Settings className="size-4" />
-            <Typography textColor="secondary" variant="span">
-              Settings
-            </Typography>
-          </div>
+          <SidebarMenuRow icon={Settings} label="Settings" />
         </SidebarFooter>
       </Sidebar>
-      <StoryInset title="Dashboard" />
+      <StoryInset collapsible={args.collapsible} title="Dashboard" />
     </SidebarProvider>
   ),
 };
@@ -426,11 +521,29 @@ export const AppShell: Story = {
  * the sheet is opened on mount. Neither belongs in product code — there,
  * crossing 1024px is what switches the branch.
  *
- * The one thing to get right in a page shell: put `SidebarTrigger` in the
- * `SidebarInset` header, not inside `Sidebar`. A trigger that lives in the
+ * The one thing to get right in a page shell: put `SidebarMobileTrigger` in
+ * the `SidebarInset` header, not inside `Sidebar`. A trigger that lives in the
  * sidebar goes away with it under `lg`, leaving nothing to open the sheet with.
+ * Its glyph turns a quarter while the sheet is open, and it carries no
+ * `data-sidebar`, so `:not([data-sidebar])` tells it apart from the panel's
+ * own `SidebarTrigger`.
+ *
+ * The panel's trigger keeps its `tooltip` prop here and shows none: the sheet
+ * hands focus inside as it opens, and a tooltip that answers that focus pops
+ * with no pointer near it.
  */
 export const MobileOverlay: Story = {
+  play: async () => {
+    const trigger = await waitFor(() => {
+      const node = document.querySelector(
+        '[data-mobile="true"] [data-sidebar="trigger"]'
+      );
+      expect(node).not.toBeNull();
+      return node as HTMLElement;
+    });
+    // A tooltip trigger stamps `data-state`; the bare button carries none.
+    await expect(trigger).not.toHaveAttribute('data-state');
+  },
   render: (args) => (
     <SidebarProvider
       className="h-svh min-h-0 overflow-hidden"
@@ -440,7 +553,7 @@ export const MobileOverlay: Story = {
       <ProductSidebar {...args} />
       <SidebarInset className="min-h-0">
         <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
-          <SidebarTrigger variant="tertiary" />
+          <SidebarMobileTrigger label="Toggle sidebar" />
           <Typography element="h1" textStyle="title20">
             Connections
           </Typography>
@@ -575,6 +688,184 @@ export const RowStates: StoryObj<typeof Sidebar> = {
           ))}
         </SidebarMenuSub>
       </div>
+    </SidebarProvider>
+  ),
+};
+
+/** One wording for the queue tooltip, so the stories read like the product. */
+const queued = (count: number, active: boolean) =>
+  `${count} messages queued — ${active ? 'still sending' : 'paused, waiting for you'}`;
+
+/** Every `SidebarChatItem` the product draws, each with its menu. */
+const ChatRowSet = () => (
+  <SidebarProvider className="min-h-0">
+    <div className="flex w-64 flex-col gap-px rounded-md border border-stroke bg-surface-card p-2">
+      <SidebarChatItem href="#c1" menu={<ChatMenu pinned={false} />}>
+        Generate two charts using random data
+      </SidebarChatItem>
+      <SidebarChatItem
+        href="#c2"
+        menu={<ChatMenu pinned={false} />}
+        status="new"
+      >
+        Jira · first 5 AIINS issues
+      </SidebarChatItem>
+      <SidebarChatItem
+        href="#c3"
+        menu={<ChatMenu pinned={false} />}
+        status="loading"
+      >
+        Q3 report.xlsx
+      </SidebarChatItem>
+      <SidebarChatItem
+        count={3}
+        countActive
+        countLabel={queued(3, true)}
+        href="#c4"
+        menu={<ChatMenu pinned />}
+      >
+        Message queue
+      </SidebarChatItem>
+      <SidebarChatItem
+        count={2}
+        countLabel={queued(2, false)}
+        href="#c5"
+        menu={<ChatMenu pinned />}
+      >
+        Churn deep-dive, waiting on you
+      </SidebarChatItem>
+      <SidebarChatItem
+        aria-current="page"
+        href="#c6"
+        isActive
+        menu={<ChatMenu pinned />}
+      >
+        Salesforce · Q1 revenue commentary
+      </SidebarChatItem>
+      <SidebarChatItem count={4} countLabel={queued(4, false)} href="#c7">
+        A row with no menu
+      </SidebarChatItem>
+    </div>
+  </SidebarProvider>
+);
+
+/**
+ * `SidebarChatItem` in every state: plain, new activity, generating, a queue
+ * still sending and one that stopped, the open chat, and a row with no menu.
+ *
+ * The kebab appears on hover or focus and its tooltip is `menuLabel`, the same
+ * string as its name. `countLabel` says what the number means: it is spoken
+ * in place of the bare count and shown as the count's tooltip — wherever the
+ * count is on screen, which on a row with a menu means not while the kebab
+ * covers it. The last row has no menu, so its count answers the pointer.
+ */
+export const ChatItemStates: StoryObj<typeof SidebarChatItem> = {
+  parameters: { layout: 'padded' },
+  render: () => <ChatRowSet />,
+};
+
+/**
+ * The same rows on a phone. Below `lg`, and on any touch screen, there is no
+ * hover to wait for, so the kebab never hides: the link keeps 32px of room
+ * for it, the fade ends where that room begins, and the status and the count
+ * stay beside it instead of stepping aside.
+ */
+export const ChatItemsOnAPhone: StoryObj<typeof SidebarChatItem> = {
+  parameters: { layout: 'padded' },
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
+  render: () => <ChatRowSet />,
+};
+
+/**
+ * The footer's two rows. `SidebarStat` is a `<button>` that opens the detail
+ * above itself; with `asChild` the same row renders the caller's element —
+ * here a `<div>`, for a figure that is a reading and opens nothing. The
+ * recipe goes with it unchanged.
+ */
+export const FooterRows: StoryObj<typeof SidebarStat> = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <SidebarProvider className="min-h-0">
+      <div className="flex w-96 flex-col gap-1 rounded-md border border-stroke bg-surface-card p-2">
+        <div className="flex gap-3">
+          <div className="w-56">
+            <SidebarStat icon={<Wallet />} label="Balance" value="9,480 left" />
+          </div>
+          <StateLabel>button</StateLabel>
+        </div>
+        <div className="flex gap-3">
+          <div className="w-56">
+            <SidebarStat
+              asChild
+              icon={<Wallet />}
+              label="Balance"
+              value="9,480 left"
+            >
+              <div />
+            </SidebarStat>
+          </div>
+          <StateLabel>asChild div</StateLabel>
+        </div>
+        <div className="flex gap-3">
+          <div className="w-56">
+            <SidebarUser
+              avatar={
+                <Avatar>
+                  <AvatarFallback>K</AvatarFallback>
+                </Avatar>
+              }
+              meta="Admin · Free"
+              name="Kateryna K."
+            />
+          </div>
+          <StateLabel>user</StateLabel>
+        </div>
+      </div>
+    </SidebarProvider>
+  ),
+};
+
+// The other end of `ALWAYS_SHEET`: narrower than any viewport, so the
+// provider always reports the desktop layout.
+const NEVER_SHEET = 0;
+
+/**
+ * Leaving the phone layout closes the sheet. Open it with the menu button,
+ * then switch **Phone layout** off in Controls — the rail comes back — and on
+ * again: the page opens on content, not on the drawer left open before.
+ *
+ * The switch stands in for the window crossing `lg`; in product code that
+ * crossing is all it takes.
+ */
+export const LeavingThePhoneLayout: StoryObj<
+  StoryArgs & { phoneLayout: boolean }
+> = {
+  args: { phoneLayout: true },
+  argTypes: {
+    phoneLayout: {
+      name: 'Phone layout',
+      control: 'boolean',
+      description:
+        'Moves `sheetBreakpoint` past the canvas (sheet) or under it (rail) — the window crossing `lg`.',
+      table: { category: 'Story' },
+    },
+  },
+  render: ({ phoneLayout, ...args }) => (
+    <SidebarProvider
+      className="h-svh min-h-0 overflow-hidden"
+      sheetBreakpoint={phoneLayout ? ALWAYS_SHEET : NEVER_SHEET}
+    >
+      <ProductSidebar {...args} />
+      <SidebarInset className="min-h-0">
+        <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
+          {phoneLayout ? (
+            <SidebarMobileTrigger label="Open sidebar" tooltip />
+          ) : null}
+          <Typography element="h1" textStyle="title20">
+            Connections
+          </Typography>
+        </header>
+      </SidebarInset>
     </SidebarProvider>
   ),
 };

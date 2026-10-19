@@ -1,38 +1,47 @@
 'use client';
 
 import * as ProgressPrimitive from '@radix-ui/react-progress';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 
 import { cn } from '../../lib/utils';
 
-const progressVariants = cva(
-  'relative w-full overflow-hidden rounded-full bg-surface-chips',
-  {
-    variants: {
-      variant: {
-        primary: '',
-        tertiary: '',
-        green: '',
-        attention: '',
-        destructive: '',
-      },
-      size: {
-        md: 'h-1',
-        lg: 'h-1.5',
-      },
-      rounded: {
-        lg: 'rounded-lg',
-        full: 'rounded-full',
-      },
+const progressVariants = cva('relative w-full overflow-hidden rounded-full', {
+  variants: {
+    /**
+     * What the part of the bar the value does not fill means. `default`
+     * is nothing yet — the neutral track. `destructive` is the opposite
+     * answer, for a bar that splits a whole in two (allowed / denied, passed
+     * / failed): the rest is red, so the reader sees both parts, not one
+     * part and an empty groove.
+     */
+    trackVariant: {
+      default: 'bg-surface-chips',
+      destructive: 'bg-fb-red',
     },
-    defaultVariants: {
-      variant: 'primary',
-      size: 'md',
-      rounded: 'lg',
+    variant: {
+      primary: '',
+      tertiary: '',
+      green: '',
+      attention: '',
+      destructive: '',
     },
-  }
-);
+    size: {
+      md: 'h-1',
+      lg: 'h-1.5',
+    },
+    rounded: {
+      lg: 'rounded-lg',
+      full: 'rounded-full',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+    trackVariant: 'default',
+    size: 'md',
+    rounded: 'lg',
+  },
+});
 
 const progressIndicatorVariants = cva('h-full transition-all', {
   variants: {
@@ -62,6 +71,7 @@ const ProgressBar = ({
   className,
   value,
   variant,
+  trackVariant,
   size,
   rounded,
   ref,
@@ -74,7 +84,10 @@ const ProgressBar = ({
   return (
     <ProgressPrimitive.Root
       ref={ref}
-      className={cn(progressVariants({ variant, size, rounded }), className)}
+      className={cn(
+        progressVariants({ variant, trackVariant, size, rounded }),
+        className
+      )}
       value={clampedValue}
       max={max}
       {...props}
@@ -89,4 +102,4 @@ const ProgressBar = ({
 
 ProgressBar.displayName = 'ProgressBar';
 
-export { ProgressBar };
+export { ProgressBar, progressIndicatorVariants, progressVariants };

@@ -1,8 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Copy, MoreHorizontal, Pencil, Settings, Trash2 } from 'lucide-react';
+import {
+  BookOpen,
+  CircleHelp,
+  Copy,
+  LogOut,
+  MessageSquare,
+  Monitor,
+  Moon,
+  MoreHorizontal,
+  Pencil,
+  Settings,
+  Sun,
+  SunMoon,
+  Trash2,
+  User,
+} from 'lucide-react';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 import { Button } from '../Button';
+import { TooltipProvider } from '../Tooltip';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,6 +28,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
+  DropdownMenuSegmentedItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
@@ -203,4 +220,110 @@ export const ItemStates: Story = {
       </DropdownMenuContent>
     </DropdownMenu>
   ),
+};
+
+/**
+ * `isExternal` — a row that leaves the product for a new tab. A trailing 14px
+ * arrow in `Text/Secondary`, and "(opens in new tab)" added to the name for a
+ * screen reader. It only says so: the link and its `target="_blank"` are the
+ * caller's, passed with `asChild`, and the arrow is injected into it.
+ */
+export const ExternalLinks: Story = {
+  render: (args) => (
+    <DropdownMenu defaultOpen>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary">Support</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent {...args} align="start">
+        <DropdownMenuLabel>Support</DropdownMenuLabel>
+        <DropdownMenuItem onSelect={fn()}>
+          <MessageSquare />
+          Leave feedback
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild isExternal>
+          <a href="https://www.devart.com" rel="noopener" target="_blank">
+            <CircleHelp />
+            Resources
+          </a>
+        </DropdownMenuItem>
+        <DropdownMenuItem disabled isExternal>
+          <BookOpen />
+          Documentation
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+};
+
+const THEMES = [
+  { value: 'light', label: 'Light', icon: <Sun /> },
+  { value: 'dark', label: 'Dark', icon: <Moon /> },
+  { value: 'system', label: 'System', icon: <Monitor /> },
+];
+
+/**
+ * `DropdownMenuSegmentedItem` — one row holding a choice between a few values.
+ * It is a single item: ↑ / ↓ reach it, ← / → change the value, Enter and Space
+ * step to the next one, and none of them closes the menu. A press on a
+ * segment chooses that segment.
+ *
+ * Icon segments carry their label as a tooltip; word segments need none. A
+ * disabled row keeps its label on the rail in `Text/Inactive`, and the
+ * control fades as a disabled `SegmentedControl` does.
+ */
+export const SegmentedItem: Story = {
+  render: (args) => {
+    const [theme, setTheme] = useState('system');
+    const [density, setDensity] = useState('comfortable');
+
+    return (
+      <TooltipProvider>
+        <DropdownMenu defaultOpen>
+          <DropdownMenuTrigger asChild>
+            <Button variant="secondary">Account</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent {...args} align="start">
+            <DropdownMenuItem onSelect={fn()}>
+              <User />
+              My account
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuSegmentedItem
+              label={
+                <>
+                  <SunMoon />
+                  Theme
+                </>
+              }
+              onValueChange={setTheme}
+              options={THEMES}
+              value={theme}
+            />
+            <DropdownMenuSegmentedItem
+              label="Density"
+              onValueChange={setDensity}
+              options={[
+                { value: 'comfortable', label: 'Comfortable' },
+                { value: 'compact', label: 'Compact' },
+              ]}
+              value={density}
+            />
+            <DropdownMenuSegmentedItem
+              disabled
+              label="Language"
+              options={[
+                { value: 'en', label: 'EN' },
+                { value: 'uk', label: 'UK' },
+              ]}
+            />
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={fn()}>
+              <LogOut />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </TooltipProvider>
+    );
+  },
 };

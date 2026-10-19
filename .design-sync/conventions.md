@@ -141,8 +141,8 @@ theme and the overlays to follow without a provider.
 These come from the design-system audit and are not optional:
 
 1. **Type is chosen as a named style, never as a size.** Use
-   `<Typography textStyle="...">`: `display` · `heading36|30|24|20|16` (500) ·
-   `title30|24|20|16|14|12` (600) · `body16|14|12` (400) · `label14|12|10` (500)
+   `<Typography textStyle="...">`: `display` · `heading36|30|24|20|18|16` (500) ·
+   `title30|24|20|18|16|14|12` (600) · `body16|14|12` (400) · `label14|12|10` (500)
    · `overline`. Each carries size, weight and line-height together. Pick the
    semantic tag separately with `element` — heading level follows content
    hierarchy, not visual weight, and there is one `h1` per page.

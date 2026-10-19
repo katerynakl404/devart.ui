@@ -1,12 +1,12 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, liftOnHover } from '../../lib/utils';
 import { CardContent } from './CardContent';
 import { CardDescription } from './CardDescription';
 import { CardDivider } from './CardDivider';
-import { CardFooter } from './CardFooter';
+import { CardFooter, cardFooterVariants } from './CardFooter';
 import { CardHeader } from './CardHeader';
 import { CardIcon } from './CardIcon';
 import { CardSectionLabel } from './CardSectionLabel';
@@ -163,5 +163,6 @@ export {
   CardIcon,
   CardSectionLabel,
   CardTitle,
+  cardFooterVariants,
   cardVariants,
 };

@@ -1,8 +1,9 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import { FileIcon } from 'lucide-react';
-import type { KeyboardEvent, ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { onButtonKeyDown } from '../../lib/button-keyboard';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { ProgressBar } from '../ProgressBar';
 import { Typography } from '../Typography';
@@ -82,36 +83,41 @@ function File({
 }: FileProps) {
   const Icon = iconProp ?? <FileIcon className="size-6 text-brand-tertiary" />;
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      onClick?.();
-    }
-  };
-
   return (
     <div
-      tabIndex={onClick ? 0 : -1}
-      role={onClick ? 'button' : 'div'}
       className={cn(
         fileVariants({ variant, size, rounded }),
         isLoading && 'pointer-events-none',
         isError &&
           'border-fb-red/20 bg-fb-red/5 ring-fb-red/20 [&_svg]:text-fb-red-text/75',
-        onClick && 'cursor-pointer',
         // Kit: an interactive chip gets State/Hover on hover and State/Pressed
         // while held. Skipped on error so the red tint is not overpainted.
+        // Pressed follows the content area, which is the row's action — a
+        // press on retry or dismiss is not a press on the row.
         onClick &&
           !isError &&
-          'transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed',
+          'transition-colors duration-fast hover:bg-state-hover has-[[data-slot=file-action]:active]:bg-state-pressed',
+        // The ring still frames the whole chip; focus itself lands on the
+        // content area below, so the chip reads it through `:has()`.
         onClick &&
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2',
+          'has-[[data-slot=file-action]:focus-visible]:ring-2 has-[[data-slot=file-action]:focus-visible]:ring-focus-ring-brand has-[[data-slot=file-action]:focus-visible]:ring-offset-2',
         className
       )}
-      onClick={onClick}
-      onKeyDown={handleKeyDown}
     >
-      <div className="flex min-w-0 flex-1 items-center gap-2">
+      {/* The row's own action sits on the content area, a sibling of the
+          retry / dismiss controls rather than their parent: a button that
+          contains buttons is unreachable for assistive technology. */}
+      <div
+        data-slot={onClick ? 'file-action' : undefined}
+        tabIndex={onClick ? 0 : undefined}
+        role={onClick ? 'button' : undefined}
+        className={cn(
+          'flex min-w-0 flex-1 items-center gap-2',
+          onClick && 'cursor-pointer focus-visible:outline-none'
+        )}
+        onClick={onClick}
+        onKeyDown={onClick ? onButtonKeyDown(onClick) : undefined}
+      >
         {Icon}
 
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">

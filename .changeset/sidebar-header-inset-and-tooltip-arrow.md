@@ -7,13 +7,13 @@ the 4px scale.
 
 `SidebarHeader` had been changed to `flex flex-col gap-0 pt-3 pb-2` — no
 horizontal padding — on the theory that the rows inside it would carry their own
-inset via `SidebarBrand`. That made the component unsafe by default: any
+inset via the brand row. That made the component unsafe by default: any
 consumer that lays the row out by hand (which is most of them, and what the
 first product page did) gets a brand mark flush against x=0 while every
 navigation icon below sits at x=16. Nothing errors; the rail just looks broken.
 
-The inset moves back onto the header as `ps-4 pe-2`, and `SidebarBrand` drops
-its own copy so nesting the two does not double it. A row that genuinely needs
+The inset moves back onto the header as `ps-4 pe-2`, and `SidebarPanelHeader`
+carries no inset of its own, so nesting the two does not double it. A row that genuinely needs
 to reach the edges now opts out with `-ms-4 -me-2`, which is the rarer case and
 fails visibly rather than silently.
 

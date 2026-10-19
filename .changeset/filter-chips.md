@@ -2,19 +2,23 @@
 '@devart/ui-react': minor
 ---
 
-Add `FilterChips` / `FilterChip` — the single-choice filter bar that narrows a
-list: All / Artifacts / Uploaded, with an optional count on each chip.
+Add `FilterChips` — the single-select filter strip that narrows a list: All /
+Artifacts / Uploaded, with an optional count on each chip. The API is the
+developers' (`upstream` 1.1.0): `items` (`FilterChipItem` — `value`, `label`,
+`count?`), `value`, `onValueChange`, `className`. There are no child parts and
+no `size`.
 
-It is a Radix radio group rather than a row of buttons, because that is the
-actual semantic: exactly one chip is always active. A hand-rolled pill row looks
-identical and has none of what follows from that — arrow-key movement along the
-row, one tab stop for the whole bar, and "2 of 3" announced to a screen reader.
+The strip is fully controlled, so the selection can live in a URL parameter or a
+store. Toggling the active chip off reports `''`, which is how a single toggle
+group signals deselection — a strip that must always have a selection ignores
+that value rather than storing it. One horizontally scrolling row with a fade at
+the overflowing edge below `md` (the kit's `.chip-row` at ≤767px), wrapping from
+`md` up.
 
 `count` is optional and `0` renders; only `undefined` hides it, so an empty
-bucket reads honestly as `0` instead of disappearing. The count is a plain span,
-deliberately not a `Badge` — a badge inside a chip reads as a second control and
-doubles the border noise.
+bucket reads honestly as `0` instead of disappearing. The chip itself is
+`ToggleGroup`'s `stroke` / `xs` / `full` item — the kit's `.chip`.
 
 This is **not** `SegmentedControl`. That switches how the same content is
 presented (Table / Chart); this changes which items are shown. The two look
-alike and are not interchangeable, and both components' docs now say so.
+alike and are not interchangeable, and both components' docs say so.

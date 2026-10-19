@@ -1,7 +1,7 @@
 'use client';
 
-import type { VariantProps } from 'class-variance-authority';
 import { createContext, useContext } from 'react';
+import type { VariantProps } from '../../lib/cva';
 import type { avatarVariants } from './index';
 
 type AvatarVariants = VariantProps<typeof avatarVariants>;

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react';
 import { cn } from '../../lib/utils';
+import { useInputGroup } from './InputGroupContext';
 
 /**
  * The trailing action of a field — a clear ✕, a password toggle, a unit picker.
@@ -16,34 +17,43 @@ import { cn } from '../../lib/utils';
  * field's own 16px glyph, 8px from the right edge. `IconButton size="2xs"` is
  * the same 24px box but a 14px glyph and a hover fill, which is why reaching
  * for it here produced a control one step small and one surface too many.
+ *
+ * At `xs` the field's glyph is 14px, and the action's box is that glyph —
+ * no inner air — so with the field's own 8px trailing inset the ✕ sits 8px
+ * in, as the search icon does across from it. The 24px box and 16px glyph
+ * there put the ✕ 12px in and a size larger.
  */
 const InputGroupAction = ({
   className,
   type = 'button',
   ...props
-}: ComponentProps<'button'>) => (
-  <button
-    type={type}
-    data-slot="input-group-action"
-    className={cn(
-      'inline-flex shrink-0 items-center justify-center',
-      // A 24px box around the field's 16px glyph. The edge inset belongs to
-      // the field — `InputGroup` swaps its `px-3` for `pe-2` when this is
-      // present — so the action adds no margin of its own. Two insets on one
-      // edge is how the glyph ends up further from the border than the one
-      // opposite it.
-      'size-6 p-0',
-      'rounded-sm border-none bg-transparent',
-      'cursor-pointer',
-      'text-ink-icon transition-colors enabled:hover:text-ink-icon-hover',
-      '[&>svg]:size-4 [&>svg]:shrink-0',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
-      'disabled:pointer-events-none disabled:text-ink-inactive',
-      className
-    )}
-    {...props}
-  />
-);
+}: ComponentProps<'button'>) => {
+  const { size } = useInputGroup();
+  return (
+    <button
+      type={type}
+      data-slot="input-group-action"
+      className={cn(
+        'inline-flex shrink-0 items-center justify-center',
+        // A 24px box around the field's 16px glyph. The edge inset belongs to
+        // the field — `InputGroup` swaps its `px-3` for `pe-2` when this is
+        // present — so the action adds no margin of its own. Two insets on one
+        // edge is how the glyph ends up further from the border than the one
+        // opposite it.
+        'size-6 p-0',
+        'rounded-sm border-none bg-transparent',
+        'cursor-pointer',
+        'text-ink-icon transition-colors enabled:hover:text-ink-icon-hover',
+        '[&>svg]:size-4 [&>svg]:shrink-0',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
+        'disabled:pointer-events-none disabled:text-ink-inactive',
+        size === 'xs' && 'size-3.5 [&>svg]:size-3.5',
+        className
+      )}
+      {...props}
+    />
+  );
+};
 
 InputGroupAction.displayName = 'InputGroupAction';
 

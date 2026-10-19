@@ -1,8 +1,8 @@
 'use client';
 
 import * as TogglePrimitive from '@radix-ui/react-toggle';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { ComponentProps, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const TOGGLE_ON_CHIP = cn(
@@ -37,7 +37,10 @@ const toggleVariants = cva(
     'focus-visible:ring-focus-ring-brand',
 
     // Disabled — unified opacity recipe.
-    'disabled:pointer-events-none disabled:cursor-not-allowed',
+    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+    // tooltip that says why the control is off. A disabled control fires
+    // nothing either way.
+    'disabled:cursor-not-allowed',
 
     '[&_svg]:pointer-events-none [&_svg]:shrink-0'
   ),

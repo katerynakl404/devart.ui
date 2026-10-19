@@ -1,8 +1,8 @@
 'use client';
 
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
-import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
 const separatorVariants = cva('shrink-0', {
@@ -48,4 +48,4 @@ const Separator = ({
 );
 Separator.displayName = 'Separator';
 
-export { Separator };
+export { Separator, separatorVariants };

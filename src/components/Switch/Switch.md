@@ -22,8 +22,8 @@ above differ.
 Brand fill when on, a filled medium-grey track when off (`--switch-off-bg`), and
 a white thumb with `--shadow-thumb` in both positions — the shadow is what keeps
 the thumb's edge perceivable against the grey. Hover lifts each track one step
-(`--brand-hover` / `--switch-off-bg-hover`). Focus is the neutral form ring, never
-the brand one. Disabled fades from whichever position it is in.
+(`--brand-hover` / `--switch-off-bg-hover`). Focus is the brand ring every control
+uses (kit `.swt` → `--shadow-focus`). Disabled fades from whichever position it is in.
 
 Position, not colour, is what conveys state (WCAG 1.4.1). The visual track stays
 36 x 20, but an invisible `::before` extends the hit area to 44 x 44, which is

@@ -34,7 +34,9 @@ const DropdownMenuRadioItem = ({
       'active:bg-state-pressed',
 
       // Disabled — label drops to Text/Inactive, surface unchanged
-      'data-[disabled]:pointer-events-none',
+      // Not `pointer-events-none`: it hides the not-allowed cursor, and the
+      // tooltip that says why the control is off. A disabled control fires
+      // nothing either way.
       'data-[disabled]:cursor-not-allowed',
       'data-[disabled]:text-ink-inactive',
 

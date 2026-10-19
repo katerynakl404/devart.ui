@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FileImage } from 'lucide-react';
-import { fn } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import { File } from './index';
 
 /**
@@ -82,6 +82,30 @@ export const ErrorState: Story = {
 };
 
 export const Clickable: Story = {
+  /**
+   * The row's action sits on the content area, not on the wrapper, so it stays
+   * a sibling of the dismiss control rather than containing it. Both must be
+   * reachable, and the row must answer the keyboard as a button does.
+   */
+  play: async ({ args, canvas, userEvent }) => {
+    const row = canvas.getByRole('button', { name: /report\.pdf/i });
+    const dismiss = canvas.getByRole('button', { name: 'Remove file' });
+
+    await expect(row).not.toContainElement(dismiss);
+
+    await userEvent.click(row);
+    await expect(args.onClick).toHaveBeenCalledOnce();
+
+    row.focus();
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).toHaveBeenCalledTimes(2);
+
+    await userEvent.keyboard(' ');
+    await expect(args.onClick).toHaveBeenCalledTimes(3);
+
+    await userEvent.click(dismiss);
+    await expect(args.onDismiss).toHaveBeenCalledOnce();
+  },
   args: { onClick: fn() },
   render: (args) => (
     <div className="w-72">

@@ -16,6 +16,10 @@ type SegmentedControlContextValue = {
   size: SegmentedControlSize;
   variant: SegmentedControlVariant;
   rounded: SegmentedControlRounded;
+  /** `deselectable`: the value in effect, and the way back to none. */
+  deselectable: boolean;
+  value: string;
+  clear: () => void;
 };
 
 const SegmentedControlContext =

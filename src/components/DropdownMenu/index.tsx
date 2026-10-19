@@ -7,6 +7,11 @@ import { DropdownMenuItem } from './DropdownMenuItem';
 import { DropdownMenuLabel } from './DropdownMenuLabel';
 import { DropdownMenuRadioItem } from './DropdownMenuRadioItem';
 import { DropdownMenuRow } from './DropdownMenuRow';
+import {
+  DropdownMenuSegmentedItem,
+  type DropdownMenuSegmentedItemOption,
+  type DropdownMenuSegmentedItemProps,
+} from './DropdownMenuSegmentedItem';
 import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 import { DropdownMenuShortcut } from './DropdownMenuShortcut';
 import { DropdownMenuSubContent } from './DropdownMenuSubContent';
@@ -52,6 +57,9 @@ export {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuRow,
+  DropdownMenuSegmentedItem,
+  type DropdownMenuSegmentedItemOption,
+  type DropdownMenuSegmentedItemProps,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
