@@ -75,7 +75,7 @@ found and written down, not fixed.
 | `ProgressBar` | §105 `trackVariant` — a bar split in two · draft |
 | `PromoCard` | §91 **new** — the offer card a sidebar has room for<br>§116 the hover holds over the dismiss |
 | `RowMenuButton` | §137 **new** — the ⋮ at the end of a list row · draft |
-| `SearchField` | §116 a search field of its own — the query, the ✕, and the matches while typing · draft |
+| `SearchField` | §145 a search field of its own — the query, the ✕, and the matches while typing · draft |
 | `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft |
 | `SelectableListCard` | §138 keyboard, `aria-selected`, `menu` |
 | `Sheet` | §24 the default side is the one without a border · open |
@@ -101,7 +101,8 @@ found and written down, not fixed.
 | Synced from upstream | §97 the developers' names, parts and fixes — their 1.1.0 |
 
 Retired numbers, and where what they said lives now: §18 → §51 · §21 → §33 ·
-§23 → §75 · §58, §61, §77 → §97 (`IconCard`) · §68 → §97 (`SidebarPanelHeader`).
+§23 → §75 · §58, §61, §77 → §97 (`IconCard`) · §68 → §97 (`SidebarPanelHeader`) ·
+§116 was given twice — `PromoCard` keeps it, `SearchField` is §145.
 
 ---
 
@@ -1937,7 +1938,7 @@ kebab. Insightis carried its own copy of this in its custom kit; owner's call (2
 
 # `SearchField`
 
-## 116. `SearchField` — a search field of its own · **DRAFT**
+## 145. `SearchField` — a search field of its own · **DRAFT**
 
 - **`SearchField`** — new: `value`, `onValueChange`, `onClear`,
   `placeholder`, `clearLabel` (`Clear search`), `size`, `variant`,
