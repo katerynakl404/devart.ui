@@ -61,7 +61,7 @@ function DemoScreen() {
  * Fixed and portalled: each story renders in its own frame.
  */
 const meta = {
-  title: 'Components/Spotlight',
+  title: 'Compositions/Spotlight',
   component: Spotlight,
   tags: ['autodocs'],
   args: { target: '[data-demo="composer"]' },

@@ -41,7 +41,7 @@ const footer = (
  * Fixed and portalled: each story renders in its own frame.
  */
 const meta = {
-  title: 'Components/Coachmark',
+  title: 'Compositions/Coachmark',
   component: Coachmark,
   tags: ['autodocs'],
   args: {
@@ -110,14 +110,15 @@ export const WithProgressLarge: Story = {
       <StepProgress
         size="sm"
         fill
-        showStepLabel
+        showStepTitle
+        aria-label="Progress"
         current={3}
         steps={[
-          { id: 'a', label: 'Role' },
-          { id: 'b', label: 'Goal' },
-          { id: 'c', label: 'Data' },
-          { id: 'd', label: 'Chat' },
-          { id: 'e', label: 'Metrics' },
+          { title: 'Role', done: true },
+          { title: 'Goal', done: true },
+          { title: 'Data', done: true },
+          { title: 'Chat' },
+          { title: 'Metrics' },
         ]}
       />
     ),

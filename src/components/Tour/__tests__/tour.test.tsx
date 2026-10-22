@@ -87,11 +87,11 @@ describe('Tour', () => {
     renderTour({
       progress: {
         steps: [
-          { id: 'a', label: 'Role' },
-          { id: 'b', label: 'Goal' },
-          { id: 'c', label: 'Data' },
-          { id: 'd', label: 'Chat' },
-          { id: 'e', label: 'Metrics' },
+          { title: 'Role' },
+          { title: 'Goal' },
+          { title: 'Data' },
+          { title: 'Chat' },
+          { title: 'Metrics' },
         ],
         offset: 3,
       },

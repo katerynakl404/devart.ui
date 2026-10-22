@@ -16,17 +16,23 @@ export interface PageHeaderProps
   backLabel?: string;
   /** Trailing actions, pushed to the end of the row. */
   actions?: ReactNode;
-  /** Slot between the back control and the title — a breadcrumb, a logo. */
-  leading?: ReactNode;
   /**
-   * Slot immediately after the title, inside the title cluster — a status chip,
-   * the data source a form is connecting to, an environment tag.
+   * Content immediately before the title — a leading icon, a logo, the
+   * mobile sidebar trigger. It opens the row, 12px from what follows it: the
+   * back control when there is one, otherwise the title. A falsy value
+   * renders nothing.
+   */
+  titleLeft?: ReactNode;
+  /**
+   * Content immediately after the title, inside the title cluster — an info
+   * control, a status chip, the data source a form is connecting to, an
+   * environment tag. 12px from the title. A falsy value renders nothing.
    *
    * It is not `actions`: `actions` is pushed to the opposite edge of the row,
    * where a badge stops reading as part of the title and starts reading as one
    * more control next to Save.
    */
-  badge?: ReactNode;
+  titleRight?: ReactNode;
   /**
    * DRAFT. The same header, shorter: a `heading20` where the full one has a
    * `heading30` (`heading24` below `md`), and the back control a step smaller.
@@ -49,8 +55,8 @@ export interface PageHeaderProps
    * For a title that must be read whole: on a phone a two-word title beside a
    * button loses its second word to an ellipsis ("Data So…"), and when that
    * word is the one that tells two pages apart the ellipsis hides the page's
-   * name. The arrow and the badge stay centred on the wrapped title and the
-   * actions keep their edge, so the row only grows taller.
+   * name. The arrow, `titleLeft` and `titleRight` stay centred on the wrapped
+   * title and the actions keep their edge, so the row only grows taller.
    */
   wrapTitle?: boolean;
 }
@@ -86,8 +92,8 @@ function PageHeader({
   onBack,
   backLabel = 'Back',
   actions,
-  leading,
-  badge,
+  titleLeft,
+  titleRight,
   condensed,
   wrapTitle,
   className,
@@ -100,7 +106,10 @@ function PageHeader({
       className={cn('flex shrink-0 items-center gap-3', className)}
       {...props}
     >
-      {leading}
+      {/* `titleLeft` opens the row, at the row's 12px gap: before the back
+          control when there is one — the mobile sidebar trigger is what goes
+          here — and immediately before the title when there is not. */}
+      {titleLeft ? titleLeft : null}
 
       {/* gap-1: the arrow belongs to the title, so it sits closer to it than
           anything else in the row is to anything else. */}
@@ -186,12 +195,13 @@ function PageHeader({
         >
           {title}
         </Typography>
-        {/* `ms-2` on top of the cluster's `gap-1` puts the badge 12px from the
-            title — the same gap the rest of the row uses. The 4px inside the
-            cluster belongs to the arrow, which is part of the title; a badge is
-            a separate object sitting next to it and reads as glued on at 4px. */}
-        {badge ? (
-          <span className="ms-2 flex shrink-0 items-center">{badge}</span>
+        {/* `ms-2` on top of the cluster's `gap-1` puts `titleRight` 12px from
+            the title — the same gap the rest of the row uses. The 4px inside
+            the cluster belongs to the arrow, which is part of the title; a
+            badge is a separate object sitting next to it and reads as glued on
+            at 4px. */}
+        {titleRight ? (
+          <span className="ms-2 flex shrink-0 items-center">{titleRight}</span>
         ) : null}
       </div>
 

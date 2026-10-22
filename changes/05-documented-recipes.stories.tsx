@@ -247,7 +247,7 @@ export const DocumentedRecipes: Story = {
             toolbar to check that.
           </>
         }
-        n={18}
+        n={51}
         title="StatusView — EmptyStateIllustration"
         why="At page scale a lucide glyph in a halo reads as a notification icon rather than an empty region."
       />

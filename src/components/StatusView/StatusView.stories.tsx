@@ -5,7 +5,7 @@ import { Button } from '../Button';
 import { StatusView } from './index';
 
 const meta = {
-  title: 'Components/StatusView',
+  title: 'Compositions/StatusView',
   component: StatusView,
   tags: ['autodocs'],
   parameters: { layout: 'padded' },

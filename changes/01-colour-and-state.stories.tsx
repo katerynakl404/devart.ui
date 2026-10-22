@@ -34,8 +34,8 @@ type Story = StoryObj<typeof meta>;
 
 /** The dark values this branch replaced — Red-700 at rest, Red-800 on hover. */
 const OLD_DARK_DESTRUCTIVE_BORDER = {
-  '--btn-outline-destructive-border': 'var(--red-700)',
-  '--btn-outline-destructive-border-hover': 'var(--red-800)',
+  '--btn-destructive-secondary-border': 'var(--red-700)',
+  '--btn-destructive-secondary-border-hover': 'var(--red-800)',
 } as CSSProperties;
 
 /** §3's two states, frozen as the class strings each side actually carried. */
@@ -80,14 +80,14 @@ export const ColourAndState: Story = {
       <ChangeCase
         after={
           <TryIt action="Switch the toolbar to dark, then hover">
-            <Button variant="destructiveOutline">Delete connection</Button>
+            <Button variant="destructiveSecondary">Delete connection</Button>
           </TryIt>
         }
         afterNote="Red-500 → Red-400 · CR 4.74 → 5.27"
         before={
           <div style={OLD_DARK_DESTRUCTIVE_BORDER}>
             <TryIt action="Switch the toolbar to dark, then hover">
-              <Button variant="destructiveOutline">Delete connection</Button>
+              <Button variant="destructiveSecondary">Delete connection</Button>
             </TryIt>
           </div>
         }

@@ -20,7 +20,7 @@ an annotation is `{ target, icon?, text }`. The caller holds the step.
 
 ## The coachmark
 
-The header is the progress — `StepProgress size="sm" fill showStepLabel`. By
+The header is the progress — `StepProgress size="sm" fill showStepTitle`. By
 default it counts the tour's own steps (`label`, else a string `title`). When
 the tour is part of a longer flow, pass `progress={{ steps, offset }}` and the
 read-out counts the whole flow. The footer is Back · Skip · Next, with Done on

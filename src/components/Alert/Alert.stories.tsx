@@ -7,6 +7,7 @@ import {
   Wallet,
   XCircle,
 } from 'lucide-react';
+import { expect, within } from 'storybook/test';
 import { Button } from '../Button';
 import { Alert } from './index';
 
@@ -52,6 +53,10 @@ const meta = {
       control: 'inline-radio',
       options: ['sm', 'md'],
     },
+    icon: { control: false },
+    illustration: { control: false },
+    actions: { control: false },
+    ref: { control: false, table: { disable: true } },
   },
   parameters: {
     docs: {
@@ -83,6 +88,17 @@ export const WithActions: Story = {
       </>
     ),
   },
+  play: async ({ canvas }) => {
+    const alert = canvas.getByRole('status');
+    await expect(alert).toHaveTextContent(
+      'Queue paused · the last reply didn’t finish'
+    );
+    await expect(within(alert).getAllByRole('button')).toHaveLength(2);
+    await expect(alert.querySelector('svg')?.parentElement).toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+  },
   parameters: {
     docs: {
       description: {
@@ -93,25 +109,51 @@ export const WithActions: Story = {
   },
 };
 
-/** All five together: the set has to read apart at a glance and still as one family. */
+/** Under `sm` the actions drop under the copy instead of squeezing it into a column of
+ *  single words. */
+export const ActionsOnNarrowScreen: Story = {
+  args: WithActions.args,
+  globals: { viewport: { value: 'mobile1', isRotated: false } },
+  play: async ({ canvas }) => {
+    const copy = canvas.getByText(
+      'Queue paused · the last reply didn’t finish'
+    ).parentElement;
+    const actions = canvas.getByRole('button', { name: 'Retry' }).parentElement;
+    await expect(actions?.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+      copy?.getBoundingClientRect().bottom ?? Number.POSITIVE_INFINITY
+    );
+  },
+};
+
 export const Sizes: Story = {
-  render: () => (
+  args: {
+    variant: 'info',
+    icon: <InfoIcon />,
+    title: 'Queue paused · waiting for your answer above',
+    description: '2 messages kept · nothing sent or charged',
+  },
+  argTypes: {
+    size: { control: false },
+  },
+  render: (args) => (
     <div className="flex w-[34rem] max-w-full flex-col gap-3">
-      <Alert
-        variant="info"
-        icon={<InfoIcon />}
-        title="Queue paused · waiting for your answer above"
-        description="2 messages kept · nothing sent or charged"
-      />
-      <Alert
-        size="md"
-        variant="info"
-        icon={<InfoIcon />}
-        title="Queue paused · waiting for your answer above"
-        description="2 messages kept · nothing sent or charged"
-      />
+      <Alert {...args} size="sm" />
+      <Alert {...args} size="md" />
     </div>
   ),
+  play: async ({ canvas }) => {
+    const measured = canvas.getAllByRole('status').map((alert) => ({
+      text: Array.from(
+        alert.querySelectorAll(':scope > div > span'),
+        (span) => getComputedStyle(span).fontSize
+      ),
+      glyph: alert.querySelector('svg')?.getBoundingClientRect().width,
+    }));
+    await expect(measured).toEqual([
+      { text: ['12px', '12px'], glyph: 16 },
+      { text: ['14px', '14px'], glyph: 20 },
+    ]);
+  },
   parameters: {
     docs: {
       description: {
@@ -127,34 +169,43 @@ export const Sizes: Story = {
   },
 };
 
+/** All five together: the set has to read apart at a glance and still as one family. */
 export const Variants: Story = {
-  render: () => (
+  argTypes: {
+    variant: { control: false },
+  },
+  render: (args) => (
     <div className="flex w-[34rem] max-w-full flex-col gap-2">
       <Alert
+        {...args}
         variant="success"
         icon={<SuccessIcon />}
         title="Queue sent · all 4 messages went through"
         description="Nothing left waiting"
       />
       <Alert
+        {...args}
         variant="info"
         icon={<InfoIcon />}
         title="Queue paused · waiting for your answer above"
         description="2 messages kept · nothing sent or charged"
       />
       <Alert
+        {...args}
         variant="warning"
         icon={<WarningIcon />}
         title="Queue paused · you’re out of credits"
         description="2 messages kept · nothing sent or charged"
       />
       <Alert
+        {...args}
         variant="error"
         icon={<ErrorIcon />}
         title="Queue paused · the last reply didn’t finish"
         description="2 messages kept · nothing sent or charged"
       />
       <Alert
+        {...args}
         variant="neutral"
         icon={<NeutralIcon />}
         title="Queue paused because you stopped the reply"

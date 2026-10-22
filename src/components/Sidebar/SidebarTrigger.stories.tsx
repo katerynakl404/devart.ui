@@ -16,7 +16,7 @@ import {
  * inherits whatever `[&_svg]:size-*` is already set.
  */
 const meta = {
-  title: 'Components/Sidebar/SidebarTrigger',
+  title: 'Compositions/Sidebar/SidebarTrigger',
   component: SidebarTrigger,
   tags: ['autodocs'],
   args: {

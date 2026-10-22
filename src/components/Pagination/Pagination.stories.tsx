@@ -4,7 +4,7 @@ import { fn } from 'storybook/test';
 import { Pagination } from './index';
 
 const meta = {
-  title: 'Components/Pagination',
+  title: 'Compositions/Pagination',
   component: Pagination,
   tags: ['autodocs'],
   args: {

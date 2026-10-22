@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Plus, Settings } from 'lucide-react';
+import { Database, Info, Plus, Settings } from 'lucide-react';
 import { fn } from 'storybook/test';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
@@ -11,7 +11,11 @@ const meta = {
   tags: ['autodocs'],
   parameters: { layout: 'padded' },
   args: { title: 'Connections' },
-  argTypes: { actions: { control: false }, leading: { control: false } },
+  argTypes: {
+    actions: { control: false },
+    titleLeft: { control: false },
+    titleRight: { control: false },
+  },
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;
@@ -52,6 +56,54 @@ export const BackAndActions: Story = {
     actions: (
       <Button size="sm" variant="secondary">
         Edit
+      </Button>
+    ),
+  },
+};
+
+/**
+ * `titleRight` — immediately after the title, 12px from it, inside the title's
+ * cluster rather than on the far edge with the actions.
+ */
+export const WithTitleRight: Story = {
+  args: {
+    title: 'Files',
+    titleRight: (
+      <IconButton variant="tertiary" size="sm" aria-label="About files">
+        <Info />
+      </IconButton>
+    ),
+  },
+};
+
+/**
+ * `titleLeft` and `titleRight` together, each 12px from the title. With a back
+ * control, `titleLeft` opens the row before the arrow.
+ */
+export const WithTitleLeftAndRight: Story = {
+  args: {
+    title: 'PostgreSQL',
+    titleLeft: <Database aria-hidden className="size-6 text-ink-secondary" />,
+    titleRight: (
+      <IconButton variant="tertiary" size="sm" aria-label="About PostgreSQL">
+        <Info />
+      </IconButton>
+    ),
+  },
+};
+
+export const WithTitleRightAndActions: Story = {
+  args: {
+    title: 'Files',
+    titleRight: (
+      <IconButton variant="tertiary" size="sm" aria-label="About files">
+        <Info />
+      </IconButton>
+    ),
+    actions: (
+      <Button size="sm" variant="primary">
+        <Plus />
+        Upload
       </Button>
     ),
   },

@@ -22,7 +22,7 @@ const CITIES: Option[] = [
 const getOptionLabel = (option: Option) => option.label;
 
 const meta = {
-  title: 'Components/Autocomplete',
+  title: 'Compositions/Autocomplete',
   component: Autocomplete<Option>,
   tags: ['autodocs'],
   args: {

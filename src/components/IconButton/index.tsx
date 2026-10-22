@@ -3,7 +3,7 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes, Ref } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
-import { cn, glyphStroke } from '../../lib/utils';
+import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
 import { Spinner } from '../Spinner';
 
 export const iconButtonVariants = cva(
@@ -42,12 +42,7 @@ export const iconButtonVariants = cva(
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
           'pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          /* No disabled fill at all — see Button: a white chip is invisible on
-             a white card and reads as its own card on a tinted one, so the
-             border and the inactive glyph carry the state instead. The kit
-             paints --state-disabled here; deliberate divergence. */
-          'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
+          secondaryDisabled
         ),
         outline: cn(
           'border-brand-secondary bg-transparent text-ink-body',
@@ -91,19 +86,19 @@ export const iconButtonVariants = cva(
           'disabled:bg-state-disabled disabled:text-ink-inactive',
           'disabled:hover:bg-state-disabled'
         ),
-        destructiveOutline: cn(
-          'border-outlineDestructive-border bg-transparent text-fb-red-text',
-          'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
-          'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
+        // The secondary's destructive form — see Button.
+        destructiveSecondary: cn(
+          'border-destructiveSecondary-border bg-transparent text-fb-red-text',
+          'hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover',
+          'pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
+          secondaryDisabled
         ),
         // Low-emphasis destructive ghost: red icon, transparent fill, red-tinted
-        // hover/press. Tertiary sibling of destructiveOutline (no border).
+        // hover/press. Tertiary sibling of destructiveSecondary (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          // Shares the destructiveOutline fill tokens on light and goes a step
+          // Shares the destructiveSecondary fill tokens on light and goes a step
           // stronger on dark, where there is no border to carry the signal.
           'hover:bg-destructiveTertiary-bg-hover',
           'pressed:bg-destructiveTertiary-bg-press',

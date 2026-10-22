@@ -15,7 +15,7 @@ import { ListSelectionBar } from './index';
  * the application, so the bar never needs to know how to say "3 of 40".
  */
 const meta = {
-  title: 'Components/ListSelectionBar',
+  title: 'Compositions/ListSelectionBar',
   component: ListSelectionBar,
   tags: ['autodocs'],
   args: {

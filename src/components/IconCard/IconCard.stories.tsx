@@ -22,7 +22,7 @@ const connectorArgs = (connector: string, name = connector) => ({
  * fully operable, it simply never reveals one.
  */
 const meta = {
-  title: 'Components/IconCard',
+  title: 'Compositions/IconCard',
   component: IconCard,
   tags: ['autodocs'],
   args: {
@@ -40,6 +40,8 @@ const meta = {
     badge: { control: false },
     actionIcon: { control: false },
     onActivate: { control: false },
+    onClick: { control: false },
+    onKeyDown: { control: false },
     ref: { control: false, table: { disable: true } },
   },
   parameters: {

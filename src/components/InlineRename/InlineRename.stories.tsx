@@ -14,7 +14,7 @@ import { InlineRename } from './index';
  * `onCancel`, exactly one of which fires.
  */
 const meta = {
-  title: 'Components/InlineRename',
+  title: 'Compositions/InlineRename',
   component: InlineRename,
   tags: ['autodocs'],
   args: {

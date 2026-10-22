@@ -3,7 +3,7 @@ same variant and size scales.
 
 ## Variants
 
-`primary` `secondary` `outline` `tertiary` `destructive` `destructiveOutline`
+`primary` `secondary` `outline` `tertiary` `destructive` `destructiveSecondary`
 `destructiveTertiary` `transparent` `transparentUnderline`.
 
 There is **no `ghost`** — use `tertiary`. There is exactly one regular tertiary

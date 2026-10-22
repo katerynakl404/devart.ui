@@ -235,7 +235,7 @@ type StoryArgs = ComponentProps<typeof Sidebar> & {
 };
 
 const meta = {
-  title: 'Components/Sidebar',
+  title: 'Compositions/Sidebar',
   component: Sidebar,
   tags: ['autodocs'],
   parameters: { layout: 'fullscreen' },

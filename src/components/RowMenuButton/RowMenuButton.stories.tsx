@@ -38,7 +38,7 @@ const MENU = (
  * stays.
  */
 const meta = {
-  title: 'Components/RowMenuButton',
+  title: 'Compositions/RowMenuButton',
   component: RowMenuButton,
   tags: ['autodocs'],
   args: { children: MENU, reveal: true, 'aria-label': 'More actions' },

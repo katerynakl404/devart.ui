@@ -154,7 +154,7 @@ Dark mode is `darkMode: ['class']`: tokens are declared for `:root` and `.dark` 
 Override any token by redefining its `--*` variable after the import. Whether a class takes a Tailwind alpha modifier (`/20`) depends on how `src/lib/constants.ts` wraps the variable:
 
 - HSL-triplet tokens are wrapped `hsl(var(--x) / <alpha-value>)`, so `bg-brand-primary/20` works.
-- `color-mix()` tokens are exposed as bare `var(...)` and accept **no** alpha modifier — wrapping one in `hsl()` would emit invalid CSS. Current bare-`var()` keys: `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-outline-destructive-bg-hover`, `--btn-outline-destructive-bg-press`, `--badge-brand-bg`, `--badge-brand-border`, `--badge-brand-text`, `--badge-green-bg`, `--badge-green-border`, `--badge-green-text`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-hover`, `--card-border-press`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-bg`, `--banner-grad-ic-border`, `--banner-grad-ic-shadow`, `--overlay-scrim`.
+- `color-mix()` tokens are exposed as bare `var(...)` and accept **no** alpha modifier — wrapping one in `hsl()` would emit invalid CSS. Current bare-`var()` keys: `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-destructive-secondary-bg-hover`, `--btn-destructive-secondary-bg-press`, `--badge-brand-bg`, `--badge-brand-border`, `--badge-brand-text`, `--badge-green-bg`, `--badge-green-border`, `--badge-green-text`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-hover`, `--card-border-press`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-bg`, `--banner-grad-ic-border`, `--banner-grad-ic-shadow`, `--overlay-scrim`.
 
 Geometry and typography axes are token-driven the same way, all seeded with Tailwind's own default values so adopting them changes nothing visually: `--radius-sm` / `--radius` / `--radius-md` / `--radius-lg` / `--radius-xl`, `--sidebar-width` / `--sidebar-width-icon` / `--sidebar-width-mobile`, `--shadow-thumb` / `--shadow-thumb-hover`, `--font-sans` (redefine the variable, or override `theme.fontFamily.sans` in your own preset extension, to ship a different typeface), the type scale — `--font-size-{xxs,xs,compact,sm,base,lg,xl,2xl,3xl,4xl}`, with `--line-height-{xs,sm,base,lg,xl,2xl,3xl,4xl}` paired for every step but `xxs`/`compact` (override the `sm` step, for example, by redefining both `--font-size-sm` and `--line-height-sm` in your own `:root`) — and the weight scale, `--font-weight-{light,normal,medium,semibold,bold,extrabold,black}` (override `--font-weight-semibold` in your own `:root`, for example, to change what `font-semibold` renders).
 
@@ -183,7 +183,9 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **Checkbox** | Radix Checkbox + CVA | `variant`, `size`, `rounded`, `labelPosition`, `gap` |
 | **CircularProgress** | Custom (SVG) | — |
 | **Collapsible** | Radix Collapsible | — |
+| **ConfirmationDialog** | Modal | `variant` *(a two-button confirmation, 360px)* |
 | **ConnectorLogo** | CVA | `size` |
+| **CtaBanner** | Banner + Button | — *(a `Banner` with one call-to-action)* |
 | **Datepicker** | react-day-picker | — |
 | **DialogTitleFallback** | Radix Dialog | — *(a11y helper: supplies a title when a dialog has none)* |
 | **DropdownMenu** | Radix DropdownMenu | `variant` |
@@ -200,13 +202,14 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **PageHeader** | Custom | — |
 | **Pagination** | Custom | — |
 | **PasswordInput** | Custom | — |
-| **Popover** | Radix Popover | — |
+| **Popover** | Radix Popover + hover mode | — |
 | **PortalContainer** | Custom | — *(retargets Radix portals into a subtree — required for scoped theming)* |
 | **ProgressBar** | Radix Progress + CVA | `variant`, `size`, `rounded` |
 | **RadioButton** | Radix RadioGroup + CVA | `variant`, `size`, `labelPosition`, `gap` |
 | **Resizable** | react-resizable-panels | — |
 | **ResizableMainSideLayout** | react-resizable-panels | — *(main pane plus a side pane that collapses to nothing)* |
 | **ScrollShadow** | Custom | — |
+| **SearchInput** | InputGroup | `size`, `variant` *(results dropdown is this package's extension)* |
 | **SelectableListCard** | CVA | `layout` (`card` | `row`) |
 | **SegmentedControl** | Radix Tabs + CVA | `variant`, `size`, `rounded` |
 | **Separator** | Radix Separator | `variant`, `orientation` |
@@ -307,6 +310,31 @@ import {
 
 The same compositional pattern applies to `Popover`, `DropdownMenu`, `Tabs`, `Tooltip`, and `Sheet`.
 
+### Popover that opens on hover
+
+`Tooltip` cannot hold a button and Radix `HoverCard` ignores tap and keyboard, so `Popover` has an opt-in hover mode for interactive hints such as an upgrade prompt:
+
+```tsx
+<Popover openOnHover closeOnViewportChange>
+  <PopoverTrigger asChild>
+    <Button variant="secondary">Connect source</Button>
+  </PopoverTrigger>
+  <PopoverContent side="right" fallbackSides={['left', 'bottom']} align="start" aria-label="Pro feature">
+    …
+    <Button size="sm" fullWidth>Upgrade to unlock</Button>
+  </PopoverContent>
+</Popover>
+```
+
+- `openOnHover` — a mouse hover opens after `delay` (300 ms) and closes `closeDelay` (160 ms) after the pointer leaves the trigger or the content, so it can travel between them. Pen and touch never hover; a tap opens by press. A click on a hover-opened popover pins it open (that click is cancelled, so a link trigger does not navigate on it); the next click closes it. A press-opened or pinned popover ignores the pointer leaving. Esc and an outside press close it as usual.
+- Focus follows how it opened: hover and mouse clicks leave focus where it is, Enter / Space moves it to the first control inside, and closing returns it to the trigger only if the content held it.
+- `fallbackSides` on `PopoverContent` — sides to try in order when `side` does not fit, measured once per open from the trigger and the content's own size. Radix alone only flips to the opposite side, so without it `right` can never become `bottom` on a narrow screen.
+- `closeOnViewportChange` — a window scroll (outside the content) or resize closes it.
+- As a `DropdownMenu` item: wrap the item in `PopoverTrigger asChild` and give it `onSelect={(e) => e.preventDefault()}` so the pin click does not close the menu. The menu stays open while the popover is used, and Esc closes only the popover.
+- `modal` is ignored in hover mode: a modal popover blocks pointer events outside itself, so the trigger could never be hovered again.
+
+---
+
 ---
 
 ## cn() and cva() — mandatory conventions
@@ -400,3 +428,4 @@ Both light and dark values are defined for theme-dependent tokens — theming is
 5. Use a Radix primitive for any interactive behavior (focus, keyboard, a11y)
 6. Support `className` prop merged via `cn(variants(...), className)`
 7. Export the component and any variant types from `index.tsx` — the wildcard export in `package.json` handles the rest
+8. Title the story by what the component is — the developers' rule, kept as is. Use `Components/<Name>` for a primitive that UIs are built from, including its own parts and groups (`Modal`, `InputGroup`, `ToggleGroup`). Use `Compositions/<Name>` for a ready-made block that assembles other kit controls and is used as is (`Pagination`, `PasswordInput`, `Sidebar`). `Typography`, `Spinner`, `Tooltip`, `Separator`, `Skeleton` and `ScrollShadow` are helpers, so depending on them does not make a component a composition. This package's own sections, `Proposed changes` and `Foundations`, sit above the two

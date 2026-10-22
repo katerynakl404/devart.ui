@@ -1,7 +1,7 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
 import type { HTMLAttributes, ReactNode, Ref } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke } from '../../lib/utils';
 
 /* Alert is the package's third feedback surface, and the one it was missing.
@@ -21,27 +21,23 @@ import { cn, glyphStroke } from '../../lib/utils';
    half-rounded edge rather than as a cue, and the wash plus a variant-specific
    glyph already carry the meaning — including without colour (WCAG 1.4.1). A
    hairline all the way round does the job the rail was reaching for: it gives the
-   block an edge of its own instead of letting a wash bleed into the surface. */
+   block an edge of its own instead of letting a wash bleed into the surface.
+
+   Three recipes, one per part it styles: the root, the glyph, the text. Each
+   carries the same `size` axis, so md moves every rung together. */
 const alertVariants = cva(
   /* px stays wider than py. It was tightened to px-2 for one pass, to put the title on the
      same vertical as unboxed text beside it — a bordered block's inner text only joins that
-     column when its own inset is subtracted. Reverted: the side gaps read as too tight. */
-  cn('flex items-start', 'rounded-lg border'),
+     column when its own inset is subtracted. Reverted: the side gaps read as too tight.
+     `max-sm:flex-wrap` is what lets the actions drop under the copy (see below). */
+  cn('flex items-start max-sm:flex-wrap', 'rounded-lg border'),
   {
     variants: {
-      /* TWO SIZES, because an Alert does two jobs. Tucked inside another surface — a queue
-         band, a card — it is a footnote and reads at 12. Standing on a page, above a table,
-         speaking about the whole screen, it occupies a full row, and 12px there is a whisper
-         from something large. Every rung moves together — type, glyph, padding and gap — so md
-         is a SIZE, not an Alert with a bigger font. */
-      size: {
-        sm: 'gap-2.5 px-3 py-2.5',
-        md: 'gap-3 px-3.5 py-3',
-      },
       /* The four tinted surfaces come from --alert-bg-* / --alert-border-*, which
          have the same shape Toast's do: a color-mix() over Surface/Card, so the
          block does not take the colour of whatever it is dropped onto, and the
-         wash steps 5% -> 8% in dark inside the token rather than in a class here. */
+         wash steps 5% -> 8% in dark inside the token (--alert-tint) rather than
+         in a class here. */
       variant: {
         success: 'border-alert-border-success bg-alert-bg-success',
         info: 'border-alert-border-info bg-alert-bg-info',
@@ -63,6 +59,15 @@ const alertVariants = cva(
            block, and the one variant whose themes did not match. */
         neutral: 'border-stroke bg-surface-card2',
       },
+      /* TWO SIZES, because an Alert does two jobs. Tucked inside another surface — a queue
+         band, a card — it is a footnote and reads at 12. Standing on a page, above a table,
+         speaking about the whole screen, it occupies a full row, and 12px there is a whisper
+         from something large. Every rung moves together — type, glyph, padding and gap — so md
+         is a SIZE, not an Alert with a bigger font. */
+      size: {
+        sm: 'gap-2.5 px-3 py-2.5',
+        md: 'gap-3 px-3.5 py-3',
+      },
     },
     /* sm is the default: every inline use of Alert predates md, and the component was drawn for
        the footnote case first. */
@@ -70,49 +75,68 @@ const alertVariants = cva(
   }
 );
 
-/* The size's other three rungs. They sit beside ICON_TONE as plain maps rather than inside the
-   cva above, because cva styles the ROOT and these land on children — the same shape the tone
-   map already uses. */
-const SIZE_TITLE = {
-  sm: 'text-xs leading-4',
-  md: 'text-sm leading-5',
-} as const;
-
-const SIZE_DESCRIPTION = {
-  sm: 'text-xs leading-4',
-  md: 'text-sm leading-5',
-} as const;
-
 /* The glyph box equals the title's line box, which is what aligns them: 16/16 at sm, 20/20 at md.
    The stroke does NOT follow the size. It was 1.5 at sm for a while, so the 16px mark matched
    the weight of the 20px one; that made Alert the one place a 16px glyph drew lighter than the
    same glyph in a button beside it. It takes `glyphStroke` like every other control. */
-const SIZE_ICON = {
-  sm: '[&_svg]:size-4',
-  md: '[&_svg]:size-5',
-} as const;
-
-const ICON_TONE = {
-  success: 'text-fb-green',
-  info: 'text-brand-tertiary',
-  warning: 'text-fb-attention',
-  error: 'text-fb-red-text',
-  neutral: 'text-ink-secondary',
-} as const;
+const alertIconVariants = cva(cn('flex shrink-0', glyphStroke), {
+  variants: {
+    variant: {
+      success: 'text-fb-green',
+      info: 'text-brand-tertiary',
+      warning: 'text-fb-attention',
+      error: 'text-fb-red-text',
+      neutral: 'text-ink-secondary',
+    },
+    size: {
+      sm: '[&_svg]:size-4',
+      md: '[&_svg]:size-5',
+    },
+  },
+  defaultVariants: { variant: 'neutral', size: 'sm' },
+});
 
 /* The illustration plate is the glyph's own colour at a tint — `currentColor`
    washed over nothing — so it has no colour of its own to keep in step: it is
-   whatever ICON_TONE paints the glyph, per variant and per theme. Fill only —
-   no stroke, no shadow. The strength is a tint step, not a literal. */
-const ILLUSTRATION_PLATE =
-  'bg-[color-mix(in_srgb,currentColor_var(--tint-15),transparent)]';
+   whatever `alertIconVariants` paints the glyph, per variant and per theme. Fill
+   only — no stroke, no shadow. The strength is a tint step, not a literal. One
+   rung per Alert size, like the glyph: the plate is two lines of copy tall, the
+   glyph inside keeps the size it would have had bare (that size, the tone and
+   the stroke all come from `alertIconVariants`, which the plate is layered on). */
+const alertIllustrationVariants = cva(
+  cn(
+    'items-center justify-center rounded-full',
+    'bg-[color-mix(in_srgb,currentColor_var(--tint-15),transparent)]'
+  ),
+  {
+    variants: {
+      size: {
+        sm: 'size-8',
+        md: 'size-10',
+      },
+    },
+    defaultVariants: { size: 'sm' },
+  }
+);
 
-/* One rung per Alert size, like the glyph: the plate is two lines of copy tall,
-   the glyph inside keeps the size it would have had bare. */
-const SIZE_ILLUSTRATION = {
-  sm: 'size-8 [&_svg]:size-4',
-  md: 'size-10 [&_svg]:size-5',
-} as const;
+const alertTextVariants = cva('', {
+  variants: {
+    part: {
+      title: 'font-semibold text-ink-primary',
+      /* Under a title the description is the second line and reads secondary. */
+      description: 'font-normal text-ink-secondary',
+      /* The description with no title above it. It IS the message then, and
+         secondary ink made a whole info block read as a footnote to a heading
+         that is not there. */
+      message: 'font-normal text-ink-primary',
+    },
+    size: {
+      sm: 'text-xs leading-4',
+      md: 'text-sm leading-5',
+    },
+  },
+  defaultVariants: { part: 'title', size: 'sm' },
+});
 
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>,
@@ -156,8 +180,8 @@ const Alert = ({
   illustrationClassName,
   actions,
   actionsClassName,
-  variant = 'neutral',
-  size = 'sm',
+  variant,
+  size,
   className,
   ref,
   ...props
@@ -165,6 +189,7 @@ const Alert = ({
   /* `status`, not `alert`: these announce a state change politely and must not
      interrupt what the person is doing. A true `alert` role is for something
      that cannot wait, which none of these are. */
+  // biome-ignore lint/a11y/useSemanticElements: <output> is a phrasing-only form result, not a block notice
   <div
     ref={ref}
     role="status"
@@ -182,11 +207,8 @@ const Alert = ({
       <span
         aria-hidden="true"
         className={cn(
-          'flex shrink-0 items-center justify-center rounded-full',
-          SIZE_ILLUSTRATION[size ?? 'sm'],
-          glyphStroke,
-          ICON_TONE[variant ?? 'neutral'],
-          ILLUSTRATION_PLATE,
+          alertIconVariants({ variant, size }),
+          alertIllustrationVariants({ size }),
           illustrationClassName
         )}
       >
@@ -197,13 +219,7 @@ const Alert = ({
          align by being the same box. */
       <span
         aria-hidden="true"
-        className={cn(
-          'flex shrink-0',
-          SIZE_ICON[size ?? 'sm'],
-          glyphStroke,
-          ICON_TONE[variant ?? 'neutral'],
-          iconClassName
-        )}
+        className={cn(alertIconVariants({ variant, size }), iconClassName)}
       >
         {icon}
       </span>
@@ -215,23 +231,21 @@ const Alert = ({
       {title ? (
         <span
           className={cn(
-            'font-semibold text-ink-primary',
-            SIZE_TITLE[size ?? 'sm'],
+            alertTextVariants({ part: 'title', size }),
             titleClassName
           )}
         >
           {title}
         </span>
       ) : null}
+
       {description ? (
         <span
           className={cn(
-            /* Under a title the description is the second line and reads
-               secondary. Without one it IS the message, and secondary ink made
-               a whole info block read as a footnote to a heading that is not
-               there. */
-            title ? 'font-normal text-ink-secondary' : 'font-normal text-ink-primary',
-            SIZE_DESCRIPTION[size ?? 'sm'],
+            alertTextVariants({
+              part: title ? 'description' : 'message',
+              size,
+            }),
             descriptionClassName
           )}
         >
@@ -258,4 +272,10 @@ const Alert = ({
 
 Alert.displayName = 'Alert';
 
-export { Alert, alertVariants };
+export {
+  Alert,
+  alertIconVariants,
+  alertIllustrationVariants,
+  alertTextVariants,
+  alertVariants,
+};

@@ -19,7 +19,7 @@ import { ActivityTray, ActivityTrayItem } from './index';
  * about uploads.
  */
 const meta = {
-  title: 'Components/ActivityTray',
+  title: 'Compositions/ActivityTray',
   component: ActivityTray,
   // The row is half the component; without this its props get no table.
   subcomponents: { ActivityTrayItem },

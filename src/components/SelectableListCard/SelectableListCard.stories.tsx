@@ -34,7 +34,7 @@ import { SelectableListCard } from './index';
  * (`RowMenuButton`) at its right edge.
  */
 const meta = {
-  title: 'Components/SelectableListCard',
+  title: 'Compositions/SelectableListCard',
   component: SelectableListCard,
   tags: ['autodocs'],
   args: {

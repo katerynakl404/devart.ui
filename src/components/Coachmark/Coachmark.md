@@ -5,7 +5,7 @@ an arrow at the target.
 <Coachmark
   target='[data-tour="composer"]'
   side={['top', 'bottom']}
-  header={<StepProgress size="sm" fill showStepLabel steps={STEPS} current={2} />}
+  header={<StepProgress size="sm" fill showStepTitle aria-label="Progress" steps={STEPS} current={2} />}
   icon={<MessageSquare />}
   title="Start here: ask your first question"
   footer={<><span className="flex-1" /><Button size="sm">Next</Button></>}

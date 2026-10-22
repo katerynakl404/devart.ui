@@ -9,7 +9,7 @@ import { File } from './index';
  * dismiss on error, or a lone dismiss button when only `onDismiss` is set.
  */
 const meta = {
-  title: 'Components/File',
+  title: 'Compositions/File',
   component: File,
   tags: ['autodocs'],
   args: {

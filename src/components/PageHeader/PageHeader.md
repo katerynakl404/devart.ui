@@ -25,12 +25,29 @@ scrolls; see the Sidebar doc for the surrounding shape.
   `backLabel` names the destination ("Back to connections"), not the gesture.
 - **Actions go in `actions`**, not as loose children — they are pushed to the
   end of the row with `ms-auto` and spaced at 12px. The primary action is last.
+- **What belongs to the title goes beside it**, not in `actions`.
+  **`titleRight`** sits immediately after it, 12px away inside the title's
+  cluster — an info control, a status chip, the data source a form connects
+  to; in `actions` it would be pushed to the far edge and read as one more
+  control next to Save. **`titleLeft`** opens the row, 12px before what
+  follows — a leading icon, a logo, the mobile sidebar trigger. With a back
+  control it sits before the arrow, so the arrow stays against the title it
+  belongs to. Like `actions`, both are checked for truthiness, so
+  `canEdit && <Badge />` renders nothing when the flag is false.
+
+```jsx
+<PageHeader
+  title="Files"
+  titleRight={<IconButton size="sm" variant="tertiary" aria-label="About files"><Info /></IconButton>}
+/>
+```
+
 - The title truncates, so a long name shortens instead of pushing the actions
   off the row. **`wrapTitle`** wraps it onto more lines instead, for a title
   that must be read whole — on a phone a two-word title beside a button
-  otherwise loses its second word to an ellipsis. The arrow and the badge stay
-  centred on the wrapped title and the actions keep their edge; only the row
-  grows taller.
+  otherwise loses its second word to an ellipsis. The arrow, `titleLeft` and
+  `titleRight` stay centred on the wrapped title and the actions keep their
+  edge; only the row grows taller.
 - **`condensed`** is the header once the page has scrolled under it: the title
   at `heading20` and the back control a step smaller, animated over
   `--motion-slow`. The page decides when — `ListPageLayout` does it for you

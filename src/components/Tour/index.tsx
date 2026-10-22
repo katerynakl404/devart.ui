@@ -61,7 +61,8 @@ export interface TourProps {
   onBeforeFirst?: () => void;
   /**
    * The flow the tour is part of, for the read-out: its steps and where the
-   * tour starts in it. Default: the tour's own steps.
+   * tour starts in it. Default: the tour's own steps. A step that does not set
+   * `done` reads as done while it is before the current one.
    */
   progress?: { steps: StepProgressStep[]; offset?: number };
   /** @default { back: 'Back', next: 'Next', skip: 'Skip', finish: 'Done' } */
@@ -212,12 +213,18 @@ function Tour({
   if (!mounted) return null;
 
   const prog = progress ?? {
-    steps: steps.map((s) => ({
-      id: s.id,
-      label: s.label || (typeof s.title === 'string' ? s.title : undefined),
-    })),
+    steps: steps.map(
+      (s): StepProgressStep => ({
+        title: s.label || (typeof s.title === 'string' ? s.title : ''),
+      })
+    ),
     offset: 0,
   };
+  const progCurrent = (prog.offset ?? 0) + i;
+  const progSteps = prog.steps.map((s, k) => ({
+    ...s,
+    done: s.done ?? k < progCurrent,
+  }));
   const annotations = current.annotations ?? [];
   const r = geo.rect;
   const annotationTop = r
@@ -289,9 +296,9 @@ function Tour({
           <StepProgress
             size="sm"
             fill
-            showStepLabel
-            steps={prog.steps}
-            current={(prog.offset ?? 0) + i}
+            showStepTitle
+            steps={progSteps}
+            current={progCurrent}
             aria-label="Progress"
           />
         }

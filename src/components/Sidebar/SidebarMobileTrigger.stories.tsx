@@ -20,7 +20,7 @@ import {
  * provider reports mobile and the sheet actually opens.
  */
 const meta = {
-  title: 'Components/Sidebar/SidebarMobileTrigger',
+  title: 'Compositions/Sidebar/SidebarMobileTrigger',
   component: SidebarMobileTrigger,
   tags: ['autodocs'],
   args: {

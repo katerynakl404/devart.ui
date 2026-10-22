@@ -10,7 +10,7 @@ import { Toaster, ToastMessage, toast } from './index';
  * primitive each toast renders — so its `variant` drives the controls panel.
  */
 const meta = {
-  title: 'Components/Toast',
+  title: 'Compositions/Toast',
   component: ToastMessage,
   tags: ['autodocs'],
   args: {

@@ -44,7 +44,7 @@ const codeBlockVariants = cva(
   }
 );
 
-/* The size's rungs on the parts. Plain maps beside the recipe, as Alert's are,
+/* The size's rungs on the parts. Plain maps beside the recipe,
    because cva styles the root and these land on children. */
 const SIZE_BODY = {
   sm: 'gap-3 p-3',

@@ -16,7 +16,7 @@ import { ChoiceCard, ChoiceGroup } from './index';
  * `children` it reveals them inside itself while chosen.
  */
 const meta = {
-  title: 'Components/ChoiceCard',
+  title: 'Compositions/ChoiceCard',
   component: ChoiceCard,
   tags: ['autodocs'],
   args: { title: 'Sales', description: 'Pipeline, deals and forecasts' },

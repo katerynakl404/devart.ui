@@ -3,7 +3,7 @@ import { Badge } from '../Badge';
 import { StatTile } from './index';
 
 const meta = {
-  title: 'Components/StatTile',
+  title: 'Compositions/StatTile',
   component: StatTile,
   tags: ['autodocs'],
   args: {

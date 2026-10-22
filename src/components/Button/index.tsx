@@ -3,7 +3,7 @@
 import { Slot, Slottable } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
-import { cn, glyphStroke } from '../../lib/utils';
+import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
 
 import { Spinner } from '../Spinner';
 
@@ -59,18 +59,7 @@ const buttonVariants = cva(
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
           'pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          /* No disabled fill at all — not `--state-disabled` and not its own
-             `--surface-card` either. A switched-off control should read as
-             absent, and a white chip on a white card is invisible while the
-             same chip on a tinted one reads as a card of its own. Transparent
-             is the one answer that holds on every surface, and it is what
-             `outline` already does; the border and the inactive label are
-             what carry the state.
-
-             The kit paints `--state-disabled` here (`.s-disabled.btn-secondary`).
-             Deliberate divergence. */
-          'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
+          secondaryDisabled
         ),
         // Brand-bordered, transparent fill (previous Secondary look).
         outline: cn(
@@ -99,16 +88,24 @@ const buttonVariants = cva(
         // through the brand ramp. The kit ships it as `.btn-tertiary.is-brand`
         // for standalone brand text actions — "Test Connection" in a side
         // panel — where a bordered button would outweigh what it sits next to.
+        // On dark the label is the link colour (--ink-highlight, Tertiary-400):
+        // Brand/Primary there is a darker teal than every link beside it and
+        // reads as a second, dimmer green (Insightis, 2026-10-19). The ramp
+        // stays on light, where the two are one colour; on dark the hover and
+        // press answer with the surface overlay alone, as a link does. The
+        // `dark:` disabled lines re-assert Text/Inactive over the dark label.
         primaryTertiary: cn(
-          'border-transparent bg-transparent text-brand-primary',
-          'hover:bg-state-hover hover:text-brand-hover',
-          'pressed:bg-state-pressed pressed:text-brand-press',
+          'border-transparent bg-transparent text-brand-primary dark:text-ink-highlight',
+          'hover:bg-state-hover hover:text-brand-hover dark:hover:text-ink-highlight',
+          'pressed:bg-state-pressed pressed:text-brand-press dark:pressed:text-ink-highlight',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-transparent disabled:text-ink-inactive',
           'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
           'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
           'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          'aria-disabled:pressed:bg-transparent',
+          'dark:disabled:text-ink-inactive dark:disabled:hover:text-ink-inactive',
+          'dark:aria-disabled:text-ink-inactive dark:aria-disabled:hover:text-ink-inactive'
         ),
         // Destructive: theme-independent red fill; focus ring is the kit-wide
         // brand teal (red-on-red would be unreadable).
@@ -120,22 +117,24 @@ const buttonVariants = cva(
           'disabled:bg-state-disabled disabled:text-ink-inactive',
           'disabled:hover:bg-state-disabled'
         ),
-        // Destructive outline: red-bordered, transparent fill with red-tinted
-        // hover/press. The label is Feedback/Red too — a neutral label under a
-        // red border read as an ordinary secondary button and lost the warning.
-        destructiveOutline: cn(
-          'border-outlineDestructive-border bg-transparent text-fb-red-text',
-          'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
-          'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
+        // The secondary's destructive form: red border, transparent fill,
+        // red-tinted hover/press. The label is Feedback/Red too — a neutral
+        // label under a red border read as an ordinary secondary button and
+        // lost the warning. Switched off it IS the disabled `secondary`
+        // (designer, 2026-10-20); `upstream` and the kit call it
+        // `destructiveOutline` and give it the outline's `--ink-inactive` border.
+        destructiveSecondary: cn(
+          'border-destructiveSecondary-border bg-transparent text-fb-red-text',
+          'hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover',
+          'pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
+          secondaryDisabled
         ),
         // Low-emphasis destructive ghost: red label, transparent fill, red-tinted
-        // hover/press. Tertiary sibling of destructiveOutline (no border).
+        // hover/press. Tertiary sibling of destructiveSecondary (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          // Shares the destructiveOutline fill tokens on light and goes a step
+          // Shares the destructiveSecondary fill tokens on light and goes a step
           // stronger on dark, where there is no border to carry the signal.
           'hover:bg-destructiveTertiary-bg-hover',
           'pressed:bg-destructiveTertiary-bg-press',

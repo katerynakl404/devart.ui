@@ -102,14 +102,14 @@ export const THEME_COLORS = {
     'outline-bg-hover': 'var(--btn-outline-bg-hover)',
     'outline-bg-press': 'var(--btn-outline-bg-press)',
   },
-  outlineDestructive: {
-    border: 'hsl(var(--btn-outline-destructive-border) / <alpha-value>)',
+  destructiveSecondary: {
+    border: 'hsl(var(--btn-destructive-secondary-border) / <alpha-value>)',
     'border-hover':
-      'hsl(var(--btn-outline-destructive-border-hover) / <alpha-value>)',
+      'hsl(var(--btn-destructive-secondary-border-hover) / <alpha-value>)',
     // color-mix values (bare var) — NOT wrapped in hsl(); they are not HSL
     // triplets, so an hsl() wrapper would produce invalid CSS.
-    'bg-hover': 'var(--btn-outline-destructive-bg-hover)',
-    'bg-press': 'var(--btn-outline-destructive-bg-press)',
+    'bg-hover': 'var(--btn-destructive-secondary-bg-hover)',
+    'bg-press': 'var(--btn-destructive-secondary-bg-press)',
   },
   badge: {
     'primary-bg': 'hsl(var(--badge-primary-bg) / <alpha-value>)',

@@ -53,7 +53,7 @@ const Wordmark = () => (
  * invisible, which is what lets keyboard focus reveal it.
  */
 const meta = {
-  title: 'Components/Sidebar/SidebarPanelHeader',
+  title: 'Compositions/Sidebar/SidebarPanelHeader',
   component: SidebarPanelHeader,
   tags: ['autodocs'],
   argTypes: {

@@ -1,41 +1,17 @@
 'use client';
 
-import { Fragment, type ReactNode, type Ref } from 'react';
+import { type ComponentPropsWithRef, Fragment, type ReactNode } from 'react';
 import { cva } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 
-/** One step. `label` is its short name: the bar's tooltip and the current step's read-out. */
 export interface StepProgressStep {
-  id: string;
-  label?: string;
-}
-
-export interface StepProgressProps {
-  steps: StepProgressStep[];
-  /** 0-based index of the step on screen. @default 0 */
-  current?: number;
-  /** Which bars count as done. A filled bar = done OR current. @default i < current */
-  isStepDone?: (index: number) => boolean;
-  /** The read-out. @default (n, total) => `Step ${n} of ${total}` */
-  counter?: (n: number, total: number) => ReactNode;
-  /** The current step's label — at the end of the header (`fill`) or after the counter. */
-  showStepLabel?: boolean;
-  /** Bars share the full width with the header above them. Default: 24px bars inline. */
-  fill?: boolean;
-  /** Makes every bar a button (its tooltip is the step's label). */
-  onStepSelect?: (index: number) => void;
-  /** A bar button's accessible name. */
-  getStepAriaLabel?: (
-    index: number,
-    state: { done: boolean; current: boolean }
-  ) => string;
-  /** `sm` is the compact read-out a coachmark carries. @default 'md' */
-  size?: 'md' | 'sm';
-  /** Names the bar group. @default 'Steps' */
-  'aria-label'?: string;
-  className?: string;
-  ref?: Ref<HTMLDivElement>;
+  /** The step's short name: its bar's tooltip, and the bar's name without `ariaLabel`. */
+  title: string;
+  /** Fills the bar. The current step's bar is filled either way. */
+  done?: boolean;
+  /** The bar button's accessible name. @default title */
+  ariaLabel?: string;
 }
 
 /* Gaps: 12 inline / 8 over the bars (fill); `sm` one step tighter in both. */
@@ -63,11 +39,13 @@ const stepProgressStepsVariants = cva('flex-none', {
   defaultVariants: { fill: false, size: 'md' },
 });
 
-/* A 24px-tall target per step (10 + 4 + 10); the 4px bar inside it is the
-   mark. Filling the width, the bars sit 6px apart and a button keeps a 16px
-   target by bleeding its padding back out with a negative margin. */
+/* The button is the 28×24 target; the 24×4 bar inside it is the mark. The 2px
+   side padding of neighbouring buttons is what spaces the bars 4px apart.
+   Filling the width, the bars sit 6px apart and a button keeps a 16px target
+   by bleeding its padding back out with a negative margin. Read-only (no
+   `onStepSelect`), a step is a plain span: no pointer, no focus ring. */
 const stepProgressStepVariants = cva(
-  'group/step flex flex-none items-center rounded-md border-0 bg-transparent',
+  'group/step flex flex-none items-center rounded border-0 bg-transparent',
   {
     variants: {
       fill: { false: 'px-0.5 py-2.5', true: 'p-0' },
@@ -76,19 +54,22 @@ const stepProgressStepVariants = cva(
     compoundVariants: [
       { fill: true, interactive: true, class: '-my-1.5 px-0 py-1.5' },
     ],
-    defaultVariants: { fill: false, interactive: false },
+    defaultVariants: { fill: false, interactive: true },
   }
 );
 
 /* Done and current share Brand/Primary; the rest is the hairline colour. A bar
-   that is a button answers the pointer: the brand ones a step deeper, the
-   empty ones with the card hover border. */
+   that is a button answers the pointer: the brand ones Brand/Hover, the empty
+   ones the card hover border. */
 const stepProgressBarVariants = cva(
-  'h-1 rounded-full transition-colors duration-fast',
+  [
+    'h-1 rounded-full',
+    'transition-colors duration-fast motion-reduce:transition-none',
+  ],
   {
     variants: {
       filled: { true: 'bg-brand-primary', false: 'bg-stroke' },
-      fill: { true: 'w-full', false: 'w-6' },
+      fill: { false: 'w-6', true: 'w-full' },
       interactive: { true: '', false: '' },
     },
     compoundVariants: [
@@ -103,23 +84,22 @@ const stepProgressBarVariants = cva(
         class: 'group-hover/step:bg-card-border-hover',
       },
     ],
-    defaultVariants: { filled: false, fill: false, interactive: false },
+    defaultVariants: { filled: false, fill: false, interactive: true },
   }
 );
 
-const stepProgressCounterVariants = cva(
-  'whitespace-nowrap text-ink-secondary',
-  {
-    variants: { size: { md: 'text-sm', sm: 'text-xs' } },
-    defaultVariants: { size: 'md' },
-  }
-);
+/* The position in words — Body/M on Text/Secondary, never wrapping; `sm`
+   steps the type down. */
+const stepProgressLabelVariants = cva('whitespace-nowrap text-ink-secondary', {
+  variants: { size: { md: 'text-sm', sm: 'text-xs' } },
+  defaultVariants: { size: 'md' },
+});
 
-/* The current step's name is a caption at every size — Text/Secondary 400 at
-   12px, beside the counter. At 14px it read brighter than the same name in a
+/* The current step's title is a caption at every size — Text/Secondary 400 at
+   12px, beside the label. At 14px it read brighter than the same name in a
    coachmark (user, 2026-10-16), so the size no longer follows `size`. The
    `size` key stays so call sites keep one shape for both parts. */
-const stepProgressLabelVariants = cva(
+const stepProgressTitleVariants = cva(
   'truncate font-normal text-ink-secondary text-xs',
   {
     variants: { size: { md: '', sm: '' } },
@@ -127,43 +107,76 @@ const stepProgressLabelVariants = cva(
   }
 );
 
+export interface StepProgressProps
+  extends Omit<ComponentPropsWithRef<'div'>, 'children' | 'aria-label'> {
+  steps: StepProgressStep[];
+  /** 0-based index of the step on screen. Its bar is filled. */
+  current: number;
+  /**
+   * The position in words beside the bars ("Question 2 of 4"), announced
+   * politely. `null` renders none; left out, `counter` writes it.
+   */
+  label?: ReactNode;
+  /** Names the group of bars. */
+  'aria-label': string;
+  /**
+   * Called with a bar's index when it is pressed. Without it the bars are
+   * read-only: plain marks hidden from assistive tech, with no tooltips.
+   */
+  onStepSelect?: (index: number) => void;
+  /**
+   * Writes the label when `label` is left out.
+   * @default (n, total) => `Step ${n} of ${total}`
+   */
+  counter?: (n: number, total: number) => ReactNode;
+  /** The current step's `title` — at the end of the header (`fill`) or after the label. */
+  showStepTitle?: boolean;
+  /** Bars share the full width, with the label above them. Default: 24px bars inline. */
+  fill?: boolean;
+  /** `sm` is the compact read-out a coachmark carries. @default 'md' */
+  size?: 'md' | 'sm';
+}
+
 const defaultCounter = (n: number, total: number) => `Step ${n} of ${total}`;
 
 /**
- * A bar per step and "Step N of M": where a multi-step flow stands.
+ * A short bar per step with the position in words beside them. A bar fills
+ * once its step is done or while it is the current one; with `onStepSelect`
+ * every bar is a button that selects its step and names it in a tooltip.
+ *
+ * Unlike the headless `Stepper`, this only draws progress — the consumer owns
+ * which step is current and renders its content. Interactive, it needs a
+ * `TooltipProvider` above it.
  *
  * One atom for a question card's stepper, a setup wizard's header and a
- * tour's coachmark. Read-only by default — the bars are decoration and the
- * counter speaks (`aria-live="polite"`). With `onStepSelect` each bar becomes
- * a button named by `getStepAriaLabel`, with the step's label as its tooltip
- * (the page provides the `TooltipProvider`).
+ * tour's coachmark: `fill` puts the label over bars that share the width,
+ * `size="sm"` is the coachmark's compact read-out, and without
+ * `onStepSelect` the bars are decoration and the label speaks.
  */
-function StepProgress({
-  steps,
-  current = 0,
-  isStepDone,
-  counter = defaultCounter,
-  showStepLabel = false,
-  fill = false,
-  onStepSelect,
-  getStepAriaLabel,
-  size = 'md',
-  'aria-label': ariaLabel = 'Steps',
+const StepProgress = ({
   className,
+  steps,
+  current,
+  label,
+  'aria-label': ariaLabel,
   ref,
-}: StepProgressProps) {
+  onStepSelect,
+  counter = defaultCounter,
+  showStepTitle = false,
+  fill = false,
+  size = 'md',
+  ...props
+}: StepProgressProps) => {
   const total = steps.length;
-  const isDone = isStepDone ?? ((index: number) => index < current);
   const interactive = Boolean(onStepSelect);
-  const currentLabel = steps[current]?.label;
+  const currentTitle = steps[current]?.title;
+  const stepClass = stepProgressStepVariants({ fill, interactive });
 
   const bars = (
-    // biome-ignore lint/a11y/useSemanticElements: an inline run of bars inside a flex row — a `<fieldset>` would bring form semantics and UA chrome
-    <span
-      data-slot="step-progress-steps"
-      role="group"
+    <fieldset
       aria-label={ariaLabel}
-      className={cn(stepProgressStepsVariants({ fill, size }))}
+      data-slot="step-progress-steps"
+      className={stepProgressStepsVariants({ fill, size })}
       style={
         fill
           ? {
@@ -173,88 +186,83 @@ function StepProgress({
       }
     >
       {steps.map((step, index) => {
-        const done = Boolean(isDone(index));
+        const done = Boolean(step.done);
         const isCurrent = index === current;
+        const state = done ? 'done' : isCurrent ? 'current' : 'upcoming';
         const bar = (
           <span
+            aria-hidden
             data-slot="step-progress-bar"
-            className={cn(
-              stepProgressBarVariants({
-                filled: done || isCurrent,
-                fill,
-                interactive,
-              })
-            )}
+            className={stepProgressBarVariants({
+              filled: done || isCurrent,
+              fill,
+              interactive,
+            })}
           />
         );
-        const stepClass = cn(stepProgressStepVariants({ fill, interactive }));
+
+        let node: ReactNode;
 
         if (!onStepSelect) {
-          return (
+          node = (
             <span
-              key={step.id || index}
               data-slot="step-progress-step"
-              data-state={done ? 'done' : isCurrent ? 'current' : 'upcoming'}
+              data-state={state}
               aria-hidden="true"
               className={stepClass}
             >
               {bar}
             </span>
           );
+        } else {
+          const button = (
+            <button
+              type="button"
+              data-slot="step-progress-step"
+              data-state={state}
+              aria-label={step.ariaLabel ?? step.title}
+              aria-current={isCurrent ? 'step' : undefined}
+              className={stepClass}
+              onClick={() => onStepSelect(index)}
+            >
+              {bar}
+            </button>
+          );
+
+          node = step.title ? (
+            <Tooltip>
+              <TooltipTrigger asChild>{button}</TooltipTrigger>
+              <TooltipContent side="top">{step.title}</TooltipContent>
+            </Tooltip>
+          ) : (
+            button
+          );
         }
 
-        const name = getStepAriaLabel
-          ? getStepAriaLabel(index, { done, current: isCurrent })
-          : `${step.label ? `${step.label}, ` : ''}step ${index + 1} of ${total}${
-              done ? ', completed' : ''
-            }`;
-        const button = (
-          <button
-            type="button"
-            data-slot="step-progress-step"
-            data-state={done ? 'done' : isCurrent ? 'current' : 'upcoming'}
-            aria-current={isCurrent ? 'step' : undefined}
-            aria-label={name}
-            className={stepClass}
-            onClick={() => onStepSelect(index)}
-          >
-            {bar}
-          </button>
-        );
-
-        return (
-          <Fragment key={step.id || index}>
-            {step.label ? (
-              <Tooltip>
-                <TooltipTrigger asChild>{button}</TooltipTrigger>
-                <TooltipContent side="top">{step.label}</TooltipContent>
-              </Tooltip>
-            ) : (
-              button
-            )}
-          </Fragment>
-        );
+        // biome-ignore lint/suspicious/noArrayIndexKey: position is the identity
+        return <Fragment key={index}>{node}</Fragment>;
       })}
-    </span>
+    </fieldset>
   );
 
-  const count = (
-    <span
-      data-slot="step-progress-counter"
-      aria-live="polite"
-      className={cn(stepProgressCounterVariants({ size }))}
-    >
-      {counter(current + 1, total)}
-    </span>
-  );
-
-  const label =
-    showStepLabel && currentLabel ? (
+  const labelNode =
+    label === null ? null : (
       <span
         data-slot="step-progress-label"
-        className={cn(stepProgressLabelVariants({ size }))}
+        aria-live="polite"
+        className={stepProgressLabelVariants({ size })}
       >
-        {currentLabel}
+        {label === undefined ? counter(current + 1, total) : label}
+      </span>
+    );
+
+  const titleNode =
+    showStepTitle && currentTitle ? (
+      <span
+        data-slot="step-progress-title"
+        className={stepProgressTitleVariants({ size })}
+      >
+        {currentTitle}
       </span>
     ) : null;
 
@@ -262,36 +270,38 @@ function StepProgress({
 
   if (fill) {
     return (
-      <div ref={ref} data-slot="step-progress" className={rootClass}>
-        <div
-          data-slot="step-progress-head"
-          className="flex min-w-0 items-center justify-between gap-3"
-        >
-          {count}
-          {label}
-        </div>
+      <div ref={ref} data-slot="step-progress" className={rootClass} {...props}>
+        {labelNode || titleNode ? (
+          <div
+            data-slot="step-progress-head"
+            className="flex min-w-0 items-center justify-between gap-3"
+          >
+            {labelNode}
+            {titleNode}
+          </div>
+        ) : null}
         {bars}
       </div>
     );
   }
 
   return (
-    <div ref={ref} data-slot="step-progress" className={rootClass}>
+    <div ref={ref} data-slot="step-progress" className={rootClass} {...props}>
       {bars}
-      {count}
-      {label}
+      {labelNode}
+      {titleNode}
     </div>
   );
-}
+};
 
 StepProgress.displayName = 'StepProgress';
 
 export {
   StepProgress,
   stepProgressBarVariants,
-  stepProgressCounterVariants,
   stepProgressLabelVariants,
   stepProgressStepsVariants,
   stepProgressStepVariants,
+  stepProgressTitleVariants,
   stepProgressVariants,
 };

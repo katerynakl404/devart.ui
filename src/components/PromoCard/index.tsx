@@ -1,7 +1,45 @@
+'use client';
+
 import { X } from 'lucide-react';
 import type { ComponentProps, ReactNode, Ref } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { IconButton } from '../IconButton';
+import { Typography } from '../Typography';
+
+/* One recipe, one `part` per element. The values are the kit's `.promo-card`
+   (`kit-theme.css`): 10/12 inset, 8px between glyph and copy, a 20px glyph 1px
+   off the top, 2px between the two 12/16 lines, the dismiss 4px in from the
+   corner. */
+const promoCardVariants = cva('', {
+  variants: {
+    part: {
+      /* The card's hover hangs on the ROOT (`group/promo-card`), not on the
+         link: the dismiss sits over the link's corner, and with `hover:` on the
+         link the pointer reaching it took the hover off the card it is part of
+         (§116). */
+      root: 'group/promo-card relative w-full',
+      surface: cn(
+        'flex w-full items-start gap-2 text-start',
+        'rounded-md border border-stroke bg-surface-card px-3 py-2.5',
+        // The card hover is the package's card recipe, not a local one: no
+        // recolouring of the title, which would read as the heading turning
+        // into a link under the pointer. It follows the ROOT, so it holds
+        // while the pointer is on the dismiss (a sibling over this corner).
+        'transition-colors group-hover/promo-card:bg-state-hover',
+        // `shadow-focus` is not a class the preset generates, so the ring this
+        // used to name never drew. The package's own ring recipe instead.
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card'
+      ),
+      icon: 'mt-px flex shrink-0 text-brand-primary [&_svg]:size-5',
+      // pe-4 keeps the text clear of the dismiss, which sits over the corner.
+      copy: 'flex min-w-0 flex-col gap-0.5 pe-4',
+      text: 'text-xs leading-4',
+      dismiss: 'absolute end-1 top-1',
+    },
+  },
+  defaultVariants: { part: 'root' },
+});
 
 /**
  * A small promotional card: a glyph, what is on offer, one line of what it gives,
@@ -21,9 +59,6 @@ import { IconButton } from '../IconButton';
  *
  * The dismiss is a SIBLING of the link, never nested inside it — a button
  * inside an anchor is not markup, and the whole card is the link's hit area.
- * So the card's hover hangs on the ROOT (`group/promo-card`), not on the link:
- * the dismiss sits over the link's corner, and with `hover:` on the link the
- * pointer reaching it took the hover off the card it is part of (§116).
  *
  * ```jsx
  * <PromoCard
@@ -35,7 +70,8 @@ import { IconButton } from '../IconButton';
  * />
  * ```
  */
-export interface PromoCardProps extends Omit<ComponentProps<'div'>, 'title'> {
+export interface PromoCardProps
+  extends Omit<ComponentProps<'div'>, 'title' | 'onSelect' | 'ref'> {
   /** Leading glyph. A 20px outline mark in Brand/Primary. */
   icon?: ReactNode;
   /** The offer, in two or three words. */
@@ -44,79 +80,106 @@ export interface PromoCardProps extends Omit<ComponentProps<'div'>, 'title'> {
   description?: ReactNode;
   /** Where the card goes. Rendered as an anchor when given, a button otherwise. */
   href?: string;
-  onSelect?: () => void;
-  /** Omit to render a card that cannot be dismissed. */
-  onDismiss?: () => void;
   dismissLabel?: string;
-  ref?: Ref<HTMLDivElement>;
+  /** Points at the link or the button, so `ref.current.focus()` focuses the card. */
+  ref?: Ref<HTMLElement>;
+  onSelect?: () => void;
+  /** Omit to render a card that cannot be dismissed. The dismiss unmounts
+   *  with the card, so the consumer moves focus after dismissing. */
+  onDismiss?: () => void;
 }
 
-function PromoCard({
+const PromoCard = ({
   icon,
   title,
   description,
   href,
-  onSelect,
-  onDismiss,
   dismissLabel = 'Dismiss',
   className,
   ref,
+  onSelect,
+  onDismiss,
   ...props
-}: PromoCardProps) {
-  const Surface = href ? 'a' : 'button';
+}: PromoCardProps) => {
+  const surfaceClassName = promoCardVariants({ part: 'surface' });
+
+  const content = (
+    <>
+      {icon ? (
+        <span
+          aria-hidden="true"
+          data-slot="promo-card-icon"
+          className={promoCardVariants({ part: 'icon' })}
+        >
+          {icon}
+        </span>
+      ) : null}
+
+      <span
+        data-slot="promo-card-copy"
+        className={promoCardVariants({ part: 'copy' })}
+      >
+        <Typography
+          variant="span"
+          weight="semibold"
+          align={null}
+          data-slot="promo-card-title"
+          className={promoCardVariants({ part: 'text' })}
+        >
+          {title}
+        </Typography>
+
+        {description ? (
+          <Typography
+            variant="span"
+            weight="normal"
+            textColor="secondary"
+            align={null}
+            data-slot="promo-card-description"
+            className={promoCardVariants({ part: 'text' })}
+          >
+            {description}
+          </Typography>
+        ) : null}
+      </span>
+    </>
+  );
 
   return (
     <div
-      ref={ref}
       data-slot="promo-card"
-      className={cn('group/promo-card relative w-full', className)}
+      className={cn(promoCardVariants({ part: 'root' }), className)}
       {...props}
     >
-      <Surface
-        className={cn(
-          'flex w-full items-start gap-2 rounded-md border px-3 py-2.5 text-left',
-          'border-stroke bg-surface-card',
-          // The card hover is the package's card recipe, not a local one: no
-          // recolouring of the title, which would read as the heading turning
-          // into a link under the pointer. It follows the ROOT, so it holds
-          // while the pointer is on the dismiss (a sibling over this corner).
-          'transition-colors group-hover/promo-card:bg-state-hover',
-          // `shadow-focus` is not a class the preset generates, so the ring this
-          // used to name never drew. The package's own ring recipe instead.
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card'
-        )}
-        href={href}
-        onClick={onSelect}
-        type={href ? undefined : 'button'}
-      >
-        {icon ? (
-          <span
-            aria-hidden="true"
-            className="mt-px flex shrink-0 text-brand-primary [&_svg]:size-5"
-          >
-            {icon}
-          </span>
-        ) : null}
-
-        {/* pe-4 keeps the text clear of the dismiss, which sits over the corner. */}
-        <span className="flex min-w-0 flex-col gap-0.5 pe-4">
-          <span className="font-semibold text-ink-primary text-xs leading-4">
-            {title}
-          </span>
-          {description ? (
-            <span className="font-normal text-ink-secondary text-xs leading-4">
-              {description}
-            </span>
-          ) : null}
-        </span>
-      </Surface>
+      {href ? (
+        <a
+          ref={ref as Ref<HTMLAnchorElement>}
+          href={href}
+          data-slot="promo-card-surface"
+          className={surfaceClassName}
+          onClick={onSelect}
+        >
+          {content}
+        </a>
+      ) : (
+        <button
+          ref={ref as Ref<HTMLButtonElement>}
+          type="button"
+          data-slot="promo-card-surface"
+          className={surfaceClassName}
+          onClick={onSelect}
+        >
+          {content}
+        </button>
+      )}
 
       {onDismiss ? (
         // The shared row kebab's button — IconButton tertiary 2xs — so its
         // hover, pressed and focus are the package's, not a local copy.
         <IconButton
           aria-label={dismissLabel}
-          className="absolute top-1 right-1"
+          data-slot="promo-card-dismiss"
+          className={promoCardVariants({ part: 'dismiss' })}
           onClick={onDismiss}
           size="2xs"
           variant="tertiary"
@@ -126,8 +189,8 @@ function PromoCard({
       ) : null}
     </div>
   );
-}
+};
 
 PromoCard.displayName = 'PromoCard';
 
-export { PromoCard };
+export { PromoCard, promoCardVariants };

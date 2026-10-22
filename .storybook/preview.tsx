@@ -137,7 +137,15 @@ const preview: Preview = {
         // Alphabetical inside a section, so the numbered review pages sort by
         // their number instead of by the order Vite happened to load them.
         method: 'alphabetical',
-        order: ['Proposed changes', 'Foundations', 'Components'],
+        // `Components` then `Compositions` is the developers' order (their
+        // README, "Adding a new component"); the two sections above it are
+        // this package's own.
+        order: [
+          'Proposed changes',
+          'Foundations',
+          'Components',
+          'Compositions',
+        ],
       },
     },
   },

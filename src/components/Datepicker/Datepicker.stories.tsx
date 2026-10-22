@@ -9,7 +9,7 @@ import { SingleDatePicker } from './SingleDatePicker';
 // SingleDatePicker is the primary story component: a full picker with calendar,
 // month/year controls and a confirm button, driven by controlled `selected`.
 const meta = {
-  title: 'Components/Datepicker',
+  title: 'Compositions/Datepicker',
   component: SingleDatePicker,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },

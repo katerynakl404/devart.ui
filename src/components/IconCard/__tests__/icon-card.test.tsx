@@ -42,6 +42,54 @@ describe('IconCard', () => {
     expect(onActivate).toHaveBeenCalledOnce();
   });
 
+  it('runs a composed onClick before onActivate', () => {
+    const onClick = vi.fn();
+    const onActivate = vi.fn();
+    render(
+      <IconCard {...baseProps} onClick={onClick} onActivate={onActivate} />
+    );
+
+    fireEvent.click(card());
+    expect(onClick).toHaveBeenCalledOnce();
+    expect(onActivate).toHaveBeenCalledOnce();
+  });
+
+  /**
+   * Kit Free catalog tiles: click opens upgrade and must not fire connect.
+   * Hover stays browsable — interception is click-side via preventDefault.
+   */
+  it('skips onActivate when onClick calls preventDefault', () => {
+    const onActivate = vi.fn();
+    render(
+      <IconCard
+        {...baseProps}
+        onActivate={onActivate}
+        onClick={(event) => {
+          event.preventDefault();
+        }}
+      />
+    );
+
+    fireEvent.click(card());
+    expect(onActivate).not.toHaveBeenCalled();
+  });
+
+  it('skips onActivate when onKeyDown calls preventDefault', () => {
+    const onActivate = vi.fn();
+    render(
+      <IconCard
+        {...baseProps}
+        onActivate={onActivate}
+        onKeyDown={(event) => {
+          event.preventDefault();
+        }}
+      />
+    );
+
+    fireEvent.keyDown(card(), { key: 'Enter' });
+    expect(onActivate).not.toHaveBeenCalled();
+  });
+
   it.each(['Enter', ' '])('activates on %j', (key) => {
     const onActivate = vi.fn();
     render(<IconCard {...baseProps} onActivate={onActivate} />);

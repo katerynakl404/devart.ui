@@ -7,7 +7,7 @@ import { LinkButton } from '../LinkButton';
 import { MetaRow } from './index';
 
 const meta = {
-  title: 'Components/MetaRow',
+  title: 'Compositions/MetaRow',
   component: MetaRow,
   tags: ['autodocs'],
   args: { variant: 'cluster', sticky: false },

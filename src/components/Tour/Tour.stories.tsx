@@ -100,7 +100,7 @@ const STEPS: TourStep[] = [
  * step; a click on the scrim nudges it. Closing fades the tour out.
  */
 const meta = {
-  title: 'Components/Tour',
+  title: 'Compositions/Tour',
   component: Tour,
   tags: ['autodocs'],
   args: {
@@ -176,11 +176,11 @@ export const PartOfAFlow: Story = {
     labels: { finish: 'Start chatting' },
     progress: {
       steps: [
-        { id: 'role', label: 'Role' },
-        { id: 'goal', label: 'Goal' },
-        { id: 'data', label: 'Data' },
-        { id: 'metrics', label: 'Metrics' },
-        { id: 'chat', label: 'Chat' },
+        { title: 'Role' },
+        { title: 'Goal' },
+        { title: 'Data' },
+        { title: 'Metrics' },
+        { title: 'Chat' },
       ],
       offset: 3,
     },

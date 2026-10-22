@@ -75,6 +75,23 @@ export const pageFloor = 'pb-8';
 export const glyphStroke = '[&_svg]:stroke-2';
 
 /**
+ * A switched-off `secondary` — and every variant built on it
+ * (`destructiveSecondary`), on `Button` and `IconButton` alike: the secondary
+ * border, no fill, the inactive label. Its hover is switched off again,
+ * because `:hover` still matches a disabled button.
+ *
+ * No fill at all — not `--state-disabled` and not `--surface-card`. A white
+ * chip is invisible on a white card and reads as a card of its own on a tinted
+ * one; transparent holds on every surface, and the border and the label carry
+ * the state. The kit paints `--state-disabled` here
+ * (`.s-disabled.btn-secondary`); deliberate divergence.
+ */
+export const secondaryDisabled = cn(
+  'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
+  'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
+);
+
+/**
  * The elevation lift: what a surface does when the pointer is over something
  * that will respond to a click.
  *

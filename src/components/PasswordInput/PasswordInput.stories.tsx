@@ -8,7 +8,7 @@ import { PasswordInput } from './index';
  * input attributes are passed directly.
  */
 const meta = {
-  title: 'Components/PasswordInput',
+  title: 'Compositions/PasswordInput',
   component: PasswordInput,
   tags: ['autodocs'],
   args: {

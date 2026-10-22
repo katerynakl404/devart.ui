@@ -25,7 +25,7 @@ const meta = {
         'tertiary',
         'primaryTertiary',
         'destructive',
-        'destructiveOutline',
+        'destructiveSecondary',
         'destructiveTertiary',
         'transparent',
         'transparentUnderline',
@@ -60,7 +60,7 @@ const BOXED_VARIANTS = [
   ['tertiary', 'Tertiary'],
   ['primaryTertiary', 'Tertiary brand'],
   ['destructive', 'Destructive'],
-  ['destructiveOutline', 'Destructive outline'],
+  ['destructiveSecondary', 'Destructive secondary'],
   ['destructiveTertiary', 'Destructive tertiary'],
 ] as const;
 
@@ -104,7 +104,7 @@ export const WithIcons: Story = {
       <Button {...args} leftSlot={<Plus />}>
         New chat
       </Button>
-      <Button {...args} rightSlot={<Trash2 />} variant="destructiveOutline">
+      <Button {...args} rightSlot={<Trash2 />} variant="destructiveSecondary">
         Delete
       </Button>
       <Button {...args} variant="secondary">

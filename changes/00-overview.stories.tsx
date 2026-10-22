@@ -57,7 +57,7 @@ const ROWS: Row[] = [
     page: '1. Colour and state',
   },
   {
-    n: '61',
+    n: '62',
     area: 'Autocomplete',
     change: 'the clear and the chevron painted as placeholders',
     page: '1. Colour and state',
@@ -111,25 +111,25 @@ const ROWS: Row[] = [
     page: '3. The sidebar',
   },
   {
+    n: '72',
+    area: 'Sidebar',
+    change: 'the collapsed rail was never finished',
+    page: '3. The sidebar',
+  },
+  {
     n: '14',
     area: 'Sidebar.md',
     change: 'collapsing could remove the only way to expand',
     page: '3. The sidebar',
   },
   {
-    n: '21',
+    n: '64',
     area: 'SidebarContent',
     change: 'the navigation column is missing the inset production has',
     page: '3. The sidebar',
   },
   {
-    n: '17',
-    area: 'TextArea',
-    change: 'a character counter, which pages were writing by hand',
-    page: '9. The fields',
-  },
-  {
-    n: '18',
+    n: '51',
     area: 'StatusView',
     change: 'EmptyStateIllustration — the standard empty-state artwork',
     page: '5. Documented recipes',
@@ -183,13 +183,13 @@ const ROWS: Row[] = [
     page: '7. The table',
   },
   {
-    n: '52',
+    n: '53',
     area: 'TableHead',
     change: 'a column width is a share, not a size',
     page: '7. The table',
   },
   {
-    n: '53',
+    n: '54',
     area: 'TableRow',
     change: 'nesting was a number one table owned',
     page: '7. The table',
@@ -207,27 +207,9 @@ const ROWS: Row[] = [
     page: '8. The badge',
   },
   {
-    n: '52',
-    area: 'InputGroup',
-    change: 'two insets on one edge',
-    page: '9. The fields',
-  },
-  {
     n: '41',
     area: 'TextArea',
     change: 'the counter row had a slot nothing could fill',
-    page: '9. The fields',
-  },
-  {
-    n: '30',
-    area: 'TextArea',
-    change: 'the counter is one ink step too loud',
-    page: '9. The fields',
-  },
-  {
-    n: '28',
-    area: 'InputGroup',
-    change: 'the search clear button is a recipe, not a part',
     page: '9. The fields',
   },
   {
@@ -249,7 +231,7 @@ const ROWS: Row[] = [
     page: '10. The cards',
   },
   {
-    n: '56',
+    n: '57',
     area: 'Checkbox',
     change: 'the tick and the bar were two different weights',
     page: '2. Size and spacing',

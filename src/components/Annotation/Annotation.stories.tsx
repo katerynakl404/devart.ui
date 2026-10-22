@@ -60,7 +60,7 @@ const LINE = 64 + 49 + 8 + 34;
  * `Annotation` renders nothing on its own; the group reads its children.
  */
 const meta = {
-  title: 'Components/Annotation',
+  title: 'Compositions/Annotation',
   component: AnnotationGroup,
   tags: ['autodocs'],
   args: { top: LINE },

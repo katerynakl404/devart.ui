@@ -45,6 +45,60 @@ describe('PageHeader', () => {
     expect(titleRow()?.childElementCount).toBe(1);
   });
 
+  /**
+   * Fork difference: `titleLeft` opens the row, outside the cluster that holds
+   * the back control, the title and `titleRight`; `titleRight` is wrapped in
+   * the span that carries its 12px from the title.
+   */
+  it('places titleLeft before the title and titleRight after it', () => {
+    render(
+      <PageHeader
+        title="Files"
+        titleLeft={<span data-testid="title-left">Before</span>}
+        titleRight={<button type="button">About</button>}
+      />
+    );
+
+    const row = Array.from(titleRow()?.children ?? []);
+    const titleGroup = Array.from(heading().parentElement?.children ?? []);
+
+    expect(row).toHaveLength(2);
+    expect(row[0]).toBe(screen.getByTestId('title-left'));
+    expect(row[1]).toBe(heading().parentElement);
+    expect(titleGroup).toHaveLength(2);
+    expect(titleGroup[0]).toBe(heading());
+    expect(titleGroup[1]).toContainElement(
+      screen.getByRole('button', { name: 'About' })
+    );
+  });
+
+  it('renders nothing for falsy titleLeft or titleRight', () => {
+    render(<PageHeader title="Files" titleLeft={false} titleRight={false} />);
+
+    expect(heading().parentElement?.childElementCount).toBe(1);
+    expect(titleRow()?.childElementCount).toBe(1);
+  });
+
+  /** The mobile sidebar trigger goes here: it opens the row, before the arrow. */
+  it('puts titleLeft before the back control', () => {
+    render(
+      <PageHeader
+        title="Files"
+        onBack={() => {}}
+        backLabel="Back to home"
+        titleLeft={<button type="button">Open navigation</button>}
+      />
+    );
+
+    const [first, second] = screen.getAllByRole('button');
+
+    expect(first).toHaveAccessibleName('Open navigation');
+    expect(second).toHaveAccessibleName('Back to home');
+    expect(heading().parentElement).toContainElement(
+      screen.getByRole('button', { name: 'Back to home' })
+    );
+  });
+
   it('truncates the title by default', () => {
     render(<PageHeader title="Files" />);
 

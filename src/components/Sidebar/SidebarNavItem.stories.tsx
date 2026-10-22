@@ -45,7 +45,7 @@ const Rail = ({
  * and `aria-current="page"`, so TanStack Router and plain anchors both light up.
  */
 const meta = {
-  title: 'Components/Sidebar/SidebarNavItem',
+  title: 'Compositions/Sidebar/SidebarNavItem',
   component: SidebarNavItem,
   tags: ['autodocs'],
   args: {

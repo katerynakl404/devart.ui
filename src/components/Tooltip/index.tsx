@@ -15,8 +15,8 @@ import { TooltipContent } from './TooltipContent';
  * three call sites reads as one that fires while the pointer is still moving
  * across the row.
  *
- * A consumer that wants a different pace passes its own: the sidebar rail uses
- * 500, because there the pointer crosses eight icons on the way to one.
+ * A consumer that wants a different pace passes its own. The sidebar rail
+ * takes this one: on the rail the tooltip is the row's only name.
  */
 const TooltipProvider = ({
   delayDuration = 300,

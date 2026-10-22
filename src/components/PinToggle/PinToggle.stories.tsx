@@ -15,7 +15,7 @@ import { PinToggle } from './index';
  * do — "Pin", or "Unpin".
  */
 const meta = {
-  title: 'Components/PinToggle',
+  title: 'Compositions/PinToggle',
   component: PinToggle,
   tags: ['autodocs'],
   args: { onPressedChange: fn(), disabled: false },

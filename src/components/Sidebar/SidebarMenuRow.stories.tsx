@@ -12,7 +12,7 @@ import { SidebarMenuRow } from './index';
  * only draws the affordance rather than opening anything.
  */
 const meta = {
-  title: 'Components/Sidebar/SidebarMenuRow',
+  title: 'Compositions/Sidebar/SidebarMenuRow',
   component: SidebarMenuRow,
   tags: ['autodocs'],
   args: {

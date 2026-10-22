@@ -1,31 +1,86 @@
 import { Content, Portal } from '@radix-ui/react-popover';
-import type { ComponentProps } from 'react';
+import { type ComponentProps, useMemo } from 'react';
+import { composeEventHandlers } from '../../lib/compose-event-handlers';
+import { composeRefs } from '../../lib/compose-refs';
 import { usePortalContainer } from '../../lib/portal-container';
 import { cn } from '../../lib/utils';
+import { type PopoverSide, usePopoverContext } from './context';
+import { usePlacementSide } from './use-placement-side';
 
-/**
- * The popover container that holds the popover content, handling animations and positioning.
- */
-export interface PopoverContentProps extends ComponentProps<typeof Content> {
+interface PopoverContentProps extends ComponentProps<typeof Content> {
+  /**
+   * Sides to try, in order, when `side` does not fit the viewport; measured
+   * once per open from the trigger and the content's own size. Radix alone
+   * only flips to the opposite side.
+   */
+  fallbackSides?: readonly PopoverSide[];
   /** Render the popover into this element instead of `document.body`. */
   portalContainer?: HTMLElement | null;
 }
 
+/**
+ * The popover container that holds the popover content, handling animations and positioning.
+ */
 const PopoverContent = ({
   portalContainer,
   className,
   align = 'center',
+  side,
   sideOffset = 4,
+  collisionPadding,
+  fallbackSides,
+  onPointerEnter,
+  onPointerLeave,
+  onOpenAutoFocus,
+  onCloseAutoFocus,
+  onFocusOutside,
   ref,
   ...props
 }: PopoverContentProps) => {
   const container = usePortalContainer(portalContainer);
+  const context = usePopoverContext('PopoverContent');
+  const placement = usePlacementSide({
+    side,
+    fallbackSides,
+    sideOffset,
+    collisionPadding,
+    contentRef: context.contentRef,
+    triggerRef: context.triggerRef,
+  });
+
+  const contentRef = useMemo(
+    () => composeRefs(ref, placement.onContentNode),
+    [ref, placement.onContentNode]
+  );
+
   return (
     <Portal container={container}>
       <Content
-        ref={ref}
+        ref={contentRef}
         align={align}
+        side={placement.side}
         sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
+        onPointerEnter={composeEventHandlers(
+          onPointerEnter,
+          context.onContentPointerEnter
+        )}
+        onPointerLeave={composeEventHandlers(
+          onPointerLeave,
+          context.onContentPointerLeave
+        )}
+        onOpenAutoFocus={composeEventHandlers(
+          onOpenAutoFocus,
+          context.onOpenAutoFocus
+        )}
+        onCloseAutoFocus={composeEventHandlers(
+          onCloseAutoFocus,
+          context.onCloseAutoFocus
+        )}
+        onFocusOutside={composeEventHandlers(
+          onFocusOutside,
+          context.onFocusOutside
+        )}
         className={cn(
           'z-50 w-72 rounded-md border p-4 outline-none',
           // Surface/Card, like every other floating panel in the system.
@@ -78,3 +133,4 @@ const PopoverContent = ({
 PopoverContent.displayName = Content.displayName;
 
 export { PopoverContent };
+export type { PopoverContentProps };

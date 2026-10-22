@@ -88,7 +88,7 @@ const LONG_SQL = Array.from(
 ).join('\n');
 
 const meta = {
-  title: 'Components/CodeBlock',
+  title: 'Compositions/CodeBlock',
   component: CodeBlock,
   tags: ['autodocs'],
   args: { code: CONFIG, size: 'md', variant: 'default', copyable: true },

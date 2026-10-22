@@ -1,10 +1,12 @@
 'use client';
 
 import type { ComponentProps, ReactNode, Ref } from 'react';
-import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useId, useLayoutEffect, useRef } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
+import { TextAreaFooter } from './TextAreaFooter';
+import { useValueLength } from './use-value-length';
 
 export const textAreaVariants = cva(
   cn(
@@ -72,11 +74,8 @@ export interface TextAreaProps
   label?: ReactNode;
   isInvalid?: boolean;
   errorText?: string;
-  /**
-   * Shows the "used / allowed" counter under the field. Needs `maxLength`:
-   * a counter without a limit has nothing to count against.
-   */
   showCount?: boolean;
+  softLimit?: boolean;
   /**
    * Classes for the wrapper holding the label, the field and the counter.
    *
@@ -136,19 +135,24 @@ export const TextArea = ({
   value,
   defaultValue,
   className,
-  onInput,
   id,
   label,
   isInvalid = false,
   errorText,
   showCount = false,
+  softLimit = false,
+  maxLength,
+  disabled,
+  onInput,
   wrapperClassName,
   hintText,
-  maxLength,
   ...props
 }: TextAreaProps) => {
+  const { 'aria-describedby': ariaDescribedBy, ...restProps } = props;
+
   const innerRef = useRef<HTMLTextAreaElement | null>(null);
   const generatedId = useId();
+  const fieldId = id ?? generatedId;
   const resolvedId = id ?? (label ? generatedId : undefined);
 
   const safeMaxRowsBeforeScroll = sanitizePositiveRowCount(
@@ -156,16 +160,16 @@ export const TextArea = ({
     15
   );
 
-  const errorId = isInvalid && errorText ? `${resolvedId}-error` : undefined;
+  const [length, syncLength] = useValueLength(innerRef, showCount);
 
-  // Uncontrolled fields have no value to measure, so the count is tracked here
-  // and kept in sync from onInput. Controlled fields read straight off value,
-  // so a programmatic change updates the counter too.
-  const [uncontrolledCount, setUncontrolledCount] = useState(
-    () => String(defaultValue ?? '').length
-  );
-  const count = value === undefined ? uncontrolledCount : String(value).length;
-  const hasCount = showCount && typeof maxLength === 'number';
+  const errorId = isInvalid && errorText ? `${fieldId}-error` : undefined;
+  // The hint describes the field only while it is on screen — an error takes
+  // its place in the row, and its place in the description with it.
+  const hintId = !errorId && hintText ? `${fieldId}-hint` : undefined;
+  const countId = showCount ? `${fieldId}-count` : undefined;
+  const describedBy =
+    [ariaDescribedBy, errorId ?? hintId, countId].filter(Boolean).join(' ') ||
+    undefined;
 
   const handleRef = useCallback(
     (node: HTMLTextAreaElement | null) => {
@@ -218,12 +222,13 @@ export const TextArea = ({
       rows={rows}
       value={value}
       defaultValue={defaultValue}
+      maxLength={softLimit ? undefined : maxLength}
+      disabled={disabled}
       aria-invalid={isInvalid || undefined}
-      aria-describedby={errorId}
-      maxLength={maxLength}
+      aria-describedby={describedBy}
       onInput={(event) => {
         resizeToContent();
-        setUncontrolledCount(event.currentTarget.value.length);
+        syncLength();
         onInput?.(event);
       }}
       className={cn(
@@ -233,11 +238,11 @@ export const TextArea = ({
           'border-input-error focus-visible:border-input-error enabled:hover:border-input-error',
         className
       )}
-      {...props}
+      {...restProps}
     />
   );
 
-  if (!label && !errorText && !hasCount) {
+  if (!label && !errorText && !showCount && !hintText) {
     return textareaElement;
   }
 
@@ -247,13 +252,11 @@ export const TextArea = ({
           same ink step as the hint underneath it. */}
       {label ? (
         <Typography
-          id={errorId}
           element="label"
           variant="span"
           textColor="body"
           weight="medium"
           htmlFor={resolvedId}
-          aria-live="polite"
           className="text-sm"
         >
           {label}
@@ -262,55 +265,16 @@ export const TextArea = ({
 
       {textareaElement}
 
-      {/* Error text and counter share one row under the field: both describe the
-          same input, and stacking them would push the next field down by a line
-          that is usually empty. The counter never wraps — it is short, and it is
-          anchored to the field's right edge, not to the error text. */}
-      {(isInvalid && errorText) || hasCount || hintText ? (
-        <div className="flex items-start justify-between gap-4">
-          {isInvalid && errorText ? (
-            <Typography
-              variant="span"
-              textColor="destructive"
-              // Helper text is text-xs / medium in Feedback/Red — matches Input.
-              className="min-w-0 flex-1 font-medium text-fb-red-text text-xs"
-            >
-              {errorText}
-            </Typography>
-          ) : hintText ? (
-            // `textStyle="body12"`, not `variant="span"`. The legacy variant is
-            // `font-medium text-sm`, so `text-xs` beside it corrected the size
-            // and left the WEIGHT at 500: the hint under a field rendered
-            // bolder than the sentence it belongs to, and bolder than the same
-            // hint written by hand anywhere else in the product. A hint is body
-            // copy; the named scale says so in one token.
-            <Typography
-              element="span"
-              textStyle="body12"
-              textColor="secondary"
-              className="min-w-0 flex-1"
-            >
-              {hintText}
-            </Typography>
-          ) : null}
-
-          {hasCount ? (
-            <Typography
-              element="span"
-              textStyle="body12"
-              textColor="secondary"
-              aria-live="polite"
-              // Digits only. "0 characters / 4000 max" reads as a sentence and
-              // gets re-read on every keystroke; "0/4000" is a readout — the eye
-              // catches the changing number without parsing words around it.
-              // tabular-nums keeps it from twitching as the width of digits changes.
-              className="ms-auto shrink-0 whitespace-nowrap tabular-nums"
-            >
-              {count}/{maxLength}
-            </Typography>
-          ) : null}
-        </div>
-      ) : null}
+      <TextAreaFooter
+        errorId={errorId}
+        errorText={errorText}
+        hintId={hintId}
+        hintText={hintText}
+        countId={countId}
+        length={length}
+        limit={maxLength}
+        disabled={disabled}
+      />
     </div>
   );
 };

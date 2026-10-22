@@ -33,7 +33,7 @@ const CATEGORIES = [
  * that rather than storing it.
  */
 const meta = {
-  title: 'Components/FilterChips',
+  title: 'Compositions/FilterChips',
   component: FilterChips,
   tags: ['autodocs'],
   args: {

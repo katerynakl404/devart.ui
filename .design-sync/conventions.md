@@ -153,7 +153,7 @@ These come from the design-system audit and are not optional:
 3. **Every icon-only control needs an accessible name.** `IconButton` requires
    `aria-label`; name the action ("Remove file"), not the surrounding row.
 4. **Button variants**: `primary` `secondary` `outline`
-   `tertiary` `destructive` `destructiveOutline` `destructiveTertiary`
+   `tertiary` `destructive` `destructiveSecondary` `destructiveTertiary`
    `transparent` `transparentUnderline`. There is **no `ghost`** — use
    `tertiary`. Sizes `xs|sm|md|lg|xl` carry padding 8/12/12/16/20; `Button`,
    `InputGroup` and `TextArea` share that ladder, so a button and a field of the

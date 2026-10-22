@@ -1,6 +1,11 @@
 'use client';
 
-import type { ComponentProps, ReactNode } from 'react';
+import type {
+  ComponentProps,
+  KeyboardEvent,
+  MouseEvent,
+  ReactNode,
+} from 'react';
 import { onButtonKeyDown } from '../../lib/button-keyboard';
 import { cva } from '../../lib/cva';
 import { cn, focusRing, liftOnHover } from '../../lib/utils';
@@ -44,8 +49,7 @@ const iconCardVariants = cva(
   }
 );
 
-export interface IconCardProps
-  extends Omit<ComponentProps<'div'>, 'children' | 'onClick' | 'onKeyDown'> {
+export interface IconCardProps extends Omit<ComponentProps<'div'>, 'children'> {
   /**
    * Gates activation as well as the overlay, so it is declared here rather than
    * inherited from the recipe — a style axis may be `null`, a behavioural prop
@@ -62,6 +66,12 @@ export interface IconCardProps
   actionLabel: string;
   /** Glyph before `actionLabel` on the overlay. */
   actionIcon?: ReactNode;
+  /**
+   * Semantic activation (connect, open, …). Skipped when `disabled`, or when a
+   * composed `onClick` / `onKeyDown` calls `preventDefault` — so a parent can
+   * intercept (e.g. plan-locked upgrade on click only) without the card
+   * overwriting that handler.
+   */
   onActivate?: () => void;
 }
 
@@ -74,6 +84,10 @@ export interface IconCardProps
  * mark just enough to give the action a ground to sit on while the tile stays
  * recognisable underneath. Without it a button placed on the tile has the mark
  * and the caption showing through it and reads as floating, not pressable.
+ *
+ * `onClick` / `onKeyDown` compose with `onActivate`: callers run first and may
+ * `preventDefault` to block activation (kit: locked catalog tiles answer the
+ * click with an upgrade path, never the hover).
  */
 const IconCard = ({
   icon,
@@ -84,6 +98,8 @@ const IconCard = ({
   disabled = false,
   className,
   onActivate,
+  onClick,
+  onKeyDown,
   ...props
 }: IconCardProps) => {
   const handleActivate = () => {
@@ -92,14 +108,28 @@ const IconCard = ({
     onActivate?.();
   };
 
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+
+    handleActivate();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented) return;
+
+    onButtonKeyDown(handleActivate)(event);
+  };
+
   return (
     <Card
       {...props}
       aria-disabled={disabled}
       className={cn(iconCardVariants({ disabled }), className)}
       fullWidth
-      onClick={handleActivate}
-      onKeyDown={onButtonKeyDown(handleActivate)}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
       variant="elevated"
@@ -131,8 +161,11 @@ const IconCard = ({
             // touching the edge of the surface it sits on reads as clipped.
             'absolute inset-0 hidden items-center justify-center px-2 lg:flex',
             'bg-ds-card-scrim',
-            'opacity-0 transition-opacity duration-slow',
-            'group-hover/icon-card:opacity-100 group-focus-visible/icon-card:opacity-100'
+            // Pointer-inert until it shows: an invisible overlay must not be
+            // what a click lands on.
+            'pointer-events-none opacity-0 transition-opacity duration-slow',
+            'group-hover/icon-card:pointer-events-auto group-hover/icon-card:opacity-100',
+            'group-focus-visible/icon-card:pointer-events-auto group-focus-visible/icon-card:opacity-100'
           )}
         >
           <span
