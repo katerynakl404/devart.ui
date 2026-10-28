@@ -58,7 +58,7 @@ found and written down, not fixed.
 | `Banner` | §85 the dismiss was a tertiary button on a painting<br>§90 `sm` kept the default's line gap |
 | `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveSecondary` disables the same<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§147 `destructiveOutline` → `destructiveSecondary` — the secondary's destructive form<br>§151 `tooltip` on `IconButton`, `Button` and `Switch` — the action or the reason on hover; a disabled control keeps it (`aria-disabled`, painted on every variant) · draft |
 | `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe, 1px<br>§60 `elevated` and `ghost` carry the card's box<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` and `divided` — a tall card keeps its actions in reach, as a band of its own · draft<br>§162 `CardHeader` `actions` — the head's trailing link or button, on the title's line · draft |
-| `Checkbox` | §57 the tick and the bar at one weight, 1.5px |
+| `Checkbox` | §57 the tick and the bar at one weight, 1.5px<br>§163 the disabled mark fades with its box<br>§164 the label in `--ink-body` |
 | `ClampedText` | §153 **new** — a text cut to N lines, See more only when there is more · draft |
 | `CodeBlock` | §48 a snippet and the control that copies it, as one object · draft<br>§81 scrolled with the browser's own bar<br>§127 a header, line numbers, a height, wrapping<br>§128 `variant="error"`<br>§129 syntax colours — `--code-*`, `codeSyntaxVariants` |
 | `ConfirmationDialog` | §157 `description` — a paragraph that may name its subject in bold |
@@ -685,6 +685,24 @@ A stroke rather than a box of the same height: a stroke with a round cap
 antialiases across more pixels than a rectangle, so at 1.5px a box bar read
 thinner than the tick beside it. A mark below 16px keeps the weight its
 component gives it (§92).
+
+## 163. `Checkbox` — the disabled mark fades with its box
+
+`src/components/Checkbox/Checkbox.tsx`
+
+`upstream` repaints a disabled checked or indeterminate mark in `--ink-inactive`
+on top of the box's own `opacity-disabled` fade, so the tick and the bar all
+but disappear on the faded brand fill. Here the mark keeps its ink
+(`content-on-solid`) and fades with the box: disabled is an opacity fade, not
+a colour swap.
+
+## 164. `Checkbox` — the label in `--ink-body`
+
+`src/components/Checkbox/Checkbox.tsx`, `CheckboxGroup.tsx`
+
+The label took its colour from wherever the checkbox was placed; it is
+`text-ink-body` now. `CheckboxGroup`'s option labels carried no type at all and
+take a standalone checkbox's `font-medium text-sm`.
 
 ---
 

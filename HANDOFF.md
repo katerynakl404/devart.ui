@@ -11,11 +11,11 @@ A § leaves `DESIGN-SYSTEM-CHANGES.md` only when the developers have **released*
 | design base | `upstream` **1.4.0 — `f69ebc9`** (since 2026-10-28, the 1.3/1.4 sync §154). Packages are cut from it; `git diff f69ebc9 master -- <files>` is what is still ahead |
 | developers now | 1.4.0 — `f69ebc9` (2026-10-27) |
 | route | **A** — branch `design/<KEY>-<slug>` pushed to their project, MR inside it, their CI runs (2026-10-28) |
-| her role in their project | **Developer** — her word, 2026-10-28; the MCP check confirms it (`list_project_members`). Developer can push a branch, not `master` if it is protected; merging stays theirs |
+| her role in their project | **Developer** (access level 30) — confirmed by the MCP, 2026-10-28. Can push a branch; merging stays theirs |
 | `katerynak/design-system` a GitLab fork of theirs | not needed for route A |
 | AIINS task per MR | **none** — her decision, 2026-10-28; the § number is the reference |
 | grouping | **one MR per component** if it is not big (≈300 lines, ≈5 §s, or any 🔴 → split by §); one commit per § |
-| GitLab MCP | `Design system/.mcp.json` → built-in server, not yet authorised; all write tools denied |
+| GitLab MCP | `Design system/.mcp.json` → built-in server, GitLab 19.5.1, **connected** 2026-10-28 as `katerynak`; all write tools denied — also those of the GitLab plugin (`mcp__plugin_gitlab_gitlab__*`) |
 | worktree | `Design system/_handoff` (own `core.autocrlf=input`) |
 
 Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `in review` → `merged` →
@@ -25,7 +25,7 @@ Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `i
 
 | id | § | component | local branch | bump | gates | MR | status |
 |---|---|---|---|---|---|---|---|
-| H-001 | §57 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `1160fa9` | patch | all 6 ✓ | — | prepared (test run) |
+| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4db76c2` (one commit) → publish as `design/checkbox` | patch | 5 ✓, test:storybook before publishing | — | prepared |
 
 ## Waves — how the rest breaks down (2026-10-27)
 
@@ -57,39 +57,38 @@ Index of `DESIGN-SYSTEM-CHANGES.md`: 127 entries — 85 signed off, 41 draft, 1 
 
 ---
 
-## H-001 — §57 `Checkbox`: the tick and the bar at one weight
+## H-001 — `Checkbox`: §57 §99 §163 §164
 
-Test run of the workflow: built on `upstream/master` `f69ebc9`, never pushed.
+Cut from `upstream/master` `f69ebc9`, one commit `4db76c2`, 5 files (+118 −25). Not pushed.
 
-- **Files:** `Checkbox.tsx` (the § hunks only — not `focusRing`, `enabled:hover`, `duration-fast`,
-  `size-control` or the export list, which are other §s), `Checkbox.stories.tsx` (+ disabled and
-  invalid indeterminate), `recipes.md` snapshot, `.changeset/checkbox-mark-weight.md`.
-- **Gates:** format-and-lint ✓ · lint:tokens ✓ (503) · check-types ✓ · test:unit ✓ 363 (snapshot: 2
-  lines, `checkboxIndicatorVariants` only) · test:storybook ✓ 342 in Chromium · check-changeset ✓ patch.
-- **Rendered** (Storybook of the worktree, port 6020): all 8 states draw a 12px mark at stroke 3; the
-  bar is `M2 12h20`.
-- **🔴** reaches the app only after their release and an upgrade in `apps/web`.
+- **Gates:** format-and-lint ✓ · lint:tokens ✓ · check-types ✓ · test:unit ✓ 363 (snapshot: Checkbox
+  lines only) · test:storybook ✓ 343 · check-changeset ✓ patch.
+- **Checked live:** the tooltip opens over the disabled box itself; no hover fill; cursor not-allowed.
+- **Her answers (2026-10-28):** rows 1–5 of the change sheet approved; rows 6–8 wait for foundations;
+  exports and `Checkbox.md` stay out.
 
-**MR title:** `[UI-Kit]: Checkbox — галочка і риска індетермінату однієї товщини, як у кіті`
+**MR title:** `[UI-Kit]: Checkbox — товщина позначок, вимкнений стан і підпис, як у кіті`
 
 **MR description:**
 
-> ## Що і чому
-> Галочка і риска індетермінату тепер однієї ваги, як у дизайн-кіті. Було: Lucide `Check` і `Minus`
-> 14px зі штатним штрихом — риска читалась тоншою за галочку поруч. Стало: обидві 12px, stroke 3
-> (1.5px на екрані), риска — штрих у viewBox галочки, `M2 12h20`, 10px (Lucide `Minus` — 7px).
+> ## Що змінилось
 >
-> | § | що змінилось | bump |
+> | § | Зміна | Було → стало |
 > |---|---|---|
-> | §57 | позначки 12px / stroke 3; риска 10px | patch |
+> | §57 | Галочка і риска однієї товщини | 14px, штрих Lucide; риска 7px → 12px, stroke 3 (1.5px); риска 10px |
+> | §99 | Вимкнений не підсвічується під курсором | `hover:` → `enabled:hover:`; прибрано `disabled:pointer-events-none` — видно курсор not-allowed |
+> | §99 | На вимкнений можна повісити підказку | нова сторі `DisabledWithTooltip` (підказка на обгортці: `TooltipTrigger asChild` перетер би `data-state`) |
+> | §163 | Позначка вимкненого блідне разом із квадратиком | була `text-ink-inactive` — майже не видно → `content-on-solid` + `opacity-disabled` |
+> | §164 | Підпис | `text-ink-body`; підписи `CheckboxGroup` — `font-medium text-sm`, як в одиночного |
 >
-> ## Перевірки (локально, на `upstream/master` f69ebc9)
-> format-and-lint ✓ · lint:tokens ✓ · check-types ✓ · test:unit ✓ (знімок: 2 рядки, лише
-> `checkboxIndicatorVariants`) · test:storybook ✓ · check-changeset ✓ (patch)
+> Пропи, експорти й `data-*` без змін. Bump: **patch**.
 >
-> ## 🔴
-> - До застосунку дійде лише після релізу пакета й оновлення версії в `apps/web`.
+> **Дизайн:** https://katerynakl404.github.io/devart.ui/?path=/story/components-checkbox--states
 >
-> ## Чого тут немає
-> Інші відмінності `Checkbox` у дизайн-бібліотеці (кільце фокусу, `enabled:hover`, токени тривалості
-> й розміру, колір позначки у вимкненому стані) — окремими §, окремими MR.
+> **Перевірки (локально, на `master` f69ebc9):** format-and-lint ✓ · lint:tokens ✓ · check-types ✓ ·
+> test:unit ✓ (знімок — лише рядки Checkbox) · test:storybook ✓ · check-changeset ✓
+>
+> 🔴 До застосунку дійде після релізу пакета й оновлення версії в `apps/web`.
+>
+> **Не входить** (окремими MR пізніше): анімація через токен `duration-fast`, розмір через `size-control`,
+> фокус через спільний `focusRing` — чекають спільних основ.
