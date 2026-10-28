@@ -25,7 +25,7 @@ Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `i
 
 | id | § | component | local branch | bump | gates | MR | status |
 |---|---|---|---|---|---|---|---|
-| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4db76c2` (one commit) → publish as `design/checkbox` | patch | 5 ✓, test:storybook before publishing | — | prepared |
+| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4698ac9` (one commit) → publish as `design/checkbox` | patch | all 6 ✓ | — | prepared |
 
 ## Waves — how the rest breaks down (2026-10-27)
 
@@ -59,15 +59,17 @@ Index of `DESIGN-SYSTEM-CHANGES.md`: 127 entries — 85 signed off, 41 draft, 1 
 
 ## H-001 — `Checkbox`: §57 §99 §163 §164
 
-Cut from `upstream/master` `f69ebc9`, one commit `4db76c2`, 5 files (+118 −25). Not pushed.
+Cut from `upstream/master` `f69ebc9`, one commit `4698ac9`, 5 files (+128 −25). Not pushed.
 
 - **Gates:** format-and-lint ✓ · lint:tokens ✓ · check-types ✓ · test:unit ✓ 363 (snapshot: Checkbox
   lines only) · test:storybook ✓ 343 · check-changeset ✓ patch.
 - **Checked live:** the tooltip opens over the disabled box itself; no hover fill; cursor not-allowed.
+- **§57 reworked on her review (2026-10-28):** marks looked off-centre and the bar long → redrawn in a 10px grid,
+  bar 8px; approved in the design library first («на локал виглядає ок»), then ported.
 - **Her answers (2026-10-28):** rows 1–5 of the change sheet approved; rows 6–8 wait for foundations;
   exports and `Checkbox.md` stay out.
 
-**MR title:** `[UI-Kit]: Checkbox — товщина позначок, вимкнений стан і підпис, як у кіті`
+**MR title:** `[UI-Kit]: Checkbox — позначки по центру й однієї товщини, вимкнений стан і підпис, як у дизайні`
 
 **MR description:**
 
@@ -75,7 +77,7 @@ Cut from `upstream/master` `f69ebc9`, one commit `4db76c2`, 5 files (+118 −25)
 >
 > | § | Зміна | Було → стало |
 > |---|---|---|
-> | §57 | Галочка і риска однієї товщини | 14px, штрих Lucide; риска 7px → 12px, stroke 3 (1.5px); риска 10px |
+> | §57 | Галочка й риска однієї товщини, по центру | Lucide 14px → власна сітка 10px, stroke 1.5; 4px з боків — цілий піксель при 100–200%; риска 8px, по 5px до країв |
 > | §99 | Вимкнений не підсвічується під курсором | `hover:` → `enabled:hover:`; прибрано `disabled:pointer-events-none` — видно курсор not-allowed |
 > | §99 | На вимкнений можна повісити підказку | нова сторі `DisabledWithTooltip` (підказка на обгортці: `TooltipTrigger asChild` перетер би `data-state`) |
 > | §163 | Позначка вимкненого блідне разом із квадратиком | була `text-ink-inactive` — майже не видно → `content-on-solid` + `opacity-disabled` |
