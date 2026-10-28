@@ -58,7 +58,7 @@ found and written down, not fixed.
 | `Banner` | §85 the dismiss was a tertiary button on a painting<br>§90 `sm` kept the default's line gap |
 | `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveSecondary` disables the same<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§147 `destructiveOutline` → `destructiveSecondary` — the secondary's destructive form<br>§151 `tooltip` on `IconButton`, `Button` and `Switch` — the action or the reason on hover; a disabled control keeps it (`aria-disabled`, painted on every variant) · draft |
 | `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe, 1px<br>§60 `elevated` and `ghost` carry the card's box<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` and `divided` — a tall card keeps its actions in reach, as a band of its own · draft<br>§162 `CardHeader` `actions` — the head's trailing link or button, on the title's line · draft |
-| `Checkbox` | §57 the tick and the bar at one weight, 1.5px<br>§163 the disabled mark fades with its box<br>§164 the label in `--ink-body` |
+| `Checkbox` | §57 the tick and the bar at one weight, 1.5px, centred in a 10px grid<br>§163 the disabled mark fades with its box<br>§164 the label in `--ink-body` |
 | `ClampedText` | §153 **new** — a text cut to N lines, See more only when there is more · draft |
 | `CodeBlock` | §48 a snippet and the control that copies it, as one object · draft<br>§81 scrolled with the browser's own bar<br>§127 a header, line numbers, a height, wrapping<br>§128 `variant="error"`<br>§129 syntax colours — `--code-*`, `codeSyntaxVariants` |
 | `ConfirmationDialog` | §157 `description` — a paragraph that may name its subject in bold |
@@ -671,20 +671,34 @@ card.
 
 # `Checkbox`
 
-## 57. `Checkbox` — the tick and the bar at one weight
+## 57. `Checkbox` — the tick and the bar at one weight, centred
 
 `src/components/Checkbox/Checkbox.tsx`
 
 `upstream` draws lucide `Check` and `Minus` at 14px (`[&>svg]:size-3.5`) at
-Lucide's default stroke. Here both marks are 12px at stroke 3 — 1.5px rendered,
-the kit's tick (`<svg width="12" stroke-width="3">`) — and the bar is a stroke
-in the tick's own viewBox, `M2 12h20`: 10px long, where Lucide's `Minus`
-(`M5 12h14`) is 7px.
+Lucide's default stroke. Here both marks are drawn in the component, in one
+10px grid (1 unit = 1px): stroke 1.5px, round caps — the kit's tick weight.
 
-A stroke rather than a box of the same height: a stroke with a round cap
-antialiases across more pixels than a rectangle, so at 1.5px a box bar read
-thinner than the tick beside it. A mark below 16px keeps the weight its
-component gives it (§92).
+- **One grid, at the marks' own size.** Not a 24-unit icon halved, whose
+  coordinates land wherever the halving puts them.
+- **10px in an 18px box — 4px a side.** 4px is a whole device pixel at 100,
+  125, 150 and 200%; the earlier 12px glyph sat at 3px, which is 3.75 and 4.5
+  device px, and the snapped glyph could slide by a fraction of a pixel.
+- **The bar is 8px including its round caps, 5px clear of the box on each side**
+  (`M1.75 5h6.5`). `M2 12h20` at 24 units measured 11.5px and left 3.25px a side;
+  the legacy kit's 10px (`.625rem`) still crowded the sides — shortened on review,
+  2026-10-28. The legacy kit draws its own checkbox in CSS; this component is the source.
+- **The tick is centred on its frame** (`M9 2.25 3.5 7.75 1 5.25`): the halved
+  lucide tick sat 0.25px high and read high and to the right.
+- A stroke rather than a box of the same height: a stroke with a round cap
+  antialiases across more pixels than a rectangle, so at 1.5px a box bar read
+  thinner than the tick beside it. A mark below 16px keeps the weight its
+  component gives it (§92).
+
+Measured in Chromium at 100 / 125 / 150 / 200%, edges read from the pixels:
+the bar's gaps are equal to within 0.04px at every scale and in every state
+(rest, disabled, invalid); the tick's ink
+centroid is 0.00–0.02px off centre horizontally.
 
 ## 163. `Checkbox` — the disabled mark fades with its box
 

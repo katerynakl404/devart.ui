@@ -1,7 +1,6 @@
 'use client';
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
-import { Check } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 
@@ -89,9 +88,11 @@ const checkboxIndicatorVariants = cva(
   {
     variants: {
       size: {
-        // Check mark is a 12x12 stroke-3 glyph, which renders at 1.5px;
-        // the indeterminate bar is 10 x 1.5px, the same weight.
-        md: '[&>svg]:size-3',
+        // Both marks are drawn in a 10px glyph box (see the glyphs below).
+        // 10 in 18 leaves 4px a side, which is a whole device pixel at 100,
+        // 125, 150 and 200% — at 12px the 3px offset fell on 3.75 and 4.5
+        // device px, and the snapped glyph slid up to a third of a pixel.
+        md: '[&>svg]:size-2.5',
       },
     },
     defaultVariants: {
@@ -155,30 +156,37 @@ function Checkbox({
       <CheckboxPrimitive.Indicator
         className={cn(checkboxIndicatorVariants({ size }), 'group/indicator')}
       >
-        <Check
+        {/* Both marks are drawn here, at their own size, in one 10px grid:
+            1 unit = 1px, stroke 1.5px, round caps — one weight, one renderer.
+            Not a 24-unit icon halved, whose coordinates fall where the halving
+            puts them.
+
+            The tick is centred on its frame — the halved lucide tick sat 0.25px
+            high and read high and to the right. The bar is 8px including its
+            round caps, 5px clear of the box on each side — at the kit's 10px
+            (and `M2 12h20`'s 11.5px) it crowded the sides. DESIGN-SYSTEM-CHANGES §57. */}
+        <svg
+          aria-hidden="true"
           className="group-data-[state=indeterminate]/indicator:hidden"
-          strokeWidth={3}
-        />
-        {/* Drawn the way the tick is drawn, not as a box.
-
-            A 1.5px `<span>` and a 1.5px stroke are the same number and not the
-            same weight: the tick is a diagonal with round caps, which
-            antialiases across more pixels and reads heavier, so the bar looked
-            thinner at equal height. Same viewBox, same stroke-width, same cap
-            — the two marks now go through one renderer.
-
-            `M2 12h20` rather than lucide's `Minus` (`M5 12h14`): 20 of 24 units
-            is 10px at this size, the kit's `.625rem` bar. Lucide's would be 7. */}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.5}
+          viewBox="0 0 10 10"
+        >
+          <path d="M9 2.25 3.5 7.75 1 5.25" />
+        </svg>
         <svg
           aria-hidden="true"
           className="hidden group-data-[state=indeterminate]/indicator:block"
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
-          strokeWidth={3}
-          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          viewBox="0 0 10 10"
         >
-          <path d="M2 12h20" />
+          <path d="M1.75 5h6.5" />
         </svg>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
