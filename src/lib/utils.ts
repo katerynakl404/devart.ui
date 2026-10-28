@@ -85,10 +85,17 @@ export const glyphStroke = '[&_svg]:stroke-2';
  * one; transparent holds on every surface, and the border and the label carry
  * the state. The kit paints `--state-disabled` here
  * (`.s-disabled.btn-secondary`); deliberate divergence.
+ *
+ * The same for the focusable `aria-disabled` form (2026-10-27), which a
+ * disabled control with a `tooltip` renders — and which, unlike `disabled`,
+ * still takes `:active`, so the press is switched off as well.
  */
 export const secondaryDisabled = cn(
   'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive',
-  'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent'
+  'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent',
+  'aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+  'aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent',
+  'aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent'
 );
 
 /**

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 import { Typography } from '../Typography';
 import { LinkButton } from './index';
 
@@ -67,12 +68,48 @@ export const Inline: Story = {
   render: () => (
     <Typography textStyle="body14">
       Connections are shared across the workspace. See{' '}
-      <LinkButton variant="inline">how permissions work</LinkButton> before you
-      invite anyone, or{' '}
-      <LinkButton variant="inline" tone="body">
+      <LinkButton href="#" variant="inline">
+        how permissions work
+      </LinkButton>{' '}
+      before you invite anyone, or{' '}
+      <LinkButton href="#" variant="inline" tone="body">
         read the overview
       </LinkButton>{' '}
       first.
     </Typography>
   ),
+};
+
+/**
+ * Without `href` it is a `<button type="button">` with the same look — for a
+ * link-styled control that acts rather than goes: "Select all", "View more",
+ * a row's "Set up". It takes Tab and answers Enter and Space, which an `<a>`
+ * with no `href` did not. Inspect the two: an `<a>` beside a `<button>`.
+ */
+export const AsButton: Story = {
+  render: () => {
+    const [all, setAll] = useState(false);
+    const [open, setOpen] = useState(false);
+    return (
+      <div className="flex flex-col items-start gap-3">
+        <Typography textStyle="body14" textColor="secondary">
+          {all ? '5 selected' : '5 connections'} ·{' '}
+          <LinkButton onClick={() => setAll((v) => !v)}>
+            {all ? 'Deselect all' : 'Select all'}
+          </LinkButton>
+        </Typography>
+        <LinkButton
+          className="text-sm"
+          rightSlot={open ? <ChevronUp /> : <ChevronDown />}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? 'View less' : 'View more'}
+        </LinkButton>
+        <LinkButton href="#" className="text-sm" rightSlot={<ArrowRight />}>
+          Permissions — with an href, a link
+        </LinkButton>
+      </div>
+    );
+  },
 };

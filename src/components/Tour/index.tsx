@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useId, useRef, useState } from 'react';
 import {
   resolveTargets,
   type TourTarget,
@@ -9,13 +9,10 @@ import {
 import { cn } from '../../lib/utils';
 import { Annotation, AnnotationGroup } from '../Annotation';
 import { Button } from '../Button';
-import {
-  Coachmark,
-  type CoachmarkPlacement,
-  type CoachmarkSide,
-} from '../Coachmark';
+import type { GuideCardSide } from '../GuideCard';
 import { Spotlight } from '../Spotlight';
 import { StepProgress, type StepProgressStep } from '../StepProgress';
+import { TourCard, type TourCardPlacement } from './TourCard';
 
 export interface TourAnnotation {
   /** The control(s) the label points at. */
@@ -30,14 +27,15 @@ export interface TourStep {
   target: TourTarget;
   title: ReactNode;
   icon?: ReactNode;
-  /** The coachmark's body. */
+  /** The card's body. */
   content?: ReactNode;
   /** The step's short name in the progress read-out. Default: `title`, when it is a string. */
   label?: string;
-  /** Preferred coachmark sides, in order. */
-  side?: CoachmarkSide | readonly CoachmarkSide[];
+  /** Preferred sides for the card, in order. @default ['bottom', 'top', 'right', 'left'] */
+  side?: GuideCardSide | readonly GuideCardSide[];
+  /** The card's width: `md` 352px, `lg` 464px. @default 'md' */
   width?: 'md' | 'lg';
-  /** Labels drawn under the lit area; listed inside the coachmark ≤ 640px. */
+  /** Labels drawn under the lit area; listed inside the card ≤ 640px. */
   annotations?: TourAnnotation[];
 }
 
@@ -80,14 +78,21 @@ const DEFAULT_LABELS: Required<TourLabels> = {
   finish: 'Done',
 };
 
+const DEFAULT_SIDES: readonly GuideCardSide[] = [
+  'bottom',
+  'top',
+  'right',
+  'left',
+];
+
 /* How long a closing tour stays mounted while it fades out. */
 const LEAVE_MS = 300;
 
-/* Labels drawn below the lit area clear it — or the coachmark, when the card
-   sits under the target — by 34px. */
+/* Labels drawn below the lit area clear it — or the card, when the card sits
+   under the target — by 34px. */
 const ANNOTATION_GAP = 34;
 
-/* The annotations' texts, inside the bottom-sheet coachmark ≤ 640px. */
+/* The annotations' texts, inside the bottom-sheet card ≤ 640px. */
 const TOUR_LIST = cn(
   'm-0 mt-3 hidden list-none flex-col gap-2 p-0',
   '[@media(max-width:640px)]:flex'
@@ -103,14 +108,21 @@ const TOUR_LIST_ICON = cn(
 );
 
 /**
- * A guided walk over the real interface: `Spotlight` + `Coachmark` (+
+ * A guided walk over the real interface: `Spotlight` + `GuideCard` (+
  * `AnnotationGroup`) per step, with the step held by the caller.
  *
- * The coachmark carries the progress (`StepProgress size="sm" fill`), the
- * step's title and body, and Back · Skip · Next (Done on the last step).
- * Keyboard: → next, ← back, Esc closes — ignored while typing in a field.
- * Focus moves to the coachmark on every step; a click on the scrim nudges it.
- * Closing (`open` → false) fades the whole tour out over 300ms, then unmounts.
+ * The tour is the engine the developers' `GuideCard` leaves things to: it
+ * places the card (first preferred side where it fits whole, a bottom sheet
+ * ≤ 640px), passes it the side and the arrow's offset, owns the scrim, makes
+ * the card a non-modal dialog labelled by its title and described by its
+ * body, and moves focus to it.
+ *
+ * The card carries the progress (`StepProgress size="sm" labelPosition="top"
+ * showStepTitle`), the step's title and body, and Back · Skip · Next (Done on
+ * the last step). Keyboard: → next, ← back, Esc closes — ignored while typing
+ * in a field. Focus moves to the card on every step; a click on the scrim
+ * nudges it. Closing (`open` → false) fades the whole tour out over 300ms,
+ * then unmounts.
  */
 function Tour({
   open = false,
@@ -128,6 +140,8 @@ function Tour({
   const current: Partial<TourStep> = steps[i] ?? {};
   const last = i === steps.length - 1;
   const L = { ...DEFAULT_LABELS, ...labels };
+  const titleId = useId();
+  const descriptionId = useId();
 
   /* Closing never just vanishes: open → false keeps the tour mounted for
      LEAVE_MS while every layer fades out and takes no clicks. */
@@ -154,9 +168,9 @@ function Tour({
     padding,
     boundary,
   });
-  const coachmark = useRef<HTMLDivElement | null>(null);
+  const card = useRef<HTMLDivElement | null>(null);
   const [nudge, setNudge] = useState(0);
-  const [placed, setPlaced] = useState<CoachmarkPlacement | null>(null);
+  const [placed, setPlaced] = useState<TourCardPlacement | null>(null);
 
   /* the latest callbacks, for the document listener and the buttons */
   const props = useRef({ onStepChange, onClose, onBeforeFirst });
@@ -180,7 +194,7 @@ function Tour({
     const first = resolveTargets(current.target)[0];
     first?.scrollIntoView?.({ block: 'nearest' });
     const timer = setTimeout(
-      () => coachmark.current?.focus({ preventScroll: true }),
+      () => card.current?.focus({ preventScroll: true }),
       60
     );
     return () => clearTimeout(timer);
@@ -225,6 +239,11 @@ function Tour({
     ...s,
     done: s.done ?? k < progCurrent,
   }));
+  const prefer: readonly GuideCardSide[] = current.side
+    ? typeof current.side === 'string'
+      ? [current.side]
+      : current.side
+    : DEFAULT_SIDES;
   const annotations = current.annotations ?? [];
   const r = geo.rect;
   const annotationTop = r
@@ -233,6 +252,26 @@ function Tour({
         placed && placed.side === 'bottom' ? placed.bottom : 0
       ) + ANNOTATION_GAP
     : null;
+
+  const body =
+    current.content || annotations.length ? (
+      <>
+        {current.content}
+        {annotations.length ? (
+          <ul data-slot="tour-annotation-list" className={TOUR_LIST}>
+            {annotations.map((a, k) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: annotations are positional within a step
+              <li key={k} className={TOUR_LIST_ITEM}>
+                {a.icon ? (
+                  <span className={TOUR_LIST_ICON}>{a.icon}</span>
+                ) : null}
+                <span>{a.text}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </>
+    ) : null;
 
   const footer = (
     <>
@@ -283,22 +322,29 @@ function Tour({
           ))}
         </AnnotationGroup>
       ) : null}
-      <Coachmark
-        ref={coachmark}
+      <TourCard
+        ref={card}
         rect={r}
         bounds={geo.bounds}
-        leaving={leaving}
-        side={current.side}
-        width={current.width}
-        nudge={nudge}
+        prefer={prefer}
         onPlace={setPlaced}
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby={current.title ? titleId : undefined}
+        aria-describedby={body ? descriptionId : undefined}
+        titleId={titleId}
+        descriptionId={descriptionId}
+        width={current.width}
+        nudgeCount={nudge}
+        isLeaving={leaving}
         header={
           <StepProgress
             size="sm"
-            fill
+            labelPosition="top"
             showStepTitle
             steps={progSteps}
             current={progCurrent}
+            label={`Step ${progCurrent + 1} of ${progSteps.length}`}
             aria-label="Progress"
           />
         }
@@ -306,25 +352,19 @@ function Tour({
         title={current.title}
         footer={footer}
       >
-        {current.content}
-        {annotations.length ? (
-          <ul data-slot="tour-annotation-list" className={TOUR_LIST}>
-            {annotations.map((a, k) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: annotations are positional within a step
-              <li key={k} className={TOUR_LIST_ITEM}>
-                {a.icon ? (
-                  <span className={TOUR_LIST_ICON}>{a.icon}</span>
-                ) : null}
-                <span>{a.text}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-      </Coachmark>
+        {body}
+      </TourCard>
     </>
   );
 }
 
 Tour.displayName = 'Tour';
 
+export {
+  GUIDE_CARD_EDGE,
+  GUIDE_CARD_GAP,
+  type GuideCardPosition,
+  placeGuideCard,
+} from './place';
+export { type TourCardPlacement, tourCardVariants } from './TourCard';
 export { Tour };

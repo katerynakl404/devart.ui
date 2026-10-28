@@ -93,10 +93,15 @@ const STEPS: TourStep[] = [
 
 /**
  * A guided walk over the real interface: per step a `Spotlight`, a
- * `Coachmark` and, when the step has them, annotations. The caller holds the
+ * `GuideCard` and, when the step has them, annotations. The caller holds the
  * step; the tour reports how it ended.
  *
- * Keyboard: → next, ← back, Esc closes. Focus moves to the coachmark on every
+ * The tour is the card's engine: it places the card on the first preferred
+ * side where it fits whole and passes it the side and the arrow's offset; at
+ * 640px and below the card is a bottom sheet with no arrow. The card is a
+ * non-modal dialog labelled by its title.
+ *
+ * Keyboard: → next, ← back, Esc closes. Focus moves to the card on every
  * step; a click on the scrim nudges it. Closing fades the tour out.
  */
 const meta = {
@@ -187,7 +192,7 @@ export const PartOfAFlow: Story = {
   },
 };
 
-/** At 640px and below: the coachmark is a bottom sheet and lists the annotations. */
+/** At 640px and below: the card is a bottom sheet and lists the annotations. */
 export const Phone: Story = {
   args: { step: 1 },
   globals: { viewport: { value: 'mobile1', isRotated: false } },

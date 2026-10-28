@@ -1,7 +1,7 @@
 import { BREAKPOINTS } from '../../lib/breakpoints';
 
 /**
- * Shared geometry of the tour family — `Spotlight`, `Coachmark`,
+ * Shared geometry of the tour family — `Spotlight`, `Tour` (placing `GuideCard`),
  * `AnnotationGroup` and `Tour` all measure the same way.
  *
  * A target is a selector, an element, a ref (`{ current }`) or an array of
@@ -26,7 +26,7 @@ export interface TargetRect {
 }
 
 /**
- * ≤ 640px the coachmark is a bottom sheet and annotations fold into it. One
+ * ≤ 640px the tour's card is a bottom sheet and annotations fold into it. One
  * pixel wider than Tailwind's `max-sm:` on purpose: the CSS says
  * `max-width: 640px`, and this has to agree with it.
  */

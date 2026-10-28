@@ -46,7 +46,7 @@ export interface AnnotationGroupProps {
   ref?: Ref<HTMLDivElement>;
 }
 
-/* Hidden ≤ 640px — a coachmark lists the same texts there instead. */
+/* Hidden ≤ 640px — the tour card lists the same texts there instead. */
 const annotationGroupVariants = cva(
   cn(
     'pointer-events-none fixed inset-0 z-[calc(var(--spotlight-z)+1)]',

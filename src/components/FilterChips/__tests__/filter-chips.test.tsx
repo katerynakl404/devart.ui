@@ -43,7 +43,7 @@ const chip = (label: string) =>
 
 describe('FilterChips', () => {
   it('renders one radio per item and checks only the active one', () => {
-    render(
+    const { container } = render(
       <FilterChips items={ITEMS} value="images" onValueChange={vi.fn()} />
     );
 
@@ -52,6 +52,10 @@ describe('FilterChips', () => {
     expect(chip('Images')).toHaveAttribute('data-state', 'on');
     expect(chip('All')).toHaveAttribute('aria-checked', 'false');
     expect(chip('All')).toHaveAttribute('data-state', 'off');
+    // ScrollShadow must not insert an unnamed Tab stop before the chips (AIINS-2137).
+    expect(container.querySelector('.overflow-x-auto')).not.toHaveAttribute(
+      'tabindex'
+    );
   });
 
   it('shows a count of zero and omits a missing count', () => {

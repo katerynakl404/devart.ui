@@ -73,6 +73,10 @@ const sheetVariants = cva(
   cn(
     'fixed z-50 gap-4 p-6',
     'bg-surface-card',
+    // The edge the side draws (`border-r`, `border-t`…) in the system's
+    // line. Uncoloured it took Tailwind's default grey-200 — a white stripe
+    // down a dark sheet, the sidebar drawer's included (2026-10-27).
+    'border-stroke',
 
     'shadow-lg',
     'transition ease-in-out',

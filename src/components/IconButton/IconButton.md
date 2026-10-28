@@ -50,3 +50,7 @@ className="text-fb-red" />` has no hit area, no hover and no focus ring.
 `isLoading` swaps the glyph for a `Spinner` and sets `aria-busy` without
 disabling. Focus is the kit-wide brand ring on every variant, destructive
 included — a red ring on a red control reads as noise.
+
+`tooltip` names the action on hover and focus (`true` → the `aria-label`). With
+`disabled` as well, the control is rendered `aria-disabled` so the tooltip still
+opens — use it to say why the action is off. Same code as `Button`'s `tooltip`.

@@ -7,11 +7,18 @@ import animate from 'tailwindcss-animate';
 import { BREAKPOINTS } from './lib/breakpoints';
 import { THEME_COLORS } from './lib/constants';
 
+/* Pressed: the moment of the press, and a trigger held open while the popup
+   it opens is open — a menu, a popover, a dialog (`aria-haspopup`), a select
+   (`role="combobox"`). Not every `aria-expanded`: a disclosure — an open
+   section, a tree branch, "Show less" — says its state with its glyph, and
+   matched here it sat pressed for as long as it was open (§155). */
 const pressedVariantPlugin = plugin(({ addVariant }) => {
   addVariant('pressed', [
     '&:active',
-    '&[aria-expanded="true"]',
-    '&[aria-expanded="true"]:hover',
+    '&[aria-expanded="true"][aria-haspopup]:not([aria-haspopup="false"])',
+    '&[aria-expanded="true"][aria-haspopup]:not([aria-haspopup="false"]):hover',
+    '&[aria-expanded="true"][role="combobox"]',
+    '&[aria-expanded="true"][role="combobox"]:hover',
   ]);
 });
 
@@ -228,8 +235,16 @@ export const preset: Partial<Config> = {
            have equal specificity, so source order decides, which is a coin
            toss — a declaration inside a keyframe outranks both. */
         'row-out': {
-          '0%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
-          '40%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
+          '0%': {
+            opacity: '1',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
+          '40%': {
+            opacity: '0',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
           '100%': {
             opacity: '0',
             height: '0',
@@ -251,8 +266,16 @@ export const preset: Partial<Config> = {
             'padding-top': '0',
             'padding-bottom': '0',
           },
-          '60%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
-          '100%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
+          '60%': {
+            opacity: '0',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
+          '100%': {
+            opacity: '1',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
         },
         /* REPLACING a row in place, rather than losing one. When what arrives belongs in the
            slot the thing that left just had — a removal that leaves an undo behind, a row
@@ -266,8 +289,16 @@ export const preset: Partial<Config> = {
         'row-swap-out': { from: { opacity: '1' }, to: { opacity: '0' } },
         'row-swap-in': {
           '0%': { opacity: '0', height: 'var(--row-from)', 'min-height': '0' },
-          '50%': { opacity: '0', height: 'var(--row-height)', 'min-height': '0' },
-          '100%': { opacity: '1', height: 'var(--row-height)', 'min-height': '0' },
+          '50%': {
+            opacity: '0',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
+          '100%': {
+            opacity: '1',
+            height: 'var(--row-height)',
+            'min-height': '0',
+          },
         },
         /* A panel leaving once it has nothing left to say. */
         'panel-out': {
@@ -275,23 +306,25 @@ export const preset: Partial<Config> = {
           to: { opacity: '0', transform: 'translateY(4px)' },
         },
         /* The tour family. The scrim and the annotations fade in; the ring
-           around a lit target breathes outward and fades; the coachmark
+           around a lit target breathes outward and fades; the guide card
            rises 8px into place, and shakes once when the scrim is clicked. */
         'spotlight-fade': { from: { opacity: '0' } },
         'spotlight-ring': {
           '0%': { opacity: '0.7', transform: 'scale(1)' },
           '70%, 100%': { opacity: '0', transform: 'scale(1.03)' },
         },
-        'coachmark-in': {
+        'guide-card-in': {
           from: { opacity: '0', transform: 'translateY(8px)' },
         },
-        'coachmark-nudge': {
+        'guide-card-nudge': {
           '20%, 60%': { transform: 'translateX(-4px)' },
           '40%, 80%': { transform: 'translateX(4px)' },
         },
-        /* Closing: the layers fade as one; the coachmark also drops 8px. */
+        /* Closing: the layers fade as one; the guide card also drops 8px. */
         'spotlight-out': { to: { opacity: '0' } },
-        'coachmark-out': { to: { opacity: '0', transform: 'translateY(8px)' } },
+        'guide-card-out': {
+          to: { opacity: '0', transform: 'translateY(8px)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -312,15 +345,15 @@ export const preset: Partial<Config> = {
         'spotlight-in': 'spotlight-fade 0.5s 0.1s ease both',
         'annotation-in': 'spotlight-fade 0.4s 0.35s ease both',
         'spotlight-ring': 'spotlight-ring 2.2s ease-out infinite',
-        'coachmark-in':
-          'coachmark-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both',
+        'guide-card-in':
+          'guide-card-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both',
         /* The entry animation stays in the list while the nudge runs. Swapping
            it OUT for the nudge alone restarts it when the nudge ends — the
            card blinks out and fades back in after every scrim click. */
-        'coachmark-nudge':
-          'coachmark-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both, coachmark-nudge 0.4s',
+        'guide-card-nudge':
+          'guide-card-in 0.4s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both, guide-card-nudge 0.4s',
         'spotlight-out': 'spotlight-out 0.3s ease forwards',
-        'coachmark-out': 'coachmark-out 0.3s ease forwards',
+        'guide-card-out': 'guide-card-out 0.3s ease forwards',
       },
       backgroundImage: {
         'skeleton-shimmer':

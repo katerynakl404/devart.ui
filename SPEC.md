@@ -4,7 +4,7 @@
 
 ```
 packages/ui/
-├── src/components/          — 77 component directories; each `<Name>/index.tsx` is the public entry, with co-located parts, `constants.ts`, `types.ts`, `*.stories.tsx`
+├── src/components/          — 82 component directories; each `<Name>/index.tsx` is the public entry, with co-located parts, `constants.ts`, `types.ts`, `*.stories.tsx`
 ├── src/hooks/               — `use-mobile.tsx` (exported); `use-autocomplete/`, `use-scroll-shadow/` (internal, reachable only through their components)
 ├── src/lib/                 — `utils.ts` (`cn`), `constants.ts` (`THEME_COLORS`), `breakpoints.ts` (`BREAKPOINTS` — one source for `screens`, `--breakpoint-*` and the JS media queries), `cva.ts` (`cva` with its config kept on the recipe — components import it from here, never from `class-variance-authority`), `button-keyboard.ts` (`onButtonKeyDown` for anything carrying `role="button"`)
 ├── src/tailwind-preset.ts   — the Tailwind v3 preset consuming apps spread in (`theme.extend`, the `pressed:` variant plugin, `tailwindcss-animate`) plus `contentGlobs` (absolute globs into the package's `src`/`dist`, since v3 presets can't carry `content`)
@@ -22,7 +22,7 @@ packages/ui/
 
 ## Concept
 
-**ui** (`@devart/ui-react`) is the design-system package: 76 components (plus the docs-only `Foundations`) over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
+**ui** (`@devart/ui-react`) is the design-system package: 81 components (plus the docs-only `Foundations`) over 16 Radix primitives, `sonner`, `react-day-picker` and `react-resizable-panels`, all styled exclusively through CVA recipes over CSS-variable design tokens. It owns the token system and the Tailwind theme that consuming apps inherit. It holds no server state, no routing, no i18n and no domain knowledge — feature-specific compositions belong in `apps/web`. Usage recipes: `README.md`.
 
 ---
 
@@ -245,7 +245,7 @@ never as an error (decision 10).
 
 ## Component Conventions
 
-- **CVA is the single source of variant truth** — 97 `cva()` definitions; the variants object is exported next to the component (`buttonVariants`, `badgeVariants`, `cardVariants`, `iconButtonVariants`, `bannerVariants`, …) so consumers can reuse classes without rendering. Base strings are themselves composed with `cn()`, one concern per line. `Toast` deliberately opts out — Sonner renders imperatively from a plain options object, so its variant styling lives in string maps (`VARIANT_COLOR_MAP`, `VARIANT_BG_MAP`, `VARIANT_BORDER_MAP` in `Toast/ToastMessage/constants.ts`).
+- **CVA is the single source of variant truth** — 106 `cva()` definitions; the variants object is exported next to the component (`buttonVariants`, `badgeVariants`, `cardVariants`, `iconButtonVariants`, `bannerVariants`, …) so consumers can reuse classes without rendering. Base strings are themselves composed with `cn()`, one concern per line. `Toast` deliberately opts out — Sonner renders imperatively from a plain options object, so its variant styling lives in string maps (`VARIANT_COLOR_MAP`, `VARIANT_BG_MAP`, `VARIANT_BORDER_MAP` in `Toast/ToastMessage/constants.ts`).
 - **The style discriminator prop is always `variant`, never `tone`** — where a variant must be reachable from CSS it is mirrored onto `data-variant` (`Sidebar`), and structural parts carry `data-slot` (47 occurrences across 25 files).
 - **One DOM marker is a behavioural contract, not styling** — `ModalOverlay` and `SheetOverlay` both stamp a bare `data-modal-overlay`, so a consumer can answer *"is any modal open?"* with a single selector (`[data-modal-overlay][data-state="open"]`, Radix supplying `data-state`) instead of reading every modal store. No CSS in the package targets it. A new overlay-backed primitive must stamp the same attribute, and removing it from either overlay changes consumer behaviour with nothing failing — see Cross-Feature Dependencies.
 - **`pressed:` instead of `active:`** — see decision 6. Applied in `Button` and `IconButton` recipes and by two `apps/web` rows.
@@ -253,6 +253,7 @@ never as an error (decision 10).
 - **Radix composition** — Radix-backed components re-export named parts from `index.tsx` (`Modal` exports 10; `Sidebar` exports 16 parts plus `useSidebar` and two type guards). `asChild` + `Slot` is the only sanctioned way to change the rendered element.
 - **Extend before adding** — a new visual treatment is a new variant on the existing primitive; a genuinely new primitive gets a directory under `src/components/`. `Button` and `IconButton` share one variant scale (10 and 9 variants respectively) by convention, not by code.
 - **Loading is not disabling** — `isLoading` on `Button`/`IconButton` swaps content for `Spinner`, sets `aria-busy`, and blocks interaction with `pointer-events-none opacity-disabled` while keeping the variant fill; it never toggles `disabled`, which would drop the control out of the tab order.
+- **A scroll container is a Tab stop only when nothing inside it is** — `ScrollShadow` (`focusable="auto"`, `use-scroll-shadow-tab-stop.ts` + `focusable.ts`) sets `tabIndex={0}` and `role="region"` only while its content overflows and holds no focusable descendant, re-checked by a `ResizeObserver` and a `MutationObserver`. Hosts of controls (`FilterChips`, `ModalBody`) therefore need no opt-out; an unconditional stop put an unnamed one before every chip group and took `Modal`'s initial focus from its first control.
 - **`cn()` only** — `twMerge` is extended with a `font-size` class group covering `text-xxs`.
 
 ---
@@ -450,14 +451,14 @@ block redeclaring one changes nothing.
 darkMode: ['variant', ['.dark &', '.midnight &']],
 ```
 
-Everything else — all 97 `cva()` recipes, every `color-mix()` tint, both Layer-1
+Everything else — all 106 `cva()` recipes, every `color-mix()` tint, both Layer-1
 ramps — is untouched.
 
 ---
 
 ## Types
 
-`VariantProps<typeof xVariants>` intersected with the DOM props type is the standard props shape (`ButtonProps`, `BadgeProps extends HTMLAttributes<HTMLDivElement>`, `CardProps extends ComponentProps<'div'>`, `IconButtonProps`, `InputGroupProps`). `TypographyProps<E extends ElementType>` is generic over the rendered element, with a `variantElementMap` giving each style variant its default semantic tag and an `element` prop to override it independently. Hand-written domain types: `NavigationElement` / `NavigationItem` / `NavigationGroup` plus the `isNavigationGroup` / `isNavigationItem` guards (`src/components/Sidebar/types.ts`), `ToastVariant` / `ToastAction` / `ToastOptions`, `Breakpoint`, `ScrollShadowOrientation` / `ScrollShadowVisibility`, and the Stepper types. Nothing here is generated. Full definitions: `src/components/*/index.tsx`.
+`VariantProps<typeof xVariants>` intersected with the DOM props type is the standard props shape (`ButtonProps`, `BadgeProps extends HTMLAttributes<HTMLDivElement>`, `CardProps extends ComponentProps<'div'>`, `IconButtonProps`, `InputGroupProps`). `TypographyProps<E extends ElementType>` is generic over the rendered element, with a `variantElementMap` giving each style variant its default semantic tag and an `element` prop to override it independently. Hand-written domain types: `NavigationElement` / `NavigationItem` / `NavigationGroup` plus the `isNavigationGroup` / `isNavigationItem` guards (`src/components/Sidebar/types.ts`), `ToastVariant` / `ToastAction` / `ToastOptions`, `Breakpoint`, `ScrollShadowOrientation` / `ScrollShadowVisibility` / `ScrollShadowFocusable`, the Stepper types, and `StepProgressStep`. Nothing here is generated. Full definitions: `src/components/*/index.tsx`.
 
 ---
 
@@ -478,7 +479,7 @@ No environment variables. The configuration surface is `tailwind-preset.ts`, whi
 | `theme.extend.aria` | `invalid` → enables `aria-invalid:` (not a Tailwind default); used heavily by `Checkbox`, `TextArea`, `PasswordInput`, `InputGroupInput` |
 | `theme.extend.opacity` | `opacity-disabled` → `--opacity-disabled` (0.65) |
 | `theme.extend.transitionDuration` | `duration-{fast,base,slow}` |
-| `theme.extend.keyframes` / `animation` | `accordion-{up,down}`, `collapsible-{up,down}`, `skeleton-shimmer` |
+| `theme.extend.keyframes` / `animation` | `accordion-{up,down}`, `collapsible-{up,down}`, `skeleton-shimmer`, `row-{out,in,swap-out,swap-in}`, `panel-out`, `spotlight-{fade,ring,out}` (animations `spotlight-{in,ring,out}`, `annotation-in`), `guide-card-{in,nudge,out}` |
 | `plugins` | the `pressed:` variant (decision 6), a base-layer plugin publishing `--breakpoint-*` from `BREAKPOINTS`, and `tailwindcss-animate` |
 
 Hardcoded in the preset: `darkMode: ['class']` — a consumer that needs a different strategy sets its own top-level `darkMode`, which replaces rather than merges with the preset's (Tailwind v3 presets merge `theme`/`plugins`, not arbitrary top-level keys). `content` is not carried by the preset at all; `apps/web/tailwind.config.ts` spreads `contentGlobs` into its own `content` array alongside its own globs (decision 7).

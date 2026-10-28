@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import type { CSSProperties } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { ChoiceCard, ChoiceGroup } from '../index';
 
@@ -105,7 +106,6 @@ describe('ChoiceGroup type="single"', () => {
     expect(onValueChange).toHaveBeenCalledExactlyOnceWith('finance');
     expect(onPick).not.toHaveBeenCalled();
 
-    // and a pick right after an arrow is still a pick
     fireEvent.click(screen.getByRole('radio', { name: /Finance/ }));
     expect(onPick).toHaveBeenCalledExactlyOnceWith('finance');
   });
@@ -159,6 +159,80 @@ describe('ChoiceGroup type="multiple"', () => {
     fireEvent.click(boxes[0] as HTMLElement);
     expect(onValueChange).toHaveBeenLastCalledWith([]);
   });
+
+  it('exposes the chosen state as aria-pressed when the card draws no checkbox', () => {
+    render(
+      <ChoiceGroup type="multiple" aria-label="Goals" value={['a']}>
+        <ChoiceCard value="a" title="Track revenue" indicator="none" />
+        <ChoiceCard value="b" title="Forecast" indicator="none" />
+      </ChoiceGroup>
+    );
+
+    expect(
+      screen.getByRole('button', { name: /Track revenue/ })
+    ).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: /Forecast/ })).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    );
+  });
+});
+
+describe('ChoiceGroup className', () => {
+  it('lets a consumer className replace the base columns and gap', () => {
+    render(
+      <ChoiceGroup aria-label="Role" className="grid-cols-3 gap-4">
+        <ChoiceCard value="a" title="A" />
+      </ChoiceGroup>
+    );
+    const group = screen.getByRole('radiogroup', { name: 'Role' });
+
+    expect(group).toHaveClass('grid', 'grid-cols-3', 'gap-4');
+    expect(group).not.toHaveClass('grid-cols-1');
+    expect(group).not.toHaveClass('gap-2');
+  });
+
+  it('keeps the base columns under a responsive consumer className', () => {
+    render(
+      <ChoiceGroup aria-label="Role" className="sm:grid-cols-3 sm:gap-3">
+        <ChoiceCard value="a" title="A" />
+      </ChoiceGroup>
+    );
+
+    expect(screen.getByRole('radiogroup', { name: 'Role' })).toHaveClass(
+      'grid-cols-1',
+      'gap-2',
+      'sm:grid-cols-3',
+      'sm:gap-3'
+    );
+  });
+});
+
+describe('ChoiceGroup with an expandable card', () => {
+  it('moves the arrow keys onto the head of an expandable card', () => {
+    const onValueChange = vi.fn();
+    render(
+      <ChoiceGroup
+        aria-label="Role"
+        value="sales"
+        onValueChange={onValueChange}
+      >
+        <ChoiceCard value="sales" title="Sales" />
+        <ChoiceCard value="other" title="Other">
+          <textarea aria-label="Your answer" />
+        </ChoiceCard>
+      </ChoiceGroup>
+    );
+    const sales = screen.getByRole('radio', { name: /Sales/ });
+    const other = screen.getByRole('radio', { name: /Other/ });
+
+    expect(other).toHaveAttribute('data-slot', 'choice-card-head');
+    expect(other).not.toHaveAttribute('aria-expanded');
+    sales.focus();
+    fireEvent.keyDown(sales, { key: 'ArrowDown' });
+    expect(other).toHaveFocus();
+    expect(onValueChange).toHaveBeenLastCalledWith('other');
+  });
 });
 
 describe('ChoiceCard standalone', () => {
@@ -168,7 +242,7 @@ describe('ChoiceCard standalone', () => {
       <ChoiceCard title="Sales" selected={false} onSelect={onSelect} />
     );
     const card = screen.getByRole('button', { name: /Sales/ });
-    expect(card).not.toHaveAttribute('aria-pressed');
+    expect(card).toHaveAttribute('aria-pressed', 'false');
 
     fireEvent.click(card);
     expect(onSelect).toHaveBeenCalledExactlyOnceWith(true);
@@ -176,6 +250,9 @@ describe('ChoiceCard standalone', () => {
     rerender(<ChoiceCard title="Sales" selected onSelect={onSelect} />);
     expect(card).toHaveAttribute('aria-pressed', 'true');
     expect(card).toHaveAttribute('data-state', 'checked');
+
+    fireEvent.click(card);
+    expect(onSelect).toHaveBeenLastCalledWith(false);
   });
 
   it('wraps a Checkbox with indicator="checkbox"', () => {
@@ -193,6 +270,14 @@ describe('ChoiceCard standalone', () => {
     expect(onSelect).toHaveBeenCalledExactlyOnceWith(true);
   });
 
+  it('does not report a disabled card', () => {
+    const onSelect = vi.fn();
+    render(<ChoiceCard title="Sales" disabled onSelect={onSelect} />);
+
+    fireEvent.click(screen.getByRole('button', { name: /Sales/ }));
+    expect(onSelect).not.toHaveBeenCalled();
+  });
+
   it('reveals its children inside the card while chosen', () => {
     const { rerender } = render(
       <ChoiceCard title="Other" selected={false} onSelect={vi.fn()}>
@@ -201,6 +286,7 @@ describe('ChoiceCard standalone', () => {
     );
     const head = screen.getByRole('button', { name: /Other/ });
     expect(head).toHaveAttribute('aria-expanded', 'false');
+    expect(head).not.toHaveAttribute('aria-pressed');
     expect(head).toHaveAttribute('data-slot', 'choice-card-head');
     expect(screen.queryByLabelText('Your answer')).toBeNull();
 
@@ -211,5 +297,59 @@ describe('ChoiceCard standalone', () => {
     );
     expect(head).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByLabelText('Your answer')).toBeInTheDocument();
+  });
+});
+
+describe('style', () => {
+  const style = { '--choice-index': 2 } as CSSProperties;
+  const cardRoot = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>('[data-slot="choice-card"]');
+
+  it('lands on the root of a button card', () => {
+    const { container } = render(<ChoiceCard title="Sales" style={style} />);
+    expect(cardRoot(container)?.tagName).toBe('BUTTON');
+    expect(cardRoot(container)?.style.getPropertyValue('--choice-index')).toBe(
+      '2'
+    );
+  });
+
+  it('lands on the root of a checkbox card', () => {
+    const { container } = render(
+      <ChoiceCard title="Sales" indicator="checkbox" style={style} />
+    );
+    expect(cardRoot(container)?.tagName).toBe('LABEL');
+    expect(cardRoot(container)?.style.getPropertyValue('--choice-index')).toBe(
+      '2'
+    );
+  });
+
+  it('lands on the root of an expandable card, not on its head', () => {
+    const { container } = render(
+      <ChoiceCard title="Other" style={style}>
+        <span>Panel</span>
+      </ChoiceCard>
+    );
+    expect(cardRoot(container)?.tagName).toBe('DIV');
+    expect(cardRoot(container)?.style.getPropertyValue('--choice-index')).toBe(
+      '2'
+    );
+    expect(
+      container
+        .querySelector<HTMLElement>('[data-slot="choice-card-head"]')
+        ?.getAttribute('style')
+    ).toBeNull();
+  });
+
+  it('lands on the group wrapper', () => {
+    render(
+      <ChoiceGroup aria-label="Role" style={style}>
+        <ChoiceCard value="sales" title="Sales" />
+      </ChoiceGroup>
+    );
+    expect(
+      screen
+        .getByRole('radiogroup', { name: 'Role' })
+        .style.getPropertyValue('--choice-index')
+    ).toBe('2');
   });
 });

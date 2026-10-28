@@ -59,3 +59,36 @@ export const Interactive: Story = {
     );
   },
 };
+
+/**
+ * `totalItems` + `pageSize` — the range readout, "Showing 26–50 of 60" in
+ * `body12` secondary, on the leading edge of one band with the controls on the
+ * trailing one. The table footer's shape: `size="xs"` beside the 12px text,
+ * directly under the table. **Draft.**
+ */
+export const WithRange: Story = {
+  parameters: { layout: 'padded' },
+  args: {
+    currentPage: 2,
+    totalPages: 3,
+    totalItems: 60,
+    pageSize: 25,
+    size: 'xs',
+    showFirstLast: false,
+  },
+  render: (args) => {
+    const [page, setPage] = useState(args.currentPage);
+    return (
+      <div className="w-full max-w-2xl">
+        <Pagination
+          {...args}
+          currentPage={page}
+          onPageChange={(next) => {
+            setPage(next);
+            args.onPageChange(next);
+          }}
+        />
+      </div>
+    );
+  },
+};

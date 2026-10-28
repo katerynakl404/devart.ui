@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { Typography } from '../Typography';
 import { EllipsisIndicator } from './EllipsisIndicator';
 import { FirstButton } from './FirstButton';
 import { LastButton } from './LastButton';
@@ -42,6 +43,19 @@ export interface PaginationProps {
    * footer whose whole job is to be quiet.
    */
   size?: PaginationSize;
+  /**
+   * How many items the whole list holds. With `pageSize`, the pager reads
+   * out its range — "Showing 26–50 of 60", `body12` in `--ink-secondary` — on
+   * the leading edge of one band, the controls on the trailing edge, wrapping
+   * under each other when the band is too narrow. **Draft.** (2026-10-27)
+   *
+   * The readout this doc and `Pagination.md` already asked for ("always show
+   * the current range and the total") was built by hand beside the pager on
+   * every paged table. Without both props the pager renders alone, as before.
+   */
+  totalItems?: number;
+  /** Items per page — with `totalItems`, the range readout. **Draft.** */
+  pageSize?: number;
   onPageChange: (page: number) => void;
   /** Accessible labels for the navigation buttons, overriding their defaults. */
   labels?: {
@@ -62,6 +76,8 @@ const Pagination = ({
   showPrevNext = true,
   showPageNumbers = true,
   size = 'sm',
+  totalItems,
+  pageSize,
   labels,
 }: PaginationProps) => {
   const paginationRange = useMemo(
@@ -78,7 +94,7 @@ const Pagination = ({
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
 
-  return (
+  const pager = (
     <div className={`flex items-center ${size === 'xs' ? 'gap-1' : 'gap-2'}`}>
       {showFirstLast && (
         <FirstButton
@@ -130,6 +146,32 @@ const Pagination = ({
           size={size}
         />
       )}
+    </div>
+  );
+
+  if (totalItems === undefined || pageSize === undefined) return pager;
+
+  // An empty list reads "Showing 0–0 of 0", not "1–0".
+  const from = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const to = Math.min(currentPage * pageSize, totalItems);
+
+  // The table footer's band: the range on the leading edge, the controls on
+  // the trailing one, 12px apart when they wrap — the shape every paged
+  // table drew by hand around the two.
+  return (
+    <div
+      data-slot="pagination-band"
+      className="flex flex-wrap items-center justify-between gap-3"
+    >
+      <Typography
+        data-slot="pagination-range"
+        element="span"
+        textStyle="body12"
+        textColor="secondary"
+      >
+        {`Showing ${from}–${to} of ${totalItems}`}
+      </Typography>
+      {pager}
     </div>
   );
 };

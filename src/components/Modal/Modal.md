@@ -34,6 +34,11 @@ confirming action last (`primary`, or `destructive` for a destructive flow).
 </Modal>
 ```
 
+`ModalDescription` is the line under the title — `body14`, `--ink-secondary`,
+inside `ModalHeader` right after `ModalTitle`, in the header's own gap. Do not
+wrap the two in a div of your own. It is Radix's `Dialog.Description`, so the
+dialog's `aria-describedby` points at it.
+
 `ModalBody` is the scrolling region for long content — it already carries
 `min-h-0 flex-1`, so the header and footer stay pinned while the middle scrolls.
 

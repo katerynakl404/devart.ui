@@ -1,7 +1,11 @@
 'use client';
 
 import { Slot, Slottable } from '@radix-ui/react-slot';
-import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  ReactNode,
+} from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
@@ -61,10 +65,19 @@ const linkButtonVariants = cva(
   }
 );
 
+/**
+ * What a `<button>` brings that a link must not show: the platform's centred
+ * label (a wrapped "View more" centred its second line), its own font family
+ * and, in Safari, a margin. Tailwind's preflight resets the family; these hold
+ * where it does not run. Applied to the button form only — on an `<a>` the
+ * alignment is the sentence's to decide. (2026-10-27)
+ */
+const buttonReset = 'm-0 appearance-none text-start [font-family:inherit]';
+
 export interface LinkButtonProps
   extends AnchorHTMLAttributes<HTMLAnchorElement>,
     VariantProps<typeof linkButtonVariants> {
-  /** Render the child element instead of an `<a>` — a router link, a button. */
+  /** Render the child element instead of an `<a>` — a router link. */
   asChild?: boolean;
   leftSlot?: ReactNode;
   rightSlot?: ReactNode;
@@ -77,6 +90,15 @@ export interface LinkButtonProps
  * and a hit box, a link is a word inside text. Reaching for the button gave
  * every "Permissions →" in the product its own padding and its own font size,
  * which is why it never lined up with the heading beside it.
+ *
+ * **With `href` it is an `<a>`; without one it is a `<button type="button">`**
+ * with the same look (2026-10-27). A link-styled control that ACTS rather than
+ * goes somewhere — "Select all", "View more", "Set up" on a row — was an `<a>`
+ * with an `onClick` and no `href`: not in the tab order, not a button to a
+ * screen reader, and Enter did nothing. Pages wrapped a `<button>` in
+ * `asChild` to get the semantics back. The element now follows the one fact
+ * that decides it — whether there is somewhere to go. `asChild` still renders
+ * whatever it is given.
  */
 function LinkButton({
   asChild,
@@ -88,19 +110,44 @@ function LinkButton({
   children,
   ...props
 }: LinkButtonProps) {
-  const Comp = asChild ? Slot : 'a';
+  const classes = cn(linkButtonVariants({ tone, variant }), className);
+
+  if (asChild) {
+    return (
+      <Slot className={classes} {...props}>
+        {leftSlot}
+        {/* `Slottable` marks which child the slotted element replaces. Without
+            it, `asChild` with a left or right slot hands Slot three children
+            and it throws — the same composition `Button` already uses. */}
+        <Slottable>{children}</Slottable>
+        {rightSlot}
+      </Slot>
+    );
+  }
+
+  if (props.href === undefined) {
+    return (
+      <button
+        type="button"
+        className={cn(classes, buttonReset)}
+        // The anchor's attribute set, on a button: the handlers and the ARIA
+        // are the same attributes on either element; only their element type
+        // differs.
+        {...(props as ButtonHTMLAttributes<HTMLButtonElement>)}
+      >
+        {leftSlot}
+        {children}
+        {rightSlot}
+      </button>
+    );
+  }
+
   return (
-    <Comp
-      className={cn(linkButtonVariants({ tone, variant }), className)}
-      {...props}
-    >
+    <a className={classes} {...props}>
       {leftSlot}
-      {/* `Slottable` marks which child the slotted element replaces. Without
-          it, `asChild` with a left or right slot hands Slot three children and
-          it throws — the same composition `Button` already uses. */}
-      {asChild ? <Slottable>{children}</Slottable> : children}
+      {children}
       {rightSlot}
-    </Comp>
+    </a>
   );
 }
 

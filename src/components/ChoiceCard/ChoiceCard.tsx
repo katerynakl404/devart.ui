@@ -1,51 +1,15 @@
 'use client';
 
-import { Circle } from 'lucide-react';
-import type { ReactNode, Ref } from 'react';
 import { cva } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
-import { Badge } from '../Badge';
-import { Checkbox } from '../Checkbox';
-import { radioIndicatorVariants, radioVariants } from '../RadioButton';
-import { useChoiceGroup } from './ChoiceGroup';
-
-export type ChoiceCardIndicator = 'auto' | 'none' | 'radio' | 'checkbox';
-
-export interface ChoiceCardProps {
-  /** The answer's value — required inside a `ChoiceGroup`. */
-  value?: string;
-  title: ReactNode;
-  description?: ReactNode;
-  /** A short tag after the title ("Recommended"), drawn as a small primary Badge. */
-  badge?: ReactNode;
-  /**
-   * A leading glyph on a 36px disc. It leads the row top-aligned; the row
-   * keeps its padding and the indicator stays on the title line.
-   */
-  icon?: ReactNode;
-  /**
-   * The mark on the right. `auto`: a checkbox in a multiple group, none
-   * everywhere else — in a single group the card itself shows the choice
-   * (border + wash) and still carries `role="radio"` / `aria-checked`.
-   * `radio` is an explicit opt-in.
-   * @default 'auto'
-   */
-  indicator?: ChoiceCardIndicator;
-  disabled?: boolean;
-  /** Standalone only (no group): the chosen state. */
-  selected?: boolean;
-  /** Standalone only: called with the next chosen state. */
-  onSelect?: (selected: boolean) => void;
-  /** Standalone checkbox card: the checkbox's form name. */
-  name?: string;
-  className?: string;
-  /**
-   * Content revealed INSIDE the card while it is chosen (an "Other" answer's
-   * field). The card's head becomes the button, with `aria-expanded`.
-   */
-  children?: ReactNode;
-  ref?: Ref<HTMLElement>;
-}
+import { ChoiceCardBody } from './ChoiceCardBody';
+import { ChoiceCardButton } from './ChoiceCardButton';
+import { ChoiceCardExpandable } from './ChoiceCardExpandable';
+import { ChoiceCardIcon } from './ChoiceCardIcon';
+import { ChoiceCardLabel } from './ChoiceCardLabel';
+import { ChoiceCardRadioMark } from './ChoiceCardRadioMark';
+import type { ChoiceCardProps } from './types';
+import { useChoiceCardState } from './use-choice-card-state';
 
 /*
  * The chosen state is one recipe for a ticked box, a picked answer and an open
@@ -105,57 +69,11 @@ const choiceCardVariants = cva(
   }
 );
 
-const choiceCardHeadVariants = cva(
-  cn(
-    'flex w-full items-start gap-2.5 px-3 py-2.5',
-    'rounded-[inherit] border-0 bg-transparent text-left',
-    'cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed'
-  )
-);
-
 /* The indicator sits on the right, centred on the TITLE line:
    (20px line − 18px control) / 2 = 1px — with or without a leading icon. */
 const choiceCardIndicatorVariants = cva('order-1 mt-px flex-none');
 
-const choiceCardIconVariants = cva(
-  cn(
-    'flex size-9 flex-none items-center justify-center rounded-full',
-    'bg-brand-primary/5 text-ink-highlight [&_svg]:size-4'
-  )
-);
-
-function ChoiceCardBody({
-  title,
-  badge,
-  description,
-}: Pick<ChoiceCardProps, 'title' | 'badge' | 'description'>) {
-  return (
-    <span
-      data-slot="choice-card-body"
-      className="flex min-w-0 flex-1 flex-col gap-0.5"
-    >
-      <span
-        data-slot="choice-card-title"
-        className="inline-flex items-center gap-2 font-medium text-ink-primary text-sm"
-      >
-        {title}
-        {badge ? (
-          <Badge variant="primary" size="sm">
-            {badge}
-          </Badge>
-        ) : null}
-      </span>
-      {description ? (
-        <span
-          data-slot="choice-card-description"
-          className="font-normal text-ink-secondary text-xs"
-        >
-          {description}
-        </span>
-      ) : null}
-    </span>
-  );
-}
+type ChoiceCardLayout = 'button' | 'label' | 'expandable';
 
 /**
  * A card-sized answer: title, optional description / badge / leading icon,
@@ -170,181 +88,113 @@ function ChoiceCard({
   description,
   badge,
   icon,
-  indicator = 'auto',
-  disabled: disabledProp = false,
-  selected = false,
-  onSelect,
+  indicator,
+  disabled,
+  selected,
   name,
   className,
+  style,
   children,
   ref,
+  onSelect,
 }: ChoiceCardProps) {
-  const group = useChoiceGroup();
-  const on = group ? value != null && group.isOn(value) : selected;
-  const disabled = disabledProp || Boolean(group?.disabled);
-  const mark: ChoiceCardIndicator =
-    indicator !== 'auto'
-      ? indicator
-      : group?.type === 'multiple'
-        ? 'checkbox'
-        : 'none';
-  const state = on ? 'checked' : 'unchecked';
+  const card = useChoiceCardState({
+    value,
+    indicator,
+    disabled,
+    selected,
+    name,
+    onSelect,
+  });
+  const state = card.isSelected ? 'checked' : 'unchecked';
+  const indicatorClassName = cn(choiceCardIndicatorVariants());
+  const frameClassName = (layout: ChoiceCardLayout) =>
+    cn(
+      choiceCardVariants({
+        layout,
+        selected: card.isSelected,
+        disabled: card.disabled,
+      }),
+      className
+    );
 
-  const choose = (next?: boolean) => {
-    if (disabled) return;
-    if (group) {
-      if (value != null) group.choose(value);
-    } else {
-      onSelect?.(next ?? !on);
-    }
+  const triggerProps = {
+    tabIndex: card.tabIndex,
+    role: card.isRadio ? ('radio' as const) : undefined,
+    'aria-checked': card.isRadio ? card.isSelected : undefined,
+    onClick: () => card.toggle(),
   };
 
-  const iconNode = icon ? (
-    <span
-      data-slot="choice-card-icon"
-      aria-hidden="true"
-      className={cn(choiceCardIconVariants())}
-    >
-      {icon}
-    </span>
-  ) : null;
-  const body = (
-    <ChoiceCardBody title={title} badge={badge} description={description} />
-  );
-  const indicatorClass = cn(choiceCardIndicatorVariants());
+  const headContent = (
+    <>
+      {icon ? <ChoiceCardIcon>{icon}</ChoiceCardIcon> : null}
 
-  if (mark === 'checkbox') {
-    return (
-      // biome-ignore lint/a11y/noLabelWithoutControl: the Checkbox inside is the control — a `<button role="checkbox">`, which a label wraps and activates
-      <label
-        ref={ref as Ref<HTMLLabelElement>}
-        data-slot="choice-card"
-        data-state={state}
-        data-disabled={disabled ? '' : undefined}
-        className={cn(
-          choiceCardVariants({
-            layout: 'label',
-            selected: on,
-            disabled,
-          }),
-          className
-        )}
-      >
-        {iconNode}
-        {body}
-        <Checkbox
-          checked={on}
-          disabled={disabled}
-          name={group ? group.name : name}
-          className={indicatorClass}
-          onCheckedChange={(next) => choose(Boolean(next))}
+      <ChoiceCardBody title={title} badge={badge} description={description} />
+
+      {card.indicator === 'radio' && (
+        <ChoiceCardRadioMark
+          isSelected={card.isSelected}
+          className={indicatorClassName}
         />
-      </label>
+      )}
+    </>
+  );
+
+  if (card.indicator === 'checkbox') {
+    return (
+      <ChoiceCardLabel
+        ref={ref}
+        state={state}
+        disabled={card.disabled}
+        className={frameClassName('label')}
+        style={style}
+        checkbox={{
+          checked: card.isSelected,
+          disabled: card.disabled,
+          name: card.name,
+          className: indicatorClassName,
+          onCheckedChange: (next) => card.toggle(Boolean(next)),
+        }}
+      >
+        {headContent}
+      </ChoiceCardLabel>
     );
   }
 
-  const radioRole = group?.type === 'single';
-  const expandable = children != null;
-  const radioMark =
-    mark === 'radio' ? (
-      <span
-        data-slot="choice-card-indicator"
-        data-state={state}
-        aria-hidden="true"
-        className={cn(radioVariants(), 'pointer-events-none', indicatorClass)}
-      >
-        {on ? (
-          <span className={cn(radioIndicatorVariants())}>
-            <Circle className="fill-current text-current" />
-          </span>
-        ) : null}
-      </span>
-    ) : null;
-
-  const buttonProps = {
-    type: 'button' as const,
-    disabled: disabled || undefined,
-    tabIndex:
-      radioRole && value != null
-        ? group.tabStop(value)
-          ? 0
-          : -1
-        : radioRole
-          ? -1
-          : undefined,
-    role: radioRole ? ('radio' as const) : undefined,
-    'aria-checked': radioRole ? on : undefined,
-    'aria-pressed': !radioRole && !expandable && on ? true : undefined,
-    'aria-expanded': expandable ? on : undefined,
-    onClick: () => choose(),
-  };
-
-  if (expandable) {
+  if (children != null) {
     return (
-      <div
-        ref={ref as Ref<HTMLDivElement>}
-        data-slot="choice-card"
-        data-state={state}
-        data-disabled={disabled ? '' : undefined}
-        className={cn(
-          choiceCardVariants({
-            layout: 'expandable',
-            selected: on,
-            disabled,
-          }),
-          className
-        )}
+      <ChoiceCardExpandable
+        ref={ref}
+        state={state}
+        disabled={card.disabled}
+        className={frameClassName('expandable')}
+        style={style}
+        headProps={{
+          ...triggerProps,
+          'aria-expanded': card.isRadio ? undefined : card.isSelected,
+        }}
+        panel={children}
       >
-        <button
-          {...buttonProps}
-          data-slot="choice-card-head"
-          className={cn(choiceCardHeadVariants())}
-        >
-          {iconNode}
-          {body}
-          {radioMark}
-        </button>
-        {on ? (
-          <div
-            data-slot="choice-card-content"
-            className="flex flex-col gap-2 px-3 pb-3"
-          >
-            {children}
-          </div>
-        ) : null}
-      </div>
+        {headContent}
+      </ChoiceCardExpandable>
     );
   }
 
   return (
-    <button
-      {...buttonProps}
-      ref={ref as Ref<HTMLButtonElement>}
-      data-slot="choice-card"
-      data-state={state}
-      data-disabled={disabled ? '' : undefined}
-      className={cn(
-        choiceCardVariants({
-          layout: 'button',
-          selected: on,
-          disabled,
-        }),
-        className
-      )}
+    <ChoiceCardButton
+      {...triggerProps}
+      ref={ref}
+      state={state}
+      disabled={card.disabled || undefined}
+      className={frameClassName('button')}
+      style={style}
+      aria-pressed={card.isRadio ? undefined : card.isSelected}
     >
-      {iconNode}
-      {body}
-      {radioMark}
-    </button>
+      {headContent}
+    </ChoiceCardButton>
   );
 }
 
 ChoiceCard.displayName = 'ChoiceCard';
 
-export {
-  ChoiceCard,
-  choiceCardHeadVariants,
-  choiceCardIconVariants,
-  choiceCardIndicatorVariants,
-  choiceCardVariants,
-};
+export { ChoiceCard, choiceCardIndicatorVariants, choiceCardVariants };

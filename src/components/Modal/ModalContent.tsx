@@ -75,7 +75,12 @@ export function ModalContent({
       <ModalOverlay />
       <ModalPrimitive.Content
         ref={ref}
-        aria-describedby={undefined}
+        // No `aria-describedby={undefined}` here any more (2026-10-27). It
+        // silenced the old Radix warning for a dialog without a Description,
+        // and it also overrode the id Radix points at one — so the
+        // `ModalDescription` sentence was never announced. Radix now leaves
+        // the attribute off by itself when no Description is mounted; a
+        // caller's own `aria-describedby` still wins (`ConfirmationDialog`).
         className={cn(
           // `max-h-modal` — 80% of the window, from `--modal-max-h`. It was an
           // arbitrary `max-h-[90dvh]`: a number in a class rather than a token,

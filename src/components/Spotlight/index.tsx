@@ -45,7 +45,7 @@ export interface SpotlightProps {
    own layer (999999999) would put "X connected" over a dimmed page, on top of
    the tour that explains it. What pops out of a lit control — a tooltip, a
    menu, a popover (Radix's popper wrapper, z-50 inline, hence the !) — goes
-   one step OVER it, beside the annotations and under the coachmark: under
+   one step OVER it, beside the annotations and under the guide card: under
    the scrim it read as a half-transparent grey box. */
 const spotlightVariants = cva(
   cn(

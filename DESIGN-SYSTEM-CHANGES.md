@@ -1,7 +1,7 @@
 # Design-system changes found while building on it
 
 Where **`@devart/ui-react`** differs from the developers' library — `upstream`,
-`devart/components/devart.ui.react`, at their 1.2.0 (8d69821). A change the
+`devart/components/devart.ui.react`, at their 1.4.0 (f69ebc9). A change the
 developers have since shipped, and this package has taken, leaves this file and
 its number is listed under *Retired numbers*; what is left is what a developer
 would not find in `upstream`.
@@ -56,24 +56,25 @@ found and written down, not fixed.
 | `Autocomplete` | §3 selected and highlighted painted the same<br>§62 the clear and the chevron painted as placeholders |
 | `Badge` | §33 the hairline is the base, not a second variant<br>§65 a fixed-height pill whose label could wrap<br>§83 `leading-none` clipped every descender<br>§86 `xs` was the same pill as `sm` — removed |
 | `Banner` | §85 the dismiss was a tertiary button on a painting<br>§90 `sm` kept the default's line gap |
-| `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveSecondary` disables the same<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§147 `destructiveOutline` → `destructiveSecondary` — the secondary's destructive form |
-| `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe, 1px<br>§60 `elevated` and `ghost` carry the card's box<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` — a tall card keeps its actions in reach · draft |
+| `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveSecondary` disables the same<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§147 `destructiveOutline` → `destructiveSecondary` — the secondary's destructive form<br>§151 `tooltip` on `IconButton`, `Button` and `Switch` — the action or the reason on hover; a disabled control keeps it (`aria-disabled`, painted on every variant) · draft |
+| `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe, 1px<br>§60 `elevated` and `ghost` carry the card's box<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` and `divided` — a tall card keeps its actions in reach, as a band of its own · draft<br>§162 `CardHeader` `actions` — the head's trailing link or button, on the title's line · draft |
 | `Checkbox` | §57 the tick and the bar at one weight, 1.5px |
-| `ChoiceCard` | §118 **new** — `ChoiceGroup` · `ChoiceCard`, a card-sized answer to a question · draft |
-| `Coachmark` | §120 **new** — the card next to what a spotlight lights · draft |
+| `ClampedText` | §153 **new** — a text cut to N lines, See more only when there is more · draft |
 | `CodeBlock` | §48 a snippet and the control that copies it, as one object · draft<br>§81 scrolled with the browser's own bar<br>§127 a header, line numbers, a height, wrapping<br>§128 `variant="error"`<br>§129 syntax colours — `--code-*`, `codeSyntaxVariants` |
+| `ConfirmationDialog` | §157 `description` — a paragraph that may name its subject in bold |
 | `ConnectorLogo` | §16 connector marks as data-URIs, a monogram for the rest · draft<br>§108 the DB2 mark — it fell back to a "D"<br>§115 the SQLite mark — it fell back to an "S" |
 | `DropdownMenu` | §43 two rows it could not draw — `accent`, `DropdownMenuRow` · draft<br>§55 a link may open a menu · draft<br>§74 the focus ring a closed menu left behind<br>§130 `DropdownMenuItem` `isExternal`<br>§131 **new** — `DropdownMenuSegmentedItem`, a choice that keeps the menu open · draft |
 | `FilterMenu` | §148 **new** — a filter as a pill, plain or a hierarchy, with counts and a ✕ · draft |
 | `HighlightText` | §109 **new** — what a search matched, marked in the name · draft |
+| `IconHint` | §152 **new** — a glyph beside a name that says one thing on hover · draft |
 | `InlineRename` | §132 **new** — a row title edited in place · draft |
 | `InputGroup` | §7 `InputGroupAddon` resized glyphs it did not own<br>§9 a field label as loud as the hint beneath it<br>§45 `InputGroupAction` — the docked-icon inks<br>§102 `xs` — the clear ✕ where the search icon is<br>§106 `InputGroupAddon` — the glyph in the placeholder's grey |
-| `LinkButton` | §46 the kit's text link, which the package never had · draft |
+| `LinkButton` | §46 the kit's text link, which the package never had · draft<br>§158 without `href`, a `<button>` — a link-styled control that acts · draft |
 | `ListPageLayout` | §133 the header condenses, and the body takes a class |
 | `MetaRow` | §52 the line above a list, and the 4px to it · draft<br>§134 `sticky` and `stickyOffset` |
-| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft |
+| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft<br>§159 **new** — `ModalDescription`, the line under the title, and the dialog's description · draft |
 | `PageHeader` | §15 the back control; `titleLeft` first, `titleRight` 12px from the title · draft<br>§67 `condensed` — the header once the page scrolls · draft<br>§111 the collapse animates whole — title, arrow, 240ms · draft<br>§135 the title truncates; `wrapTitle` wraps it |
-| `Pagination` | §82 `showPageNumbers` — a stream read in order · draft<br>§93 a `size` rung, and the `pageFloor` recipe · draft |
+| `Pagination` | §82 `showPageNumbers` — a stream read in order · draft<br>§93 a `size` rung, and the `pageFloor` recipe · draft<br>§161 `totalItems` + `pageSize` — "Showing x–y of z" beside the pager · draft |
 | `PinToggle` | §136 **new** — pin a row · draft |
 | `Popover` | §34 a closed panel stayed painted<br>§88 floated on the page colour |
 | `ProgressBar` | §105 `trackVariant` — a bar split in two · draft |
@@ -82,27 +83,31 @@ found and written down, not fixed.
 | `SearchInput` | §145 `results` — the matches while typing; `variant`, `disabled`, `autoFocus` and the rest passed through · draft |
 | `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft |
 | `SelectableListCard` | §138 keyboard, `aria-selected`, `menu` |
-| `Sidebar` | §10 `SidebarHeader` owns the horizontal inset<br>§11 `SidebarMenuButton` tooltips had no styling<br>§12 `SidebarMenuButton` — a 32px box its padding did not fit<br>§14 collapsing could remove the only way to expand<br>§35 the fixed panel was pinned to the viewport<br>§39 `SidebarMenu` rows 4px apart where the kit says 2<br>§64 `SidebarContent` — the nav column had no gutter<br>§72 the collapsed rail was never finished<br>§94 the product shape — sections, chat row, promo slot, compact footer<br>§139 `SidebarUser` — the rail lost the name<br>§140 `SidebarProvider` — the sheet outlived the phone layout<br>§141 `SidebarChatItem` — the ⋮ where there is no hover, `countLabel`<br>§142 `SidebarNavItem` `badge`, an element as `icon`<br>§143 the triggers' tooltips<br>§144 `SidebarStat` `asChild` |
+| `Sheet` | §156 the edge in the system's line — a white stripe down a dark sheet |
+| `Sidebar` | §10 `SidebarHeader` owns the horizontal inset<br>§11 `SidebarMenuButton` tooltips had no styling<br>§12 `SidebarMenuButton` — a 32px box its padding did not fit<br>§14 collapsing could remove the only way to expand<br>§35 the fixed panel was pinned to the viewport<br>§39 `SidebarMenu` rows 4px apart where the kit says 2<br>§64 `SidebarContent` — the nav column had no gutter<br>§72 the collapsed rail was never finished<br>§94 the product shape — sections, chat row, promo slot, compact footer<br>§139 `SidebarUser` — the rail lost the name<br>§140 `SidebarProvider` — the sheet outlived the phone layout<br>§141 `SidebarChatItem` — the ⋮ where there is no hover, `countLabel`<br>§142 `SidebarNavItem` `badge`, an element as `icon`; the label at its icon on a button<br>§143 the triggers' tooltips<br>§144 `SidebarStat` `asChild` |
 | `Spotlight` | §119 **new** — the scrim around a lit target, and `useTargetRect` · draft |
 | `StatTile` | §47 label, value, caption — one number and what it counts · draft |
-| `StatusView` | §51 the illustration is a pack — empty, and empty search<br>§104 a wider message, 48ch<br>§107 `EmptySearchIllustration` visible on a white card |
-| `StepProgress` | §117 `counter`, `showStepTitle`, `fill`, `size`, and read-only bars · draft |
+| `StatusView` | §51 the illustration is a pack — empty, and empty search<br>§104 a wider message, 48ch inside the default block<br>§107 `EmptySearchIllustration` visible on a white card |
+| `StepProgress` | §117 `size="sm"`, a state on each bar, no tooltip without a title · draft |
 | `Stepper` | §36 `StepperIndicator` — the numbered rail the headless Stepper never shipped · draft |
+| `Switch` | §151 `tooltip` — the action or the reason; a disabled switch keeps it, the off look on `data-disabled` · draft<br>§160 `description` — a line under the label, the switch on its first line · draft |
 | `Table` | §6 `TableHead` — the sort glyph did not hover with its label<br>§42 `TableCell` — a row that could not grow<br>§50 `TableCell` — pressed belonged to whatever was pressed<br>§53 `TableHead` `width` — a share, not a size<br>§54 `TableRow` `nested` — the child row's 8px<br>§56 `density` — a compact row step · draft<br>§76 a clickable row kept the text cursor |
 | `Tabs` | §8 `TabsContent` — the inactive panel came back as an empty box |
 | `TextArea` | §41 `hintText` — the counter row's empty slot<br>§70 the hint at 400; the counter and error lines |
 | `Toast` | §75 a stack of toasts, each a different width |
 | `Tooltip` | §13 the arrow put the gap off the 4px scale<br>§63 the delay before it opens |
-| `Tour` | §122 **new** — a guided walk: Spotlight, Coachmark, annotations · draft |
+| `Tour` | §122 **new** — a guided walk: Spotlight, their `GuideCard`, annotations; the card's placement, sheet, role and focus · draft |
+| `Tree` | §150 **new** — a hierarchy row by row: one step a level, an icon on every level · draft |
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
 | Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§129 `--code-*` — syntax colours, AA in both themes |
 | Sizes and glyphs | §40 the size ladder<br>§44 the icon surface — the glyph ladder, and the bundle that had none<br>§92 glyph stroke — one weight, set in CSS |
-| Across components | §98 `Table`, `ModalBody` — the system's scrollbar<br>§99 disabled controls — the not-allowed cursor |
+| Across components | §98 `Table`, `ModalBody` — the system's scrollbar<br>§99 disabled controls — the not-allowed cursor<br>§155 `pressed:` — an open disclosure is not a held press |
 | Build and tooling | §19 a variant that is not enumerated is never compiled<br>§20 `pnpm bundle` and `pnpm check-bundle-css`<br>§37 `bg-surface-card/85` compiles to nothing · open<br>§84 the class list — list markers, `last:` borders |
-| Synced from upstream | §97 the developers' 1.1.0 parts — what stays different<br>§146 the developers' 1.2.0 parts — what stays different |
+| Synced from upstream | §97 the developers' 1.1.0 parts — what stays different<br>§146 the developers' 1.2.0 parts — what stays different<br>§154 the developers' 1.3.0 and 1.4.0 parts — what stays different |
 
 Retired numbers, and where what they said lives now: §18 → §51 · §21 → §33 ·
-§23 → §75 · §27 → §142 · §58, §61, §77 → §97 (`IconCard`) · §110 → §67 ·
+§23 → §75 · §27 → §142 · §58, §61, §77 → §97 (`IconCard`) · §110 → §67 · §118 → in `upstream` (`ChoiceCard`, `ChoiceGroup`) · §120 → in `upstream` as
+`GuideCard`, its placement in §122 ·
 §1, §17, §25, §28, §30, §68, §89, §91 → in `upstream` · §116 was given twice —
 `PromoCard` keeps it, `SearchInput` is §145.
 
@@ -204,7 +209,7 @@ around the target, concentric with it (the target's radius + 3). Rings side
 by side never touch — they split the gap and keep 6px apart.
 `<Annotation target icon>text</Annotation>` renders nothing on its own — the
 group reads its children and draws them, portalled above the spotlight;
-`leaving` fades it out. Hidden at 640px and below, where the coachmark lists
+`leaving` fades it out. Hidden at 640px and below, where the guide card lists
 the same texts instead (`Tour` does that).
 
 **Both products.** New components, no call sites in the package.
@@ -479,9 +484,9 @@ compound selectors against `hover:*`'s two, so the disabled recipe wins without
 **Not `disabled:pointer-events-none`**, which is the one-line version of this
 fix and would have been wrong. A disabled control is exactly the one that needs
 a tooltip saying why it is disabled, and a tooltip needs the pointer events it
-would have removed — the same reason the `aria-disabled` form of these variants
-is the one that carries `pointer-events-none`, where the control keeps focus and
-a screen reader reads the reason instead.
+would have removed. The `aria-disabled` form keeps both its pointer events and
+its focus, which is why a disabled control with a `tooltip` renders that form
+(§151).
 
 `cursor-not-allowed` stays on both forms, and now means something: the cursor is
 the only thing that changes under the pointer.
@@ -519,7 +524,6 @@ border.
 of every row in the workspaces' data trees (Data model, Permissions, Effective
 access). One to a row, beside a 14px name, it outweighed the names. Asked for
 in review of the workspaces prototype. Row actions stay `2xs`.
-
 
 ## 147. `destructiveOutline` → `destructiveSecondary` — the secondary's destructive form
 
@@ -629,13 +633,25 @@ button inside it is pressed or its menu is open are what make this a component
 rather than a bordered div, and they are why the call site should not have been
 reaching for its own box in the first place.
 
-## 123. `CardFooter` — `sticky` · **DRAFT**
+## 123. `CardFooter` — `sticky` and `divided` · **DRAFT**
 
 `src/components/Card/CardFooter.tsx`
 
 ```ts
-sticky?: boolean   // default false; true → sticky bottom-0 z-10 bg-surface-card
+sticky?: boolean    // default false; true → sticky bottom-0 z-10 rounded-b-[inherit] bg-surface-card
+divided?: boolean   // default false; true → a rule across the top (border-stroke border-t)
 ```
+
+- **`divided`** (2026-10-26) — the footer as a band of its own under the
+  content, not a row of it: the commit apart from what it commits. In a card
+  whose sections run edge to edge (`p-0`) the footer takes the card's padding
+  itself (`px-6 py-4`).
+- **The bottom corners** (2026-10-26) — pinned over a rounded card, the
+  footer's square corners let the content scrolling under it show through at
+  the card's edge. It inherits the card's bottom radius now.
+- The AI connectivity prototype drew this band itself (`ActionBand`: a
+  separator, the card's surface, `rounded-b-lg`, sticky) under the Data model,
+  Permissions and the setup page; it is this footer now.
 
 A card taller than the window keeps its actions in reach. Without it the footer
 scrolls with the card, so the actions of a long card sit below the fold until
@@ -669,80 +685,6 @@ A stroke rather than a box of the same height: a stroke with a round cap
 antialiases across more pixels than a rectangle, so at 1.5px a box bar read
 thinner than the tick beside it. A mark below 16px keeps the weight its
 component gives it (§92).
-
----
-
-# `ChoiceCard`
-
-## 118. New — `ChoiceGroup` · `ChoiceCard` · **DRAFT**
-
-`src/components/ChoiceCard/`
-
-A card-sized answer to a question: a title, an optional description, badge
-and leading icon, and the chosen state — the Brand/Primary border over a 5%
-brand wash. The chat's question card and the onboarding wizard's role and goal
-pickers are the same row.
-
-- **`ChoiceGroup`** — `type` `single` | `multiple`, `value`,
-  `onValueChange`, `columns` 1 | 2 (side by side from 640px up),
-  `aria-label` / `aria-labelledby`, `disabled`, `name`. `single` is a
-  radiogroup with a roving tab stop: the arrow keys move and choose, wrapping
-  and skipping disabled cards. `onPick` (single only) reports a deliberate
-  pick — a click, Enter or Space — and not an arrow key walking the group, so a
-  one-answer question can move on by itself; `onValueChange` reports both.
-  `multiple` is a group of checkbox cards.
-- **`ChoiceCard`** — `value`, `title`, `description`, `badge`, `icon`,
-  `indicator` (`auto` | `none` | `radio` | `checkbox`), `disabled`. `auto`
-  is a checkbox in a multiple group and nothing anywhere else: in a single
-  group the card itself shows the choice and still carries `role="radio"`
-  and `aria-checked`. `radio` draws the RadioButton mark on request.
-  Standalone (no group) the card is a button with `aria-pressed` —
-  `selected` + `onSelect` — or, with `indicator="checkbox"`, a label around
-  a Checkbox.
-- **`children`** — content revealed inside the card while it is chosen (an
-  "Other" answer's field). The head becomes the button, with `aria-expanded`.
-
-The leading icon is a 36px disc on the same wash. It leads the row,
-top-aligned, and does not re-centre it: the padding stays the same and the
-indicator stays on the title line, icon or not. A chosen card holds steady
-under the pointer — only an unchosen one takes the hover recipe; pressed
-shows on both.
-
-The single group's keyboard is the card's own rather than Radix
-`RadioGroup`, kept from the Insightis bridge it was ported from: Enter
-chooses, and a click on the chosen card reports it again. Radix does
-neither.
-
-**Both products.** New components, no call sites in the package.
-
----
-
-# `Coachmark`
-
-## 120. New — `Coachmark` · **DRAFT**
-
-`src/components/Coachmark/index.tsx`
-
-The explanation next to what a spotlight lights: a popover-surface card
-(Surface/Card, Stroke/Border, `shadow-dropdown`) with an arrow at the
-target. `header` (a `StepProgress size="sm" fill`), `icon` (a 32px disc),
-`title`, the body, `footer`; `width` `md` (352px) | `lg` (464px); `side` —
-the preferred sides in order, default bottom, top, right, left.
-
-It takes the first preferred side where it fits whole without covering the
-target, 14px off it and 8px inside the bounds. When no side fits it takes
-the first with 75% of the card free, else the roomiest, and pins to that
-edge. It re-places itself as the page moves and reports where it went
-(`onPlace`). At 640px and below it is a bottom sheet with no arrow.
-
-`role="dialog"`, non-modal, labelled by its title, `tabIndex={-1}` so a tour
-can move focus to it. `nudge` is a number; each change shakes the card once.
-The shake keeps the entry animation in the `animation` list while it runs —
-swapped out for the shake alone, the entry restarts when the shake ends and
-the card blinks out and fades back in after every click on the scrim.
-`leaving` fades it out and drops it 8px, taking no clicks.
-
-**Both products.** New component, no call sites in the package.
 
 ---
 
@@ -1222,13 +1164,13 @@ thicken as the inherited size grows — both straight from the kit's note.
 Three tones, because the ink has to survive its background: `brand`
 (`--ink-highlight`, the default — Brand-600 light, Tertiary-400 dark, AA in
 both), `body` (inside copy, highlighting only on hover), `onSolid` (on a brand
-fill, where the highlight would vanish). `asChild` renders a router link or a
-button in its place.
+fill, where the highlight would vanish). `asChild` renders a router link in its
+place; without an `href` it is a `<button>` (§158).
 
 **Both products.** New surface area; nothing to break. Insightis gets, as a
 component, what it has as a class.
 
-**Named `LinkButton`, not `Link`.** It renders an `<a>` but it is a control in
+**Named `LinkButton`, not `Link`.** It looks like a link but it is a control in
 the kit’s sense — it has hover, focus and disabled states and is often not
 navigation at all (“Select all”). A bare `Link` in a React codebase reads as the
 router’s.
@@ -2065,6 +2007,10 @@ hidden on the rail and read as the row's description (`aria-describedby`).
 `icon` also takes an element, a product mark, set in the same 16/14px box as a
 component icon. **minor** (`.changeset/sidebar-rows-and-triggers.md`).
 
+On a `<button>` (`asChild`, a row that acts rather than links) the label sat in
+the middle of the row — a button centres its text. The row is `text-start`
+(2026-10-27). **patch** (`.changeset/sidebar-nav-item-text-start.md`).
+
 ## 143. `SidebarTrigger`, `SidebarMobileTrigger` — their tooltips
 
 `src/components/Sidebar/SidebarTrigger.tsx` · `SidebarMobileTrigger.tsx`
@@ -2125,7 +2071,7 @@ the padding.
 `--spotlight-halo` and `--spotlight-glow` (Brand/Primary at `--tint-20` and
 `--tint-30`) composed into `--shadow-spotlight` (`shadow-spotlight`);
 `--spotlight-move`, one duration and curve for every move, read by a
-`transition` shorthand; `--spotlight-z` (70 — annotations +1, the coachmark
+`transition` shorthand; `--spotlight-z` (70 — annotations +1, the guide card
 +2). The halo, the glow and the shadow are mirrored in `.dark` for scoped
 themes. The scrim has no colour of its own: it is `--overlay-scrim`
 (`bg-overlay-scrim`).
@@ -2198,9 +2144,10 @@ variant. Use either as `icon={<EmptyStateIllustration />}` with
 
 ## 104. `StatusView` — a wider message
 
-- **`StatusView`** — the description's cap is `max-w-[48ch]`, where
-  `upstream` has `max-w-md` and the kit's `.empty-msg` 32ch; `text-balance`
-  unchanged. `StatusView.md`'s anatomy table says so.
+- **`StatusView`** — the description's cap is `max-w-[48ch]` inside the
+  default `md` block (`upstream`'s `contentWidth`: `sm` = `max-w-sm`, `md` =
+  `max-w-md`); under `sm` the block is the narrower limit and the cap is
+  dropped. The kit's `.empty-msg` is 32ch. `text-balance` unchanged.
 
 At 32ch a message of two short sentences — what is empty, what to do — broke
 into three or four lines of a few words each and read as fragments (the
@@ -2227,22 +2174,20 @@ strength `EmptyStateIllustration` beside it already has.
 
 # `StepProgress`
 
-## 117. `StepProgress` — a counter, a fill, a size, and read-only bars · **DRAFT**
+## 117. `StepProgress` — `size`, a state on each bar · **DRAFT**
 
-`src/components/StepProgress/index.tsx`
+`src/components/StepProgress/`
 
-On `upstream`'s `StepProgress` — the bars, their fills and hovers, the tooltip,
-step `title` / `done` / `ariaLabel`, the `label` read-out — this package adds:
+`StepProgress` is `upstream`'s 1.3.0 — the bars, read-only without
+`onStepSelect`, `label`, `labelPosition`, `showStepTitle`, the recipes and the
+data-slots. On top of it:
 
-- **`counter`** — `(n, total) => ReactNode`, "Step N of M" by default.
-- **`showStepTitle`** — the current step's title as a caption, Text/Secondary
-  400 at both sizes.
-- **`fill`** — the bars share the full width under a header, in place of 24px
-  bars inline.
-- **`size="sm"`** — the type one step down, the gaps one step tighter.
-- **Read-only bars.** Without `onStepSelect` the bars are `aria-hidden` spans —
-  no focus, no tooltip — and the read-out is `aria-live="polite"`; `upstream`'s
-  bars are always buttons. `Tour` (§122) needs the read-only form.
+- **`size="sm"`** — the label and the gaps one step down (`StepProgress.tsx`,
+  `StepProgressHeader.tsx`, `stepProgressLabelVariants`): the read-out in a
+  tour card (§122).
+- **`data-state`** — `done` / `current` / `upcoming` on each step
+  (`StepProgressBar.tsx`).
+- **No tooltip on a step with an empty `title`** (`StepProgressBar.tsx`).
 
 Not `StepperIndicator` (§36): that is a numbered rail to travel along; this is
 a read-out that fits on a header line.
@@ -2707,27 +2652,41 @@ Unchanged, and worth knowing: the bubble itself is not a transition but a
 
 ## 122. New — `Tour` · **DRAFT**
 
-`src/components/Tour/index.tsx`
+`src/components/Tour/` (`index.tsx`, `TourCard.tsx`, `place.ts`)
 
-A guided walk over the real interface: per step a `Spotlight`, a
-`Coachmark` and, when the step has annotations, an `AnnotationGroup`. The
-caller holds the step (`step`, `onStepChange`); the tour reports how it
-ended (`onClose('finish' | 'skip' | 'escape')`).
+A guided walk over the real interface: per step a `Spotlight`, `upstream`'s
+`GuideCard` and, when the step has annotations, an `AnnotationGroup`. The caller
+holds the step (`step`, `onStepChange`); the tour reports how it ended
+(`onClose('finish' | 'skip' | 'escape')`).
 
 `steps` — `{ id, target, title, icon?, content, label?, side?, width?,
-annotations? }`. `progress` — `{ steps, offset }`, the longer flow the tour
-is part of, read out in the coachmark as `StepProgress size="sm" fill`;
-default: the tour's own steps. `onBeforeFirst` — Back on the first step, for
-a tour that continues an onboarding. `labels` (Back · Next · Skip · Done),
+annotations? }`. `progress` — `{ steps, offset }`, the longer flow the tour is
+part of, read out in the card as `StepProgress size="sm" labelPosition="top"`;
+default: the tour's own steps. `onBeforeFirst` — Back on the first step, for a
+tour that continues an onboarding. `labels` (Back · Next · Skip · Done),
 `boundary`, `padding`. Back is a plain tertiary button, like the question
 card's.
 
-Keyboard: → next, ← back, Esc closes — ignored while typing in a field.
-Focus moves to the coachmark on every step, and a click on the scrim nudges
-it. On a phone the annotations become a list inside the bottom-sheet
-coachmark. Closing never just vanishes: `open` → false keeps the tour
-mounted for 300ms while the scrim and the annotations fade, the coachmark
-fades and drops 8px, and nothing takes a click.
+**The engine half of the card is the tour's.** `GuideCard` draws the card and
+its arrow; where it goes, the dialog role and focus belong to the tour that
+renders it (their docs say so), so they live here (`TourCard.tsx`):
+
+- **Placement** (`place.ts`, exported as `placeGuideCard`): the first preferred
+  side where the card fits whole without covering the target, 14px off it and
+  8px inside the bounds; when none fits, the first with 75% of the card free,
+  else the roomiest, pinned to that edge. It re-places as the page moves and
+  hands `GuideCard` its `arrowOffset` — the target's centre.
+- **At 640px and below** the card is a bottom sheet with no arrow, and the
+  annotations become a list inside it.
+- **`role="dialog"`**, non-modal, labelled by its title and described by its
+  body, `tabIndex={-1}`; focus moves to it on every step. `tourCardVariants` is
+  the placed card's styling.
+
+Keyboard: → next, ← back, Esc closes — ignored while typing in a field. A click
+on the scrim nudges the card (`nudgeCount`). Closing never just vanishes:
+`open` → false keeps the tour mounted for 300ms while the scrim and the
+annotations fade, the card fades and drops 8px (`isLeaving`), and nothing takes
+a click.
 
 **Both products.** New component, no call sites in the package.
 
@@ -3096,17 +3055,18 @@ Autocomplete, CodeBlock). Raised by the workspaces prototype's table preview
   `upstream` still carries beside `cursor-not-allowed`. With no pointer events
   the cursor is never asked for, so a switched-off control showed the arrow,
   and a tooltip could not open on it. Hover recipes are behind `enabled:`, so
-  nothing lights up.
+  nothing lights up (`Switch`: behind `:not([data-disabled])`, and its off look
+  on `data-disabled`, since §151).
 - **`AccordionTrigger`** — `disabled:cursor-not-allowed`.
-- **`Switch`** `tertiary` row — `has-[:disabled]:cursor-not-allowed` in place of
-  `has-[:disabled]:pointer-events-none`; the row neither lights nor presses.
+- **`Switch`** `tertiary` row — `has-[[data-disabled]]:cursor-not-allowed` (was
+  `has-[:disabled]:`, §151) in place of `has-[:disabled]:pointer-events-none`;
+  the row neither lights nor presses.
 
 `RadioButton`, `Button` and `IconButton` already work this way in `upstream`.
 Raised by the workspaces prototype: a Permissions row out of the data model
 scope, whose Allow / Deny is switched off.
 
 ---
-
 
 # `FilterMenu`
 
@@ -3155,6 +3115,298 @@ lower and 12px narrower a side, only their bottom edges showing, in their own co
 - One notice is just that notice; none renders nothing.
 
 **minor** (`.changeset/filter-menu-alert-stack.md`).
+
+---
+
+# `Tree`
+
+## 150. New — `Tree` · **DRAFT**
+
+`src/components/Tree/index.tsx`
+
+A hierarchy read row by row — a data source's catalogs, schemas, tables and columns. The AI
+connectivity prototype drew the same row in six places (the Data model, the setup page and window,
+Permissions, Effective access) from code of its own; owner's call (2026-10-23): the tree belongs in
+the library.
+
+- `Tree` — the container; `inset` is the edge of what holds it, at both ends of every row (24 in a
+  card under its title, 16 in a pane).
+- `TreeItem` — one row, 40px at every level, a rule under it, the last one ending on its holder's
+  border. The whole row opens; `actions` at the right edge never fold it.
+  - **Hover is a row's wash** — `tbl-row-hover` (`--tint-4`, §6a, as Table's rows), not the
+    control's `state-hover`: over the card that one is exactly `surface-card2` on dark, the head's
+    tone, and a hovered node ran into the head above it (2026-10-27). Card → hover → head:
+    `#FFFFFF` → `#F8FBFC` → `#F1F5F9` light, `#17171E` → `#1C1D24` → `#21212C` dark.
+  - **One step a level** — the toggle and its gap, 20 + 8 = 28px (`TREE_INDENT`): a level's +/−
+    starts under the icon above it.
+  - **An icon on every level** (`icon`, 14px, secondary ink), and **every row keeps the toggle's
+    slot** — empty on a row that cannot open — so each level's icon stands one full step in from its
+    parent's. A column without the slot put its icon under its table's and read as a sibling.
+  - The toggle is `IconButton` `3xs` `secondary` (§101), +/−, named "Expand / Collapse {name}",
+    `aria-expanded` — a disclosure. The +/− says the state, as a tree's caret does: **an open branch
+    is not a pressed button** (§155).
+  - `label` — the kind before the name in secondary ink (`Catalog · sakila`).
+  - `query` — what a search matched, marked (`HighlightText`, §109).
+  - `struck` — gone from the source: the name struck through (§113), secondary ink.
+  - `loading` — the name under a `Skeleton` of its own size, so nothing on the row moves.
+  - `after` — right after the name (a warning mark); `variant="head"` — a branch head the caller
+    groups by (a connection over its catalogs): `surface-card2`, no hover, `title14`. Not the
+    page's grey: on dark the page is darker than the card, and the head read as a hole in it;
+    card2 is a step lighter than the card on dark and a tinted band on light (2026-10-27).
+- `TreeLoadingRow` — what an opened branch shows while its children are read: the spinner in the
+  coming rows' icon slot, the words where their names start.
+
+The tree holds no data: which rows exist, which are open, what loads and what a search keeps is the
+caller's.
+
+**minor** (`.changeset/tree.md`).
+
+---
+
+# `IconButton`, `Button`, `Switch` tooltip
+
+## 151. `IconButton`, `Button`, `Switch` — `tooltip`; a disabled control keeps it · **DRAFT**
+
+`src/components/Tooltip/ControlTooltip.tsx` (internal) ·
+`src/components/IconButton/index.tsx` · `src/components/Button/index.tsx` ·
+`src/components/Switch/index.tsx` · `src/lib/utils.ts` (`secondaryDisabled`)
+
+```ts
+tooltip?: ReactNode | true   // true → the aria-label; a node → that, over a longer accessible name
+tooltipSide?: 'top' | 'right' | 'bottom' | 'left'   // default 'top'
+```
+
+- **`IconButton`** — an icon-only control names its action on hover and
+  keyboard focus. Every product page built it by hand — an `IconButton` inside
+  a `TooltipTrigger` (the AI connectivity prototype's `IconAction`, 19 uses) —
+  now a prop, the way `Badge` carries its own.
+- `true` shows the `aria-label`; a node shows a shorter word over a longer
+  name ("Set Up" over "Set up Finance warehouse in Data Analyze").
+- Without `tooltip` the component renders exactly as before.
+- **`Button`** (2026-10-27) — the same props on the same code
+  (`ControlTooltip`: the control is the trigger, `asChild`). Its first use is
+  the reason a button is off; the prototype built it three times as a disabled
+  `Button` in a focusable span in a `Tooltip` ("Add Workspace", "Set Up" on an
+  inactive connection, a workspace's Set Up while creating).
+- **`Switch`** (2026-10-27) — the same props. The trigger's own `data-state`
+  (`closed`, `delayed-open`) used to land on the track over `checked` /
+  `unchecked` and wipe its colour — why pages put a span between the two; the
+  switch keeps its own now, and the open tooltip joins its `aria-describedby`.
+- **A disabled control keeps its tooltip** (2026-10-27) — on all three. A
+  `disabled` button is out of the tab order and, in the products' browsers,
+  reports no hover, so the reason reached nobody. With `disabled` and a
+  `tooltip` the control renders `aria-disabled` instead: focusable, announced
+  as unavailable, the tooltip on hover and focus; the click is swallowed
+  (default prevented — no submit, no toggle — and propagation stopped, so a
+  row behind it does not open).
+- **The `aria-disabled` form on every variant** (2026-10-27) — `Button` and
+  `IconButton` painted it only on the three tertiaries; `primary`, `outline`,
+  `destructive` and the secondaries (`secondaryDisabled`) now paint it as they
+  paint `disabled`, hover and press switched off. The snapshot moves on every
+  `buttonVariants` / `iconButtonVariants` line, because the default
+  `primary` is on every line.
+- **`Switch` keys its off look on `data-disabled`** (2026-10-27), not
+  `:disabled` / `:enabled` — Radix stamps it on a disabled switch, and
+  `Switch` stamps it on the focusable form — so both fade, show the
+  not-allowed cursor and do not light on hover; the `tertiary` row likewise
+  (`has-[[data-disabled]]`).
+- Known difference: a disabled-with-tooltip `Switch` inside a `<form>` still
+  submits its value (Radix's hidden input is not disabled).
+- Like every `Tooltip`, it needs a `TooltipProvider` above it.
+
+**minor** (`.changeset/hint-clamp-tooltip.md`; `Button`, `Switch` and the
+disabled form: `.changeset/control-tooltip.md`).
+
+---
+
+# `IconHint`
+
+## 152. New — `IconHint` · **DRAFT**
+
+`src/components/IconHint/index.tsx`
+
+A glyph beside a name that says one thing on hover: a note (ⓘ — a
+description, what a field is for) or a state.
+
+- `variant` — `neutral` (ⓘ, the icon ink, a step up on hover and focus — no
+  fill) · `info` · `warning` (the triangle) · `error` (the cross in a circle) ·
+  `success` (the tick). The tones are `Alert`'s glyph tones, so a state reads
+  the same in a banner and beside a name.
+- `size` — `sm` 14px beside a 14px name, `md` 16px beside a 16px title.
+- `tooltip` + `label` — it takes focus (the kit's ring) and names itself.
+  Without a `tooltip` it is the glyph alone, hidden from assistive tech: a
+  status line's mark, the words beside it carry the meaning.
+- Not an `IconButton`: it does nothing when pressed, and a button's box would
+  sit between the name and the mark.
+
+Replaces the prototype's `InfoHint` (the description ⓘ) and `ProblemMark` (the
+warning beside a tree row or a member) — two hand-built spans with a tooltip.
+
+**minor** (`.changeset/hint-clamp-tooltip.md`).
+
+---
+
+# `ClampedText`
+
+## 153. New — `ClampedText` · **DRAFT**
+
+`src/components/ClampedText/index.tsx`
+
+A text cut to a number of lines, with See more when there is more — and only
+then.
+
+- `lines` 1–6 (default 3).
+- **Measured, not guessed** — whether the text is cut is read off its box on
+  every resize: in a popover the first layout happens before the panel has its
+  width, and one measurement there found nothing cut.
+- In place, See more opens the text and See less folds it. With `onMore` it
+  hands the whole text to the caller instead — a dialog from a hover panel,
+  which must stay a glance.
+- A press on See more stops there: it sits in rows and panels whose own press
+  opens something else.
+
+Was the prototype's `DescriptionClamp` (a row's description in its hint panel
+and in the pickers).
+
+**minor** (`.changeset/hint-clamp-tooltip.md`).
+
+---
+
+# `LinkButton` button mode
+
+## 158. `LinkButton` — without `href`, a `<button>` · **DRAFT**
+
+`src/components/LinkButton/index.tsx`
+
+- **`href` → `<a>`** — as before.
+- **No `href` (and no `asChild`) → `<button type="button">`** with the same
+  look (2026-10-27). A link-styled control that acts rather than goes — "Select
+  all", "View more / View less", a row's "Set up" — was an `<a>` with an
+  `onClick` and no `href`: out of the tab order, not a button to a screen
+  reader, deaf to Enter. The AI connectivity prototype wrapped a `<button>` in
+  `asChild` at five places to get the semantics back.
+- **The button's own styles reset** — `m-0 appearance-none text-start
+  [font-family:inherit]`, on the button form only: a wrapped "View more"
+  centred its second line, and the family and Safari's margin are the
+  platform's. On an `<a>` the alignment stays the sentence's.
+- `asChild` still renders whatever it is given.
+- Takes the anchor's attribute set either way; on the button the handlers and
+  ARIA are the same attributes. Without `href` an `aria-disabled` link-button
+  still fires its `onClick`, as the `<a>` did.
+
+**minor** (`.changeset/link-button-button-mode.md`).
+
+---
+
+# `ModalDescription`
+
+## 159. New — `ModalDescription` · **DRAFT**
+
+`src/components/Modal/ModalDescription.tsx` · `src/components/Modal/ModalContent.tsx`
+
+- **What** — the line under a dialog's title, on Radix `Dialog.Description`
+  (2026-10-27). `Modal.md` documented it and the package never had it, so
+  dialogs wrapped `ModalTitle` and a `Typography` in a div of their own inside
+  `ModalHeader` (three in the prototype's workspaces page).
+- **Look** — `body14`, `--ink-secondary`, a `<p>`; overridable (`textStyle`,
+  children) for a shorter or iconed line.
+- **Place** — inside `ModalHeader`, after `ModalTitle`, in the header's own
+  gap. Known difference: the prototype set its pair 4px apart; `ModalHeader`'s
+  gap is 6px (`gap-1.5`) and is not changed here.
+- **`ModalContent` no longer passes `aria-describedby={undefined}`** — it
+  silenced the old Radix warning and also overrode the id Radix points at a
+  Description, so the sentence was never announced. Radix 1.1.23 leaves the
+  attribute off by itself when no Description is mounted; a caller's own
+  `aria-describedby` still wins (`ConfirmationDialog`).
+
+**minor** (`.changeset/modal-description.md`).
+
+---
+
+# `Switch` description
+
+## 160. `Switch` — `description` · **DRAFT**
+
+`src/components/Switch/index.tsx`
+
+```ts
+description?: ReactNode   // a line under the label
+```
+
+- **What** — a label with an explanation under it beside a switch ("Active" /
+  "Inactive connections stop syncing data but keep their configuration"),
+  built by hand twice in the prototype's connection form (2026-10-27).
+- **Look** — `body12`, `--ink-secondary`: the field hint's scale under the 14px
+  label, 2px below it (`gap-0.5`, as `ChoiceCard` sets its description); faded
+  with the label when disabled.
+- **A11y** — the switch's `aria-describedby`, joined with the caller's own and,
+  while open, its tooltip's.
+- **Alignment** — with a description the row is `items-start`, so the switch
+  sits on the label's first line however long the description runs; an `sm`
+  track (16px) moves 2px down to the middle of the 20px line beside the label.
+- A description with no `label` renders too; without either the switch is bare,
+  as before.
+
+**minor** (`.changeset/switch-description.md`).
+
+---
+
+# `Pagination` range
+
+## 161. `Pagination` — `totalItems` and `pageSize`, the range · **DRAFT**
+
+`src/components/Pagination/index.tsx`
+
+```ts
+totalItems?: number   // with pageSize → "Showing {from}–{to} of {total}"
+pageSize?: number
+```
+
+- **What** — the readout `Pagination.md` and the `showPageNumbers` / `size`
+  docs already ask for ("always show the current range and the total"), built
+  by hand beside the pager at three places in the prototype (2026-10-27).
+- **Look** — "Showing 26–50 of 60" (en dash), `body12`, `--ink-secondary`, on
+  the leading edge of one band; the pager on the trailing edge; `flex-wrap
+  justify-between gap-3`, the band every one of the three drew. Pair it with
+  `size="xs"` under a table.
+- **Arithmetic** — from `(currentPage − 1) × pageSize + 1` to
+  `min(currentPage × pageSize, totalItems)`; an empty list reads 0–0 of 0.
+- `totalPages` is still the caller's; without both new props the pager renders
+  alone, as before.
+
+**minor** (`.changeset/pagination-range.md`).
+
+---
+
+# `CardHeader` actions
+
+## 162. `CardHeader` — `actions` · **DRAFT**
+
+`src/components/Card/CardHeader.tsx`
+
+```ts
+actions?: ReactNode   // the head's trailing action
+```
+
+- **What** — a trailing slot for what the card's head offers: a "Permissions
+  →" link, Export, Delete Workspace (2026-10-27). The prototype hand-built the
+  head as `title16` + a `body14` sentence + a trailing link or button at eight
+  places, because the header had nowhere to put it.
+- **Alignment** — the slot is one title line tall (`h-6`, `CardTitle`'s 24px
+  line) and centres what it holds on that line (`items-center`), so a link, a
+  24px icon button and a 32px button all sit on the title's middle however many
+  lines the description runs. `ms-auto`, `shrink-0`, `gap-2` between several.
+- **Layout** — with `actions` the vertical head becomes a row: the title and
+  description in a `min-w-0 flex-1` column that keeps the head's 6px rhythm,
+  the slot after it, 12px apart. The horizontal head adds the slot after its
+  column.
+- `false` / `null` (a conditional action) render no slot.
+- Known differences, not restyled: `CardTitle` is `title16` plus
+  `tracking-tight` (other products use it as it is), the prototype's heads set
+  `title16` with no tracking; and `CardHeader` puts 6px between title and
+  description where the prototype's heads put 4px.
+
+**minor** (`.changeset/card-header-actions.md`).
 
 ---
 
@@ -3298,8 +3550,8 @@ The extensions:
 - **`SearchInput`** — the results list and the pass-throughs (§145).
 - **`PageHeader`** — the back control, `condensed`, the truncating title, and
   `titleLeft` at the start of the row (§15, §67, §135).
-- **`StepProgress`** — `counter`, `showStepTitle`, `fill`, `size`, read-only
-  bars (§117).
+- **`StepProgress`** — `size`, a state per bar (§117); the rest is theirs
+  since 1.3.0 (§154).
 - **`Alert`** — the optional `title` (§95), the `illustration` slot,
   `glyphStroke` (§92).
 - **`TextArea`** — `hintText` (§41), `wrapperClassName`, and its type (§70).
@@ -3313,6 +3565,42 @@ The extensions:
   360px, and `ModalFooter`'s own divider replaces theirs.
 - **Storybook** — `Proposed changes` and `Foundations` are this package's
   sections, above `upstream`'s `Components` and `Compositions`.
+
+## 154. The developers' 1.3.0 and 1.4.0 parts — what stays different
+
+`upstream` 1.4.0 (f69ebc9) and 1.3.0 (c456805), ported by hand on the same
+rule: their names and their base, this package's changes as extensions on top,
+nothing removed comes back, `destructiveSecondary` stays this package's (§147).
+
+**Replaced by theirs.** `Coachmark` (§120) is their `GuideCard`; what it did
+that a card does not — placement, the phone sheet, the dialog role, focus — is
+the engine's and moved into `Tour` (§122). `StepProgress`'s `counter` is their
+`label`, and `fill` their `labelPosition="top"`.
+
+| Was | Now |
+|---|---|
+| `Coachmark` | `GuideCard` — `nudge` → `nudgeCount`, `leaving` → `isLeaving`; `target`, `rect`, `bounds`, `boundary`, `onPlace`, `portalContainer`, the side list and the dialog role → `Tour` |
+| `coachmark*` data-slots, `coachmark*Variants`, `animate-coachmark-*` | `guide-card*`, `guideCard*Variants`, `animate-guide-card-*` |
+| `CoachmarkSide` · `CoachmarkPosition` · `CoachmarkPlacement` | `GuideCardSide` · `GuideCardPosition` · `TourCardPlacement` |
+| `StepProgress` `counter` (default "Step N of M") | `label` — passed by the caller; no `label`, no read-out |
+| `StepProgress` `fill` | `labelPosition="top"` (root) · `stretched` (the parts) |
+| `step-progress-head` | `step-progress-header`, which now also wraps a label beside the bars |
+| `ChoiceGroup` `columns={2}` | `className="sm:grid-cols-2 sm:gap-3"` — the same classes, the developers' layout |
+| Storybook `Compositions/ChoiceCard` | `Components/ChoiceCard` |
+
+**Extensions on their base:**
+
+- **`StepProgress`** — `size="sm"`, a `data-state` per bar, no tooltip without a
+  title (§117).
+- **`StatusView`** — the illustration pack (§51, §107) and the kit's halo sizes,
+  spacing and type. Their `iconSize`, `titleSize`, `contentWidth` and the `base`
+  step are taken at their values; the 48ch cap (§104) holds inside the default
+  `md` block only.
+- **`ScrollShadow`** — their `focusable` (a Tab stop only while it overflows
+  with nothing focusable inside) with the system `focusRing` while it is one, and
+  its direct children watched for size, so a container already at its cap
+  notices content that grows without the child list changing.
+- **`Tour`** — the engine half of the card (§122).
 
 # Documentation that was missing or wrong
 
@@ -3585,3 +3873,63 @@ design intends, and the 4px dots on it are what has to carry the contrast.
 None of these are visible in the published Storybook, which predates the
 component's current form; all four were read off the kit's rendered CSS and the
 package source side by side.
+
+---
+
+## 155. `pressed:` — an open disclosure is not a held press
+
+`src/tailwind-preset.ts` · `Tree`, `SidebarMenuButton`
+
+The `pressed:` variant matched `:active` and every `aria-expanded="true"`. The second half is for
+a trigger held open while the popup it opens is open — a menu, a popover, a dialog, a select — and
+there it is right: the button that opened the menu stays down until the menu goes. But a
+disclosure carries `aria-expanded` too — an open section, a tree branch, "Show less" — and every
+one built on `Button` / `IconButton` sat pressed for as long as it was open: a column of pressed
+−'s down an opened tree; `AlertStack`'s "Show less"; an expandable `ChoiceCard` once chosen, whose
+pressed fill out-ranked the chosen wash. `SidebarMenuButton` had already stepped round it with
+`active:` for the same reason.
+
+What trees and disclosures do (WAI-ARIA APG *Tree View* and *Disclosure*, Carbon *Tree view*):
+the glyph says the state — +/−, a caret turned right or down; pressed is only the moment of the
+press. So the variant now holds a button pressed only while it is a popup trigger:
+
+| | matches |
+|---|---|
+| the press | `&:active` |
+| a menu, popover or dialog trigger, open | `&[aria-expanded="true"][aria-haspopup]:not([aria-haspopup="false"])` (+ `:hover`) |
+| a select, open | `&[aria-expanded="true"][role="combobox"]` (+ `:hover`) |
+
+Radix stamps `aria-haspopup` on `DropdownMenu`, `Popover` and `Dialog` triggers and
+`role="combobox"` on `Select`'s, so every trigger that showed pressed while open still does.
+
+- `Tree` — the toggle keeps `aria-expanded` (it is a disclosure), and no longer looks pressed.
+- `SidebarMenuButton` — keeps `active:`; its note no longer blames the variant.
+
+**patch** (`.changeset/pressed-popup-only.md`).
+
+---
+
+## 156. `Sheet` — the edge in the system's line
+
+`src/components/Sheet/index.tsx`
+
+The sides draw an edge — `border-r` on the left sheet, `border-t` / `border-b` on the bottom and
+top ones — with no colour, so it took Tailwind's default (`#E5E7EB`): a white stripe down a dark
+sheet. The sidebar's phone drawer is a left `Sheet`, so it was the first place anyone saw it. The
+base now names `border-stroke`, the line every other edge in the system uses.
+
+**patch** (`.changeset/sheet-edge-stroke.md`).
+
+---
+
+## 157. `ConfirmationDialog` — `description` takes inline marks
+
+`src/components/ConfirmationDialog/index.tsx`
+
+`description` was typed `string`. A confirmation names what it acts on, and products bold that name —
+"Remove **Finance warehouse** from **Data Analyze**?" — so every product that had a question like that
+built the dialog again from `Modal` parts rather than lose the bold (the AI connectivity prototype had
+twelve such copies). It renders inside a `<p>` already; the type is now `ReactNode` — inline content,
+one paragraph. A second block still goes in `bodySlot`.
+
+**patch** (`.changeset/confirmation-description-node.md`).

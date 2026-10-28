@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Settings, Trash2 } from 'lucide-react';
+import { fn } from 'storybook/test';
+import { TooltipProvider } from '../Tooltip';
 import { Button } from './index';
 
 const meta = {
@@ -140,7 +142,8 @@ export const Loading: Story = {
  *
  * The bottom row is the second, focusable form — `aria-disabled` plus no
  * `disabled` attribute, so a screen reader can still reach the control and
- * announce why it is inert. Shipped on the two tertiary variants.
+ * announce why it is inert. Every variant paints it the same as the first
+ * (2026-10-27); a disabled Button with a `tooltip` renders this form.
  */
 export const Disabled: Story = {
   args: { disabled: true },
@@ -154,20 +157,63 @@ export const Disabled: Story = {
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <Button {...args} aria-disabled disabled={false} variant="tertiary">
-          Tertiary · aria-disabled
-        </Button>
-        <Button
-          {...args}
-          aria-disabled
-          disabled={false}
-          variant="destructiveTertiary"
-          leftSlot={<Trash2 />}
-        >
-          Delete · aria-disabled
-        </Button>
+        {BOXED_VARIANTS.map(([variant, label]) => (
+          <Button
+            {...args}
+            key={variant}
+            aria-disabled
+            disabled={false}
+            variant={variant}
+            leftSlot={variant === 'destructiveTertiary' ? <Trash2 /> : null}
+          >
+            {`${label} · aria-disabled`}
+          </Button>
+        ))}
       </div>
     </div>
+  ),
+};
+
+/**
+ * `tooltip` — shown on hover and keyboard focus. On an enabled button it says
+ * what the button does; `true` shows the `aria-label` under a shorter visible
+ * label. On a disabled one it says why it is off: the button is rendered
+ * `aria-disabled`, so Tab reaches it and the reason opens, and its click does
+ * nothing. Tab through the row.
+ */
+export const WithTooltip: Story = {
+  render: () => (
+    <TooltipProvider>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          size="xs"
+          variant="tertiary"
+          leftSlot={<Settings />}
+          aria-label="Set up Finance warehouse in Data Analyze"
+          tooltip
+        >
+          Set Up
+        </Button>
+        <Button
+          size="sm"
+          variant="secondary"
+          tooltip="Set what the AI client may read from this connection"
+        >
+          Set Up
+        </Button>
+        <Button
+          size="sm"
+          leftSlot={<Plus />}
+          disabled
+          tooltip="Activate the connection to add it to a workspace"
+          tooltipSide="bottom"
+          // Never logged in Actions: the click is swallowed.
+          onClick={fn()}
+        >
+          Add Workspace
+        </Button>
+      </div>
+    </TooltipProvider>
   ),
 };
 

@@ -20,6 +20,9 @@ const sidebarNavItemVariants = cva(
     // Kit `.sbx-nav-item`: Label L — 14/20 medium, the same label the
     // `SidebarNavigationItems` rows carry.
     'font-medium text-ink-secondary text-sm',
+    // The label starts at its icon on whatever element `asChild` puts the
+    // row — a `<button>` centres its text, and the label sat mid-row (§142).
+    'text-start',
     'transition-colors duration-fast',
     'hover:bg-state-hover active:bg-state-pressed',
 

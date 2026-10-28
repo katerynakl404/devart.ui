@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ArrowRight, Download, Trash2 } from 'lucide-react';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
+import { LinkButton } from '../LinkButton';
 import {
   Card,
   CardContent,
@@ -132,6 +134,63 @@ export const Anatomy: Story = {
   ),
 };
 
+/**
+ * `CardHeader actions` — what the head offers, on its trailing edge. The slot
+ * is one title line tall and centres what it holds on that line: a link, or a
+ * 32px button, sits on the title's middle however long the description runs.
+ * The text column takes what is left and wraps.
+ */
+export const HeaderActions: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => (
+    <div className="flex max-w-xl flex-col gap-4">
+      <Card {...args} fullWidth className="p-6">
+        <CardHeader
+          actions={
+            <LinkButton href="#" className="text-sm" rightSlot={<ArrowRight />}>
+              Permissions
+            </LinkButton>
+          }
+        >
+          <CardTitle>Members with access</CardTitle>
+        </CardHeader>
+        <CardContent>Three groups and two users.</CardContent>
+      </Card>
+      <Card {...args} fullWidth className="p-6">
+        <CardHeader
+          actions={
+            <Button size="sm" variant="secondary" leftSlot={<Download />}>
+              Export
+            </Button>
+          }
+        >
+          <CardTitle>Logs</CardTitle>
+        </CardHeader>
+      </Card>
+      <Card {...args} fullWidth className="p-6">
+        <CardHeader
+          actions={
+            <Button
+              size="sm"
+              variant="destructiveSecondary"
+              leftSlot={<Trash2 />}
+            >
+              Delete Workspace
+            </Button>
+          }
+        >
+          <CardTitle>Delete workspace</CardTitle>
+          <CardDescription>
+            The workspace goes, together with its data model and who has access
+            to it. Your connections stay — you can keep using them in other
+            workspaces.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </div>
+  ),
+};
+
 export const Rounded: Story = {
   render: (args) => (
     <div className="flex flex-wrap items-start gap-4">
@@ -210,6 +269,43 @@ export const StickyFooter: Story = {
             Cancel
           </Button>
           <Button size="sm">Save</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};
+
+/**
+ * DRAFT. `CardFooter divided` — the footer as a band of its own: a rule across
+ * the top of a card whose sections run edge to edge (`p-0`). With `sticky` it
+ * keeps the card's bottom corners while pinned. Scroll the box.
+ */
+export const DividedStickyFooter: Story = {
+  parameters: { layout: 'padded' },
+  render: (args) => (
+    <div className="h-80 w-96 overflow-y-auto rounded-lg border border-stroke bg-surface-page p-4">
+      <Card {...args} fullWidth className="p-0">
+        <div className="flex flex-col gap-3 p-6">
+          {[
+            'sakila',
+            'public',
+            'actor',
+            'film',
+            'customer',
+            'payment',
+            'rental',
+            'staff',
+            'store',
+            'address',
+          ].map((name) => (
+            <p key={name}>{name} — a row of the tree.</p>
+          ))}
+        </div>
+        <CardFooter sticky divided className="justify-end px-6 py-4">
+          <Button variant="secondary" size="md">
+            Cancel
+          </Button>
+          <Button size="md">Save</Button>
         </CardFooter>
       </Card>
     </div>

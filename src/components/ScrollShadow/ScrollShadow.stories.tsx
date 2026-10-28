@@ -29,6 +29,10 @@ const meta = {
       control: 'select',
       options: ['auto', 'both', 'top', 'bottom', 'left', 'right', 'none'],
     },
+    focusable: {
+      control: 'select',
+      options: ['auto', true, false],
+    },
     onVisibilityChange: { control: false },
     children: { control: false },
     ref: { control: false, table: { disable: true } },
@@ -51,6 +55,10 @@ export const Vertical: Story = {
       '.overflow-y-auto'
     ) as HTMLElement;
     await expect(region).toBeTruthy();
+
+    // Text-only overflow: the container itself is the keyboard scroll stop.
+    await waitFor(() => expect(region.getAttribute('tabindex')).toBe('0'));
+    await expect(region.getAttribute('role')).toBe('region');
 
     // The browser reserialises the gradient and drops the default direction, so
     // the assertions read the shape: a soft near edge starts the gradient with

@@ -1,16 +1,17 @@
 'use client';
 
-export type { ChoiceCardIndicator, ChoiceCardProps } from './ChoiceCard';
 export {
   ChoiceCard,
-  choiceCardHeadVariants,
-  choiceCardIconVariants,
   choiceCardIndicatorVariants,
   choiceCardVariants,
 } from './ChoiceCard';
+export { choiceCardHeadVariants } from './ChoiceCardExpandable';
+export { choiceCardIconVariants } from './ChoiceCardIcon';
+export { ChoiceGroup, choiceGroupVariants } from './ChoiceGroup';
 export type {
+  ChoiceCardIndicator,
+  ChoiceCardProps,
   ChoiceGroupMultipleProps,
   ChoiceGroupProps,
   ChoiceGroupSingleProps,
-} from './ChoiceGroup';
-export { ChoiceGroup, choiceGroupVariants } from './ChoiceGroup';
+} from './types';

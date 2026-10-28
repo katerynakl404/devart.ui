@@ -10,3 +10,19 @@ change and the whole grid shifts under the user.
 Always show the current range and the total ("1–25 of 342") — a bare page number
 tells the user nothing about how much is left. When the total is unknown, show
 the range alone rather than inventing a page count.
+
+Pass `totalItems` and `pageSize` and the pager draws that readout itself —
+"Showing 26–50 of 60", `body12` in `--ink-secondary`, on the leading edge of one
+band with the controls on the trailing one. Under a table that is `size="xs"`:
+
+```jsx
+<Pagination
+  currentPage={page}
+  totalPages={Math.ceil(rows.length / 25)}
+  totalItems={rows.length}
+  pageSize={25}
+  onPageChange={setPage}
+  size="xs"
+  showFirstLast={false}
+/>
+```

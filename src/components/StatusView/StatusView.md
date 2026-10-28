@@ -86,7 +86,7 @@ The action's offset is the kit's, not the block's gap: **12px below the text at
 | Glyph, no halo | 48 | 32 |
 | Illustration | 150px | 104px |
 | Title | Title 16 | |
-| Message | Body M, max 48ch, balanced (the kit: 32ch) | |
+| Message | Body M, max 48ch inside the `md` block, balanced (the kit: 32ch) | |
 | CTA offset | 12 | 8 |
 
 `xs` and `md` have **no counterpart in the kit**. They are the package's own
@@ -97,6 +97,39 @@ The kit's page-level empty state has **no chip**: `.empty-ic` is a bare 48px
 glyph in `--ink-inactive`. Pass `withIconHalo={false}` for that, which is also
 what the illustrations need. The chip that is in the kit belongs to the menu
 state — `.cl-menu-empty-ic`, 28px, `--icon-wrapper-bg`, a border, a 16px glyph.
+
+## Sizing one part
+
+`size` sets every part at once. Three props from upstream (1.4.0) override one
+part each and fall back to the `size`-derived value when omitted:
+
+| Prop | Sets | Values |
+|---|---|---|
+| `iconSize` | the halo and its glyph | `xs` `sm` `base` `md` `lg` |
+| `titleSize` | the title's face and tag | `xs` `sm` `base` `md` `lg` |
+| `contentWidth` | the title + description block (`contentVariants`) | `sm` 24rem, `md` 28rem (default) |
+
+`base` is upstream's step, at upstream's values: a 48px halo with a 24px glyph,
+and a `text-base` semibold `<span>` title (`title16`, the face of `lg`'s title
+without its `<h3>`). On upstream's ladder it sits between `sm` and `md`; on this
+package's (halo 32 / 40 / 56) it falls between `md` and `lg`. It exists on the
+halo and the title only — `size` itself has no `base`.
+
+The message's 48ch cap (§104) applies inside the `md` block only. There it
+binds: a 12px message stops at about 388px in DM Sans, under the block's
+448px. In the `sm` block (384px) the block is already that measure, so the cap
+is not set. At `lg` the message is 14px and 48ch is about 460px, so the `md`
+block is the narrower bound there anyway.
+
+```jsx
+<StatusView
+  iconSize="base"
+  titleSize="base"
+  contentWidth="sm"
+  title="No assistants connected"
+  description="Start from your assistant's connector directory."
+/>
+```
 
 ## In a popover or a dialog
 

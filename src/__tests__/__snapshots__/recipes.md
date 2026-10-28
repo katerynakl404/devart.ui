@@ -370,21 +370,21 @@ size=sm
 defaultVariants: variant=primary, size=md, rounded=md, fullWidth=false
 
 (defaults)
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=primary
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=secondary
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-btn-secondary-border bg-surface-card text-ink-body hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover pressed:bg-btn-secondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-btn-secondary-border bg-surface-card text-ink-body hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover pressed:bg-btn-secondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=outline
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-brand-secondary bg-transparent text-ink-body hover:border-brand-hover hover:bg-btn-outline-bg-hover pressed:border-brand-hover pressed:bg-btn-outline-bg-press focus-visible:ring-focus-ring-brand disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-ink-inactive disabled:hover:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-brand-secondary bg-transparent text-ink-body hover:border-brand-hover hover:bg-btn-outline-bg-hover pressed:border-brand-hover pressed:bg-btn-outline-bg-press focus-visible:ring-focus-ring-brand disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-ink-inactive disabled:hover:bg-transparent aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=tertiary
   inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-ink-body hover:bg-state-hover pressed:bg-state-pressed focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=primaryTertiary
   inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-brand-primary dark:text-ink-highlight hover:bg-state-hover hover:text-brand-hover dark:hover:text-ink-highlight pressed:bg-state-pressed pressed:text-brand-press dark:pressed:text-ink-highlight focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent disabled:hover:text-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent dark:disabled:text-ink-inactive dark:disabled:hover:text-ink-inactive dark:aria-disabled:text-ink-inactive dark:aria-disabled:hover:text-ink-inactive h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=destructive
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-fb-red text-content-on-solid hover:bg-fb-error-hover pressed:bg-fb-error-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-fb-red text-content-on-solid hover:bg-fb-error-hover pressed:bg-fb-error-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=destructiveSecondary
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-destructiveSecondary-border bg-transparent text-fb-red-text hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-destructiveSecondary-border bg-transparent text-fb-red-text hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=destructiveTertiary
   inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-fb-red-text hover:bg-destructiveTertiary-bg-hover pressed:bg-destructiveTertiary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent disabled:hover:text-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 variant=transparent
@@ -392,45 +392,45 @@ variant=transparent
 variant=transparentUnderline
   inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-none bg-transparent text-ink-body underline underline-offset-4 focus-visible:ring-focus-ring-brand h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 size=xs
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-7 gap-1 px-2 text-xs [&_svg]:size-3.5 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-7 gap-1 px-2 text-xs [&_svg]:size-3.5 rounded-md w-fit
 size=sm
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-8 gap-1.5 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-8 gap-1.5 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 size=md
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 size=lg
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-10 px-4 text-base [&_svg]:size-5 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-10 px-4 text-base [&_svg]:size-5 rounded-md w-fit
 size=xl
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-11 px-5 text-base [&_svg]:size-5 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-11 px-5 text-base [&_svg]:size-5 rounded-md w-fit
 align=left
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-start rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-start rounded-md w-fit
 align=center
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-center rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-center rounded-md w-fit
 align=right
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-end rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 justify-end rounded-md w-fit
 rounded=none
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-none w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-none w-fit
 rounded=sm
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-sm w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-sm w-fit
 rounded=rounded
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded w-fit
 rounded=md
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 rounded=lg
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-lg w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-lg w-fit
 rounded=xl
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-xl w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-xl w-fit
 rounded=full
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-full w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-full w-fit
 fullWidth=true
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-full
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-full
 fullWidth=false
-  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
+  inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit
 compound[0] variant=transparent
   inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 m-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body focus-visible:ring-focus-ring-brand h-9 px-3 text-sm [&_svg]:size-4 rounded-md w-fit p-0
 
 ## components/Card/CardFooter.tsx — cardFooterVariants
 
-defaultVariants: variant=default, sticky=false
+defaultVariants: variant=default, sticky=false, divided=false
 
 (defaults)
   flex items-center gap-2
@@ -439,8 +439,12 @@ variant=default
 variant=actions
   flex items-center justify-end gap-2 [&>*]:w-full
 sticky=true
-  flex items-center gap-2 sticky bottom-0 z-10 bg-surface-card
+  flex items-center gap-2 sticky bottom-0 z-10 rounded-b-[inherit] bg-surface-card
 sticky=false
+  flex items-center gap-2
+divided=true
+  flex items-center gap-2 border-stroke border-t
+divided=false
   flex items-center gap-2
 
 ## components/Card/CardHeader.tsx — cardHeaderVariants
@@ -511,16 +515,6 @@ size=md
 rounded=md
   peer grid shrink-0 place-content-center border-[1.5px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled transition-colors duration-fast ease-in-out border-stroke-field-hover bg-surface-card enabled:hover:border-ink-secondary data-[state=checked]:border-brand-primary data-[state=checked]:bg-brand-primary data-[state=checked]:text-content-on-solid enabled:data-[state=checked]:hover:border-brand-hover enabled:data-[state=checked]:hover:bg-brand-hover data-[state=indeterminate]:border-brand-primary data-[state=indeterminate]:bg-brand-primary data-[state=indeterminate]:text-content-on-solid enabled:data-[state=indeterminate]:hover:border-brand-hover enabled:data-[state=indeterminate]:hover:bg-brand-hover aria-invalid:border-input-error enabled:aria-invalid:hover:border-input-error aria-invalid:data-[state=checked]:border-input-error aria-invalid:data-[state=checked]:bg-input-error enabled:aria-invalid:data-[state=checked]:hover:border-input-error enabled:aria-invalid:data-[state=checked]:hover:bg-input-error aria-invalid:data-[state=indeterminate]:border-input-error aria-invalid:data-[state=indeterminate]:bg-input-error enabled:aria-invalid:data-[state=indeterminate]:hover:border-input-error enabled:aria-invalid:data-[state=indeterminate]:hover:bg-input-error size-control rounded
 
-## components/ChoiceCard/ChoiceCard.tsx — choiceCardHeadVariants
-
-(defaults)
-  flex w-full items-start gap-2.5 px-3 py-2.5 rounded-[inherit] border-0 bg-transparent text-left cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed
-
-## components/ChoiceCard/ChoiceCard.tsx — choiceCardIconVariants
-
-(defaults)
-  flex size-9 flex-none items-center justify-center rounded-full bg-brand-primary/5 text-ink-highlight [&_svg]:size-4
-
 ## components/ChoiceCard/ChoiceCard.tsx — choiceCardIndicatorVariants
 
 (defaults)
@@ -549,62 +543,20 @@ disabled=false
 compound[0] selected=false, disabled=false
   relative flex w-full items-start gap-2.5 px-3 py-2.5 rounded-lg border border-stroke bg-surface-card text-left transition-[background-color,border-color] duration-fast cursor-pointer pressed:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand hover:border-card-border-hover hover:bg-state-hover
 
+## components/ChoiceCard/ChoiceCardExpandable.tsx — choiceCardHeadVariants
+
+(defaults)
+  flex w-full items-start gap-2.5 px-3 py-2.5 rounded-[inherit] border-0 bg-transparent text-left cursor-pointer focus-visible:outline-none disabled:cursor-not-allowed
+
+## components/ChoiceCard/ChoiceCardIcon.tsx — choiceCardIconVariants
+
+(defaults)
+  flex size-9 flex-none items-center justify-center rounded-full bg-brand-primary/5 text-ink-highlight [&_svg]:size-4
+
 ## components/ChoiceCard/ChoiceGroup.tsx — choiceGroupVariants
 
-defaultVariants: columns=1
-
 (defaults)
   grid grid-cols-1 gap-2
-columns=1
-  grid grid-cols-1 gap-2
-columns=2
-  grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3
-
-## components/Coachmark/index.tsx — coachmarkArrowVariants
-
-defaultVariants: side=bottom
-
-(defaults)
-  absolute size-3 rotate-45 border border-stroke bg-surface-card [@media(max-width:640px)]:hidden -top-[7px] border-r-0 border-b-0
-side=right
-  absolute size-3 rotate-45 border border-stroke bg-surface-card [@media(max-width:640px)]:hidden -left-[7px] border-t-0 border-r-0
-side=left
-  absolute size-3 rotate-45 border border-stroke bg-surface-card [@media(max-width:640px)]:hidden -right-[7px] border-b-0 border-l-0
-side=bottom
-  absolute size-3 rotate-45 border border-stroke bg-surface-card [@media(max-width:640px)]:hidden -top-[7px] border-r-0 border-b-0
-side=top
-  absolute size-3 rotate-45 border border-stroke bg-surface-card [@media(max-width:640px)]:hidden -bottom-[7px] border-t-0 border-l-0
-
-## components/Coachmark/index.tsx — coachmarkBodyVariants
-
-(defaults)
-  mt-2 text-ink-secondary text-sm leading-relaxed [&_p+p]:mt-3 [&_p]:m-0 [&_b]:font-semibold [&_b]:text-ink-body [&_strong]:font-semibold [&_strong]:text-ink-body
-
-## components/Coachmark/index.tsx — coachmarkIconVariants
-
-(defaults)
-  flex size-8 flex-none items-center justify-center rounded-full bg-brand-primary/10 text-ink-highlight [&_svg]:size-4
-
-## components/Coachmark/index.tsx — coachmarkVariants
-
-defaultVariants: width=md, motion=in, measuring=false
-
-(defaults)
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-in
-width=md
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-in
-width=lg
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[29rem] animate-coachmark-in
-motion=in
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-in
-motion=nudge
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-nudge
-motion=out
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] pointer-events-none animate-coachmark-out
-measuring=true
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-in invisible top-0 left-0
-measuring=false
-  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:animate-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none w-[22rem] animate-coachmark-in
 
 ## components/CodeBlock/index.tsx — codeBlockVariants
 
@@ -727,64 +679,134 @@ rounded=xl
 rounded=full
   flex min-w-0 items-center justify-between gap-2 border border-stroke bg-surface-card min-h-9 px-2 py-1 text-sm rounded-full
 
+## components/GuideCard/GuideCard.tsx — guideCardVariants
+
+defaultVariants: width=md, motion=in
+
+(defaults)
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[22rem] animate-guide-card-in motion-reduce:animate-none
+width=md
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[22rem] animate-guide-card-in motion-reduce:animate-none
+width=lg
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[29rem] animate-guide-card-in motion-reduce:animate-none
+motion=in
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[22rem] animate-guide-card-in motion-reduce:animate-none
+motion=nudge
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[22rem] animate-guide-card-nudge motion-reduce:animate-none
+motion=out
+  relative max-w-full p-4 rounded-lg border border-stroke bg-surface-card text-ink-primary shadow-dropdown w-[22rem] pointer-events-none animate-guide-card-out motion-reduce:[animation-duration:1ms]
+
+## components/GuideCard/GuideCardArrow.tsx — guideCardArrowVariants
+
+defaultVariants: side=bottom, centered=true
+
+(defaults)
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -top-px -translate-x-1/2 -translate-y-1/2 border-r-0 border-b-0 left-1/2
+side=right
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -left-px -translate-x-1/2 -translate-y-1/2 border-t-0 border-r-0 top-1/2
+side=left
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -right-px translate-x-1/2 -translate-y-1/2 border-b-0 border-l-0 top-1/2
+side=bottom
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -top-px -translate-x-1/2 -translate-y-1/2 border-r-0 border-b-0 left-1/2
+side=top
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -bottom-px -translate-x-1/2 translate-y-1/2 border-t-0 border-l-0 left-1/2
+centered=true
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -top-px -translate-x-1/2 -translate-y-1/2 border-r-0 border-b-0
+centered=false
+  absolute size-3 rotate-45 border border-stroke bg-surface-card -top-px -translate-x-1/2 -translate-y-1/2 border-r-0 border-b-0
+compound[0] side=top,bottom, centered=true
+  absolute size-3 rotate-45 border border-stroke bg-surface-card
+compound[1] side=left,right, centered=true
+  absolute size-3 rotate-45 border border-stroke bg-surface-card
+
+## components/GuideCard/GuideCardBody.tsx — guideCardBodyVariants
+
+(defaults)
+  mt-2 font-normal text-ink-secondary text-sm leading-relaxed [&_p+p]:mt-3 [&_p]:m-0 [&_b]:font-semibold [&_b]:text-ink-body [&_strong]:font-semibold [&_strong]:text-ink-body
+
+## components/GuideCard/GuideCardFooter.tsx — guideCardFooterVariants
+
+(defaults)
+  mt-4 flex items-center gap-2
+
+## components/GuideCard/GuideCardHeader.tsx — guideCardHeaderVariants
+
+(defaults)
+  mb-3
+
+## components/GuideCard/GuideCardIcon.tsx — guideCardIconVariants
+
+(defaults)
+  flex size-8 flex-none items-center justify-center rounded-full bg-brand-primary/10 text-ink-highlight [&_svg]:size-4
+
+## components/GuideCard/GuideCardTitle.tsx — guideCardTitleRowVariants
+
+(defaults)
+  flex items-center gap-2.5
+
+## components/GuideCard/GuideCardTitle.tsx — guideCardTitleVariants
+
+(defaults)
+  m-0 text-base
+
 ## components/IconButton/index.tsx — iconButtonVariants
 
 defaultVariants: variant=primary, size=md, rounded=md
 
 (defaults)
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
 variant=primary
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
 variant=secondary
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-btn-secondary-border bg-surface-card text-ink-body hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-btn-secondary-border bg-surface-card text-ink-body hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=outline
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-brand-secondary bg-transparent text-ink-body hover:border-brand-hover hover:bg-btn-outline-bg-hover pressed:border-brand-hover pressed:bg-btn-outline-bg-press focus-visible:ring-focus-ring-brand disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-ink-inactive disabled:hover:bg-transparent size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-brand-secondary bg-transparent text-ink-body hover:border-brand-hover hover:bg-btn-outline-bg-hover pressed:border-brand-hover pressed:bg-btn-outline-bg-press focus-visible:ring-focus-ring-brand disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-ink-inactive disabled:hover:bg-transparent aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=tertiary
   inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-ink-body hover:bg-state-hover pressed:bg-state-pressed focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent disabled:hover:text-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=primaryTertiary
   inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-brand-primary hover:bg-state-hover hover:text-brand-hover pressed:bg-state-pressed pressed:text-brand-press focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent disabled:hover:text-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=destructive
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-fb-red text-content-on-solid hover:bg-fb-error-hover pressed:bg-fb-error-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-fb-red text-content-on-solid hover:bg-fb-error-hover pressed:bg-fb-error-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
 variant=destructiveSecondary
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-destructiveSecondary-border bg-transparent text-fb-red-text hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-destructiveSecondary-border bg-transparent text-fb-red-text hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press focus-visible:ring-focus-ring-brand disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-inactive disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=destructiveTertiary
   inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-transparent text-fb-red-text hover:bg-destructiveTertiary-bg-hover pressed:bg-destructiveTertiary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-transparent disabled:text-ink-inactive disabled:hover:bg-transparent disabled:hover:text-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive aria-disabled:pressed:bg-transparent size-9 [&_svg]:size-4 rounded-md
 variant=transparent
   inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 !p-0 m-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body focus-visible:ring-focus-ring-brand size-9 [&_svg]:size-4 rounded-md
 size=3xs
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-5 [&_svg]:size-3 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-5 [&_svg]:size-3 rounded-md rounded
 size=2xs
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-6 [&_svg]:size-3.5 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-6 [&_svg]:size-3.5 rounded-md rounded
 size=xs
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-7 [&_svg]:size-3.5 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-7 [&_svg]:size-3.5 rounded-md rounded
 size=sm
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-8 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-8 [&_svg]:size-4 rounded-md
 size=md
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
 size=lg
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-10 [&_svg]:size-5 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-10 [&_svg]:size-5 rounded-md
 size=xl
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-11 [&_svg]:size-5 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-11 [&_svg]:size-5 rounded-md
 rounded=none
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-none
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-none
 rounded=sm
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-sm
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-sm
 rounded=rounded
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded
 rounded=md
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-md
 rounded=lg
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-lg
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-lg
 rounded=xl
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-xl
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-xl
 rounded=full
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-full
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-9 [&_svg]:size-4 rounded-full
 compound[0] size=3xs, rounded=md
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-5 [&_svg]:size-3 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-5 [&_svg]:size-3 rounded-md rounded
 compound[1] size=2xs, rounded=md
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-6 [&_svg]:size-3.5 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-6 [&_svg]:size-3.5 rounded-md rounded
 compound[2] size=xs, rounded=md
-  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled size-7 [&_svg]:size-3.5 rounded-md rounded
+  inline-flex items-center justify-center cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed aria-disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:stroke-2 border-transparent bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-bg-hover pressed:bg-btn-primary-bg-press focus-visible:ring-focus-ring-brand disabled:bg-state-disabled disabled:text-ink-inactive disabled:hover:bg-state-disabled aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled size-7 [&_svg]:size-3.5 rounded-md rounded
 
 ## components/IconCard/index.tsx — iconCardVariants
 
@@ -796,6 +818,27 @@ disabled=true
   group/icon-card relative isolate h-32 flex flex-col items-center justify-center gap-2 overflow-hidden p-4 [contain-intrinsic-size:auto_8rem] [content-visibility:auto] transition-[box-shadow,border-color,transform] duration-base hover:-translate-y-px hover:border-card-lift-border hover:shadow-lift-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-surface-page cursor-not-allowed opacity-disabled hover:translate-y-0 hover:border-stroke hover:shadow-rest
 disabled=false
   group/icon-card relative isolate h-32 flex flex-col items-center justify-center gap-2 overflow-hidden p-4 [contain-intrinsic-size:auto_8rem] [content-visibility:auto] transition-[box-shadow,border-color,transform] duration-base hover:-translate-y-px hover:border-card-lift-border hover:shadow-lift-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-surface-page cursor-pointer
+
+## components/IconHint/index.tsx — iconHintVariants
+
+defaultVariants: variant=neutral, size=sm
+
+(defaults)
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
+variant=neutral
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
+variant=info
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-brand-tertiary [&_svg]:size-3.5
+variant=warning
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-attention [&_svg]:size-3.5
+variant=error
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-red-text [&_svg]:size-3.5
+variant=success
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-green [&_svg]:size-3.5
+size=sm
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
+size=md
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-4
 
 ## components/InputGroup/InputGroupAction.tsx — inputGroupActionVariants
 
@@ -1127,15 +1170,15 @@ orientation=vertical
 defaultVariants: side=right
 
 (defaults)
-  fixed z-50 gap-4 p-6 bg-surface-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 sm:max-w-sm data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right
+  fixed z-50 gap-4 p-6 bg-surface-card border-stroke shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 sm:max-w-sm data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right
 side=top
-  fixed z-50 gap-4 p-6 bg-surface-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top
+  fixed z-50 gap-4 p-6 bg-surface-card border-stroke shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top
 side=bottom
-  fixed z-50 gap-4 p-6 bg-surface-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom
+  fixed z-50 gap-4 p-6 bg-surface-card border-stroke shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom
 side=left
-  fixed z-50 gap-4 p-6 bg-surface-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 left-0 h-full w-3/4 sm:max-w-sm border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left
+  fixed z-50 gap-4 p-6 bg-surface-card border-stroke shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 left-0 h-full w-3/4 sm:max-w-sm border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left
 side=right
-  fixed z-50 gap-4 p-6 bg-surface-card shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 sm:max-w-sm data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right
+  fixed z-50 gap-4 p-6 bg-surface-card border-stroke shadow-lg transition ease-in-out data-[state=closed]:animate-out data-[state=closed]:duration-slow data-[state=open]:animate-in data-[state=open]:duration-500 inset-y-0 right-0 h-full w-3/4 sm:max-w-sm data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right
 
 ## components/Sidebar/SidebarMenuButton.tsx — sidebarMenuButtonVariants
 
@@ -1163,11 +1206,11 @@ size=lg
 defaultVariants: activatable=true
 
 (defaults)
-  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 data-[status=active]:bg-state-pressed data-[status=active]:text-ink-body aria-[current=page]:bg-state-pressed aria-[current=page]:text-ink-body
+  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm text-start transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 data-[status=active]:bg-state-pressed data-[status=active]:text-ink-body aria-[current=page]:bg-state-pressed aria-[current=page]:text-ink-body
 activatable=true
-  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 data-[status=active]:bg-state-pressed data-[status=active]:text-ink-body aria-[current=page]:bg-state-pressed aria-[current=page]:text-ink-body
+  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm text-start transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0 data-[status=active]:bg-state-pressed data-[status=active]:text-ink-body aria-[current=page]:bg-state-pressed aria-[current=page]:text-ink-body
 activatable=false
-  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0
+  flex h-8 items-center gap-2 rounded-md px-2 font-medium text-ink-secondary text-sm text-start transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card group-data-[collapsible=icon]:size-7 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:p-0
 
 ## components/Skeleton/index.tsx — skeletonVariants
 
@@ -1286,6 +1329,17 @@ surface=embedded
 surface=standalone
   flex min-h-0 flex-1 flex-col items-center justify-center rounded-lg text-center gap-3 p-6 border border-stroke bg-surface-card
 
+## components/StatusView/index.tsx — contentVariants
+
+defaultVariants: width=md
+
+(defaults)
+  flex flex-col items-center gap-1.5 max-w-md
+width=sm
+  flex flex-col items-center gap-1.5 max-w-sm
+width=md
+  flex flex-col items-center gap-1.5 max-w-md
+
 ## components/StatusView/index.tsx — haloVariants
 
 defaultVariants: tone=neutral, size=md
@@ -1308,14 +1362,56 @@ size=xs
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-7 [&_svg]:size-4
 size=sm
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-8 [&_svg]:size-4
+size=base
+  flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-12 [&_svg]:size-6
 size=md
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-10 [&_svg]:size-5
 size=lg
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-14 [&_svg]:size-7
 
-## components/StepProgress/index.tsx — stepProgressBarVariants
+## components/StepProgress/StepProgress.tsx — stepProgressStepsVariants
 
-defaultVariants: filled=false, fill=false, interactive=true
+defaultVariants: stretched=false, size=md
+
+(defaults)
+  flex flex-none
+stretched=true
+  flex w-full gap-1.5
+stretched=false
+  flex flex-none
+size=md
+  flex flex-none
+size=sm
+  flex flex-none
+compound[0] stretched=true, size=sm
+  flex w-full gap-1.5 gap-1
+
+## components/StepProgress/StepProgress.tsx — stepProgressVariants
+
+defaultVariants: labelPosition=right, size=md
+
+(defaults)
+  flex min-w-0 h-5 flex-row items-center gap-3
+labelPosition=right
+  flex min-w-0 h-5 flex-row items-center gap-3
+labelPosition=left
+  flex min-w-0 h-5 flex-row-reverse items-center justify-end gap-3
+labelPosition=top
+  flex min-w-0 flex-col-reverse gap-2
+labelPosition=bottom
+  flex min-w-0 flex-col gap-2
+size=md
+  flex min-w-0 h-5 flex-row items-center gap-3
+size=sm
+  flex min-w-0 h-5 flex-row items-center gap-3 gap-2
+compound[0] labelPosition=right,left, size=sm
+  flex min-w-0
+compound[1] labelPosition=top,bottom, size=sm
+  flex min-w-0
+
+## components/StepProgress/StepProgressBar.tsx — stepProgressBarVariants
+
+defaultVariants: filled=false, stretched=false, interactive=true
 
 (defaults)
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6 group-hover/step:bg-card-border-hover
@@ -1323,10 +1419,10 @@ filled=true
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-brand-primary w-6
 filled=false
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6
-fill=false
-  h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6 group-hover/step:bg-card-border-hover
-fill=true
+stretched=true
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-full group-hover/step:bg-card-border-hover
+stretched=false
+  h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6 group-hover/step:bg-card-border-hover
 interactive=true
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6
 interactive=false
@@ -1336,80 +1432,55 @@ compound[0] filled=true, interactive=true
 compound[1] filled=false, interactive=true
   h-1 rounded-full transition-colors duration-fast motion-reduce:transition-none bg-stroke w-6 group-hover/step:bg-card-border-hover
 
-## components/StepProgress/index.tsx — stepProgressLabelVariants
+## components/StepProgress/StepProgressBar.tsx — stepProgressStepVariants
 
-defaultVariants: size=md
-
-(defaults)
-  whitespace-nowrap text-ink-secondary text-sm
-size=md
-  whitespace-nowrap text-ink-secondary text-sm
-size=sm
-  whitespace-nowrap text-ink-secondary text-xs
-
-## components/StepProgress/index.tsx — stepProgressStepsVariants
-
-defaultVariants: fill=false, size=md
+defaultVariants: stretched=false, interactive=true
 
 (defaults)
-  flex-none flex
-fill=false
-  flex-none flex
-fill=true
-  flex-none grid gap-1.5
-size=md
-  flex-none flex
-size=sm
-  flex-none flex
-compound[0] fill=true, size=sm
-  flex-none grid gap-1.5 gap-1
-
-## components/StepProgress/index.tsx — stepProgressStepVariants
-
-defaultVariants: fill=false, interactive=true
-
-(defaults)
-  group/step flex flex-none items-center rounded border-0 bg-transparent px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
-fill=false
-  group/step flex flex-none items-center rounded border-0 bg-transparent px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
-fill=true
-  group/step flex flex-none items-center rounded border-0 bg-transparent p-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-none px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
+stretched=true
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
+stretched=false
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-none px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
 interactive=true
-  group/step flex flex-none items-center rounded border-0 bg-transparent px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-none px-0.5 py-2.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
 interactive=false
-  group/step flex flex-none items-center rounded border-0 bg-transparent px-0.5 py-2.5
-compound[0] fill=true, interactive=true
-  group/step flex flex-none items-center rounded border-0 bg-transparent p-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand -my-1.5 px-0 py-1.5
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-none px-0.5 py-2.5
+compound[0] stretched=true, interactive=true
+  group/step flex items-center rounded border-0 bg-transparent p-0 flex-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand -my-1.5 py-1.5
 
-## components/StepProgress/index.tsx — stepProgressTitleVariants
+## components/StepProgress/StepProgressHeader.tsx — stepProgressHeaderVariants
+
+defaultVariants: stretched=false, size=md
+
+(defaults)
+  flex min-w-0 items-center gap-3
+stretched=true
+  flex min-w-0 items-center gap-3 justify-between
+stretched=false
+  flex min-w-0 items-center gap-3
+size=md
+  flex min-w-0 items-center gap-3
+size=sm
+  flex min-w-0 items-center gap-3 gap-2
+compound[0] stretched=false, size=sm
+  flex min-w-0 items-center gap-3 gap-2
+
+## components/StepProgress/StepProgressHeader.tsx — stepProgressLabelVariants
 
 defaultVariants: size=md
 
 (defaults)
-  truncate font-normal text-ink-secondary text-xs
+  
 size=md
-  truncate font-normal text-ink-secondary text-xs
+  
 size=sm
-  truncate font-normal text-ink-secondary text-xs
+  text-xs
 
-## components/StepProgress/index.tsx — stepProgressVariants
-
-defaultVariants: fill=false, size=md
+## components/StepProgress/StepProgressHeader.tsx — stepProgressTitleVariants
 
 (defaults)
-  flex min-w-0 h-5 items-center gap-3
-fill=false
-  flex min-w-0 h-5 items-center gap-3
-fill=true
-  flex min-w-0 flex-col items-stretch gap-2
-size=md
-  flex min-w-0 h-5 items-center gap-3
-size=sm
-  flex min-w-0 h-5 items-center gap-3 gap-2
-compound[0] fill=false, size=sm
-  flex min-w-0 h-5 items-center gap-3 gap-2
-compound[1] fill=true, size=sm
-  flex min-w-0 flex-col items-stretch gap-2 gap-1.5
+  truncate text-xs
 
 ## components/StepSlider/index.tsx — stepSliderStopsVariants
 
@@ -1467,7 +1538,7 @@ gap=lg
 variant=default
   flex items-center flex-row-reverse gap-3
 variant=tertiary
-  flex items-center flex-row-reverse gap-3 cursor-pointer rounded transition-colors duration-fast enabled:hover:bg-state-hover active:bg-state-pressed has-[:disabled]:cursor-not-allowed has-[:disabled]:hover:bg-transparent has-[:disabled]:active:bg-transparent
+  flex items-center flex-row-reverse gap-3 cursor-pointer rounded transition-colors duration-fast enabled:hover:bg-state-hover active:bg-state-pressed has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:active:bg-transparent has-[[data-disabled]]:hover:bg-transparent
 
 ## components/Switch/index.tsx — switchThumbVariants
 
@@ -1487,15 +1558,15 @@ size=sm
 defaultVariants: variant=accent, size=default, rounded=default
 
 (defaults)
-  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled data-[state=checked]:bg-brand-primary enabled:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
+  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
 variant=accent
-  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled data-[state=checked]:bg-brand-primary enabled:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
+  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
 size=default
-  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled data-[state=checked]:bg-brand-primary enabled:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
+  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
 size=sm
-  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled data-[state=checked]:bg-brand-primary enabled:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-4 w-7 px-0.5 rounded-full
+  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-4 w-7 px-0.5 rounded-full
 rounded=default
-  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed disabled:opacity-disabled data-[state=checked]:bg-brand-primary enabled:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg enabled:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
+  relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
 
 ## components/Tabs/TabsTrigger.tsx — tabsTriggerVariants
 
@@ -1599,6 +1670,28 @@ rounded=xl
   inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 border-brand-secondary bg-transparent text-ink-body enabled:hover:border-brand-hover enabled:hover:bg-brand-primary/6 active:border-brand-hover active:bg-brand-primary/8 disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive data-[state=on]:cursor-default data-[state=on]:border-ink-highlight data-[state=on]:bg-state-pressed data-[state=on]:text-ink-highlight enabled:data-[state=on]:hover:border-ink-highlight enabled:data-[state=on]:hover:bg-state-pressed enabled:data-[state=on]:hover:text-ink-highlight data-[state=on]:active:border-ink-highlight data-[state=on]:active:bg-state-pressed data-[state=on]:active:text-ink-highlight h-8 px-2.5 text-sm [&_svg]:size-4 rounded-xl
 rounded=full
   inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium cursor-pointer border transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:shrink-0 border-brand-secondary bg-transparent text-ink-body enabled:hover:border-brand-hover enabled:hover:bg-brand-primary/6 active:border-brand-hover active:bg-brand-primary/8 disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive data-[state=on]:cursor-default data-[state=on]:border-ink-highlight data-[state=on]:bg-state-pressed data-[state=on]:text-ink-highlight enabled:data-[state=on]:hover:border-ink-highlight enabled:data-[state=on]:hover:bg-state-pressed enabled:data-[state=on]:hover:text-ink-highlight data-[state=on]:active:border-ink-highlight data-[state=on]:active:bg-state-pressed data-[state=on]:active:text-ink-highlight h-8 px-2.5 text-sm [&_svg]:size-4 rounded-full
+
+## components/Tour/TourCard.tsx — tourCardVariants
+
+defaultVariants: measuring=false
+
+(defaults)
+  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none [@media(max-width:640px)]:[&>[data-slot=guide-card-arrow]]:hidden
+measuring=true
+  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none [@media(max-width:640px)]:[&>[data-slot=guide-card-arrow]]:hidden invisible top-0 left-0
+measuring=false
+  fixed z-[calc(var(--spotlight-z)+2)] max-w-[calc(100vw-1.5rem)] [transition:top_var(--spotlight-move),left_var(--spotlight-move)] focus:outline-none motion-reduce:transition-none [@media(max-width:640px)]:!left-3 [@media(max-width:640px)]:right-3 [@media(max-width:640px)]:!top-auto [@media(max-width:640px)]:bottom-[calc(0.75rem+env(safe-area-inset-bottom,0px))] [@media(max-width:640px)]:w-auto [@media(max-width:640px)]:max-w-none [@media(max-width:640px)]:[&>[data-slot=guide-card-arrow]]:hidden
+
+## components/Tree/index.tsx — treeItemVariants
+
+defaultVariants: variant=default
+
+(defaults)
+  flex min-h-10 flex-wrap items-center gap-x-2 gap-y-1 border-stroke border-b py-1 last:border-b-0 hover:bg-tbl-row-hover
+variant=default
+  flex min-h-10 flex-wrap items-center gap-x-2 gap-y-1 border-stroke border-b py-1 last:border-b-0 hover:bg-tbl-row-hover
+variant=head
+  flex min-h-10 flex-wrap items-center gap-x-2 gap-y-1 border-stroke border-b py-1 last:border-b-0 bg-surface-card2
 
 ## components/Typography/index.tsx — typographyVariants
 

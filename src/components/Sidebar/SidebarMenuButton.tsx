@@ -45,10 +45,10 @@ const sidebarMenuButtonVariants = cva(
     //Hover — State/Hover fill only; text & icon stay Text/Secondary
     'hover:bg-state-hover',
 
-    //Pressed — State/Pressed fill only. Deliberately `active:`, not the
-    //`pressed:` variant: this button doubles as a Collapsible disclosure
-    //trigger, and `pressed:` also matches [aria-expanded="true"], which would
-    //leave every open group permanently painted as if it were active.
+    //Pressed — State/Pressed fill only, while the press lasts. This button
+    //doubles as a Collapsible disclosure trigger, and an open group is not a
+    //pressed button. (`pressed:` held every open group painted until §155
+    //narrowed it to popup triggers; `active:` was the way round it.)
     'active:bg-state-pressed',
 
     //Focus state — neutral card-gap brand ring (matches Button/IconButton)

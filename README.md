@@ -181,6 +181,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **Button** | CVA + Radix Slot | `variant`, `size`, `align`, `rounded`, `fullWidth` |
 | **Card** | CVA | `variant`, `layout`, `rounded`, `fullWidth` |
 | **Checkbox** | Radix Checkbox + CVA | `variant`, `size`, `rounded`, `labelPosition`, `gap` |
+| **ChoiceCard** | CVA + Checkbox | `indicator`, `layout` *(`ChoiceGroup`: one answer or several, as cards; columns through `className`)* |
 | **CircularProgress** | Custom (SVG) | — |
 | **Collapsible** | Radix Collapsible | — |
 | **ConfirmationDialog** | Modal | `variant` *(a two-button confirmation, 360px)* |
@@ -192,6 +193,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **File** | CVA | `variant`, `size`, `rounded` |
 | **FilterChips** | Radix ToggleGroup | — *(`items`, `value`, `onValueChange`)* |
 | **Foundations** | Custom | — *(docs-only token previews: Colors, Radius, Shadows, Spacing)* |
+| **GuideCard** | CVA + Typography | `width`, `side` *(the card of a tour step; placement, scrim and focus stay with `Tour`)* |
 | **IconCard** | CVA | `disabled` *(icon-and-caption catalog tile; `IconCardSkeleton`)* |
 | **IconButton** | CVA + Radix Slot | `variant`, `size`, `rounded` |
 | **Input** | HTML | — |
@@ -208,7 +210,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **RadioButton** | Radix RadioGroup + CVA | `variant`, `size`, `labelPosition`, `gap` |
 | **Resizable** | react-resizable-panels | — |
 | **ResizableMainSideLayout** | react-resizable-panels | — *(main pane plus a side pane that collapses to nothing)* |
-| **ScrollShadow** | Custom | — |
+| **ScrollShadow** | Custom | `focusable` *(a Tab stop only while it overflows with nothing focusable inside)* |
 | **SearchInput** | InputGroup | `size`, `variant` *(results dropdown is this package's extension)* |
 | **SelectableListCard** | CVA | `layout` (`card` | `row`) |
 | **SegmentedControl** | Radix Tabs + CVA | `variant`, `size`, `rounded` |
@@ -217,7 +219,8 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **Sidebar** | Custom + Radix Slot/Tooltip | `variant`, `size` |
 | **Skeleton** | CSS | `animation`, `rounded` |
 | **Spinner** | Custom | `size`, `color` |
-| **StatusView** | CVA | `ladder`, `size`, `surface`, `tone`, `circles` |
+| **StatusView** | CVA | `ladder`, `size`, `surface`, `tone`, `circles`; per part `iconSize`, `titleSize`, `contentWidth` |
+| **StepProgress** | CVA + Radix Tooltip | `labelPosition`, `size` *(`size` is this package's)* |
 | **StepSlider** | Radix Slider | `size` |
 | **Stepper** | Custom | — |
 | **Switch** | Radix Switch | `variant`, `size`, `rounded`, `labelPosition`, `gap` |

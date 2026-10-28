@@ -55,7 +55,7 @@ const LINE = 64 + 49 + 8 + 34;
  * on one line (`top`) and fans out from its target; a curved brand arrow runs
  * to a dashed ring around the control, concentric with it. Rings side by side
  * keep 6px apart. Hidden at 640px and below — a `Tour` lists the same texts in
- * its coachmark there.
+ * its tour card there.
  *
  * `Annotation` renders nothing on its own; the group reads its children.
  */

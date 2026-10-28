@@ -1,10 +1,16 @@
 'use client';
 
 import { Slot } from '@radix-ui/react-slot';
-import type { ButtonHTMLAttributes, Ref } from 'react';
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
 import { Spinner } from '../Spinner';
+import {
+  ControlTooltip,
+  inertForTooltip,
+  resolveTooltip,
+  type TooltipSide,
+} from '../Tooltip/ControlTooltip';
 
 export const iconButtonVariants = cva(
   cn(
@@ -34,7 +40,10 @@ export const iconButtonVariants = cva(
           'pressed:bg-btn-primary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive',
-          'disabled:hover:bg-state-disabled'
+          'disabled:hover:bg-state-disabled',
+          // Both disabled forms on every variant — see Button (2026-10-27).
+          'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
+          'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
@@ -50,7 +59,10 @@ export const iconButtonVariants = cva(
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent',
+          'aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent',
+          'aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent'
         ),
         tertiary: cn(
           'border-transparent bg-transparent text-ink-body',
@@ -84,7 +96,9 @@ export const iconButtonVariants = cva(
           'pressed:bg-fb-error-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive',
-          'disabled:hover:bg-state-disabled'
+          'disabled:hover:bg-state-disabled',
+          'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
+          'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
         // The secondary's destructive form — see Button.
         destructiveSecondary: cn(
@@ -172,6 +186,22 @@ export interface IconButtonProps
    * keeping the variant fill. Sets `aria-busy`; does not toggle `disabled`.
    */
   isLoading?: boolean;
+  /**
+   * Shown on hover and keyboard focus: what the control does, for a control
+   * with no visible text. `true` shows its `aria-label`; a node shows that
+   * instead ("Set Up" over a gear whose name is "Set up Finance warehouse in
+   * Data Analyze").
+   *
+   * The pattern every product page was building by hand — an IconButton in a
+   * TooltipTrigger — as a prop, the way `Badge` carries its own.
+   *
+   * With `disabled` the control is rendered `aria-disabled` instead, so the
+   * tooltip still opens on hover and focus; its click does nothing
+   * (2026-10-27, `ControlTooltip` — the code `Button` and `Switch` share).
+   */
+  tooltip?: ReactNode | true;
+  /** @default 'top' */
+  tooltipSide?: TooltipSide;
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -182,6 +212,10 @@ export function IconButton({
   rounded,
   asChild = false,
   isLoading = false,
+  tooltip,
+  tooltipSide = 'top',
+  disabled,
+  onClick,
   ref,
   children,
   ...props
@@ -192,8 +226,10 @@ export function IconButton({
   // down on the two smallest boxes, 16px on every other step.
   const spinnerSize =
     size === '3xs' || size === '2xs' || size === 'xs' ? 'xs' : 'sm';
+  const tip = resolveTooltip(tooltip, props['aria-label']);
+  const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
-  return (
+  const button = (
     <Comp
       data-variant={variant ?? undefined}
       ref={ref}
@@ -204,6 +240,7 @@ export function IconButton({
       )}
       aria-busy={isLoading || undefined}
       {...props}
+      {...inert}
     >
       {isLoading ? (
         // Decorative: `aria-busy` on the control conveys the loading state.
@@ -212,5 +249,11 @@ export function IconButton({
         children
       )}
     </Comp>
+  );
+
+  return (
+    <ControlTooltip content={tip} side={tooltipSide}>
+      {button}
+    </ControlTooltip>
   );
 }

@@ -55,7 +55,7 @@ const viewport = () =>
 /**
  * Where a target is on screen right now, kept current as the page moves.
  *
- * The geometry under `Spotlight`, `Coachmark`, `AnnotationGroup` and `Tour`,
+ * The geometry under `Spotlight`, `AnnotationGroup` and `Tour` (which places `GuideCard`),
  * exported so a page can position its own furniture against the same rect the
  * tour lights. Pass `null` as the target to measure only the bounds.
  */

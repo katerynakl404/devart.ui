@@ -50,6 +50,22 @@ sanctioned way to make a link look like a button:
 **`fullWidth`** stretches the button and takes `align` (`left` | `center` |
 `right`) for the label; without `fullWidth` the label is always centred.
 
+**`tooltip`** (and `tooltipSide`) — the same prop as `IconButton`'s, on the same
+code. Its first use is the reason a button is off:
+
+```jsx
+<Button disabled tooltip="Activate the connection to add it to a workspace">
+  Add Workspace
+</Button>
+```
+
+With `disabled` and a `tooltip` the button is rendered `aria-disabled` rather
+than `disabled` — still in the tab order, so the reason opens on focus as well
+as on hover, painted exactly as disabled, and its click swallowed. Do not wrap a
+disabled button in a focusable span to hold a tooltip. `tooltip` with no
+`disabled` names the action; `true` shows the `aria-label`. Needs a
+`TooltipProvider` above, as every tooltip does.
+
 **Focus is inherited, never re-declared.** Anything that renders a `Button` gets
 the ring for free.
 

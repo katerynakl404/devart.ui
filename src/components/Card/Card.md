@@ -49,3 +49,20 @@ its own, deliberately, so it does not fight the content:
 
 Card padding is `p-6` at page level, `p-4` for a dense list card. Never wrap a
 `Table` in a `Card` — the table ships its own frame.
+
+## A head with an action
+
+`CardHeader actions` takes what the head offers on its trailing edge — a
+"Permissions →" `LinkButton`, an Export button:
+
+```jsx
+<CardHeader actions={<LinkButton href="/permissions">Permissions</LinkButton>}>
+  <CardTitle>Members with access</CardTitle>
+  <CardDescription>Who can read this workspace.</CardDescription>
+</CardHeader>
+```
+
+The slot is one title line tall and centres what it holds on that line, so the
+action sits on the title's middle however long the description runs; it does
+not shrink, and the text column wraps beside it. Do not build the title row
+by hand to get a trailing link.

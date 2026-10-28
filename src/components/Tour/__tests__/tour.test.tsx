@@ -63,7 +63,7 @@ describe('Tour', () => {
     expect(document.body.querySelector('[data-slot="spotlight"]')).toBeNull();
   });
 
-  it('lights the step and explains it in a coachmark with the progress', () => {
+  it('lights the step and explains it in a guide card with the progress', () => {
     renderTour();
 
     const card = screen.getByRole('dialog', {
@@ -102,7 +102,7 @@ describe('Tour', () => {
     expect(card).toHaveTextContent('Chat');
   });
 
-  it('moves focus to the coachmark', async () => {
+  it('moves focus to the card', async () => {
     renderTour();
     await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
   });
@@ -163,7 +163,7 @@ describe('Tour', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('nudges the coachmark on a click on the scrim', async () => {
+  it('nudges the card on a click on the scrim', async () => {
     renderTour();
     const veil = document.body.querySelector(
       '[data-slot="spotlight-veil"]'
@@ -172,7 +172,7 @@ describe('Tour', () => {
     fireEvent.click(veil);
     await waitFor(() =>
       expect(screen.getByRole('dialog').className).toContain(
-        'animate-coachmark-nudge'
+        'animate-guide-card-nudge'
       )
     );
   });
@@ -193,5 +193,89 @@ describe('Tour', () => {
     });
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(document.body.querySelector('[data-slot="spotlight"]')).toBeNull();
+  });
+});
+
+/* What `Coachmark` did on its own and `GuideCard` leaves to the engine:
+   placement, the phone sheet, the dialog role and focusability. */
+describe('Tour — the card', () => {
+  const setWidth = (px: number) =>
+    Object.defineProperty(window, 'innerWidth', {
+      value: px,
+      configurable: true,
+      writable: true,
+    });
+
+  /* jsdom lays nothing out: give the card a 300×200 box to place. */
+  beforeEach(() => {
+    vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(300);
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(200);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    setWidth(1024);
+  });
+
+  it('is a non-modal dialog named by its title and described by its body', () => {
+    renderTour();
+
+    const card = screen.getByRole('dialog', {
+      name: 'Ask your first question',
+    });
+    expect(card).toHaveAttribute('data-slot', 'guide-card');
+    expect(card).toHaveAttribute('aria-modal', 'false');
+    expect(card).toHaveAttribute('tabindex', '-1');
+    expect(card.parentElement).toBe(document.body);
+
+    const body = card.querySelector('[data-slot="guide-card-body"]');
+    expect(card).toHaveAttribute('aria-describedby', body?.id);
+    expect(body).toHaveTextContent('Type a question and press Enter.');
+  });
+
+  it('places the card beside the target and points its arrow at it', () => {
+    renderTour();
+
+    // #composer is 100–300 × 100–140, lit with 8px of padding: 92–308 ×
+    // 92–148. The card goes 14px under it, centred on it.
+    const card = screen.getByRole('dialog');
+    expect(card).toHaveAttribute('data-side', 'bottom');
+    expect(card.style.top).toBe('162px');
+    expect(card.style.left).toBe('50px');
+
+    const arrow = card.querySelector<HTMLElement>(
+      '[data-slot="guide-card-arrow"]'
+    );
+    expect(arrow?.style.left).toBe('150px');
+  });
+
+  it('honours the step’s preferred side', () => {
+    renderTour({
+      steps: STEPS.map(
+        (s, k): TourStep => (k === 0 ? { ...s, side: 'right' } : s)
+      ),
+    });
+
+    expect(screen.getByRole('dialog')).toHaveAttribute('data-side', 'right');
+  });
+
+  it('puts the annotations under the card when it sits under the target', () => {
+    renderTour();
+
+    // the card's bottom edge (162 + 200) + 34
+    const label = document.body.querySelector<HTMLElement>(
+      '[data-slot="annotation"]'
+    );
+    expect(label?.style.top).toBe('396px');
+  });
+
+  it('is a bottom sheet with no arrow at 640px and below', () => {
+    setWidth(640);
+    renderTour();
+
+    const card = screen.getByRole('dialog');
+    expect(card).not.toHaveAttribute('data-side');
+    expect(card.querySelector('[data-slot="guide-card-arrow"]')).toBeNull();
+    expect(card.style.top).toBe('');
   });
 });

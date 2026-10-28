@@ -1,10 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { Pencil, Plus, Settings, Trash2 } from 'lucide-react';
+import { TooltipProvider } from '../Tooltip';
 import { IconButton } from './index';
 
 const meta = {
   title: 'Components/IconButton',
   component: IconButton,
+  // Tooltips need a provider and Storybook has no global one.
+  decorators: [
+    (Story) => (
+      <TooltipProvider>
+        <Story />
+      </TooltipProvider>
+    ),
+  ],
   tags: ['autodocs'],
   args: {
     children: <Plus />,
@@ -146,5 +155,66 @@ export const Disabled: Story = {
         </IconButton>
       ))}
     </div>
+  ),
+};
+
+/** `tooltip` names the action on hover and focus. `true` shows the
+ *  `aria-label`; a node shows a shorter word over a longer accessible name. */
+export const WithTooltip: Story = {
+  render: () => (
+    <div className="flex items-center gap-3">
+      <IconButton aria-label="Edit" variant="tertiary" size="sm" tooltip>
+        <Pencil />
+      </IconButton>
+      <IconButton
+        aria-label="Set up Finance warehouse in Data Analyze"
+        variant="tertiary"
+        size="sm"
+        tooltip="Set Up"
+      >
+        <Settings />
+      </IconButton>
+      <IconButton
+        aria-label="Delete"
+        variant="destructiveTertiary"
+        size="sm"
+        tooltip
+        tooltipSide="bottom"
+      >
+        <Trash2 />
+      </IconButton>
+    </div>
+  ),
+};
+
+/**
+ * `disabled` with a `tooltip`: rendered `aria-disabled`, so it stays in the
+ * tab order and the tooltip opens on hover and focus — here, the reason it is
+ * off. Painted disabled; its click does nothing. The code `Button` shares.
+ */
+export const DisabledWithTooltip: Story = {
+  render: () => (
+    <TooltipProvider>
+      <div className="flex items-center gap-3">
+        <IconButton
+          aria-label="Delete Finance warehouse"
+          variant="destructiveTertiary"
+          size="sm"
+          disabled
+          tooltip="Remove it from its workspaces first"
+        >
+          <Trash2 />
+        </IconButton>
+        <IconButton
+          aria-label="Add"
+          variant="primary"
+          size="sm"
+          disabled
+          tooltip="Activate the connection to add it"
+        >
+          <Plus />
+        </IconButton>
+      </div>
+    </TooltipProvider>
   ),
 };

@@ -35,7 +35,12 @@ const confirmationDialogHeaderVariants = cva('mb-0 px-5 pt-3.5 pb-2', {
 interface ConfirmationDialogProps {
   open: boolean;
   title: string;
-  description: string;
+  /**
+   * The question's one paragraph. Inline marks are fine — the name it is about
+   * in bold — since it renders inside a `<p>`; a second block goes in
+   * `bodySlot`.
+   */
+  description: ReactNode;
   confirmLabel: string;
   cancelLabel: string;
   icon?: ReactNode;

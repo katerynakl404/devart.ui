@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
+import { TooltipProvider } from '../Tooltip';
 import { Switch } from './index';
 
 const meta = {
@@ -68,6 +70,64 @@ export const Small: Story = {
 
 export const WithoutLabel: Story = {
   args: { label: undefined, 'aria-label': 'Toggle feature' },
+};
+
+/**
+ * `description` — a line under the label that says what switching does:
+ * `body12`, `--ink-secondary`, 2px under the label, and the switch's
+ * `aria-describedby`. The row aligns to the top, so the switch sits on the
+ * label's first line however long the description runs — `sm` included.
+ */
+export const WithDescription: Story = {
+  args: {
+    label: 'Active',
+    labelPosition: 'left',
+    description:
+      'Inactive connections stop syncing data but keep their configuration.',
+    defaultChecked: true,
+    className: 'max-w-80',
+  },
+  render: (args) => (
+    <div className="flex flex-col gap-6">
+      <Switch {...args} />
+      <Switch {...args} size="sm" />
+      <Switch {...args} disabled />
+    </div>
+  ),
+};
+
+/**
+ * `tooltip` — on hover and keyboard focus, what switching does, or why the
+ * switch is off. A disabled switch with a tooltip is rendered `aria-disabled`:
+ * Tab reaches it and the reason opens; it does not toggle. Under a tooltip the
+ * track keeps its own checked / unchecked colour.
+ */
+export const WithTooltip: Story = {
+  args: { label: undefined },
+  render: () => {
+    const [on, setOn] = useState(true);
+    return (
+      <TooltipProvider>
+        <div className="flex items-center gap-6">
+          <Switch
+            size="sm"
+            checked={on}
+            onCheckedChange={setOn}
+            aria-label={on ? 'Deactivate Finance' : 'Activate Finance'}
+            tooltip={on ? 'Deactivate' : 'Activate'}
+          />
+          <Switch
+            size="sm"
+            defaultChecked
+            disabled
+            aria-label="Deactivate Sales"
+            tooltip="Only an owner can deactivate a workspace"
+            tooltipSide="bottom"
+          />
+        </div>
+      </TooltipProvider>
+    );
+  },
 };
 
 // Menu-row usage: whole labelled row gets Button-tertiary hover/pressed

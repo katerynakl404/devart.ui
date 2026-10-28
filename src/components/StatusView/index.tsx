@@ -52,10 +52,15 @@ const haloVariants = cva(
          is also what the illustrations need. The chip that IS in the kit is
          `.cl-menu-empty-ic`: 28px, `--icon-wrapper-bg`, a border, a 16px glyph.
          The `xs` rung is that size; its fill comes from `tone`, not from here,
-         because a size axis that also sets a colour cannot be composed. */
+         because a size axis that also sets a colour cannot be composed.
+
+         `base` is upstream's (1.4.0), at upstream's values: a 48px halo with a
+         24px glyph. Upstream puts it between its `sm` (40) and `md` (56); on
+         this ladder 48 falls between `md` (40) and `lg` (56). */
       size: {
         xs: 'size-7 [&_svg]:size-4',
         sm: 'size-8 [&_svg]:size-4',
+        base: 'size-12 [&_svg]:size-6',
         md: 'size-10 [&_svg]:size-5',
         lg: 'size-14 [&_svg]:size-7',
       },
@@ -68,14 +73,35 @@ const haloVariants = cva(
 );
 
 /**
+ * The title and description block. `width` is upstream's `contentWidth`
+ * (1.4.0): `md` is the 28rem the block always had, `sm` a narrower 24rem.
+ */
+const contentVariants = cva('flex flex-col items-center gap-1.5', {
+  variants: {
+    width: {
+      sm: 'max-w-sm',
+      md: 'max-w-md',
+    },
+  },
+  defaultVariants: {
+    width: 'md',
+  },
+});
+
+/**
  * Reference type ladder — sm 13 / lg 16 for the title, sm 11 / lg 13 for the
  * description, md sitting on the base rung between them. Expressed on the
  * named `textStyle` scale (the nearest rung to each reference value), with the
  * semantic element chosen separately so the size never drives the tag.
+ *
+ * `base` is upstream's (1.4.0) and reachable only through `titleSize`: a
+ * `text-base` semibold span, which on this scale is `title16` — the face of
+ * `lg`'s title, without its heading tag.
  */
 const TITLE_BY_SIZE = {
   xs: { element: 'span', textStyle: 'title12' },
   sm: { element: 'span', textStyle: 'title12' },
+  base: { element: 'span', textStyle: 'title16' },
   md: { element: 'p', textStyle: 'title14' },
   lg: { element: 'h3', textStyle: 'title16' },
 } as const;
@@ -309,8 +335,11 @@ export interface StatusViewProps
     VariantProps<typeof containerVariants> {
   tone?: StatusTone;
   icon?: ReactNode;
+  iconSize?: VariantProps<typeof haloVariants>['size'];
   withIconHalo?: boolean;
   title: string;
+  titleSize?: keyof typeof TITLE_BY_SIZE;
+  contentWidth?: VariantProps<typeof contentVariants>['width'];
   description?: ReactNode;
   actions?: ReactNode;
   actionsOrientation?: 'inline' | 'stacked';
@@ -325,8 +354,11 @@ const StatusView = ({
   size,
   surface,
   icon,
+  iconSize,
   withIconHalo = true,
   title,
+  titleSize,
+  contentWidth,
   description,
   actions,
   actionsOrientation = 'inline',
@@ -339,7 +371,9 @@ const StatusView = ({
 }: StatusViewProps) => {
   const isError = tone === 'error';
   const isCompact = size === 'xs';
-  const titleStyle = TITLE_BY_SIZE[size ?? 'md'];
+  const titleStyle = TITLE_BY_SIZE[titleSize ?? size ?? 'md'];
+  // The message's 48ch cap applies inside the default `md` block only.
+  const capsMessage = (contentWidth ?? 'md') === 'md';
 
   const resolvedIcon = icon === null ? null : (icon ?? TONE_DEFAULT_ICON[tone]);
 
@@ -374,12 +408,14 @@ const StatusView = ({
     >
       {resolvedIcon &&
         (withIconHalo ? (
-          <span className={haloVariants({ tone, size })}>{resolvedIcon}</span>
+          <span className={haloVariants({ tone, size: iconSize ?? size })}>
+            {resolvedIcon}
+          </span>
         ) : (
           resolvedIcon
         ))}
 
-      <div className="flex max-w-md flex-col items-center gap-1.5">
+      <div className={contentVariants({ width: contentWidth })}>
         <Typography
           align="center"
           element={titleStyle.element}
@@ -405,9 +441,15 @@ const StatusView = ({
                48ch, not the kit's 32: a two-sentence message — what is empty
                and what to do about it — broke into three or four short lines
                at 32 and read as a column of fragments. `text-balance` stays,
-               so the wider measure still never leaves one word on a line. */
+               so the wider measure still never leaves one word on a line.
+
+               Upstream's `contentWidth` now sets the block. The cap stays only
+               where it says something the block does not: inside `md` (448px)
+               a 12px message stops at 48ch, about 388px in DM Sans. `sm`
+               (384px) is already that measure, so there the cap is dropped. */
             className={cn(
-              'max-w-[48ch] text-balance',
+              capsMessage && 'max-w-[48ch]',
+              'text-balance',
               isCompact ? 'leading-normal' : 'leading-relaxed'
             )}
             element="p"
@@ -447,6 +489,7 @@ StatusView.displayName = 'StatusView';
 
 export {
   containerVariants,
+  contentVariants,
   EmptySearchIllustration,
   EmptyStateIllustration,
   haloVariants,

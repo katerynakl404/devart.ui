@@ -663,7 +663,7 @@
     color-mix(in srgb, hsl(var(--brand-700)) 0%, transparent) 100%
   );
 
-  /* ===== Tour family: Spotlight · Coachmark · AnnotationGroup ===== */
+  /* ===== Tour family: Spotlight · GuideCard · AnnotationGroup ===== */
   /* The scrim around a lit target is the modal scrim itself
      (`bg-overlay-scrim`, --overlay-scrim) — no colour of its own — under
      a 3px blur. */
@@ -683,11 +683,11 @@
   );
   --shadow-spotlight:
     0 0 0 4px var(--spotlight-halo), 0 0 28px var(--spotlight-glow);
-  /* One move for the whole family — the veils, the ring and the coachmark
+  /* One move for the whole family — the veils, the ring and the guide card
      glide to the next target together. Duration and curve in one value,
      read by a `transition` shorthand, so it is not a --motion-* step. */
   --spotlight-move: 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
-  /* The tour's layer: the scrim at 70, annotations at +1, the coachmark at
+  /* The tour's layer: the scrim at 70, annotations at +1, the guide card at
      +2 — above the package's z-50 overlays. */
   --spotlight-z: 70;
 }

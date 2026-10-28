@@ -7,6 +7,7 @@ import {
   ModalBody,
   ModalClose,
   ModalContent,
+  ModalDescription,
   ModalFooter,
   ModalHeader,
   ModalTitle,
@@ -100,6 +101,40 @@ export const InitiallyOpen: Story = {
           <ModalClose asChild>
             <Button variant="secondary">Close</Button>
           </ModalClose>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  ),
+};
+
+/**
+ * `ModalDescription` — the sentence under the title, inside `ModalHeader`,
+ * in the header's own gap: `body14`, `--ink-secondary`. On Radix
+ * `Dialog.Description`, so the dialog's `aria-describedby` names it.
+ */
+export const WithDescription: Story = {
+  render: () => (
+    <Modal>
+      <ModalTrigger asChild>
+        <Button variant="secondary">Add connections</Button>
+      </ModalTrigger>
+      <ModalContent size="md">
+        <ModalHeader>
+          <ModalTitle>Add connections</ModalTitle>
+          <ModalDescription>Link connections to Finance</ModalDescription>
+        </ModalHeader>
+        <ModalBody>
+          <Typography textColor="body">
+            The picker goes here — a search field and the list under it.
+          </Typography>
+        </ModalBody>
+        <ModalFooter>
+          <ModalClose asChild>
+            <Button size="sm" variant="secondary">
+              Cancel
+            </Button>
+          </ModalClose>
+          <Button size="sm">Add</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

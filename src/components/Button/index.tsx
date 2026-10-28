@@ -6,6 +6,12 @@ import { cva, type VariantProps } from '../../lib/cva';
 import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
 
 import { Spinner } from '../Spinner';
+import {
+  ControlTooltip,
+  inertForTooltip,
+  resolveTooltip,
+  type TooltipSide,
+} from '../Tooltip/ControlTooltip';
 
 const buttonVariants = cva(
   cn(
@@ -19,6 +25,9 @@ const buttonVariants = cva(
 
     // Disabled — both forms. `disabled` blocks focus; `aria-disabled` keeps the
     // control focusable so a screen reader can announce why it is inert.
+    // Every variant that paints a disabled state paints it for both
+    // (2026-10-27) — only the tertiaries did, and a disabled Button with a
+    // `tooltip` renders the `aria-disabled` form (`ControlTooltip`).
     //
     // Every variant below also switches its OWN hover recipe off again, because
     // `:hover` still matches a disabled button: without that, a switched-off
@@ -43,7 +52,9 @@ const buttonVariants = cva(
           'pressed:bg-btn-primary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive',
-          'disabled:hover:bg-state-disabled'
+          'disabled:hover:bg-state-disabled',
+          'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
+          'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
         // Card-tone fill with a thin neutral border.
         //
@@ -68,7 +79,10 @@ const buttonVariants = cva(
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent'
+          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent',
+          'aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
+          'aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent',
+          'aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent'
         ),
         // Lowest-emphasis ghost: Outlined minus the border — same brand-tinted
         // hover/press overlays.
@@ -115,7 +129,9 @@ const buttonVariants = cva(
           'pressed:bg-fb-error-press',
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive',
-          'disabled:hover:bg-state-disabled'
+          'disabled:hover:bg-state-disabled',
+          'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
+          'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
         // The secondary's destructive form: red border, transparent fill,
         // red-tinted hover/press. The label is Feedback/Red too — a neutral
@@ -241,6 +257,21 @@ export interface ButtonProps
    * fill (the label is retained). Sets `aria-busy`; does not toggle `disabled`.
    */
   isLoading?: boolean;
+  /**
+   * Shown on hover and keyboard focus — above all, WHY a switched-off button
+   * is off ("Activate the connection to add it to a workspace"). `true` shows
+   * the `aria-label` (a short visible "Set Up" over the longer name "Set up
+   * Finance warehouse in Data Analyze"); a node shows itself. (2026-10-27)
+   *
+   * With `disabled` the button is rendered `aria-disabled` instead: focusable,
+   * so the reason is reachable from the keyboard and on hover, painted
+   * disabled, and its click swallowed. Pages built this as a disabled Button
+   * inside a focusable span inside a Tooltip. The same prop, and the same
+   * code, as `IconButton`'s.
+   */
+  tooltip?: ReactNode | true;
+  /** @default 'top' */
+  tooltipSide?: TooltipSide;
   ref?: Ref<HTMLButtonElement>;
 }
 
@@ -253,6 +284,10 @@ const Button = ({
   align,
   asChild = false,
   isLoading = false,
+  tooltip,
+  tooltipSide = 'top',
+  disabled,
+  onClick,
   ref,
   leftSlot = null,
   rightSlot = null,
@@ -266,8 +301,10 @@ const Button = ({
     children !== null &&
     children !== false &&
     children !== '';
+  const tip = resolveTooltip(tooltip, props['aria-label']);
+  const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
-  return (
+  const button = (
     <Comp
       data-variant={variant ?? undefined}
       className={cn(
@@ -277,6 +314,7 @@ const Button = ({
       ref={ref}
       aria-busy={isLoading || undefined}
       {...props}
+      {...inert}
     >
       {isLoading ? (
         <Spinner
@@ -314,6 +352,12 @@ const Button = ({
 
       {rightSlot}
     </Comp>
+  );
+
+  return (
+    <ControlTooltip content={tip} side={tooltipSide}>
+      {button}
+    </ControlTooltip>
   );
 };
 

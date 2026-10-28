@@ -31,6 +31,20 @@ const meta = {
       control: 'select',
       options: ['embedded', 'standalone'],
     },
+    iconSize: {
+      control: 'select',
+      options: ['xs', 'sm', 'base', 'md', 'lg'],
+    },
+    titleSize: {
+      control: 'select',
+      options: ['xs', 'sm', 'base', 'md', 'lg'],
+    },
+    contentWidth: {
+      control: 'select',
+      options: ['sm', 'md'],
+      description:
+        'The maximum width of the title and description block: `sm` is 24rem, `md` (default) is 28rem. A shorter text is narrower than either, so the setting shows only once the text wraps.',
+    },
     actionsOrientation: {
       control: 'select',
       options: ['inline', 'stacked'],
@@ -168,5 +182,16 @@ export const WithAction: Story = {
         New chat
       </Button>
     ),
+  },
+};
+
+export const PartSizes: Story = {
+  args: {
+    iconSize: 'base',
+    titleSize: 'base',
+    contentWidth: 'sm',
+    title: 'No assistants connected',
+    description:
+      "Start from your assistant's connector directory, for example in Claude or ChatGPT. Once you approve it, it shows up here.",
   },
 };
