@@ -25,7 +25,7 @@ Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `i
 
 | id | § | component | local branch | bump | gates | MR | status |
 |---|---|---|---|---|---|---|---|
-| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4698ac9` (one commit) → publish as `design/checkbox` | patch | all 6 ✓ | [!22](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/22) (Draft), pipeline #294532 ✓; + `a6c6332` comments trimmed; left as is by her decision (title/description stay Ukrainian) | published |
+| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4698ac9` (one commit) → publish as `design/checkbox` | patch | all 6 ✓ | [!22](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/22) (Draft) — 2026-10-29: English title, one-line description, squash on merge, changeset in the developers' style (`c146357`), pipeline #294981 | published |
 
 ## Waves — how the rest breaks down (2026-10-27)
 
