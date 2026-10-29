@@ -1,4 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../Tooltip';
 import { Checkbox } from './index';
 
 const meta = {
@@ -52,6 +58,34 @@ export const States: Story = {
         label="Invalid indeterminate"
       />
     </div>
+  ),
+};
+
+export const DisabledWithTooltip: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Put the tooltip on a wrapper: `TooltipTrigger asChild` on the checkbox would overwrite its `data-state`.',
+      },
+    },
+  },
+  render: (args) => (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className="inline-flex w-fit">
+            <Checkbox
+              {...args}
+              defaultChecked
+              disabled
+              label="Export to Excel"
+            />
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>Available on the Pro plan</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   ),
 };
 

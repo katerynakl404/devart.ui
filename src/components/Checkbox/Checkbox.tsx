@@ -88,10 +88,6 @@ const checkboxIndicatorVariants = cva(
   {
     variants: {
       size: {
-        // Both marks are drawn in a 10px glyph box (see the glyphs below).
-        // 10 in 18 leaves 4px a side, which is a whole device pixel at 100,
-        // 125, 150 and 200% — at 12px the 3px offset fell on 3.75 and 4.5
-        // device px, and the snapped glyph slid up to a third of a pixel.
         md: '[&>svg]:size-2.5',
       },
     },
@@ -156,15 +152,6 @@ function Checkbox({
       <CheckboxPrimitive.Indicator
         className={cn(checkboxIndicatorVariants({ size }), 'group/indicator')}
       >
-        {/* Both marks are drawn here, at their own size, in one 10px grid:
-            1 unit = 1px, stroke 1.5px, round caps — one weight, one renderer.
-            Not a 24-unit icon halved, whose coordinates fall where the halving
-            puts them.
-
-            The tick is centred on its frame — the halved lucide tick sat 0.25px
-            high and read high and to the right. The bar is 8px including its
-            round caps, 5px clear of the box on each side — at the kit's 10px
-            (and `M2 12h20`'s 11.5px) it crowded the sides. DESIGN-SYSTEM-CHANGES §57. */}
         <svg
           aria-hidden="true"
           className="group-data-[state=indeterminate]/indicator:hidden"
