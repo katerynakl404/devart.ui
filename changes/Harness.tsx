@@ -1,5 +1,12 @@
 import type { ReactNode } from 'react';
 import { cn } from '../src/lib/utils';
+import {
+  DRAWN,
+  HANDOFF,
+  JOURNAL,
+  type JournalEntry,
+  NO_PANEL,
+} from './journal';
 
 /**
  * What kind of thing the case is — marked only when it changes how the panels
@@ -67,6 +74,33 @@ export function Code({ children }: { children: ReactNode }) {
     <code className="rounded bg-surface-chips px-1 py-0.5 font-mono text-ink-body text-xxs">
       {children}
     </code>
+  );
+}
+
+/** An index line from the change log, its backticks set as code. */
+export function JournalText({ text }: { text: string }) {
+  return (
+    <>
+      {text
+        .split('`')
+        .map((part, i) =>
+          i % 2 ? <Code key={part + String(i)}>{part}</Code> : part
+        )}
+    </>
+  );
+}
+
+/** The handoff package a § went out in — `H-001` — with its status on hover. */
+function HandoffChip({ n }: { n: string }) {
+  const pkg = HANDOFF.get(n);
+  if (!pkg) return null;
+  return (
+    <span
+      className="rounded-full border border-brand-primary/40 bg-brand-primary/10 px-2 py-0.5 text-ink-body text-xxs"
+      title={`Handed to the developers in ${pkg.id}: ${pkg.status}`}
+    >
+      {pkg.id}
+    </span>
   );
 }
 
@@ -174,6 +208,7 @@ export function ChangeCase({
             {typeof n === 'number' || /^\d/.test(String(n)) ? `§${n}` : n}
           </span>
           <h3 className="font-semibold text-base text-ink-primary">{title}</h3>
+          <HandoffChip n={String(n)} />
           {state ? (
             <span
               className={cn(
@@ -226,21 +261,137 @@ export function ChangeCase({
   );
 }
 
-/** The page frame every change story shares. */
+/** One index line, for the lists under a page: number, text, draft. */
+function EntryLine({ entry }: { entry: JournalEntry }) {
+  return (
+    <li className="flex gap-2 text-ink-body text-sm leading-5">
+      <span className="w-10 shrink-0 text-ink-inactive tabular-nums">
+        §{entry.n}
+      </span>
+      <span className="min-w-0">
+        <JournalText text={entry.text} />
+        {entry.isDraft ? (
+          <span className="text-ink-secondary"> · draft</span>
+        ) : null}
+        {entry.isOpen ? (
+          <span className="text-ink-secondary"> · open</span>
+        ) : null}
+      </span>
+    </li>
+  );
+}
+
+/**
+ * What the change log has for this page's group and the page does not draw —
+ * read from the log, so a new § shows up here the day it is written.
+ */
+function GroupGaps({ group }: { group: string }) {
+  const entries = JOURNAL.find((g) => g.name === group)?.entries ?? [];
+  const missing = entries.filter(
+    (e) => !(e.isNew || e.ofNewComponent || DRAWN.has(e.n) || NO_PANEL.has(e.n))
+  );
+  const isNew = entries.filter((e) => e.isNew || e.ofNewComponent);
+  if (!(missing.length || isNew.length)) return null;
+  return (
+    <section className="flex flex-col gap-4 rounded-lg border border-stroke border-dashed p-4">
+      {missing.length ? (
+        <div className="flex flex-col gap-2">
+          <Eyebrow className="text-ink-secondary">No panel yet</Eyebrow>
+          <ul className="flex flex-col gap-1">
+            {missing.map((entry) => (
+              <EntryLine entry={entry} key={entry.n} />
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      {isNew.length ? (
+        <div className="flex flex-col gap-2">
+          <Eyebrow className="text-ink-secondary">
+            New here, not in the developers' library — reviewed in its own story
+            under Components
+          </Eyebrow>
+          <ul className="flex flex-col gap-1">
+            {isNew.map((entry) => (
+              <EntryLine entry={entry} key={entry.n} />
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+/** "3 of 4 changes drawn" — counted against the change log, not typed. */
+function GroupCount({ group }: { group: string }) {
+  const entries = JOURNAL.find((g) => g.name === group)?.entries;
+  if (!entries) return null;
+  const changes = entries.filter(
+    (e) => !(e.isNew || e.ofNewComponent || NO_PANEL.has(e.n))
+  );
+  const drawn = changes.filter((e) => DRAWN.has(e.n));
+  const noBefore = entries.filter((e) => NO_PANEL.has(e.n)).length;
+  return (
+    <span className="text-ink-secondary text-sm tabular-nums">
+      {drawn.length} of {changes.length}{' '}
+      {changes.length === 1 ? 'change' : 'changes'} drawn
+      {noBefore ? ` · ${noBefore} with no Before to draw` : ''}
+    </span>
+  );
+}
+
+/**
+ * A § the page answers for and cannot draw: the part is not in the developers'
+ * library, or the change moves no pixel. Says why, in place of a panel, and
+ * counts as answered — so the overview stops listing it as missing. `section`,
+ * not `n`: a case's `n` is what marks a § as drawn.
+ */
+export function NoPanel({
+  section,
+  title,
+  why,
+}: {
+  section: number | string;
+  title: string;
+  why: ReactNode;
+}) {
+  return (
+    <section className="flex flex-col gap-1.5 rounded-lg border border-stroke border-dashed p-4">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="font-semibold text-ink-inactive text-sm tabular-nums">
+          §{section}
+        </span>
+        <h3 className="font-semibold text-base text-ink-primary">{title}</h3>
+        <span className="rounded-full border border-stroke bg-surface-chips px-2 py-0.5 text-ink-secondary text-xxs">
+          No Before to draw
+        </span>
+      </div>
+      <p className="max-w-[72ch] text-ink-body text-sm leading-5">{why}</p>
+    </section>
+  );
+}
+
+/**
+ * The page frame every change story shares. `group` is the page's row in the
+ * change log's index — `Checkbox`, `Tokens and colour` — and makes the page
+ * count itself and list what it does not draw yet.
+ */
 export function ChangePage({
   title,
+  group,
   intro,
   children,
 }: {
   title: string;
+  group?: string;
   intro?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
 }) {
   return (
     <div className="flex max-w-[1100px] flex-col gap-8 p-2">
       <header className="flex flex-col gap-2">
         <Eyebrow className="text-ink-inactive">Proposed changes</Eyebrow>
         <h2 className="font-semibold text-ink-primary text-xl">{title}</h2>
+        {group ? <GroupCount group={group} /> : null}
         {intro ? (
           <p className="max-w-[72ch] text-ink-body text-sm leading-5">
             {intro}
@@ -248,6 +399,7 @@ export function ChangePage({
         ) : null}
       </header>
       {children}
+      {group ? <GroupGaps group={group} /> : null}
     </div>
   );
 }

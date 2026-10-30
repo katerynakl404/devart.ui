@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TextArea } from '../src/components/TextArea';
-import { Typography } from '../src/components/Typography';
-import { ChangeCase, ChangePage, Code } from './Harness';
+import { TextArea } from '../../src/components/TextArea';
+import { Typography } from '../../src/components/Typography';
+import { ChangeCase, ChangePage, Code } from '../Harness';
 
 const meta = {
-  title: 'Proposed changes/9. The fields',
+  title: 'Proposed changes/Components/TextArea',
   parameters: {
     layout: 'padded',
     controls: { disable: true },
@@ -18,13 +18,40 @@ type Story = StoryObj<typeof meta>;
 const AI_WARNING =
   'Do not include passwords, API tokens, or personal data in these instructions.';
 
-export const TheFields: Story = {
-  name: 'The fields',
+/**
+ * §70 — the two footer lines as the published TextArea set them: the counter
+ * on `leading-5`, the error at `text-sm`. Reapplied through a wrapper onto the
+ * footer's own ids (`…-count`, `…-error`), so the field itself is the live one.
+ * An attribute in the selector out-specifies the live single class.
+ */
+const OLD_FOOTER_LINES = '[&_[id$=-count]]:leading-5 [&_[id$=-error]]:text-sm';
+
+/** A field with a counter, and the same field invalid: both footer lines. */
+function FooterLines() {
+  return (
+    <div className="flex w-[360px] flex-col gap-5">
+      <TextArea
+        defaultValue="Read replica for the EMEA reporting jobs."
+        label="Connection description"
+        maxLength={500}
+        showCount
+      />
+      <TextArea
+        defaultValue="Use the token sk-live-4f9a when you call the API."
+        errorText="Remove the API token from the instructions."
+        isInvalid
+        label="AI instructions"
+        maxLength={4000}
+        showCount
+      />
+    </div>
+  );
+}
+
+export const Page: Story = {
+  name: 'TextArea',
   render: () => (
-    <ChangePage
-      intro="Two entries about the field family. One of them changed nothing — it is here because the change log has it, and a section with no panel is still a section somebody has to be able to find."
-      title="The fields"
-    >
+    <ChangePage group="TextArea" title="TextArea">
       <ChangeCase
         after={
           <TextArea
@@ -83,34 +110,39 @@ export const TheFields: Story = {
       />
 
       <ChangeCase
-        after={
-          <p className="max-w-[60ch] text-ink-body text-sm leading-5">
-            Nothing to render: the three states this was filed against —{' '}
-            <em>hover</em>, <em>today</em>, <em>disabled</em> — all exist, in{' '}
-            <Code>Calendar.tsx</Code>'s <Code>classNames</Code> map rather than
-            in <Code>CalendarDayButton.tsx</Code> where the report looked. What
-            survives is one detail: the focus ring is the only one in the
-            package that is not the shared recipe.
-          </p>
+        after={<FooterLines />}
+        afterNote="counter 12/16 · error 12/16, medium"
+        before={
+          <div className={OLD_FOOTER_LINES}>
+            <FooterLines />
+          </div>
         }
-        afterNote="mostly retracted — see the catalog's own Datepicker stories"
-        files={['src/components/Datepicker/Calendar.tsx']}
-        footnote={
+        beforeNote="counter 12 on a 20px line · error 14/20"
+        beforeSource={
           <>
-            Kept as a section because a retraction is worth as much as the
-            finding was: the next person reading{' '}
-            <Code>CalendarDayButton.tsx</Code> alone will reach the same wrong
-            conclusion. The surviving item is real — <Code>--shadow-focus</Code>
-            , 2px plus a 2px gap, is what <Code>Button</Code>,{' '}
-            <Code>IconButton</Code>, <Code>Switch</Code>,{' '}
-            <Code>SegmentedControl</Code> and <Code>StepSlider</Code> all use,
-            and the calendar day is the one control that does not.
+            the live fields with the two published classes put back over the
+            footer — <Code>leading-5</Code> on the counter, <Code>text-sm</Code>{' '}
+            on the error — through a wrapper, since both lines are rendered
+            inside the component.
           </>
         }
-        n={29}
-        state="proposed"
-        title="One bespoke focus ring, not three missing states"
-        why="Filed after reading one file, and three quarters of it was wrong. The quarter that is not: a calendar day focuses differently from every other control in the package."
+        files={[
+          'src/components/TextArea/TextAreaCount.tsx',
+          'src/components/TextArea/TextAreaFooter.tsx',
+        ]}
+        footnote={
+          <>
+            The error is now <Code>InputGroup</Code>'s — <Code>text-xs</Code>,
+            medium — and the counter is <Code>body12</Code>, the kit's Body 12,
+            on the 16px line its size pairs with. The section's first point, the
+            hint at 400, corrects §41's own first pass: the developers' TextArea
+            has no hint, so there is nothing to set it against here. It shows in
+            §41's After.
+          </>
+        }
+        n={70}
+        title="The hint at 400, and the counter and error lines"
+        why="A TextArea's error was a size larger than an InputGroup's, and its 12px counter sat on a 20px line — the footer row a step taller than the type in it."
       />
     </ChangePage>
   ),

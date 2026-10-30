@@ -134,14 +134,22 @@ const preview: Preview = {
     // away underneath.
     options: {
       storySort: {
-        // Alphabetical inside a section, so the numbered review pages sort by
-        // their number instead of by the order Vite happened to load them.
+        // Alphabetical inside a section, so components sort by name instead of
+        // by the order Vite happened to load them.
         method: 'alphabetical',
         // `Components` then `Compositions` is the developers' order (their
         // README, "Adding a new component"); the two sections above it are
-        // this package's own.
+        // this package's own. The review section reads like the change log:
+        // the overview, the system-wide groups, then one page per component.
         order: [
           'Proposed changes',
+          [
+            'Overview',
+            'Tokens and colour',
+            'Sizes and glyphs',
+            'Across components',
+            'Components',
+          ],
           'Foundations',
           'Components',
           'Compositions',

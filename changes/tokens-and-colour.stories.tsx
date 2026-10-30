@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Info } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { Button } from '../src/components/Button';
-import { ChangeCase, ChangePage, Code } from './Harness';
+import { ChangeCase, ChangePage, Code, NoPanel, TryIt } from './Harness';
 
 const meta = {
-  title: 'Proposed changes/6. Colour tokens',
+  title: 'Proposed changes/Tokens and colour',
   parameters: {
     layout: 'padded',
     controls: { disable: true },
@@ -25,6 +26,12 @@ const OLD_ABSOLUTE_STATES = {
   '--state-pressed': 'hsl(var(--brand-50))',
   '--tbl-row-hover': 'hsl(var(--slate-50))',
   '--tbl-row-pressed': 'hsl(var(--surface-card2))',
+} as CSSProperties;
+
+/** §2 — the dark values this branch replaced: Red-700 at rest, Red-800 on hover. */
+const OLD_DARK_DESTRUCTIVE_BORDER = {
+  '--btn-destructive-secondary-border': 'var(--red-700)',
+  '--btn-destructive-secondary-border-hover': 'var(--red-800)',
 } as CSSProperties;
 
 /** The old brand step, before it was retuned into the interaction wash. */
@@ -87,20 +94,116 @@ function StackDemo({ style }: { style?: CSSProperties }) {
   );
 }
 
-export const ColourTokens: Story = {
-  name: 'Colour tokens',
+export const Page: Story = {
+  name: 'Tokens and colour',
   render: () => (
-    <ChangePage
-      intro={
-        <>
-          The largest change in the tree, and the one with its own changeset:
-          interaction states stopped being absolute colours and became
-          translucent washes. Every panel here is painted at rest — no hovering
-          needed to read the difference.
-        </>
-      }
-      title="Colour tokens"
-    >
+    <ChangePage group="Tokens and colour" title="Tokens and colour">
+      <ChangeCase
+        after={
+          <TryIt action="Switch the toolbar to dark, then hover">
+            <Button variant="destructiveSecondary">Delete connection</Button>
+          </TryIt>
+        }
+        afterNote="Red-500 → Red-400 · CR 4.74 → 5.27"
+        before={
+          <div style={OLD_DARK_DESTRUCTIVE_BORDER}>
+            <TryIt action="Switch the toolbar to dark, then hover">
+              <Button variant="destructiveSecondary">Delete connection</Button>
+            </TryIt>
+          </div>
+        }
+        beforeNote="Red-700 → Red-800 · CR 2.76 → 2.15"
+        beforeSource={
+          <>
+            the two old token values, re-declared on the wrapper — the component
+            is untouched, so this is exactly what dark rendered.
+          </>
+        }
+        files={['globals.css']}
+        footnote={
+          <>
+            No panel here forces <Code>.dark</Code> — the toolbar owns the
+            theme, the way the app does. The two values are dark-only, so on
+            light both halves are identical and the case says nothing; flip the
+            toolbar. Revised once: the first fix used Red-400 → Red-300, a ×1.79
+            jump where light rises by ×1.22.
+          </>
+        }
+        n={2}
+        title="Dark destructive border — hover made the control less visible"
+        why={
+          <>
+            Dark inherited light's values, where darker reads as more prominent.
+            On the near-black card that inverts: hover dropped contrast from
+            2.76 to 2.15 — the only place in the kit where pointing at a control
+            made it fainter.
+          </>
+        }
+      />
+
+      <ChangeCase
+        after={
+          <div className="flex flex-col gap-4">
+            <TryIt action="Hover the ⓘ">
+              <span className="flex items-center gap-2 text-ink-body text-sm">
+                Connection name
+                <Info className="size-4 text-ink-icon transition-colors hover:text-ink-icon-hover" />
+              </span>
+            </TryIt>
+            <div className="flex gap-3">
+              {[
+                ['--ink-icon', 'bg-ink-icon'],
+                ['--ink-icon-hover', 'bg-ink-icon-hover'],
+              ].map(([token, swatch]) => (
+                <div className="flex items-center gap-2" key={token}>
+                  <span
+                    className={`size-5 rounded border border-stroke ${swatch}`}
+                  />
+                  <Code>{token}</Code>
+                </div>
+              ))}
+            </div>
+          </div>
+        }
+        afterNote="text-ink-icon → text-ink-icon-hover"
+        before={
+          <TryIt action="Hover the ⓘ">
+            <span className="flex items-center gap-2 text-ink-body text-sm">
+              Connection name
+              <Info className="size-4 text-ink-secondary transition-colors hover:text-ink-body" />
+            </span>
+          </TryIt>
+        }
+        beforeNote="whatever step the page picked"
+        beforeSource="a page improvising the pair out of the ink ladder, which is what every page did — there was no token to reach for."
+        files={['globals.css', 'src/lib/constants.ts']}
+        footnote={
+          <>
+            Both alias Layer-2 roles, so neither needs a <Code>.dark</Code>{' '}
+            twin. Rule: a standalone interactive icon changes colour only — if
+            it also needs a fill, it is an IconButton and should be one.{' '}
+            <strong className="font-medium text-ink-body">
+              Check this one against the kit before keeping it:
+            </strong>{' '}
+            the reference kit's compiled CSS contains <Code>ink-icon</Code> zero
+            times, so these two tokens are an addition, not a restoration. Both
+            resolve to steps the ink ladder already has —{' '}
+            <Code>--ink-secondary</Code> and <Code>--ink-primary</Code> — so the
+            alternative is to spend no new tokens and let a page name those
+            directly, the way the kit does.
+          </>
+        }
+        n={5}
+        title="No token for a standalone icon — new --ink-icon / --ink-icon-hover"
+        why={
+          <>
+            An icon with no box has nothing to fill on hover, so colour is the
+            only thing that can answer the pointer — and nothing in the system
+            said which colour.
+          </>
+        }
+      />
+
       <ChangeCase
         after={<StackDemo />}
         afterNote="two overlays composite — 8% over 8%"
@@ -114,7 +217,7 @@ export const ColourTokens: Story = {
             <Code>--state-overlay</Code> — and four strengths.
           </>
         }
-        n="Tokens · 1"
+        n="6a"
         title="Interaction states became relative overlays"
         why="Hovering a control on a selected row painted the colour already under it: both tokens resolved to #F1F5F9 on light, #21212C on dark."
       />
@@ -175,7 +278,7 @@ export const ColourTokens: Story = {
         beforeSource="the four old values, painted over the same card."
         files={['globals.css']}
         footnote="Rows are lighter than controls, or a list turns into stripes. Row-pressed and control-hover share a strength: hovering a control on a selected row lands at 8% over 8%. Δ figures measured over the card."
-        n="Tokens · 2"
+        n="6a"
         title="The state ladder, painted"
         why="Four strengths — 4 / 8 / 8 / 12 — shared by both themes."
       />
@@ -216,7 +319,7 @@ export const ColourTokens: Story = {
         beforeSource="the old value re-declared on the wrapper, with the same 8% wash beside it."
         files={['globals.css']}
         footnote="It had no consumers, so it could be retuned rather than added to. At 29% saturation the wash read dirty; the brand role itself washes green."
-        n="Tokens · 3"
+        n="6a"
         title="--brand-300 retuned into the wash"
         why="The overlay needs a base whose hue survives dilution to 4–12%."
       />
@@ -245,6 +348,17 @@ export const ColourTokens: Story = {
         n="Tokens · 4"
         title="Destructive tertiary re-stepped to match the neutral ladder"
         why="When the neutral steps moved to overlays, destructive stayed put and started reading heavier than the neutral button beside it."
+      />
+      <NoPanel
+        section={129}
+        title="Syntax colours — --code-* and codeSyntaxVariants"
+        why={
+          <>
+            <Code>CodeBlock</Code>, the <Code>--code-*</Code> tokens and their
+            three primitives are not in the developers' library at 1.4.0 — there
+            is nothing to set them against.
+          </>
+        }
       />
     </ChangePage>
   ),

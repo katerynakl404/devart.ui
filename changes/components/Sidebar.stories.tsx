@@ -1,14 +1,21 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  ChartPie,
   ChevronsUpDown,
+  CirclePlus,
+  Database,
   Files,
+  Folder,
   Home,
   LayoutDashboard,
   Search,
+  Settings,
+  Users,
 } from 'lucide-react';
-import type { ReactNode } from 'react';
-import { Button } from '../src/components/Button';
+import { type ComponentType, type ReactNode, useState } from 'react';
+import { Button } from '../../src/components/Button';
+import { Counter } from '../../src/components/Counter';
 import {
   Sidebar,
   SidebarContent,
@@ -18,18 +25,27 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMobileTrigger,
+  SidebarNavItem,
   SidebarNavigationItems,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from '../src/components/Sidebar';
-import type { NavigationElement } from '../src/components/Sidebar/types';
-import { Typography } from '../src/components/Typography';
-import { cn } from '../src/lib/utils';
-import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
+} from '../../src/components/Sidebar';
+import type { NavigationElement } from '../../src/components/Sidebar/types';
+import { Typography } from '../../src/components/Typography';
+import { cn } from '../../src/lib/utils';
+import { ChangeCase, ChangePage, Code, NoPanel, TryIt } from '../Harness';
+import {
+  Sidebar as UpstreamSidebar,
+  SidebarMobileTrigger as UpstreamSidebarMobileTrigger,
+  SidebarNavItem as UpstreamSidebarNavItem,
+  SidebarProvider as UpstreamSidebarProvider,
+  SidebarTrigger as UpstreamSidebarTrigger,
+} from '../upstream/Sidebar';
 
 const meta = {
-  title: 'Proposed changes/3. The sidebar',
+  title: 'Proposed changes/Components/Sidebar',
   parameters: {
     layout: 'padded',
     controls: { disable: true },
@@ -44,6 +60,132 @@ const navigation: NavigationElement[] = [
   { id: 'search', title: 'Search', icon: Search, url: '/search' },
   { id: 'files', title: 'Files', icon: Files, url: '/files' },
 ];
+
+/** Seven rows — the length at which §39's 2px per gap becomes visible. */
+const sevenRows: NavigationElement[] = [
+  ...navigation,
+  { id: 'sources', title: 'Data sources', icon: Database, url: '/sources' },
+  { id: 'metrics', title: 'Metrics', icon: ChartPie, url: '/metrics' },
+  { id: 'people', title: 'People', icon: Users, url: '/people' },
+  { id: 'settings', title: 'Settings', icon: Settings, url: '/settings' },
+];
+
+/**
+ * A provider and the `Sidebar` that reads its context — the package's, or the
+ * developers' 1.4.0 pair vendored into `changes/upstream/Sidebar/`. They go
+ * together: a `Sidebar` under the other provider throws.
+ */
+interface SidebarKit {
+  Provider: ComponentType<{
+    children?: ReactNode;
+    className?: string;
+    sheetBreakpoint?: number;
+  }>;
+  Sidebar: ComponentType<{ children?: ReactNode; collapsible?: 'icon' }>;
+}
+
+const LIVE: SidebarKit = { Provider: SidebarProvider, Sidebar };
+const UPSTREAM: SidebarKit = {
+  Provider: UpstreamSidebarProvider,
+  Sidebar: UpstreamSidebar,
+};
+
+/**
+ * `sheetBreakpoint` values on either side of any window, so a panel can be the
+ * phone layout or the desktop one without the window being resized. The hook
+ * behind it compares the window's width with this number on every render, so
+ * moving the number flips `isMobile` the same way a resize does.
+ */
+const PHONE = 100_000;
+const DESKTOP = 1;
+
+/**
+ * Their ☰, with the 18px glyph this package draws (§97) — so the size of the
+ * glyph is not a second difference beside the one a case is about.
+ */
+const upstreamMenuButton = (
+  <UpstreamSidebarMobileTrigger className="[&_svg]:size-[18px]" />
+);
+
+/**
+ * The phone layout: a page bar with the ☰, and the sidebar as a sheet. The
+ * sheet portals to the page, so it opens over the whole story, not inside the
+ * panel — which is where a phone puts it too.
+ */
+function PhoneShell({
+  kit,
+  menuButton,
+  panelTrigger,
+  widen = false,
+}: {
+  kit: SidebarKit;
+  /** The ☰ in the page bar. It must read the same context as `kit`. */
+  menuButton: ReactNode;
+  /** A trailing control in the sheet's header, beside the product name. */
+  panelTrigger?: ReactNode;
+  /**
+   * §140: a button in the panel that moves the window across the breakpoint
+   * and back. In the sheet it widens; on the rail it narrows.
+   */
+  widen?: boolean;
+}) {
+  const [phone, setPhone] = useState(true);
+  const { Provider, Sidebar: Panel } = kit;
+  return (
+    <div className="h-64 w-full overflow-hidden rounded-lg border border-stroke">
+      {/* `transform-gpu`, as in `Shell`: once widened, the rail is the
+          `fixed` desktop panel, and this keeps it inside the box. */}
+      <div className="relative h-full transform-gpu overflow-hidden">
+        <Provider
+          className="h-full min-h-0"
+          sheetBreakpoint={phone ? PHONE : DESKTOP}
+        >
+          <Panel collapsible="icon">
+            <SidebarHeader>
+              <div className="flex items-center justify-between gap-2">
+                <BrandRow />
+                {panelTrigger}
+              </div>
+            </SidebarHeader>
+            <SidebarContent>
+              <nav className="flex flex-col gap-0.5">
+                <SidebarNavItem href="/" icon={Home} label="Home" />
+                <SidebarNavItem href="/search" icon={Search} label="Search" />
+                <SidebarNavItem href="/files" icon={Files} label="Files" />
+              </nav>
+            </SidebarContent>
+            {widen ? (
+              <SidebarFooter>
+                <Button
+                  onClick={() => setPhone(!phone)}
+                  size="sm"
+                  variant="secondary"
+                >
+                  {phone ? 'Widen the window' : 'Narrow the window'}
+                </Button>
+              </SidebarFooter>
+            ) : null}
+          </Panel>
+          <SidebarInset className="min-h-0">
+            {phone ? (
+              <div className="flex h-12 shrink-0 items-center gap-2 border-stroke border-b px-2">
+                {menuButton}
+                <Typography variant="h5">Connections</Typography>
+              </div>
+            ) : null}
+          </SidebarInset>
+        </Provider>
+      </div>
+    </div>
+  );
+}
+
+/** A bar above the rail, 40px — what the shell that found §35 had. */
+const windowBar = (
+  <div className="flex h-10 shrink-0 items-center border-stroke border-b bg-surface-card px-4 text-ink-secondary text-xs">
+    Window bar
+  </div>
+);
 
 /** A brand row laid out by hand — which is what most consumers do. */
 function BrandRow({ className }: { className?: string }) {
@@ -96,12 +238,16 @@ function Shell({
   navInset,
   onOpenChange,
   open = true,
+  sidebarClassName,
   windowBar,
 }: {
   /** §12 only: puts the collapsed padding and the label back on the row. */
   accountClassName?: string;
   children: ReactNode;
-  /** The account footer. Production always has one; only §11 turns it off. */
+  /**
+   * The account footer. Production always has one; §39 turns it off to fit
+   * seven rows.
+   */
   footer?: boolean;
   /**
    * Which footer row. `product` is what the live rail renders — a 36px button
@@ -119,6 +265,8 @@ function Shell({
   /** Controlled open, for a shell whose collapse control lives outside the rail. */
   onOpenChange?: (open: boolean) => void;
   open?: boolean;
+  /** §35 only: a class on the fixed panel — `Sidebar`'s own `className`. */
+  sidebarClassName?: string;
   /** A bar above the rail, when the shell has one. */
   windowBar?: ReactNode;
 }) {
@@ -162,7 +310,7 @@ function Shell({
           onOpenChange={onOpenChange}
           open={onOpenChange ? open : undefined}
         >
-          <Sidebar collapsible="icon">
+          <Sidebar className={sidebarClassName} collapsible="icon">
             {children}
             {footer ? (
               // Production's `px-2.5 pt-2 pb-2.5` — 10 at the sides and the
@@ -232,12 +380,13 @@ function AccountMenuRow({ labelClassName }: { labelClassName?: string }) {
   );
 }
 
-export const TheSidebar: Story = {
-  name: 'The sidebar',
+export const Page: Story = {
+  name: 'Sidebar',
   render: () => (
     <ChangePage
       intro="The web sidebar: the product mark and the collapse control live in the rail, because a browser tab is no place for them."
-      title="The sidebar"
+      group="Sidebar"
+      title="Sidebar"
     >
       <ChangeCase
         after={
@@ -480,6 +629,90 @@ export const TheSidebar: Story = {
 
       <ChangeCase
         after={
+          <Shell windowBar={windowBar}>
+            <SidebarHeader>
+              <BrandRow />
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarNavigationItems items={navigation} />
+            </SidebarContent>
+          </Shell>
+        }
+        afterNote="inset-y-0 alone — the box's height, the footer on its edge"
+        before={
+          <Shell sidebarClassName="h-svh" windowBar={windowBar}>
+            <SidebarHeader>
+              <BrandRow />
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarNavigationItems items={navigation} />
+            </SidebarContent>
+          </Shell>
+        }
+        beforeNote="h-svh — the window's height, the footer below the edge"
+        beforeSource={
+          <>
+            the live panel with <Code>h-svh</Code> put back through{' '}
+            <Code>className</Code>, which lands on the same fixed element the
+            class was removed from. The box is transformed, as the shell that
+            found this was (<Code>translateZ(0)</Code>), so the panel's
+            containing block is the box under the bar, not the window.
+          </>
+        }
+        files={['src/components/Sidebar/index.tsx']}
+        footnote="Where the shell is the whole window — Insightis — the containing block is the viewport and the two heights agree, so nothing changes there."
+        n={35}
+        title="The fixed panel was pinned to the viewport"
+        why="inset-y-0 already sized the panel to its containing block, and h-svh overrode it with the window's height. Under a bar the two differ, and the account row slid off the bottom edge."
+      />
+
+      <ChangeCase
+        after={
+          <Shell footer={false}>
+            <SidebarHeader>
+              <BrandRow />
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarNavigationItems items={sevenRows} />
+            </SidebarContent>
+          </Shell>
+        }
+        afterNote="gap-0.5 — 2px between rows"
+        before={
+          <Shell footer={false}>
+            <SidebarHeader>
+              <BrandRow />
+            </SidebarHeader>
+            <SidebarContent className="[&_[data-sidebar=menu]]:gap-1">
+              <SidebarNavigationItems items={sevenRows} />
+            </SidebarContent>
+          </Shell>
+        }
+        beforeNote="gap-1 — 4px between rows"
+        beforeSource={
+          <>
+            the live rail with the old <Code>gap-1</Code> put back on{' '}
+            <Code>SidebarMenu</Code> from its container —{' '}
+            <Code>SidebarNavigationItems</Code> renders the menu itself, so the
+            class reaches it through <Code>SidebarContent</Code>'s{' '}
+            <Code>className</Code>.
+          </>
+        }
+        files={['src/components/Sidebar/SidebarMenu.tsx']}
+        footnote={
+          <>
+            The kit states both halves: <Code>.sbx-nav {'{ gap: 2px }'}</Code>{' '}
+            over 32px rows, and 2px as the spacing scale's fine sub-step — so 2
+            is on the scale, not an exception to it.
+          </>
+        }
+        n={39}
+        title="Nav rows 4px apart where the kit says 2"
+        why="4px between 32px rows reads as a list of separate buttons; at 2px the rows read as one navigation block, which is what they are."
+      />
+
+      <ChangeCase
+        after={
           <div className="flex flex-col gap-6">
             <Option caption="px-2 on the nav container — icons on 16, fill inset 8">
               <Shell guides navInset>
@@ -663,6 +896,218 @@ export const TheSidebar: Story = {
         n={72}
         title="The collapsed rail was never finished"
         why="Collapsed, an icon is the whole row — and nothing told you what it was. The prop for it had shipped; no row passed it."
+      />
+
+      <ChangeCase
+        after={
+          <TryIt action="Open ☰, press Widen, then Narrow — the sheet stays shut">
+            <PhoneShell
+              kit={LIVE}
+              menuButton={<SidebarMobileTrigger />}
+              widen
+            />
+          </TryIt>
+        }
+        afterNote="the sheet closes when the phone layout ends"
+        before={
+          <TryIt action="Open ☰, press Widen, then Narrow — the sheet opens itself">
+            <PhoneShell kit={UPSTREAM} menuButton={upstreamMenuButton} widen />
+          </TryIt>
+        }
+        beforeNote="openMobile stays true behind the rail"
+        beforeSource={
+          <>
+            the developers' <Code>SidebarProvider</Code>, <Code>Sidebar</Code>{' '}
+            and <Code>SidebarMobileTrigger</Code> (on their own{' '}
+            <Code>IconButton</Code>), vendored unchanged from their 1.4.0 into{' '}
+            <Code>changes/upstream/Sidebar/</Code> — their state, not a replica.
+            The ☰ is given the 18px glyph this package draws, so the glyph is
+            not a second difference.
+          </>
+        }
+        files={['src/components/Sidebar/SidebarProvider.tsx']}
+        footnote={
+          <>
+            The window is not resized: Widen and Narrow move{' '}
+            <Code>sheetBreakpoint</Code> to the other side of the window's
+            width, which flips <Code>isMobile</Code> the way a resize across
+            1024px does.
+          </>
+        }
+        n={140}
+        title="The sheet outlived the phone layout"
+        why="Widening past the breakpoint left the sheet open, unseen behind the rail, and it sprang back over the page the next time the window narrowed — a drawer nobody opened."
+      />
+
+      <ChangeCase
+        after={
+          <div className="flex w-60 flex-col gap-0.5">
+            <SidebarNavItem
+              activatable={false}
+              asChild
+              icon={CirclePlus}
+              label="New chat"
+            >
+              <button type="button" />
+            </SidebarNavItem>
+            <SidebarNavItem
+              badge={<Counter size="sm">3</Counter>}
+              href="/sources"
+              icon={Database}
+              label="Data sources"
+            />
+            <SidebarNavItem href="/files" icon={Folder} label="Files" />
+          </div>
+        }
+        afterNote="text-start on any element, and a badge at the row's end"
+        before={
+          <div className="flex w-60 flex-col gap-0.5">
+            <UpstreamSidebarNavItem
+              activatable={false}
+              asChild
+              className="text-sm"
+              icon={CirclePlus}
+              label="New chat"
+            >
+              <button type="button" />
+            </UpstreamSidebarNavItem>
+            <UpstreamSidebarNavItem
+              className="text-sm"
+              href="/sources"
+              icon={Database}
+              label="Data sources"
+            />
+            <UpstreamSidebarNavItem
+              className="text-sm"
+              href="/files"
+              icon={Folder}
+              label="Files"
+            />
+          </div>
+        }
+        beforeNote="the button centres its label; no place for a count"
+        beforeSource={
+          <>
+            the developers' <Code>SidebarNavItem</Code>, vendored unchanged from
+            their 1.4.0 into <Code>changes/upstream/Sidebar/</Code>. Their row
+            sets its label at 13px; <Code>text-sm</Code> is passed through{' '}
+            <Code>className</Code> so the type is not a second difference.
+          </>
+        }
+        files={['src/components/Sidebar/SidebarNavItem.tsx']}
+        footnote={
+          <>
+            The badge is the row's description (<Code>aria-describedby</Code>),
+            so the rail, which has no room to draw it, still says it. An element
+            as <Code>icon</Code> is not drawn: a component wrapping the same
+            mark sets the same pixels on their row — what changed is what a page
+            has to write.
+          </>
+        }
+        n={142}
+        title="SidebarNavItem — badge, and the label at its icon on a button"
+        why="Their row had nowhere after the label for a count, and on a <button> — a row that acts rather than links — the label sat mid-row, because a button centres its text."
+      />
+
+      <ChangeCase
+        after={
+          <TryIt action="Hover ☰ — it names itself. Open it — the sheet stays quiet">
+            <PhoneShell
+              kit={LIVE}
+              menuButton={<SidebarMobileTrigger tooltip />}
+              panelTrigger={<SidebarTrigger tooltip />}
+            />
+          </TryIt>
+        }
+        afterNote="no panel tooltip while isMobile; the ☰ takes tooltip"
+        before={
+          <TryIt action="Hover ☰ — nothing names it. Open it — a tooltip pops over the sheet">
+            <PhoneShell
+              kit={UPSTREAM}
+              menuButton={upstreamMenuButton}
+              panelTrigger={
+                <UpstreamSidebarTrigger
+                  className="p-0"
+                  tooltip
+                  variant="tertiary"
+                />
+              }
+            />
+          </TryIt>
+        }
+        beforeNote="the panel trigger's tooltip fires on the sheet's focus"
+        beforeSource={
+          <>
+            the developers' <Code>SidebarProvider</Code>, <Code>Sidebar</Code>{' '}
+            and both triggers — the ☰ on their own <Code>IconButton</Code> —
+            vendored unchanged from their 1.4.0 into{' '}
+            <Code>changes/upstream/Sidebar/</Code>. Two of their defaults are
+            set to this package's through props, so neither is a second
+            difference: the ☰ glyph at 18px, and the panel trigger{' '}
+            <Code>tertiary</Code> with no padding rather than a filled{' '}
+            <Code>primary</Code>.
+          </>
+        }
+        files={[
+          'src/components/Sidebar/SidebarTrigger.tsx',
+          'src/components/Sidebar/SidebarMobileTrigger.tsx',
+        ]}
+        footnote={
+          <>
+            Both halves are the phone layout at any window width:{' '}
+            <Code>sheetBreakpoint</Code> is set above it.
+          </>
+        }
+        n={143}
+        title="SidebarTrigger, SidebarMobileTrigger — their tooltips"
+        why="Opening the sheet hands its first control focus, so the panel trigger's tooltip popped up over the sheet with no pointer near it — while the ☰ that opened it had no visible name at all."
+      />
+      <NoPanel
+        section={94}
+        title="The product sidebar — Pinned / Recent, the chat row, the promo slot, the compact footer"
+        why={
+          <>
+            <Code>SidebarSection</Code>, <Code>SidebarChatItem</Code>,{' '}
+            <Code>SidebarPromo</Code>, <Code>SidebarStat</Code> and{' '}
+            <Code>SidebarUser</Code> are not in the developers' library at
+            1.4.0. The section is new parts; they are reviewed in their own
+            stories under Components/Sidebar.
+          </>
+        }
+      />
+
+      <NoPanel
+        section={139}
+        title="SidebarUser — the rail kept the avatar and lost the name"
+        why={
+          <>
+            <Code>SidebarUser</Code> is not in the developers' library at 1.4.0,
+            and the fix — <Code>hidden</Code> to <Code>sr-only</Code> — moves no
+            pixel: the name is now there for a screen reader.
+          </>
+        }
+      />
+
+      <NoPanel
+        section={141}
+        title="SidebarChatItem — the ⋮ where there is no hover, and countLabel"
+        why={
+          <>
+            <Code>SidebarChatItem</Code> is not in the developers' library at
+            1.4.0.
+          </>
+        }
+      />
+
+      <NoPanel
+        section={144}
+        title="SidebarStat — asChild"
+        why={
+          <>
+            <Code>SidebarStat</Code> is not in the developers' library at 1.4.0,
+            and <Code>asChild</Code> changes the element, not the pixels.
+          </>
+        }
       />
     </ChangePage>
   ),
