@@ -6,7 +6,7 @@ import {
   SegmentedControlTrigger,
 } from '../../src/components/SegmentedControl';
 import { Typography } from '../../src/components/Typography';
-import { ChangeCase, ChangePage, Code, TryIt } from '../Harness';
+import { ChangeCase, ChangePage, Code, NoPanel, TryIt } from '../Harness';
 
 const meta = {
   title: 'Proposed changes/Components/SegmentedControl',
@@ -264,6 +264,21 @@ export const Page: Story = {
         state="draft"
         title="SegmentedControl — deselectable"
         why="The docs said a segmented control always has one segment active, while an inherited row starts with none — so once a value was chosen there was no way back to Inherit."
+      />
+      <NoPanel
+        section={168}
+        title="A value picker is a radio group; the tinted value keeps its ink"
+        why={
+          <>
+            <Code>tone</Code>, <Code>tinted</Code> and <Code>deselectable</Code>{' '}
+            are this package's own drafts (§73 §96 §103) — the developers' 1.4.0
+            has none of them, so this section has no Before. Its colour is the
+            After of the three cases above; its semantics move no pixel: with{' '}
+            <Code>semantics="radio"</Code> a screen reader hears “Allow, radio
+            button, checked” instead of “Allow, tab, 1 of 2”, and a tinted
+            option adds “in effect”.
+          </>
+        }
       />
     </ChangePage>
   ),

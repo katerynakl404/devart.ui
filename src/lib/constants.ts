@@ -65,6 +65,7 @@ export const THEME_COLORS = {
     'error-press': 'hsl(var(--fb-error-press) / <alpha-value>)',
     attention: 'hsl(var(--fb-attention) / <alpha-value>)',
     green: 'hsl(var(--fb-green) / <alpha-value>)',
+    'green-text': 'hsl(var(--fb-green-text) / <alpha-value>)',
     info: 'hsl(var(--fb-info) / <alpha-value>)',
   },
   // Syntax colours for highlighted code — CodeBlock's `codeSyntaxVariants`.

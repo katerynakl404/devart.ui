@@ -42,8 +42,12 @@ job: it cannot express "none selected" or "two of five".
 For two options that are not equivalent — a FACT with a consequence: included
 or excluded, allowed or blocked. `tone` is per trigger, because only the
 option knows whether it is the permissive one. Selected, `positive` fills
-green and `negative` red, in both themes; unselected, both are neutral text.
-A plain view switcher stays `neutral` (the default).
+`--fb-green` and `negative` `--fb-red` with white text — one colour in both
+themes, like the destructive button; unselected, both are neutral text. A plain
+view switcher stays `neutral` (the default).
+
+A control with tones is a value picker, not a view switcher: give it
+`semantics="radio"` (below).
 
 ```jsx
 <SegmentedControlTrigger value="allow" tone="positive">Allow</SegmentedControlTrigger>
@@ -52,8 +56,8 @@ A plain view switcher stays `neutral` (the default).
 
 **Hover** — an unselected option lifts and its text steps up to primary, as on
 any trigger: the colour is the answer, not the offer, and a grey option turning
-red under the pointer would announce a Deny nobody chose. A `tinted` option is
-the one exception: it deepens in its own tone (below).
+red under the pointer would announce a Deny nobody chose. A `tinted` option
+keeps its own wash and ink instead (below).
 
 ## Nothing selected — `deselectable`
 
@@ -74,12 +78,18 @@ everywhere. Without it, a view switcher keeps one segment active.
 
 A solid pill is a value chosen on this row. `tinted` draws a value that is in
 effect WITHOUT being chosen here — inherited from a level above, or a default —
-as the same tone's fill at 15% (the pale fill of a success / error Badge), on
-an unselected option.
+as the tone's fill at 10% under the tone's ink (`--fb-green-text` /
+`--fb-red-text`), on an unselected option: a Badge's pale fill, a step lighter
+because it sits on the recessed track.
 
-Hovered, a tinted option deepens to 30% and keeps its tone's text: pressing it
-confirms the value on this row. With `deselectable`, pressing it again goes back
+Hovered, a tinted option keeps its wash and its ink and takes the rim every
+option takes: pressing it confirms the value on this row. A deeper wash under
+the same ink fell below 4.5:1. With `deselectable`, pressing it again goes back
 to inheriting.
+
+A screen reader cannot see the pale fill, so the trigger reads `tintedLabel`
+after its label while it is tinted and not chosen — "Allow, in effect" by
+default. Pass your own words: `tintedLabel="inherited from Finance"`.
 
 ```jsx
 <SegmentedControl deselectable value={own ?? ''} onValueChange={(v) => set(v || null)}>
@@ -95,6 +105,23 @@ to inheriting.
 ```
 
 Say where the value comes from in a tooltip — the control cannot.
+
+## What a screen reader hears — `semantics`
+
+The control is built on Radix Tabs, which is right for a view switcher: its
+segments show panels. A value picker shows no panel, and announced as tabs it
+reads "Allow, tab, 1 of 2" with each option pointing at a panel that is not
+there. `semantics="radio"` makes the list a `radiogroup` and each option a
+`radio` with `aria-checked`; arrows, Tab and Space work as before.
+
+| | `semantics` |
+|---|---|
+| View switcher with `SegmentedControlContent` | `tabs` (the default) |
+| Allow / Deny, Included / Excluded, anything with `tone` | `radio` |
+| `deselectable` | `radio` — the default when it is set |
+
+Name the group as you would any radio group — `aria-label` on
+`SegmentedControlList`, or `aria-labelledby` pointing at the row's name.
 
 ## Disabled
 

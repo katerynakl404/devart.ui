@@ -46,7 +46,7 @@ const badgeVariants = cva(
         primary: 'bg-badge-primary-bg text-badge-primary-text',
         secondary: 'bg-badge-secondary-bg text-badge-secondary-text',
         attention: 'bg-fb-attention/15 text-fb-attention',
-        success: 'bg-fb-green/15 text-fb-green',
+        success: 'bg-fb-green/15 text-fb-green-text',
         error: 'bg-fb-red/15 text-fb-red-text',
         // `brand` and `green` are fill choices, not "the bordered ones": they
         // keep their own opaque border token because their fill is opaque too.

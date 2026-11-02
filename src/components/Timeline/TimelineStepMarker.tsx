@@ -19,7 +19,7 @@ const timelineStepMarkerVariants = cva(
       status: {
         pending: 'text-ink-inactive',
         active: 'text-ink-secondary',
-        success: 'text-fb-green',
+        success: 'text-fb-green-text',
         error: 'text-fb-red-text',
       },
     },

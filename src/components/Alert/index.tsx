@@ -82,7 +82,7 @@ const alertVariants = cva(
 const alertIconVariants = cva(cn('flex shrink-0', glyphStroke), {
   variants: {
     variant: {
-      success: 'text-fb-green',
+      success: 'text-fb-green-text',
       info: 'text-brand-tertiary',
       warning: 'text-fb-attention',
       error: 'text-fb-red-text',

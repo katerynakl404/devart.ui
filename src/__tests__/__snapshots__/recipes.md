@@ -89,7 +89,7 @@ defaultVariants: variant=neutral, size=sm
 (defaults)
   flex shrink-0 [&_svg]:stroke-2 text-ink-secondary [&_svg]:size-4
 variant=success
-  flex shrink-0 [&_svg]:stroke-2 text-fb-green [&_svg]:size-4
+  flex shrink-0 [&_svg]:stroke-2 text-fb-green-text [&_svg]:size-4
 variant=info
   flex shrink-0 [&_svg]:stroke-2 text-brand-tertiary [&_svg]:size-4
 variant=warning
@@ -242,7 +242,7 @@ variant=secondary
 variant=attention
   inline-flex items-center border border-badge-border overflow-hidden whitespace-nowrap [&_svg]:shrink-0 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-focus-ring-brand focus:ring-offset-2 bg-fb-attention/15 text-fb-attention h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5 rounded-md
 variant=success
-  inline-flex items-center border border-badge-border overflow-hidden whitespace-nowrap [&_svg]:shrink-0 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-focus-ring-brand focus:ring-offset-2 bg-fb-green/15 text-fb-green h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5 rounded-md
+  inline-flex items-center border border-badge-border overflow-hidden whitespace-nowrap [&_svg]:shrink-0 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-focus-ring-brand focus:ring-offset-2 bg-fb-green/15 text-fb-green-text h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5 rounded-md
 variant=error
   inline-flex items-center border border-badge-border overflow-hidden whitespace-nowrap [&_svg]:shrink-0 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-focus-ring-brand focus:ring-offset-2 bg-fb-red/15 text-fb-red-text h-7 gap-2 px-2.5 text-xs [&_svg]:size-3.5 rounded-md
 variant=brand
@@ -834,7 +834,7 @@ variant=warning
 variant=error
   inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-red-text [&_svg]:size-3.5
 variant=success
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-green [&_svg]:size-3.5
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-green-text [&_svg]:size-3.5
 size=sm
   inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
 size=md
@@ -973,7 +973,7 @@ variant=primary
 variant=tertiary
   h-full transition-all bg-brand-tertiary rounded-lg
 variant=green
-  h-full transition-all bg-fb-green rounded-lg
+  h-full transition-all bg-fb-green-text rounded-lg
 variant=attention
   h-full transition-all bg-fb-attention rounded-lg
 variant=destructive
@@ -1144,9 +1144,9 @@ tinted=false
 compound[0] tinted=true, tone=neutral
   inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=inactive]:bg-surface-card/60 data-[state=inactive]:text-ink-primary
 compound[1] tinted=true, tone=positive
-  inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=active]:bg-fb-green dark:data-[state=active]:bg-fb-green data-[state=active]:text-content-on-solid data-[state=active]:shadow-none data-[state=inactive]:bg-fb-green/15 data-[state=inactive]:text-fb-green enabled:data-[state=inactive]:hover:bg-fb-green/30 enabled:data-[state=inactive]:hover:text-fb-green enabled:data-[state=inactive]:hover:shadow-none
+  inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=active]:bg-fb-green dark:data-[state=active]:bg-fb-green data-[state=active]:text-content-on-solid data-[state=active]:shadow-none data-[state=inactive]:bg-fb-green/10 data-[state=inactive]:text-fb-green-text enabled:data-[state=inactive]:hover:bg-fb-green/10 enabled:data-[state=inactive]:hover:text-fb-green-text
 compound[2] tinted=true, tone=negative
-  inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=active]:bg-fb-red dark:data-[state=active]:bg-fb-red data-[state=active]:text-content-on-solid data-[state=active]:shadow-none data-[state=inactive]:bg-fb-red/15 data-[state=inactive]:text-fb-red-text enabled:data-[state=inactive]:hover:bg-fb-red/30 enabled:data-[state=inactive]:hover:text-fb-red-text enabled:data-[state=inactive]:hover:shadow-none
+  inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=active]:bg-fb-red dark:data-[state=active]:bg-fb-red data-[state=active]:text-content-on-solid data-[state=active]:shadow-none data-[state=inactive]:bg-fb-red/10 data-[state=inactive]:text-fb-red-text enabled:data-[state=inactive]:hover:bg-fb-red/10 enabled:data-[state=inactive]:hover:text-fb-red-text
 
 ## components/Separator/index.tsx — separatorVariants
 
@@ -1262,7 +1262,7 @@ color=muted
 color=accent
   animate-spin size-4 text-brand-primary
 color=success
-  animate-spin size-4 text-fb-green
+  animate-spin size-4 text-fb-green-text
 color=destructive
   animate-spin size-4 text-fb-red-text
 color=warning
@@ -1355,7 +1355,7 @@ tone=error
 tone=info
   flex shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary size-10 [&_svg]:size-5
 tone=success
-  flex shrink-0 items-center justify-center rounded-full bg-fb-green/10 text-fb-green size-10 [&_svg]:size-5
+  flex shrink-0 items-center justify-center rounded-full bg-fb-green/10 text-fb-green-text size-10 [&_svg]:size-5
 tone=transparent
   flex shrink-0 items-center justify-center rounded-full bg-transparent size-10 [&_svg]:size-5
 size=xs
@@ -1628,7 +1628,7 @@ status=pending
 status=active
   relative z-10 flex size-4 shrink-0 items-center justify-center rounded-full bg-surface-card [&_svg]:size-4 text-ink-secondary
 status=success
-  relative z-10 flex size-4 shrink-0 items-center justify-center rounded-full bg-surface-card [&_svg]:size-4 text-fb-green
+  relative z-10 flex size-4 shrink-0 items-center justify-center rounded-full bg-surface-card [&_svg]:size-4 text-fb-green-text
 status=error
   relative z-10 flex size-4 shrink-0 items-center justify-center rounded-full bg-surface-card [&_svg]:size-4 text-fb-red-text
 
@@ -1792,7 +1792,7 @@ textColor=body
 textColor=accent
   font-normal text-sm text-brand-primary text-left
 textColor=success
-  font-normal text-sm text-fb-green text-left
+  font-normal text-sm text-fb-green-text text-left
 textColor=destructive
   font-normal text-sm text-fb-red-text text-left
 textColor=warning

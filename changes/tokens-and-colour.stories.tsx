@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Info } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
+import { Badge } from '../src/components/Badge';
 import { Button } from '../src/components/Button';
+import { ProgressBar } from '../src/components/ProgressBar';
+import {
+  SegmentedControl,
+  SegmentedControlList,
+  SegmentedControlTrigger,
+} from '../src/components/SegmentedControl';
+import { Typography } from '../src/components/Typography';
 import { ChangeCase, ChangePage, Code, NoPanel, TryIt } from './Harness';
 
 const meta = {
@@ -33,6 +41,49 @@ const OLD_DARK_DESTRUCTIVE_BORDER = {
   '--btn-destructive-secondary-border': 'var(--red-700)',
   '--btn-destructive-secondary-border-hover': 'var(--red-800)',
 } as CSSProperties;
+
+/**
+ * §167 — the developers' 1.4.0 green, `#009966` light and `#03AF76` dark, as
+ * both tokens: before the split, fill and ink were one and the same.
+ */
+const DEVELOPERS_GREEN =
+  '[--fb-green:160_100%_30%] [--fb-green-text:160_100%_30%] dark:[--fb-green:160.1_96.6%_34.9%] dark:[--fb-green-text:160.1_96.6%_34.9%]';
+
+/** Everything that paints green: text, a Badge, a bar, a chosen and a tinted option. */
+function GreenSpecimen() {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <Badge variant="success">Connected</Badge>
+        <Typography textColor="success">Sync completed</Typography>
+      </div>
+      <ProgressBar className="w-48" value={64} variant="green" />
+      <div className="flex flex-col gap-2">
+        {[true, false].map((chosen) => (
+          <SegmentedControl
+            defaultValue={chosen ? 'allow' : ''}
+            key={String(chosen)}
+            semantics="radio"
+            size="sm"
+          >
+            <SegmentedControlList aria-label="Access">
+              <SegmentedControlTrigger
+                tinted={!chosen}
+                tone="positive"
+                value="allow"
+              >
+                Allow
+              </SegmentedControlTrigger>
+              <SegmentedControlTrigger tone="negative" value="deny">
+                Deny
+              </SegmentedControlTrigger>
+            </SegmentedControlList>
+          </SegmentedControl>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /** The old brand step, before it was retuned into the interaction wash. */
 const OLD_BRAND_300 = { '--brand-300': '186 30% 51%' } as CSSProperties;
@@ -359,6 +410,46 @@ export const Page: Story = {
             is nothing to set them against.
           </>
         }
+      />
+
+      <ChangeCase
+        after={<GreenSpecimen />}
+        afterNote="fill Green-700 both themes · ink Green-800 light, Green-500 dark"
+        before={
+          <div className={DEVELOPERS_GREEN}>
+            <GreenSpecimen />
+          </div>
+        }
+        beforeNote="one green for both jobs — white on it 3.65 light, 2.84 dark"
+        beforeSource={
+          <>
+            the developers' 1.4.0 green — <Code>#009966</Code> on light,{' '}
+            <Code>#03AF76</Code> on dark — re-declared on the wrapper as both{' '}
+            <Code>--fb-green</Code> and <Code>--fb-green-text</Code>, which is
+            what every one of these read then. Switch the toolbar to dark for
+            the second half of the case.
+          </>
+        }
+        files={[
+          'globals.css',
+          'src/lib/constants.ts',
+          'src/__tests__/contrast.test.ts',
+        ]}
+        footnote={
+          <>
+            Red already worked this way: <Code>--fb-red</Code> is the fill, the
+            same in both themes, and <Code>--fb-red-text</Code> the ink and the
+            washes. The Alert and Toast success washes move with the ink too;
+            they are mixed in <Code>globals.css</Code> at the root, so a wrapper
+            cannot put their old value back, and they are left out of the
+            panels. The SegmentedControl rows are this package's own draft (
+            <Code>tone</Code>, <Code>tinted</Code>) — there for the colour, not
+            as a Before of the control.
+          </>
+        }
+        n={167}
+        title="Green, split the way red is"
+        why="One green did the fill's job and the ink's, and moved with the theme: lighter on dark, where white on it fell to 2.84:1, and too light on light for text — 3.65:1 on the card."
       />
     </ChangePage>
   ),

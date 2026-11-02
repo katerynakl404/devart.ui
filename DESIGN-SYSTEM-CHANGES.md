@@ -81,7 +81,7 @@ found and written down, not fixed.
 | `PromoCard` | §116 the hover holds over the dismiss |
 | `RowMenuButton` | §137 **new** — the ⋮ at the end of a list row · draft |
 | `SearchInput` | §145 `results` — the matches while typing; `variant`, `disabled`, `autoFocus` and the rest passed through · draft |
-| `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft |
+| `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft<br>§168 `semantics` — a value picker is a radio group; the tinted value is read out, and keeps its ink on hover · draft |
 | `SelectableListCard` | §138 keyboard, `aria-selected`, `menu` |
 | `Sheet` | §156 the edge in the system's line — a white stripe down a dark sheet |
 | `Sidebar` | §10 `SidebarHeader` owns the horizontal inset<br>§11 `SidebarMenuButton` tooltips had no styling<br>§12 `SidebarMenuButton` — a 32px box its padding did not fit<br>§14 collapsing could remove the only way to expand<br>§35 the fixed panel was pinned to the viewport<br>§39 `SidebarMenu` rows 4px apart where the kit says 2<br>§64 `SidebarContent` — the nav column had no gutter<br>§72 the collapsed rail was never finished<br>§94 the product shape — sections, chat row, promo slot, compact footer<br>§139 `SidebarUser` — the rail lost the name<br>§140 `SidebarProvider` — the sheet outlived the phone layout<br>§141 `SidebarChatItem` — the ⋮ where there is no hover, `countLabel`<br>§142 `SidebarNavItem` `badge`, an element as `icon`; the label at its icon on a button<br>§143 the triggers' tooltips<br>§144 `SidebarStat` `asChild` |
@@ -99,7 +99,7 @@ found and written down, not fixed.
 | `Tour` | §122 **new** — a guided walk: Spotlight, their `GuideCard`, annotations; the card's placement, sheet, role and focus · draft |
 | `Tree` | §150 **new** — a hierarchy row by row: one step a level, an icon on every level · draft |
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
-| Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§129 `--code-*` — syntax colours, AA in both themes |
+| Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§129 `--code-*` — syntax colours, AA in both themes<br>§167 green split like red — `--fb-green` a fill in both themes, `--fb-green-text` the ink |
 | Sizes and glyphs | §40 the size ladder<br>§44 the icon surface — the glyph ladder, and the bundle that had none<br>§92 glyph stroke — one weight, set in CSS |
 | Across components | §98 `Table`, `ModalBody` — the system's scrollbar<br>§99 disabled controls — the not-allowed cursor<br>§155 `pressed:` — an open disclosure is not a held press |
 | Build and tooling | §19 a variant that is not enumerated is never compiled<br>§20 `pnpm bundle` and `pnpm check-bundle-css`<br>§37 `bg-surface-card/85` compiles to nothing · open<br>§84 the class list — list markers, `last:` borders |
@@ -1763,6 +1763,34 @@ role, which the caller gives. **minor** (`.changeset/list-row-actions.md`).
 
 ## 10. `SidebarHeader` owns the horizontal inset
 
+## 168. `SegmentedControl` — a value picker is a radio group; the tinted value keeps its ink · draft
+
+`src/components/SegmentedControl/*`
+
+**Contrast.** A `tinted` option was the tone at 15% under its ink and deepened
+to 30% on hover, keeping the ink: the hover dropped below 4.5:1 in both themes
+(green 2.4:1 on light), and on dark the red ink sat at 4.4:1 at rest. Now the
+wash is 10% — a step lighter than a Badge's 15%, because it sits on the recessed
+track, not the card — and hover keeps the wash and the ink and takes the rim
+every other option takes. Inks are `--fb-green-text` / `--fb-red-text` (§167);
+the chosen pill is the fill, white on it, in both themes, like the destructive
+button.
+
+```ts
+semantics?: 'tabs' | 'radio'   // SegmentedControl; radio by default when deselectable
+tintedLabel?: string           // SegmentedControlTrigger; default 'in effect'
+```
+
+**Semantics.** Built on Radix Tabs, every control announced itself as tabs —
+"Allow, tab, 1 of 2" — and each option pointed `aria-controls` at a panel a
+picker never renders. `semantics="radio"` makes the list a `radiogroup` and each
+option a `radio` with `aria-checked`; arrows, Tab and Space behave as before. A
+view switcher with `SegmentedControlContent` stays `tabs`.
+
+**The value in effect.** A `tinted` option said "in effect" only by its pale
+fill; a screen reader heard "not checked". It now reads `tintedLabel` after the
+label while it is tinted and not chosen.
+
 `src/components/Sidebar/SidebarHeader.tsx`
 
 `upstream`'s header is `flex gap-2 p-4`, and `SidebarPanelHeader` adds its own
@@ -2963,6 +2991,33 @@ steps, not two. No half-steps.
 |---|---|---|
 | `Button` padding | `px-2.5` = 10 at every step | 8 / 12 / 12 / 16 / 20 |
 | `Button` gap | `gap-1.5` = 6 at every step | 4 / 6 / 8 / 8 / 8 |
+## 167. Green, split the way red is
+
+`globals.css`, `src/lib/constants.ts`, `Alert`, `Badge`, `IconHint`, `Spinner`, `StatusView`, `Timeline`, `Typography`, `src/__tests__/contrast.test.ts`
+
+Red already had two tokens: `--fb-red`, the fill, one step in both themes with
+white on it (the destructive button, a chosen Deny), and `--fb-red-text`, the
+ink and the washes, which moves with the theme. Green had one token doing both
+jobs and moving with the theme — Green-600 on light, Green-500 on dark — so the
+fill lightened on dark and white on it fell to 2.54:1 (3.77:1 on light), and as
+text on the card it was 3.77:1 on light.
+
+- `--fb-green` — Green-700 in both themes. White on it 5.48:1.
+- `--fb-green-text` — new: Green-800 on light, Green-500 on dark. New primitive
+  `--green-800` (#065F46). Green-700 is not enough on light: on its own 15% wash
+  it is 4.4:1; Green-800 is 6.0:1.
+- Every success text reads `--fb-green-text`, and so does every green wash —
+  `--alert-*-success`, `--toast-*-success`, `--badge-green-*` — exactly as the
+  red ones read `--fb-red-text`. On dark nothing moves (Green-500 before and
+  after); on light the washes are mixed from Green-800, a shade deeper.
+- `src/__tests__/contrast.test.ts` reads `globals.css` and checks, in both
+  themes, white on both fills, both inks on the card, a Badge wash under its ink,
+  and the SegmentedControl pairs (§168). Run against the old values it fails five
+  of eighteen.
+
+`apps/web/src/index.css` carries its own copy of the tokens and needs the same
+edit.
+
 | `Button` label | 12 at `xs`, 14 above it | 12 / 14 / 14 / 16 / 16 |
 | `Button` glyph | 12 at `xs`, 16 above it | 14 / 16 / 16 / 20 / 20 |
 | `IconButton` glyph | 16 / 12 / 16 / 20 / 20 / 20 for `2xs`…`xl` | 14 / 14 / 16 / 16 / 20 / 20 |

@@ -34,7 +34,7 @@ const iconHintVariants = cva(
         info: 'text-brand-tertiary',
         warning: 'text-fb-attention',
         error: 'text-fb-red-text',
-        success: 'text-fb-green',
+        success: 'text-fb-green-text',
       },
       size: {
         /** 14px — beside a 14px name: a row, a list, a tree. */

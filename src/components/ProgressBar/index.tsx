@@ -48,7 +48,7 @@ const progressIndicatorVariants = cva('h-full transition-all', {
     variant: {
       primary: 'bg-primary-gradient',
       tertiary: 'bg-brand-tertiary',
-      green: 'bg-fb-green',
+      green: 'bg-fb-green-text',
       attention: 'bg-fb-attention',
       destructive: 'bg-fb-red-text',
     },

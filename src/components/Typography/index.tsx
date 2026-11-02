@@ -89,7 +89,7 @@ export const typographyVariants = cva(null, {
       light: 'text-ink-inactive',
       body: 'text-ink-body',
       accent: 'text-brand-primary',
-      success: 'text-fb-green',
+      success: 'text-fb-green-text',
       destructive: 'text-fb-red-text',
       warning: 'text-fb-attention',
       white: 'text-content-on-solid',

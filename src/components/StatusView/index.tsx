@@ -43,7 +43,7 @@ const haloVariants = cva(
         muted: 'bg-brand-primary/5 text-ink-secondary',
         error: 'bg-fb-red/10 text-fb-red-text',
         info: 'bg-brand-primary/10 text-brand-primary',
-        success: 'bg-fb-green/10 text-fb-green',
+        success: 'bg-fb-green/10 text-fb-green-text',
         transparent: 'bg-transparent',
       },
       /* The halo is the package's own; the kit's page-level empty state has

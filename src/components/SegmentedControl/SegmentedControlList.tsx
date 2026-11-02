@@ -34,7 +34,7 @@ const SegmentedControlList = ({
   ref,
   ...props
 }: ComponentProps<typeof TabsPrimitive.List>) => {
-  const { variant, rounded } = useSegmentedControl();
+  const { variant, rounded, semantics } = useSegmentedControl();
   return (
     <TabsPrimitive.List
       ref={ref}
@@ -42,6 +42,9 @@ const SegmentedControlList = ({
         segmentedControlListVariants({ variant, rounded }),
         className
       )}
+      {...(semantics === 'radio'
+        ? { role: 'radiogroup', 'aria-orientation': undefined }
+        : {})}
       {...props}
     />
   );

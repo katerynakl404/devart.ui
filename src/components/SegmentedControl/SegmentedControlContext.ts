@@ -11,6 +11,7 @@ export type SegmentedControlRounded =
   | 'lg'
   | 'xl'
   | 'full';
+export type SegmentedControlSemantics = 'tabs' | 'radio';
 
 type SegmentedControlContextValue = {
   size: SegmentedControlSize;
@@ -18,6 +19,8 @@ type SegmentedControlContextValue = {
   rounded: SegmentedControlRounded;
   /** `deselectable`: the value in effect, and the way back to none. */
   deselectable: boolean;
+  /** What assistive technology is told the control is — see `SegmentedControlProps`. */
+  semantics: SegmentedControlSemantics;
   value: string;
   clear: () => void;
 };

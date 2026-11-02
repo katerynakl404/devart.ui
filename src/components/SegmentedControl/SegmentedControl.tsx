@@ -5,6 +5,7 @@ import { type ComponentProps, useCallback, useMemo, useState } from 'react';
 import {
   SegmentedControlContext,
   type SegmentedControlRounded,
+  type SegmentedControlSemantics,
   type SegmentedControlSize,
   type SegmentedControlVariant,
 } from './SegmentedControlContext';
@@ -23,6 +24,15 @@ export interface SegmentedControlProps
    * while none is chosen.
    */
   deselectable?: boolean;
+  /**
+   * What a screen reader is told the control is. `tabs` — a view switcher,
+   * whose segments show panels (`SegmentedControlContent`). `radio` — a value
+   * picker, Allow / Deny, Included / Excluded: the list is a `radiogroup`, each
+   * option a `radio` with `aria-checked`, and no tab points at a panel that is
+   * not there. Defaults to `radio` when `deselectable`, `tabs` otherwise; set it
+   * for a picker with `tone` on its triggers.
+   */
+  semantics?: SegmentedControlSemantics;
 }
 
 const SegmentedControl = ({
@@ -30,6 +40,7 @@ const SegmentedControl = ({
   variant = 'default',
   rounded = 'md',
   deselectable = false,
+  semantics = deselectable ? 'radio' : 'tabs',
   className,
   value: valueProp,
   defaultValue,
@@ -52,8 +63,8 @@ const SegmentedControl = ({
   const clear = useCallback(() => change(''), [change]);
 
   const contextValue = useMemo(
-    () => ({ size, variant, rounded, deselectable, value, clear }),
-    [size, variant, rounded, deselectable, value, clear]
+    () => ({ size, variant, rounded, deselectable, semantics, value, clear }),
+    [size, variant, rounded, deselectable, semantics, value, clear]
   );
 
   return (

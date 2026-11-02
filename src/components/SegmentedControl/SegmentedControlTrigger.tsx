@@ -78,7 +78,9 @@ const segmentedControlTriggerVariants = cva(
       tone: {
         neutral: '',
         positive: cn(
-          // One green and one red in both themes, like the destructive button.
+          // One green and one red in both themes, white on both, like the
+          // destructive button: --fb-green and --fb-red are the fills that do
+          // not move with the theme.
           // The `dark:` line is not a second colour: the base recipe's
           // `dark:data-[state=active]:bg-surface-chips` is more specific than a
           // bare `data-[state=active]:`, and painted the chip grey over the fill
@@ -97,14 +99,15 @@ const segmentedControlTriggerVariants = cva(
       },
       /**
        * DRAFT. The value in effect on this row without being chosen on it —
-       * inherited from a level above, or a default. The tone's own fill at
-       * 15%, with the tone's text: the pale fill a success / error Badge
-       * carries. The solid pill stays "chosen here"; the pale one is the same
-       * value, arrived from elsewhere. Inactive only — a selected option is
-       * drawn selected. Hovered, the pale fill deepens and keeps its tone's
-       * text, with no rim — pressing it confirms the value on this row. The
-       * base recipe's white lift and primary text would have bleached it,
-       * which read as a fault.
+       * inherited from a level above, or a default. The tone's fill at 10%,
+       * with the tone's ink (--fb-green-text / --fb-red-text): a Badge's pale
+       * fill, a step lighter because it sits on the recessed track, where 15%
+       * left the red ink 4.4:1 on dark. The solid pill stays "chosen here";
+       * the pale one is the same value, arrived from elsewhere. Inactive only
+       * — a selected option is drawn selected. Hovered, it keeps its fill and
+       * its ink and takes the rim every other option takes: a deeper fill
+       * under the same ink dropped below 4.5:1 in both themes, and the base
+       * recipe's white lift bleached it, which read as a fault.
        */
       tinted: {
         true: '',
@@ -122,20 +125,18 @@ const segmentedControlTriggerVariants = cva(
         tinted: true,
         tone: 'positive',
         class: cn(
-          'data-[state=inactive]:bg-fb-green/15 data-[state=inactive]:text-fb-green',
-          'enabled:data-[state=inactive]:hover:bg-fb-green/30',
-          'enabled:data-[state=inactive]:hover:text-fb-green',
-          'enabled:data-[state=inactive]:hover:shadow-none'
+          'data-[state=inactive]:bg-fb-green/10 data-[state=inactive]:text-fb-green-text',
+          'enabled:data-[state=inactive]:hover:bg-fb-green/10',
+          'enabled:data-[state=inactive]:hover:text-fb-green-text'
         ),
       },
       {
         tinted: true,
         tone: 'negative',
         class: cn(
-          'data-[state=inactive]:bg-fb-red/15 data-[state=inactive]:text-fb-red-text',
-          'enabled:data-[state=inactive]:hover:bg-fb-red/30',
-          'enabled:data-[state=inactive]:hover:text-fb-red-text',
-          'enabled:data-[state=inactive]:hover:shadow-none'
+          'data-[state=inactive]:bg-fb-red/10 data-[state=inactive]:text-fb-red-text',
+          'enabled:data-[state=inactive]:hover:bg-fb-red/10',
+          'enabled:data-[state=inactive]:hover:text-fb-red-text'
         ),
       },
     ],
@@ -148,28 +149,51 @@ const segmentedControlTriggerVariants = cva(
   }
 );
 
+type SegmentedControlTriggerProps = ComponentProps<
+  typeof TabsPrimitive.Trigger
+> &
+  VariantProps<typeof segmentedControlTriggerVariants> & {
+    /**
+     * Read after the label while `tinted` and not selected, so a screen reader
+     * hears the value in effect, not only "not checked". Hidden from sight —
+     * the pale fill says it there.
+     */
+    tintedLabel?: string;
+  };
+
 const SegmentedControlTrigger = ({
   className,
   tone,
   tinted,
+  tintedLabel = 'in effect',
   ref,
   onMouseDown,
   onKeyDown,
+  children,
   ...props
-}: ComponentProps<typeof TabsPrimitive.Trigger> &
-  VariantProps<typeof segmentedControlTriggerVariants>) => {
+}: SegmentedControlTriggerProps) => {
   /* `size` and `rounded` come from the control, because the track and its pills
      have to agree. `tone` does not: it is a property of the one option, so it
      is passed per trigger. */
-  const { size, rounded, deselectable, value, clear } = useSegmentedControl();
+  const { size, rounded, deselectable, semantics, value, clear } =
+    useSegmentedControl();
+  const selected = value === props.value;
   // `deselectable`: a press on the selected option clears it. Handled before
   // Radix's own handler, which ignores that press — `preventDefault` is what
   // tells Radix to stand down.
-  const clears = deselectable && !props.disabled && value === props.value;
+  const clears = deselectable && !props.disabled && selected;
   return (
     <TabsPrimitive.Trigger
       ref={ref}
       data-tinted={tinted ? '' : undefined}
+      {...(semantics === 'radio'
+        ? {
+            role: 'radio',
+            'aria-checked': selected,
+            'aria-selected': undefined,
+            'aria-controls': undefined,
+          }
+        : {})}
       className={cn(
         segmentedControlTriggerVariants({ size, rounded, tone, tinted }),
         className
@@ -193,7 +217,12 @@ const SegmentedControlTrigger = ({
         }
       }}
       {...props}
-    />
+    >
+      {children}
+      {tinted && !selected ? (
+        <span className="sr-only">, {tintedLabel}</span>
+      ) : null}
+    </TabsPrimitive.Trigger>
   );
 };
 
