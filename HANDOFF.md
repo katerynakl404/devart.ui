@@ -9,7 +9,8 @@ A § leaves `DESIGN-SYSTEM-CHANGES.md` only when the developers have **released*
 | | |
 |---|---|
 | design base | `upstream` **1.4.0 — `f69ebc9`** (since 2026-10-28, the 1.3/1.4 sync §154). Packages are cut from it; `git diff f69ebc9 master -- <files>` is what is still ahead |
-| developers now | 1.4.0 — `f69ebc9` (2026-10-27) |
+| developers now | `1f6a577` (1.4.0 + our Checkbox, 2026-11-03) — **all of it taken into the library** |
+| differences left | **141** entries in the `DESIGN-SYSTEM-CHANGES` index (143 → 141 after !22) — goal: 0 |
 | route | **A** — branch `design/<KEY>-<slug>` pushed to their project, MR inside it, their CI runs (2026-10-28) |
 | her role in their project | **Developer** (access level 30) — confirmed by the MCP, 2026-10-28. Can push a branch; merging stays theirs |
 | `katerynak/design-system` a GitLab fork of theirs | not needed for route A |
@@ -27,6 +28,7 @@ Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `i
 |---|---|---|---|---|---|---|---|
 | H-001 | §99 §163 §164 (§57 dropped) | `Checkbox` | MR !22 | patch | CI ✓ | [!22](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/22) | **merged** 2026-11-03 as `1f6a577` (squash); Andrii put the marks back to Lucide 10px `stroke-[3.6]` — the library follows |
 | H-002 | radio — size, border, hover, disabled, error, focus offset, label | `RadioButton` | `handoff/radiobutton` @ `214a664` → `design/radiobutton` (from master `1f6a577`) | patch | all 6 ✓ | [!25](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/25) | published 2026-11-03 (ready, no squash); first of the forms-and-buttons chain |
+| H-003 | switch — description, tooltip, disabled state, label | `Switch` (+ `Tooltip/ControlTooltip`) | `handoff/switch` @ `4e21b4f` → `design/switch` (on `design/radiobutton`) | minor | all 6 ✓ | [!26](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/26) → `design/radiobutton` | published 2026-11-04; retargets to master when !25 is merged |
 
 ## Waves — how the rest breaks down (2026-10-27)
 
@@ -37,14 +39,14 @@ Index of `DESIGN-SYSTEM-CHANGES.md`: 127 entries — 85 signed off, 41 draft, 1 
    `ScrollShadow` tab stop (AIINS-2137). Our §118 (ChoiceCard, draft), §120 (Coachmark — vs their
    GuideCard), §51 §104 §107 (StatusView) are to be compared with theirs before anything is sent.
 1. **Foundations** — one MR each, each 🔴 (tokens are a two-repository change: `apps/web/src/index.css`):
-   tokens and colour §2 §5 §6 §129 · sizes and glyphs §40 §44 §92 · across components §98 §99 · plus
+   tokens and colour §2 §5 §6, §48's `--code-*` · sizes and glyphs §40 §44 §92 · across components §98 §99 · plus
    the shared pieces the component diffs reach for (`focusRing`, `duration-fast`, `size-control`, …).
 2. **Standalone fixes** on components they have, needing nothing from wave 1 — like §57. Quick, patch.
 3. **Fixes that need wave 1** — after it is merged.
 4. **New components** (17 not in theirs, all draft today) — after sign-off, and after wave 1.
 5. **Not for them**: §19 §20 §84 (build and tooling), §97 §146 (sync records), `ds-bundle/`,
-   `changes/`, palettes, `.design-sync/`. Waiting on a component they do not have: CodeBlock §81
-   §127–§129, ConnectorLogo §108 §115, MetaRow §134.
+   `changes/`, palettes, `.design-sync/`. Waiting on a component they do not have: CodeBlock §48,
+   ConnectorLogo §16, MetaRow §52.
 
 ## Found while preparing — decide before the wave that touches it
 
