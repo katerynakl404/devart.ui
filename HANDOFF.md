@@ -25,7 +25,8 @@ Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `i
 
 | id | § | component | local branch | bump | gates | MR | status |
 |---|---|---|---|---|---|---|---|
-| H-001 | §57 §99 §163 §164 | `Checkbox` | `handoff/57-checkbox-mark-weight` @ `4698ac9` (one commit) → publish as `design/checkbox` | patch | all 6 ✓ | [!22](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/22) (Draft) — 2026-10-29: English title, one-line description, squash on merge, changeset in the developers' style (`c146357`), pipeline #294981 | published |
+| H-001 | §99 §163 §164 (§57 dropped) | `Checkbox` | MR !22 | patch | CI ✓ | [!22](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/22) | **merged** 2026-11-03 as `1f6a577` (squash); Andrii put the marks back to Lucide 10px `stroke-[3.6]` — the library follows |
+| H-002 | radio — size, border, hover, disabled, error, focus offset, label | `RadioButton` | `handoff/radiobutton` @ `214a664` → `design/radiobutton` (from master `1f6a577`) | patch | all 6 ✓ | [!25](https://git.devart.com/devart/components/devart.ui.react/-/merge_requests/25) | published 2026-11-03 (ready, no squash); first of the forms-and-buttons chain |
 
 ## Waves — how the rest breaks down (2026-10-27)
 
