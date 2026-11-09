@@ -1,8 +1,9 @@
 'use client';
 
 import type { ComponentProps, PropsWithChildren } from 'react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
+import { useGutterInset } from '../../hooks/use-gutter-inset';
 import { cn } from '../../lib/utils';
 import { ScrollShadow, type ScrollShadowProps } from '../ScrollShadow';
 
@@ -16,11 +17,10 @@ interface ModalBodyProps extends PropsWithChildren<ComponentProps<'div'>> {
  * scrollbar sits in the dialog's own right padding, against its edge — not
  * between the fields and that padding (§176).
  *
- * The gutter is reserved whether or not the body overflows
- * (`scrollbar-gutter: stable`), and the right padding is 16px LESS the bar's
- * width, measured: `scrollbar-thin` is 8px in Firefox, about 11px in Chrome on
- * Windows and 0 where scrollbars overlay (macOS). So the fields are inset 16px
- * on both sides, as the header and the footer are, with a bar or without one.
+ * `useGutterInset` reserves the gutter and pads the right by the measured left
+ * padding less the bar, so the content is inset alike on both sides, with a bar
+ * or without one — 16px in a plain dialog, 20px in `ConfirmationDialog`
+ * (`mx-0 px-5`: its dialog has no padding of its own to reach over).
  */
 export function ModalBody({
   ref,
@@ -31,31 +31,7 @@ export function ModalBody({
   ...props
 }: ModalBodyProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
-  const [bar, setBar] = useState(0);
-
-  useLayoutEffect(() => {
-    const el = bodyRef.current;
-    if (!el) return;
-    const measure = () => {
-      const cs = getComputedStyle(el);
-      const border =
-        Number.parseFloat(cs.borderLeftWidth) +
-        Number.parseFloat(cs.borderRightWidth);
-      setBar(Math.max(0, el.offsetWidth - el.clientWidth - border));
-    };
-    measure();
-    // a browser zoom or a display-scale change re-sizes the bar in CSS px
-    window.addEventListener('resize', measure);
-    const ro =
-      typeof ResizeObserver === 'undefined'
-        ? null
-        : new ResizeObserver(measure);
-    ro?.observe(el);
-    return () => {
-      window.removeEventListener('resize', measure);
-      ro?.disconnect();
-    };
-  }, []);
+  const inset = useGutterInset(bodyRef);
 
   return (
     <ScrollShadow
@@ -72,11 +48,7 @@ export function ModalBody({
         'scrollbar-thin -mx-4 flex min-h-0 flex-1 flex-col gap-3 px-4',
         className
       )}
-      style={{
-        scrollbarGutter: 'stable',
-        paddingInlineEnd: `calc(1rem - ${bar}px)`,
-        ...style,
-      }}
+      style={{ ...inset, ...style }}
       {...props}
     >
       {children}

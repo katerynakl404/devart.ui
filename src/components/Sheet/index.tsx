@@ -7,6 +7,8 @@ import type {
   ComponentPropsWithRef,
   HTMLAttributes,
 } from 'react';
+import { useRef } from 'react';
+import { useGutterInset } from '../../hooks/use-gutter-inset';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { DialogTitleFallback } from '../DialogTitleFallback';
@@ -256,11 +258,29 @@ function SheetDescription({
 /**
  * A layout helper for the scrollable middle section of the sheet.
  * Usually contains the main content between header and footer.
+ *
+ * As `ModalBody` (§176, §178): it spans the sheet's width (`-mx-6`, out over
+ * `SheetContent`'s `p-6`) and puts the padding back inside, so the scrollbar —
+ * the system's `scrollbar-thin` — sits against the sheet's edge, and
+ * `useGutterInset` pads the right by the measured left padding less the bar:
+ * the content is inset alike on both sides, with a bar or without one. A sheet
+ * with no padding of its own (`p-0`) passes `mx-0` and its inset (`px-6`).
  */
-function SheetBody({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+function SheetBody({ ref, className, style, ...props }: ComponentProps<'div'>) {
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  const inset = useGutterInset(bodyRef);
   return (
     <div
-      className={cn('flex min-h-0 flex-1 flex-col overflow-y-auto', className)}
+      ref={(node) => {
+        bodyRef.current = node;
+        if (typeof ref === 'function') ref(node);
+        else if (ref) ref.current = node;
+      }}
+      className={cn(
+        'scrollbar-thin -mx-6 flex min-h-0 flex-1 flex-col overflow-y-auto px-6',
+        className
+      )}
+      style={{ ...inset, ...style }}
       {...props}
     />
   );

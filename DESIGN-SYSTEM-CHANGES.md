@@ -83,7 +83,7 @@ found and written down, not fixed.
 | `SearchInput` | §145 `results` — the matches while typing; `variant`, `disabled`, `autoFocus` and the rest passed through · draft |
 | `SegmentedControl` | §73 `tone` — a selected half that means included or excluded · draft<br>§96 `tinted` — an inherited value; tone fills in dark · draft<br>§103 `deselectable` — none is a state · draft<br>§168 `semantics` — a value picker is a radio group; the tinted value is read out, and keeps its ink on hover · draft |
 | `SelectableListCard` | §138 keyboard, `aria-selected`, `menu` |
-| `Sheet` | §156 the edge in the system's line — a white stripe down a dark sheet |
+| `Sheet` | §156 the edge in the system's line — a white stripe down a dark sheet<br>§178 `SheetBody` — the bar against the sheet's edge, the content inset alike |
 | `Sidebar` | §10 `SidebarHeader` owns the horizontal inset<br>§11 `SidebarMenuButton` tooltips had no styling<br>§12 `SidebarMenuButton` — a 32px box its padding did not fit<br>§14 collapsing could remove the only way to expand<br>§35 the fixed panel was pinned to the viewport<br>§39 `SidebarMenu` rows 4px apart where the kit says 2<br>§64 `SidebarContent` — the nav column had no gutter<br>§72 the collapsed rail was never finished<br>§94 the product shape — sections, chat row, promo slot, compact footer<br>§139 `SidebarUser` — the rail lost the name<br>§140 `SidebarProvider` — the sheet outlived the phone layout<br>§141 `SidebarChatItem` — the ⋮ where there is no hover, `countLabel`<br>§142 `SidebarNavItem` `badge`, an element as `icon`; the label at its icon on a button<br>§143 the triggers' tooltips<br>§144 `SidebarStat` `asChild` |
 | `Spotlight` | §119 **new** — the scrim around a lit target, and `useTargetRect` · draft |
 | `StatTile` | §47 label, value, caption — one number and what it counts · draft |
@@ -1370,10 +1370,17 @@ it sits between, and changed width as it started to scroll.
 
 Now the body spans the dialog's full width (`-mx-4 px-4`), the gutter is
 reserved whether or not it overflows (`scrollbar-gutter: stable`), and the
-right padding is 16px **less the bar's measured width** (re-measured on resize,
-since a zoom re-sizes the bar in CSS px). The bar sits in the dialog's own
-padding, against its edge; the fields are inset 16px on both sides, with a bar
-or without one (measured in Chrome on Windows: 10px gutter + 6px padding).
+right padding is the **left padding less the bar's width**, both measured
+(re-measured on resize, since a zoom re-sizes the bar in CSS px). The bar sits
+in the dialog's own padding, against its edge; the content is inset alike on
+both sides, with a bar or without one (measured in Chrome on Windows: 10px
+gutter + 6px padding against 16px on the left).
+
+Measuring the left padding rather than assuming 16px keeps a body with its own
+inset symmetric too. `ConfirmationDialog`'s dialog has no padding (`p-0`) and
+its body is `px-5`: it now passes `mx-0` (it passed `mr-0`, which with the new
+`-mx-4` would have pulled its text 16px past the dialog's left edge) and gets
+20px on both sides.
 
 **patch** (`.changeset/modal-body-scrollbar-edge.md`).
 
@@ -4051,6 +4058,33 @@ sheet. The sidebar's phone drawer is a left `Sheet`, so it was the first place a
 base now names `border-stroke`, the line every other edge in the system uses.
 
 **patch** (`.changeset/sheet-edge-stroke.md`).
+
+---
+
+## 178. `SheetBody` — the scrollbar against the sheet's edge, the content inset alike
+
+`src/components/Sheet/index.tsx`, `src/hooks/use-gutter-inset`, `src/components/Modal/ModalBody.tsx`
+
+**From** Insightis (details panels, designer 2026-11-09, after §176: the same in the panels). **Used
+in** every sheet whose middle scrolls.
+
+`SheetBody` was a bare `overflow-y-auto`: the platform's bar (16px with arrows on Windows), inside
+`SheetContent`'s `p-6`, and the content lost the bar's width on the right only — in the Insightis
+details panel 24px on the left, 34px on the right while it scrolled, 24px when it did not, so the
+content changed width as it began to scroll.
+
+Now it is §176's `ModalBody` for a sheet: `scrollbar-thin`, it spans the sheet's width (`-mx-6
+px-6`, out over `p-6`), and the gutter and the right padding come from **`useGutterInset`** — the
+gutter reserved, the right padding the measured left padding less the bar. The bar sits against the
+sheet's edge; the content is inset alike on both sides, with a bar or without one. A sheet with no
+padding of its own (`p-0`) passes `mx-0`. `ModalBody` now takes the same hook instead of its own copy.
+
+Tests: `use-gutter-inset.test.tsx` (the padding arithmetic: 16 and 20px, a 0px overlay bar, never
+below zero), `modal-body.test.tsx` (each body reaches over its surface's padding only by default,
+`mx-0` replaces it), and `ConfirmationDialog` keeps `mx-0` — it fails on the `mr-0` that §176 first
+left beside the new `-mx-4`.
+
+**patch** (`.changeset/sheet-body-scrollbar-edge.md`).
 
 ---
 

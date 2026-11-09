@@ -77,6 +77,18 @@ describe('ConfirmationDialog', () => {
     );
   });
 
+  it('keeps its body inside the dialog — mx-0, never ModalBody’s -mx-4 (§176)', async () => {
+    renderDialog();
+    const dialog = await openDialog();
+    // the description's container is the ModalBody; the dialog is p-0, so the
+    // body must not reach over a padding it does not have
+    const body = within(dialog).getByText(/You will be billed once a year/)
+      .parentElement as HTMLElement;
+    const classes = body.className.split(/\s+/);
+    expect(classes).toEqual(expect.arrayContaining(['mx-0', 'px-5']));
+    expect(classes.some((c) => /^-m[xl]-/.test(c))).toBe(false);
+  });
+
   it('has no close button unless isCloseButtonVisible', async () => {
     renderDialog();
     const dialog = await openDialog();
