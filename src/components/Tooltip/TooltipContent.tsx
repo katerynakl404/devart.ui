@@ -32,7 +32,10 @@ function TooltipContent({
         ref={ref}
         sideOffset={sideOffset}
         className={cn(
-          'z-50',
+          // z-[110]: above Modal (z-100), as Autocomplete's list and Select's
+          // are. At z-50 a tooltip on a control inside a dialog opened behind
+          // the dialog — only a sliver showed past its edge (§177).
+          'z-[110]',
           'px-2 py-1',
           'rounded-md bg-ink-primary',
           'text-surface-card text-xs',

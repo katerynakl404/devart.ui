@@ -72,7 +72,7 @@ found and written down, not fixed.
 | `LinkButton` | §46 the kit's text link, which the package never had · draft<br>§158 without `href`, a `<button>` — a link-styled control that acts · draft |
 | `ListPageLayout` | §133 the header condenses, and the body takes a class |
 | `MetaRow` | §52 the line above a list, and the 4px to it · draft<br>§134 `sticky` and `stickyOffset` |
-| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft<br>§159 **new** — `ModalDescription`, the line under the title, and the dialog's description · draft |
+| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft<br>§159 **new** — `ModalDescription`, the line under the title, and the dialog's description · draft<br>§176 `ModalBody` — the scrollbar in the dialog's padding, the fields inset 16px on both sides |
 | `PageHeader` | §15 the back control; `titleLeft` first, `titleRight` 12px from the title · draft<br>§67 `condensed` — the header once the page scrolls · draft<br>§111 the collapse animates whole — title, arrow, 240ms · draft<br>§135 the title truncates; `wrapTitle` wraps it |
 | `Pagination` | §82 `showPageNumbers` — a stream read in order · draft<br>§93 a `size` rung, and the `pageFloor` recipe · draft<br>§161 `totalItems` + `pageSize` — "Showing x–y of z" beside the pager · draft |
 | `PinToggle` | §136 **new** — pin a row · draft |
@@ -95,7 +95,7 @@ found and written down, not fixed.
 | `Tabs` | §8 `TabsContent` — the inactive panel came back as an empty box |
 | `TextArea` | §41 `hintText` — the counter row's empty slot<br>§70 the hint at 400; the counter and error lines |
 | `Toast` | §75 a stack of toasts, each a different width |
-| `Tooltip` | §13 the arrow put the gap off the 4px scale<br>§63 the delay before it opens |
+| `Tooltip` | §13 the arrow put the gap off the 4px scale<br>§63 the delay before it opens<br>§177 above a dialog (`z-[110]`), not behind it |
 | `Tour` | §122 **new** — a guided walk: Spotlight, their `GuideCard`, annotations; the card's placement, sheet, role and focus · draft |
 | `Tree` | §150 **new** — a hierarchy row by row: one step a level, an icon on every level · draft |
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
@@ -1351,6 +1351,31 @@ it compiled to nothing and the cap was never applied at all.
 
 `dvh`, not `vh`: on a window whose chrome can retract, `vh` measures the
 larger state and a dialog sized against it is clipped in the smaller one.
+
+## 176. `ModalBody` — the scrollbar in the dialog's padding, the fields inset alike
+
+`src/components/Modal/ModalBody.tsx`
+
+**From** Insightis (Create metric, designer 2026-11-09: "скрол мав бути на краю
+попапа, а він на краю контенту"; "ліва сторона меншою за праву"). **Used in**
+every dialog whose body scrolls.
+
+`ModalBody` reached into the dialog's right padding by a fixed 16px (`-mr-4`)
+and gave 8px back (`pr-2`), as if the bar were always 8px. It is not:
+`scrollbar-thin` is 8px in Firefox, about 11px in Chrome on Windows, and 0
+where scrollbars overlay. So with a bar the fields stopped about 19px from the
+right edge and 16px from the left, and with no bar (a short form) they ran to
+8px from the right — the body was a different width from the header and footer
+it sits between, and changed width as it started to scroll.
+
+Now the body spans the dialog's full width (`-mx-4 px-4`), the gutter is
+reserved whether or not it overflows (`scrollbar-gutter: stable`), and the
+right padding is 16px **less the bar's measured width** (re-measured on resize,
+since a zoom re-sizes the bar in CSS px). The bar sits in the dialog's own
+padding, against its edge; the fields are inset 16px on both sides, with a bar
+or without one (measured in Chrome on Windows: 10px gutter + 6px padding).
+
+**patch** (`.changeset/modal-body-scrollbar-edge.md`).
 
 ---
 
@@ -2705,6 +2730,26 @@ Unchanged, and worth knowing: the bubble itself is not a transition but a
 `tailwindcss-animate` keyframe — 150ms `ease`, `fade-in-0 zoom-in-95` plus an
 8px slide from the trigger’s side. That 150 is the plugin’s default, not
 `--motion-*`.
+
+## 177. `Tooltip` — above a dialog, not behind it
+
+`src/components/Tooltip/TooltipContent.tsx`, `src/components/Modal/ModalContent.tsx`
+
+**From** Insightis (Create metric in a workspace, 2026-11-09: a disabled
+"Data Source" segment whose tooltip says why). **Used in** every tooltip on a
+control inside a `Modal`.
+
+`TooltipContent` was `z-50`; `Modal`'s overlay and content are `z-[100]`. A
+tooltip on anything inside a dialog opened behind it — only the sliver past the
+dialog's edge showed. `Autocomplete`'s list and `Select`'s were each lifted to
+`z-[110]` with a comment, and `ModalContent` lifted its own close button's
+tooltip the same way, per call.
+
+Now `TooltipContent` is `z-[110]` itself, and the close button's per-call
+`className="z-[110]"` is gone. `Popover` and `DropdownMenu` are still `z-50` —
+the same gap, no reported symptom yet, so not changed on the strength of this one.
+
+**patch** (`.changeset/tooltip-above-modal.md`).
 
 ---
 

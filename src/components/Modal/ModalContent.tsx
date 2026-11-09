@@ -138,7 +138,7 @@ export function ModalContent({
                   </IconButton>
                 </ModalClose>
               </TooltipTrigger>
-              <TooltipContent side="bottom" align="end" className="z-[110]">
+              <TooltipContent side="bottom" align="end">
                 {closeLabel}
               </TooltipContent>
             </Tooltip>

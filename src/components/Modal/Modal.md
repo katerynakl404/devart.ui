@@ -41,6 +41,10 @@ dialog's `aria-describedby` points at it.
 
 `ModalBody` is the scrolling region for long content — it already carries
 `min-h-0 flex-1`, so the header and footer stay pinned while the middle scrolls.
+Its scrollbar sits in the dialog's own right padding, against the dialog's edge,
+and the fields stay inset 16px on both sides with a bar or without one (§176).
+Do not build a scrolling `div` of your own inside `ModalContent`: its bar lands
+between the fields and the padding, and the right side grows wider than the left.
 
 ## The overlay contract
 
