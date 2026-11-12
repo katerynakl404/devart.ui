@@ -26,9 +26,6 @@ export const iconButtonVariants = cva(
     // Focus: 2px ring + 2px surface-card gap; ring colour is set per variant
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card',
 
-    // Each variant switches its own hover recipe off when disabled — see the
-    // note on `Button`: `:hover` still matches a disabled control, and
-    // `pointer-events-none` would take away the tooltip that says why.
     'disabled:cursor-not-allowed',
     'aria-disabled:cursor-not-allowed',
 
@@ -46,13 +43,18 @@ export const iconButtonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           'disabled:bg-state-disabled disabled:text-ink-inactive',
           'disabled:hover:bg-state-disabled',
-          // Both disabled forms on every variant — see Button (2026-10-27).
           'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
           'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
+        primaryTertiary: cn(
+          'border-transparent bg-transparent text-btn-primary-tertiary-text',
+          'hover:bg-state-hover hover:text-btn-primary-tertiary-text-hover',
+          'pressed:bg-state-pressed pressed:text-btn-primary-tertiary-text-press',
+          'focus-visible:ring-focus-ring-brand',
+          ghostDisabled
+        ),
         secondary: cn(
           'border-btn-secondary-border bg-surface-card text-ink-body',
-          // Opaque blends, not the translucent state washes — see Button.
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
           'pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
@@ -72,17 +74,6 @@ export const iconButtonVariants = cva(
           'focus-visible:ring-focus-ring-brand',
           ghostDisabled
         ),
-        // The same pill as `tertiary`, with a brand glyph — the tokens of
-        // Button's `primaryTertiary` label.
-        primaryTertiary: cn(
-          'border-transparent bg-transparent text-btn-primary-tertiary-text',
-          'hover:bg-state-hover hover:text-btn-primary-tertiary-text-hover',
-          'pressed:bg-state-pressed pressed:text-btn-primary-tertiary-text-press',
-          'focus-visible:ring-focus-ring-brand',
-          ghostDisabled
-        ),
-        // Focus ring is the kit-wide brand teal on every variant, destructive
-        // included — a red ring on a red control reads as noise.
         destructive: cn(
           'border-transparent bg-fb-red text-content-on-solid',
           'hover:bg-fb-error-hover',
@@ -93,7 +84,6 @@ export const iconButtonVariants = cva(
           'aria-disabled:bg-state-disabled aria-disabled:text-ink-inactive',
           'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
-        // The secondary's destructive form — see Button.
         destructiveOutline: cn(
           'border-outlineDestructive-border bg-transparent text-fb-red-text',
           'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
@@ -105,8 +95,6 @@ export const iconButtonVariants = cva(
         // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          // Shares the destructiveOutline fill tokens on light and goes a step
-          // stronger on dark, where there is no border to carry the signal.
           'hover:bg-destructiveTertiary-bg-hover',
           'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
@@ -119,14 +107,8 @@ export const iconButtonVariants = cva(
         ),
       },
       size: {
-        // Box ladder mirrors Button step for step (28/32/36/40/44), so an
-        // icon-only control lines up with a text button of the same size.
-        // `2xs` (24px) sits one step BELOW that ladder: the row-action size,
-        // which an icon-only control reaches on the padded box around a 14px
-        // glyph. Glyph is 16px everywhere and 14px on the two smallest steps.
-        // `3xs` (20px, 12px glyph) is a step under that again: the toggle of
-        // a tree row — expand / collapse beside a 14px name, many to a screen,
-        // where a 24px box beside every row outweighed the names.
+        // Same boxes as Button (28–44px); 2xs (24px) is the row-action size.
+        // 3xs (20px): the expand toggle of a tree row.
         '3xs': 'size-5 [&_svg]:size-3',
         '2xs': 'size-6 [&_svg]:size-3.5',
         xs: 'size-7 [&_svg]:size-3.5',
@@ -146,9 +128,6 @@ export const iconButtonVariants = cva(
       },
     },
     compoundVariants: [
-      // The radius tightens one step on the two smallest boxes so a 24/28px
-      // square does not read as a pill. Scoped to the default `md` radius so an
-      // explicit `rounded` prop still wins.
       { size: '3xs', rounded: 'md', class: 'rounded' },
       { size: '2xs', rounded: 'md', class: 'rounded' },
       { size: 'xs', rounded: 'md', class: 'rounded' },
@@ -164,11 +143,7 @@ export const iconButtonVariants = cva(
 export interface IconButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof iconButtonVariants> {
-  /**
-   * Required. An icon-only control has no visible text, so it must carry its
-   * own accessible name or a screen reader announces only "button". Name the
-   * ACTION it performs ("Remove file"), never its surrounding context.
-   */
+  /** The control's name; it has no visible text. */
   'aria-label': string;
   asChild?: boolean;
   /**
@@ -177,20 +152,10 @@ export interface IconButtonProps
    */
   isLoading?: boolean;
   /**
-   * Shown on hover and keyboard focus: what the control does, for a control
-   * with no visible text. `true` shows its `aria-label`; a node shows that
-   * instead ("Set Up" over a gear whose name is "Set up Finance warehouse in
-   * Data Analyze").
-   *
-   * The pattern every product page was building by hand — an IconButton in a
-   * TooltipTrigger — as a prop, the way `Badge` carries its own.
-   *
-   * With `disabled` the control is rendered `aria-disabled` instead, so the
-   * tooltip still opens on hover and focus; its click does nothing
-   * (2026-10-27, `ControlTooltip` — the code `Button` and `Switch` share).
+   * Shown on hover and focus; `true` shows the `aria-label`. A disabled button
+   * with a tooltip is rendered `aria-disabled`, so the tooltip still opens.
    */
   tooltip?: ReactNode | true;
-  /** @default 'top' */
   tooltipSide?: TooltipSide;
   ref?: Ref<HTMLButtonElement>;
 }
@@ -212,8 +177,6 @@ export function IconButton({
 }: IconButtonProps) {
   const Comp = asChild ? Slot : 'button';
 
-  // The spinner replaces the glyph, so it takes the glyph's size: one step
-  // down on the two smallest boxes, 16px on every other step.
   const spinnerSize =
     size === '3xs' || size === '2xs' || size === 'xs' ? 'xs' : 'sm';
   const tip = resolveTooltip(tooltip, props['aria-label']);

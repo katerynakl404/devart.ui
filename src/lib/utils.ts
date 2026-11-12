@@ -13,14 +13,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * The system's focus indicator: a 2px ring held off the control by a 2px gap
- * in the surface colour. Required by WCAG 2.4.7 Focus Visible (AA).
- *
- * One recipe for the whole kit — apply it to any control that can take focus
- * and does not already render a `Button` underneath. Components that do render
- * a `Button` inherit it and must not declare it again.
- */
+/** The focus ring the controls share. */
 export const focusRing = cn(
   'focus-visible:outline-none',
   'focus-visible:ring-2 focus-visible:ring-offset-2',
@@ -74,46 +67,22 @@ export const pageFloor = 'pb-8';
  */
 export const glyphStroke = '[&_svg]:stroke-2';
 
-/**
- * A switched-off `secondary` — and every bordered variant beside it
- * (`outline`, `destructiveOutline`), on `Button` and `IconButton` alike: the secondary
- * border, no fill, the label in its own `--ink-body`, and the whole control
- * faded to `opacity-disabled` (§165) — disabled is a fade, not a colour swap,
- * as on `Checkbox` (§163). `--ink-inactive` read blue beside a faded primary.
- * `destructiveOutline` loses its red here: switched off, it is this button.
- * Its hover is switched off again, because `:hover` still matches a disabled
- * button.
- *
- * No fill at all — not `--state-disabled` and not `--surface-card`. A white
- * chip is invisible on a white card and reads as a card of its own on a tinted
- * one; transparent holds on every surface, and the border and the label carry
- * the state. The kit paints `--state-disabled` here
- * (`.s-disabled.btn-secondary`); deliberate divergence.
- *
- * The same for the focusable `aria-disabled` form (2026-10-27), which a
- * disabled control with a `tooltip` renders — and which, unlike `disabled`,
- * still takes `:active`, so the press is switched off as well.
- */
-/**
- * A switched-off button with no border — `tertiary`, both tertiaries and the
- * bare `transparent` ones: the label in its own `--ink-body` and the whole
- * control faded, as `secondaryDisabled` does minus the border. Every unfilled
- * button is switched off the same way; a filled one keeps `--state-disabled`.
- */
-export const ghostDisabled = cn(
-  'disabled:bg-transparent disabled:text-ink-body disabled:opacity-disabled',
-  'disabled:hover:bg-transparent disabled:hover:text-ink-body',
-  'aria-disabled:bg-transparent aria-disabled:text-ink-body aria-disabled:opacity-disabled',
-  'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-body',
-  'aria-disabled:pressed:bg-transparent aria-disabled:pressed:text-ink-body'
-);
-
+/** Disabled bordered button: the secondary border, no fill, faded. */
 export const secondaryDisabled = cn(
   'disabled:border-btn-secondary-border disabled:bg-transparent disabled:text-ink-body disabled:opacity-disabled',
   'disabled:hover:border-btn-secondary-border disabled:hover:bg-transparent',
   'aria-disabled:border-btn-secondary-border aria-disabled:bg-transparent aria-disabled:text-ink-body aria-disabled:opacity-disabled',
   'aria-disabled:hover:border-btn-secondary-border aria-disabled:hover:bg-transparent',
   'aria-disabled:pressed:border-btn-secondary-border aria-disabled:pressed:bg-transparent'
+);
+
+/** Disabled borderless button: no fill, faded. */
+export const ghostDisabled = cn(
+  'disabled:bg-transparent disabled:text-ink-body disabled:opacity-disabled',
+  'disabled:hover:bg-transparent disabled:hover:text-ink-body',
+  'aria-disabled:bg-transparent aria-disabled:text-ink-body aria-disabled:opacity-disabled',
+  'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-body',
+  'aria-disabled:pressed:bg-transparent aria-disabled:pressed:text-ink-body'
 );
 
 /**

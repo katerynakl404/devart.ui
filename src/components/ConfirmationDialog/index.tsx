@@ -113,12 +113,7 @@ function ConfirmationDialog({
         size="sm"
         className={cn('p-0', className)}
         isCloseButtonVisible={isCloseButtonVisible}
-        // The fork's `IconButton` requires `aria-label`; 'Close' is the label
-        // `ModalContent` falls back to anyway.
-        closeButtonProps={{
-          'aria-label': 'Close',
-          className: 'top-3.5 right-5',
-        }}
+        closeButtonProps={{ className: 'top-3.5 right-5' }}
         onOpenAutoFocus={(event) => {
           event.preventDefault();
           confirmRef.current?.focus();

@@ -2,12 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Button } from '../index';
 
-/* `fullWidth` wraps the label in a box of its own, so that it can truncate
-   and take an alignment. The box stretches only where that keeps the leading
-   icon beside the words — no `leftSlot`, or a left-aligned label. A stretched
-   label centred or right-aligned would pin `leftSlot` to the leading edge,
-   which is how "+ Add Group or User" came apart on LinkAI's Permissions
-   (2026-11-10). The icon always stands beside the text. */
+// The label stretches only where that keeps `leftSlot` beside it.
 describe('Button — fullWidth and its label box', () => {
   const labelOf = (text: string) => screen.getByText(text);
 

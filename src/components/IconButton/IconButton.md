@@ -1,5 +1,5 @@
 An icon-only button. Same variants and the same states as `Button`, on a square
-box.
+box: hover, press, disabled and radius follow [Button → Rules](../Button/Button.md#rules).
 
 **`aria-label` is required.** Name the action, not the surrounding row: "Delete
 connection", not "Connection". Without it the control is unusable by screen
@@ -10,8 +10,8 @@ id.
 
 `3xs` (20) `2xs` (24) `xs` (28) `sm` (32) `md` (36) `lg` (40) `xl` (44). The box
 ladder from `xs` up mirrors `Button` step for step, so an icon-only control lines
-up with a text button of the same size. The glyph is 16px from `sm` up, 14px on
-`xs` and `2xs`, 12px on `3xs`.
+up with a text button of the same size. The glyph is 20px on `lg` and `xl`,
+16px on `sm` and `md`, 14px on `xs` and `2xs`, 12px on `3xs`.
 
 **`2xs` is the row-action size** — use it for a kebab or an inline edit/delete
 pair inside a table row or a list row, and nothing else.

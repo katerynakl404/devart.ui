@@ -52,7 +52,7 @@ interface ModalContentProps
   extends ComponentPropsWithRef<typeof ModalPrimitive.Content>,
     VariantProps<typeof modalContentVariants> {
   isCloseButtonVisible?: boolean;
-  closeButtonProps?: ComponentProps<typeof IconButton>;
+  closeButtonProps?: Partial<ComponentProps<typeof IconButton>>;
 }
 
 export function ModalContent({

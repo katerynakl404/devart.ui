@@ -3,8 +3,8 @@ same variant and size scales.
 
 ## Variants
 
-`primary` `secondary` `outline` `tertiary` `destructive` `destructiveOutline`
-`destructiveTertiary` `transparent` `transparentUnderline`.
+`primary` `secondary` `outline` `tertiary` `primaryTertiary` `destructive`
+`destructiveOutline` `destructiveTertiary` `transparent` `transparentUnderline`.
 
 There is **no `ghost`** — use `tertiary`. There is exactly one regular tertiary
 and one destructive tertiary; do not reach for a third low-emphasis treatment.
@@ -13,6 +13,38 @@ Prefer `secondary` for the cancelling action and `primary` for the confirming
 one. `destructive` is a solid red fill and is for the confirming action of a
 destructive flow, not for every delete affordance — an inline "Remove" in a list
 is `destructiveTertiary`.
+
+## Rules
+
+`Button` and `IconButton` alike. Each rule is one place in the code; change it
+there, not per variant.
+
+1. **One wash a family** (§180). Hover and press on every unfilled button are
+   the state wash, 8% / 12%: `--state-hover` / `--state-pressed` for `secondary`,
+   `outline`, `tertiary`, `primaryTertiary`; red for `destructiveOutline` and
+   `destructiveTertiary`, 8% / 12% on light and 12% / 15% on dark. A filled
+   button steps its own fill.
+2. **`secondary` keeps its fill.** Its wash is pre-mixed over `--surface-card`
+   (`--btn-secondary-bg-hover` / `-press`), so it stays a white chip on any ground.
+3. **A border steps on hover and stays stepped while pressed** — `secondary`,
+   `outline`, `destructiveOutline`.
+4. **Every label holds 4.5:1 in every state**, in both themes, on the card, the
+   page and a hovered table row; `theme-audit` checks it. The `secondary` border
+   is light on purpose: the label names the button.
+5. **Two disabled looks** (§181). Filled (`primary`, `destructive`):
+   `--state-disabled` fill, `--ink-inactive` label. Every other button: its own
+   `--ink-body` label, no fill, the whole control at `opacity-disabled`; with a
+   border it keeps the secondary border (`secondaryDisabled`), without one it has
+   none (`ghostDisabled`). Switched off, a red button is not red.
+6. **Disabled does not answer the pointer** (§66). No hover, no press, and the
+   `aria-disabled` form looks the same as `disabled`.
+7. **The icon stands beside the label**, with `fullWidth` too (§183).
+8. **The radius follows the box** (§182): 28px and smaller (`xs`, `IconButton`
+   `2xs` / `3xs`) take 4px, larger boxes 6px, unless `rounded` is set.
+9. **An icon-only button has a name.** `IconButton` requires `aria-label`; a
+   `tooltip` shows it and does not replace it.
+10. **One focus ring**: 2px `--focus-ring-brand` with a 2px card gap on every
+    variant, red ones included.
 
 ## Sizes
 
