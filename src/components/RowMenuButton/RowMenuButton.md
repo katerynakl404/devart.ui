@@ -61,9 +61,9 @@ Radix hands focus back to the trigger once the menu has animated out — long
 after the item's `onSelect` ran. When that handler moved focus on purpose
 (Rename opening an `InlineRename` in the row), the hand-back would pull the
 caret out of the field, and a field that commits on blur would close at once.
-So the hand-back runs only when focus went nowhere — to `document.body`, with
-the menu that held it. `DropdownMenuContent`'s keyboard-only rule applies on
-top: a menu closed with the pointer leaves no ring on its trigger.
+`DropdownMenuContent` hands focus back only when it went nowhere — to
+`document.body`, with the menu that held it — so Rename keeps its field. After
+the pointer the trigger gets focus without a ring; after the keyboard, with one.
 
 ## In a row
 

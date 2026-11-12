@@ -80,7 +80,7 @@ export const Page: Story = {
         }
         n={157}
         title="description takes inline marks"
-        why="A confirmation names what it acts on and products set that name in bold, which a string cannot carry — so every product with a question like that built the dialog again from Modal parts (twelve copies in the AI connectivity prototype)."
+        why="A confirmation names what it acts on and products set that name in bold, which a string cannot carry — so every product with a question like that built the dialog again from Modal parts (twelve copies in the LinkAI prototype)."
       />
     </ChangePage>
   ),

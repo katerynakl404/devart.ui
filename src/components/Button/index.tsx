@@ -3,7 +3,12 @@
 import { Slot, Slottable } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
-import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
+import {
+  cn,
+  ghostDisabled,
+  glyphStroke,
+  secondaryDisabled,
+} from '../../lib/utils';
 
 import { Spinner } from '../Spinner';
 import {
@@ -78,11 +83,7 @@ const buttonVariants = cva(
           'hover:border-brand-hover hover:bg-btn-outline-bg-hover',
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent',
-          'aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent',
-          'aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent'
+          secondaryDisabled
         ),
         // Lowest-emphasis ghost: Outlined minus the border — same brand-tinted
         // hover/press overlays.
@@ -91,35 +92,23 @@ const buttonVariants = cva(
           'hover:bg-state-hover',
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          ghostDisabled
         ),
         // Tertiary with a brand label: the pill, the focus ring and the
         // disabled recipe are the neutral tertiary's, and only the label moves
         // through the brand ramp. The kit ships it as `.btn-tertiary.is-brand`
         // for standalone brand text actions — "Test Connection" in a side
         // panel — where a bordered button would outweigh what it sits next to.
-        // On dark the label is the link colour (--ink-highlight, Tertiary-400):
-        // Brand/Primary there is a darker teal than every link beside it and
-        // reads as a second, dimmer green (Insightis, 2026-10-19). The ramp
-        // stays on light, where the two are one colour; on dark the hover and
-        // press answer with the surface overlay alone, as a link does. The
-        // `dark:` disabled lines re-assert Text/Inactive over the dark label.
+        // The label is one token a state (--btn-primary-tertiary-text*): the
+        // brand steps on light, the link colour (--ink-highlight) on dark, where
+        // Brand/Primary reads as a second, dimmer green beside every link
+        // (Insightis, 2026-10-19). Each holds AA on its own wash (§179).
         primaryTertiary: cn(
-          'border-transparent bg-transparent text-brand-primary dark:text-ink-highlight',
-          'hover:bg-state-hover hover:text-brand-hover dark:hover:text-ink-highlight',
-          'pressed:bg-state-pressed pressed:text-brand-press dark:pressed:text-ink-highlight',
+          'border-transparent bg-transparent text-btn-primary-tertiary-text',
+          'hover:bg-state-hover hover:text-btn-primary-tertiary-text-hover',
+          'pressed:bg-state-pressed pressed:text-btn-primary-tertiary-text-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent',
-          'dark:disabled:text-ink-inactive dark:disabled:hover:text-ink-inactive',
-          'dark:aria-disabled:text-ink-inactive dark:aria-disabled:hover:text-ink-inactive'
+          ghostDisabled
         ),
         // Destructive: theme-independent red fill; focus ring is the kit-wide
         // brand teal (red-on-red would be unreadable).
@@ -137,38 +126,36 @@ const buttonVariants = cva(
         // red-tinted hover/press. The label is Feedback/Red too — a neutral
         // label under a red border read as an ordinary secondary button and
         // lost the warning. Switched off it IS the disabled `secondary`
-        // (designer, 2026-10-20); `upstream` and the kit call it
-        // `destructiveOutline` and give it the outline's `--ink-inactive` border.
-        destructiveSecondary: cn(
-          'border-destructiveSecondary-border bg-transparent text-fb-red-text',
-          'hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover',
-          'pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press',
+        // (designer, 2026-10-20); `upstream` and the kit give it the outline's
+        // `--ink-inactive` border.
+        destructiveOutline: cn(
+          'border-outlineDestructive-border bg-transparent text-fb-red-text',
+          'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
+          'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
           secondaryDisabled
         ),
         // Low-emphasis destructive ghost: red label, transparent fill, red-tinted
-        // hover/press. Tertiary sibling of destructiveSecondary (no border).
+        // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          // Shares the destructiveSecondary fill tokens on light and goes a step
+          // Shares the destructiveOutline fill tokens on light and goes a step
           // stronger on dark, where there is no border to carry the signal.
           'hover:bg-destructiveTertiary-bg-hover',
           'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          ghostDisabled
         ),
         // Bare utility (no box, fit-content) for inline/icon triggers.
         transparent: cn(
           'm-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',
-          'focus-visible:ring-focus-ring-brand'
+          'focus-visible:ring-focus-ring-brand',
+          ghostDisabled
         ),
         transparentUnderline: cn(
           'border-none bg-transparent text-ink-body underline underline-offset-4',
-          'focus-visible:ring-focus-ring-brand'
+          'focus-visible:ring-focus-ring-brand',
+          ghostDisabled
         ),
       },
       size: {
@@ -236,6 +223,8 @@ const buttonVariants = cva(
         variant: 'transparent',
         class: 'p-0',
       },
+      // A 28px box takes the smaller radius, as IconButton's does.
+      { size: 'xs', rounded: 'md', class: 'rounded' },
     ],
     defaultVariants: {
       variant: 'primary',
@@ -301,6 +290,10 @@ const Button = ({
     children !== null &&
     children !== false &&
     children !== '';
+  // The label stretches only where that keeps `leftSlot` beside it.
+  const stretchLabel =
+    (align !== undefined || Boolean(rightSlot)) &&
+    (align === 'left' || !(isLoading || leftSlot));
   const tip = resolveTooltip(tooltip, props['aria-label']);
   const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
@@ -335,10 +328,19 @@ const Button = ({
         // into the button's own flex row: the gap and the icon alignment are
         // already there, and one less wrapper means the design tool selects
         // the Button itself rather than an anonymous inner span.
+        //
+        // The box only STRETCHES where that keeps the leading icon beside the
+        // words: with no `leftSlot` (the datepicker's dropdown), or a
+        // left-aligned label (SidebarMenuRow). Stretched with the words centred
+        // or right-aligned, it pins `leftSlot` to the leading edge, so "+ Add
+        // Group or User" read as two unrelated things (LinkAI Permissions,
+        // 2026-11-10). The icon always stands beside the text (designer,
+        // 2026-11-10); the row's own `justify` aligns the pair.
         (fullWidth ? (
           <span
             className={cn(
-              'min-w-0 flex-1 truncate text-center',
+              'min-w-0 truncate text-center',
+              stretchLabel && 'flex-1',
               align === 'left' && 'text-left',
               align === 'right' && 'text-right'
             )}

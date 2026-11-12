@@ -6,10 +6,6 @@
  * Before half of the Button page renders this file, so it is the component the
  * developer storybook ships, not a drawing of it. Not edited: replace it whole
  * when the base moves.
- *
- * One variant no longer draws: `destructiveOutline`'s `outlineDestructive-*`
- * utilities name a colour group the preset renamed (§147), so they compile to
- * nothing. Its disabled recipe names tokens that still exist.
  */
 
 import { Slot } from '@radix-ui/react-slot';

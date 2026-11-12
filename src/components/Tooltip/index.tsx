@@ -2,6 +2,7 @@
 
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import type { ComponentProps } from 'react';
+import { lastInteractionWasKeyboard } from '../../lib/focus-modality';
 import { cn, focusRing } from '../../lib/utils';
 import { TooltipContent } from './TooltipContent';
 
@@ -38,11 +39,17 @@ const Tooltip = TooltipPrimitive.Root;
 const TooltipTrigger = ({
   className,
   asChild,
+  onFocus,
   ...props
 }: ComponentProps<typeof TooltipPrimitive.Trigger>) => (
   <TooltipPrimitive.Trigger
     asChild={asChild}
     className={asChild ? className : cn(focusRing, className)}
+    // Keyboard focus only
+    onFocus={(event) => {
+      onFocus?.(event);
+      if (!lastInteractionWasKeyboard()) event.preventDefault();
+    }}
     {...props}
   />
 );

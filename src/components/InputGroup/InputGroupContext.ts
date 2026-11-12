@@ -3,7 +3,7 @@
 import { createContext, type RefObject, useContext } from 'react';
 
 type InputGroupSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-type InputGroupVariant = 'primary' | 'outline';
+type InputGroupVariant = 'outline';
 
 const InputGroupContext = createContext<{
   size: InputGroupSize;
@@ -11,6 +11,7 @@ const InputGroupContext = createContext<{
   inputRef: RefObject<HTMLInputElement | null> | null;
   isInvalid: boolean;
   errorText?: string;
+  required: boolean;
   inputId?: string;
 }>({
   size: 'md',
@@ -18,6 +19,7 @@ const InputGroupContext = createContext<{
   inputRef: null,
   isInvalid: false,
   errorText: undefined,
+  required: false,
   inputId: undefined,
 });
 

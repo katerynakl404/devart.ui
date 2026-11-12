@@ -3,38 +3,27 @@
 ---
 
 Align the size ladder with the reference kit: `lg` and `xl` now grow the type and
-the glyph instead of the padding.
+the glyph, not only the box.
 
 The heights were already right — 28/32/36/40/44 in `Button`, `IconButton`,
-`Input`/`InputGroup` and `TextArea`. Everything else about the top two steps was
-not, and the divergence had a shape: **the package grew the box, the kit grows
-the content.** A previous changeset stated the padding ladder as settled
-("8/12/12/16/20"), which is why this went unchecked — the kit holds the
-horizontal inset at 12px from `sm` upward and lets the label, the glyph and the
-field text climb instead.
+`Input`/`InputGroup` and `TextArea`. The top two steps grew the box and nothing
+in it: the label stayed 14px and the glyph 16px, so a 44px `xl` read as an
+oversized `md`. The kit lets the label, the glyph and the field text climb.
+Padding is in the changeset that introduced the ladder.
 
 **Breaking — `Button` and `IconButton`**
 
-- Padding: `lg` 16 → **12px**, `xl` 20 → **12px**. `xs`/`sm`/`md` unchanged
-  (8/12/12).
 - Label: `lg` and `xl` 14 → **16px** (Label XL). The ladder caps at 16 — an
   18px control label reads as body copy, not as a label.
 - Gap: 6 → **8px**, tightening to **4px** at `xs`.
 - Glyph: `lg` and `xl` 16 → **20px**. The ladder repeats at both ends —
   16 across `sm`/`md`, 20 across `lg`/`xl`.
 
-An `xl` button gets visibly narrower and its label visibly larger. Anything that
-sized a container around an `xl` or `lg` button by eye needs a second look;
-anything that used `lg`/`xl` *because* they were wider should move to an explicit
-width instead.
+An `lg` or `xl` button's label gets visibly larger. Anything that sized a
+container around one by eye needs a second look.
 
 **Breaking — `InputGroup` / `Input`**
 
-- Padding: `xs` 8 → **6px**, `lg` 16 → **12px**, `xl` 20 → **12px**. The `xs`
-  step is the one half-step on this ladder and a deliberate step tighter than
-  the reference: at 28px tall with a 14px glyph, 8px of edge puts the icon
-  closer to the border than to the text it introduces. **`Button` `xs` stays at
-  8px**, so at that one step a field and a button no longer share an edge.
 - Field text: `sm` 12 → **14px**, `lg` and `xl` 14 → **16px**. `sm` is
   a correction in its own right — the earlier "13 → 14" migration rounded it
   down to 12 when the kit's `sm` field has always been Body M.
@@ -65,12 +54,10 @@ expresses this as one token set (`--icon-xs` … `--icon-xl`) read by `.btn`,
 `.iconbtn`, `.field` and `.igrp` alike; the package has three cva ladders that
 have to agree by hand, and a comment in each says so.
 
-**Why the kit's model and not the package's.** Padding-driven scaling stops
-meaning anything at the top of the range: `px-5` on a 44px control beside a 14px
-label — unchanged since `sm` — reads as loose rather than large, and two `xl`
-buttons overflow a narrow column long before their labels would. Growing the
-content is also what makes the step legible at a glance, which is the only reason
-a five-step ladder exists.
+**Why grow the content.** Padding alone stops meaning anything at the top of the
+range: `px-5` on a 44px control beside a 14px label — unchanged since `sm` —
+reads as loose rather than large. Growing the label and the glyph is what makes
+the step legible at a glance, which is the only reason a five-step ladder exists.
 
 **Icon colour.** A decorative glyph in a field takes the placeholder ink
 (`--ink-inactive`) so an empty field is one weight of grey; a docked control sits

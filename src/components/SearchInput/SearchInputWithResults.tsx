@@ -7,7 +7,6 @@ import {
   useCallback,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 import { useAutocomplete } from '../../hooks/use-autocomplete';
@@ -22,11 +21,12 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from '../InputGroup';
 import { SearchInputClearButton } from './SearchInputClearButton';
 import type { SearchInputProps } from './types';
 
+const MAX_VISIBLE_ROWS = 7.5;
+
 interface SearchInputWithResultsProps<T extends { id: string }>
   extends Omit<SearchInputProps<T>, 'results' | 'clearLabel'> {
   results: readonly T[];
   clearLabel: string;
-  /** `searchInputVariants()`, handed down so the recipe stays in `index.tsx`. */
   inputClassName: string;
 }
 
@@ -35,8 +35,7 @@ const assignRef = <E,>(ref: Ref<E> | undefined, node: E | null) => {
   else if (ref) (ref as { current: E | null }).current = node;
 };
 
-/** Attributes Radix stamps on what `DropdownMenuTrigger asChild` renders — the
- * combobox semantics live on the input (see `Autocomplete`). */
+// The combobox semantics live on the input, as in Autocomplete
 const STRIPPED_TRIGGER_ARIA = {
   'aria-expanded': undefined,
   'aria-haspopup': undefined,
@@ -44,35 +43,27 @@ const STRIPPED_TRIGGER_ARIA = {
 } as const;
 
 /**
- * `SearchInput` with `results`: the same field, offering what matches in a
- * list under it while something is typed. Reuses the combobox mechanics
- * `Autocomplete` is built on (`useAutocomplete` — keys, highlight, ARIA) and its
- * option row, so the two lists look and behave alike; the states are a
- * search's — a query, not a value.
+ * `SearchInput` with `results`: lists the matches under the field while
+ * something is typed, with `Autocomplete`'s keys and option row.
  */
 function SearchInputWithResults<T extends { id: string }>({
   placeholder,
   value,
   clearLabel,
   size,
+  variant,
   className,
   inputClassName,
   ref,
-  onValueChange,
-  onClear,
-  variant,
   'aria-label': ariaLabel,
   autoFocus,
-  disabled,
-  id,
-  style,
-  onKeyDown,
+  onValueChange,
+  onClear,
   results,
   getResultLabel,
   renderResult,
   onSelect,
   emptyText = 'No matches',
-  maxVisibleResults = 5.5,
 }: SearchInputWithResultsProps<T>) {
   const labelOf = useCallback(
     (r: T) =>
@@ -81,14 +72,10 @@ function SearchInputWithResults<T extends { id: string }>({
         : String((r as { label?: unknown }).label ?? r.id),
     [getResultLabel]
   );
-  /* Uncontrolled like the plain field when `value` is not given. */
   const [ownQuery, setOwnQuery] = useState('');
   const query = value ?? ownQuery;
-  /* The last result picked: it is the hook's value, so the field shows its
-     name once picked; typing on leaves it until another is picked. */
   const [picked, setPicked] = useState<T | null>(null);
-  /* Open only while something is being typed — not on focus, not on a click
-     into the field, not with the picked one's name still in it. */
+  // Open only while typing: not on focus, nor with the picked label in the field
   const [typing, setTyping] = useState(false);
   const shown =
     typing &&
@@ -120,7 +107,6 @@ function SearchInputWithResults<T extends { id: string }>({
     },
     open: shown,
     onOpen: (event: SyntheticEvent) => {
-      // The keys may open it (ArrowDown over a query); a click may not.
       if (event.type === 'keydown') setTyping(true);
     },
     onClose: () => setTyping(false),
@@ -128,11 +114,9 @@ function SearchInputWithResults<T extends { id: string }>({
     getOptionLabel: labelOf,
     getOptionKey: (r) => r.id,
     isOptionEqualToValue: (a, b) => a.id === b.id,
-    disabled,
   });
 
-  const showClear =
-    typeof value === 'string' && value !== '' && !!onClear && !disabled;
+  const showClear = typeof value === 'string' && value !== '' && !!onClear;
 
   const inputProps = getInputProps();
   const hookInputRef = inputProps.ref;
@@ -144,27 +128,25 @@ function SearchInputWithResults<T extends { id: string }>({
     [hookInputRef, ref]
   );
 
-  /* The list's cap in its own rows: the space above the first row (border
-     and padding) plus the pitch from one row to the next, times the count —
-     read off the rendered rows, so it holds for whatever `renderResult`
-     draws. Never taller than the room the menu has. */
   const listboxProps = getListboxProps();
   const hookListboxRef = listboxProps.ref;
-  const listboxNode = useRef<HTMLDivElement | null>(null);
+  // State, not a ref: the portal mounts the list a render after `open`
+  const [listboxNode, setListboxNode] = useState<HTMLDivElement | null>(null);
   const setListbox = useCallback(
     (node: HTMLDivElement | null) => {
-      listboxNode.current = node;
+      setListboxNode(node);
       assignRef(hookListboxRef as Ref<HTMLDivElement> | undefined, node);
     },
     [hookListboxRef]
   );
+  // Measured, not fixed: `renderResult` rows can be taller
   // biome-ignore lint/correctness/useExhaustiveDependencies: re-measure whenever the rows change
   useLayoutEffect(() => {
-    const node = listboxNode.current;
+    const node = listboxNode;
     if (!open || !node) return;
     const rows = node.querySelectorAll<HTMLElement>('[role="option"]');
     const [row0, row1] = [rows[0], rows[1]];
-    if (rows.length <= maxVisibleResults || !row0 || !row1) {
+    if (rows.length <= MAX_VISIBLE_ROWS || !row0 || !row1) {
       node.style.maxHeight = '';
       return;
     }
@@ -172,21 +154,19 @@ function SearchInputWithResults<T extends { id: string }>({
     const first = row0.getBoundingClientRect();
     const pitch = row1.getBoundingClientRect().top - first.top;
     const above = first.top - box.top + node.scrollTop;
-    const cap = Math.round(above + pitch * maxVisibleResults);
+    const cap = Math.round(above + pitch * MAX_VISIBLE_ROWS);
     node.style.maxHeight = `min(${cap}px, var(--radix-dropdown-menu-content-available-height, 100vh))`;
-  }, [open, maxVisibleResults, filteredOptions]);
+  }, [open, filteredOptions, listboxNode]);
 
   const rows = useMemo(() => {
     if (filteredOptions.length === 0) {
-      // A `listbox` must own options: the empty state announces as one that
-      // cannot be picked, as `Autocomplete`'s does.
       return (
         <div
           role="option"
           aria-disabled="true"
           aria-selected="false"
           tabIndex={-1}
-          className="px-4 py-5 text-center text-ink-secondary text-sm"
+          className="flex min-h-11 items-center px-3 py-2.5 text-ink-secondary text-sm"
         >
           {emptyText}
         </div>
@@ -206,16 +186,13 @@ function SearchInputWithResults<T extends { id: string }>({
 
   return (
     <DropdownMenu open={open} modal={false} onOpenChange={setOpen}>
-      {/* The trigger is the field itself, so the list takes the field's width
-          and `className` lands where it does without `results`. */}
-      <DropdownMenuTrigger asChild disabled={disabled}>
+      <DropdownMenuTrigger asChild>
         <InputGroup
           {...STRIPPED_TRIGGER_ARIA}
           {...getRootProps()}
           size={size}
           variant={variant}
           className={className}
-          style={style}
         >
           <InputGroupAddon align="inline-start">
             <Search aria-hidden />
@@ -225,19 +202,16 @@ function SearchInputWithResults<T extends { id: string }>({
             {...inputProps}
             ref={setInput}
             type="search"
-            id={id ?? inputProps.id}
             placeholder={placeholder}
             aria-label={ariaLabel}
             autoFocus={autoFocus}
-            enterKeyHint="search"
             className={inputClassName}
             onKeyDown={(e) => {
-              // A space is text here, not the menu's select key.
+              // A space is text here, not the menu's select key
               if (e.key === ' ' && !e.ctrlKey && !e.metaKey && !e.altKey) {
                 e.stopPropagation();
               }
               inputProps.onKeyDown?.(e);
-              onKeyDown?.(e);
             }}
           />
 
@@ -260,9 +234,8 @@ function SearchInputWithResults<T extends { id: string }>({
           ref={setListbox}
           className={cn(
             'w-[--radix-dropdown-menu-trigger-width] max-w-none',
-            // Above a Modal (z-100), as Autocomplete's list is.
-            'z-[110] overflow-y-auto p-2',
-            'scrollbar-thin'
+            // Above Modal (z-100)
+            'z-[110] overflow-y-auto p-2'
           )}
           onCloseAutoFocus={(e) => e.preventDefault()}
           onFocusOutside={(e) => e.preventDefault()}

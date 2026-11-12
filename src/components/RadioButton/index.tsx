@@ -15,14 +15,10 @@ const radioVariants = cva(
     'border-[1.5px]',
     'rounded-full',
 
-    // Focus state — the brand ring with a Surface/Card gap, matching
-    // Checkbox / Switch.
+    // Focus state
     focusRing,
 
-    // Disabled state — unified opacity recipe
-    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
-    // tooltip that says why the control is off. A disabled control fires
-    // nothing either way.
+    // Disabled state
     'disabled:cursor-not-allowed',
     'disabled:opacity-disabled',
 
@@ -35,22 +31,20 @@ const radioVariants = cva(
     variants: {
       variant: {
         primary: cn(
-          // Unchecked state — same shell as Checkbox
+          // Unchecked state
           'bg-surface-card',
           'border-stroke-field-hover',
           'enabled:hover:border-ink-secondary',
           // Checked state
-          'data-[state=checked]:border-brand-primary',
           'data-[state=checked]:bg-brand-primary',
           'data-[state=checked]:text-content-on-solid',
-          'enabled:data-[state=checked]:hover:border-brand-hover',
+          'data-[state=checked]:border-transparent',
           'enabled:data-[state=checked]:hover:bg-brand-hover',
-          // Error state — mirrors Input / Checkbox; error fill wins over checked
+          // Error state
           'aria-invalid:border-input-error',
           'enabled:aria-invalid:hover:border-input-error',
-          'aria-invalid:data-[state=checked]:border-input-error',
+          'aria-invalid:data-[state=checked]:border-transparent',
           'aria-invalid:data-[state=checked]:bg-input-error',
-          'enabled:aria-invalid:data-[state=checked]:hover:border-input-error',
           'enabled:aria-invalid:data-[state=checked]:hover:bg-input-error'
         ),
       },

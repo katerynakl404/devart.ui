@@ -1,14 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Info } from 'lucide-react';
+import { Info, Search } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { Badge } from '../src/components/Badge';
 import { Button } from '../src/components/Button';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from '../src/components/InputGroup';
 import { ProgressBar } from '../src/components/ProgressBar';
 import {
   SegmentedControl,
   SegmentedControlList,
   SegmentedControlTrigger,
 } from '../src/components/SegmentedControl';
+import { Tabs, TabsList, TabsTrigger } from '../src/components/Tabs';
 import { Typography } from '../src/components/Typography';
 import { ChangeCase, ChangePage, Code, NoPanel, TryIt } from './Harness';
 
@@ -38,8 +44,8 @@ const OLD_ABSOLUTE_STATES = {
 
 /** §2 — the dark values this branch replaced: Red-700 at rest, Red-800 on hover. */
 const OLD_DARK_DESTRUCTIVE_BORDER = {
-  '--btn-destructive-secondary-border': 'var(--red-700)',
-  '--btn-destructive-secondary-border-hover': 'var(--red-800)',
+  '--btn-outline-destructive-border': 'var(--red-700)',
+  '--btn-outline-destructive-border-hover': 'var(--red-800)',
 } as CSSProperties;
 
 /**
@@ -48,6 +54,37 @@ const OLD_DARK_DESTRUCTIVE_BORDER = {
  */
 const DEVELOPERS_GREEN =
   '[--fb-green:160_100%_30%] [--fb-green-text:160_100%_30%] dark:[--fb-green:160.1_96.6%_34.9%] dark:[--fb-green-text:160.1_96.6%_34.9%]';
+
+/** §174 — the dark `--ink-inactive` this replaced: Slate-400, `#94A3B8`. */
+const OLD_DARK_INK_INACTIVE = 'dark:[--ink-inactive:215_20%_65%]';
+
+/**
+ * §174 — the Data Sources case: a switched-off tab (its own ink, faded) over a
+ * search field's placeholder and glyph (`--ink-inactive`).
+ */
+function InactiveInkSpecimen() {
+  return (
+    <div className="flex w-[320px] flex-col gap-4">
+      <Tabs defaultValue="catalog">
+        <TabsList>
+          <TabsTrigger value="catalog">Catalog</TabsTrigger>
+          <TabsTrigger disabled value="connections">
+            My Connections
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+      <InputGroup size="lg">
+        <InputGroupAddon align="inline-start">
+          <Search aria-hidden />
+        </InputGroupAddon>
+        <InputGroupInput
+          aria-label="Search data sources"
+          placeholder="Search data sources…"
+        />
+      </InputGroup>
+    </div>
+  );
+}
 
 /** Everything that paints green: text, a Badge, a bar, a chosen and a tinted option. */
 function GreenSpecimen() {
@@ -152,14 +189,14 @@ export const Page: Story = {
       <ChangeCase
         after={
           <TryIt action="Switch the toolbar to dark, then hover">
-            <Button variant="destructiveSecondary">Delete connection</Button>
+            <Button variant="destructiveOutline">Delete connection</Button>
           </TryIt>
         }
         afterNote="Red-500 → Red-400 · CR 4.74 → 5.27"
         before={
           <div style={OLD_DARK_DESTRUCTIVE_BORDER}>
             <TryIt action="Switch the toolbar to dark, then hover">
-              <Button variant="destructiveSecondary">Delete connection</Button>
+              <Button variant="destructiveOutline">Delete connection</Button>
             </TryIt>
           </div>
         }
@@ -401,7 +438,7 @@ export const Page: Story = {
         why="When the neutral steps moved to overlays, destructive stayed put and started reading heavier than the neutral button beside it."
       />
       <NoPanel
-        section={129}
+        section={48}
         title="Syntax colours — --code-* and codeSyntaxVariants"
         why={
           <>
@@ -450,6 +487,37 @@ export const Page: Story = {
         n={167}
         title="Green, split the way red is"
         why="One green did the fill's job and the ink's, and moved with the theme: lighter on dark, where white on it fell to 2.84:1, and too light on light for text — 3.65:1 on the card."
+      />
+
+      <ChangeCase
+        after={<InactiveInkSpecimen />}
+        afterNote="dark --ink-inactive Grey-400 #9CA3AF — one grey with the faded tab"
+        before={
+          <div className={OLD_DARK_INK_INACTIVE}>
+            <InactiveInkSpecimen />
+          </div>
+        }
+        beforeNote="dark --ink-inactive Slate-400 #94A3B8 — the placeholder reads blue"
+        beforeSource={
+          <>
+            the live tab and field with the old dark value,{' '}
+            <Code>Slate-400</Code>, re-declared on the wrapper. Switch the
+            toolbar to dark — light is the same on both sides.
+          </>
+        }
+        files={['globals.css']}
+        footnote={
+          <>
+            The tab is not repainted: since §165 a switched-off control fades
+            its own ink to <Code>opacity-disabled</Code>. On dark every ink
+            above <Code>--ink-inactive</Code> is grey, so the fade was grey and
+            the placeholder was the one slate step. Same 65% lightness, so no
+            contrast moves.
+          </>
+        }
+        n={174}
+        title="Dark --ink-inactive is grey, like the rest of the dark ink ladder"
+        why="On dark a switched-off tab faded to a neutral grey while the placeholder under it stayed Slate-400 — two greys, one of them blue, for the same 'not now'."
       />
     </ChangePage>
   ),

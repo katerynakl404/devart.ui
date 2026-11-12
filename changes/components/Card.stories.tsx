@@ -139,7 +139,7 @@ const DELETE_TEXT =
   'The workspace goes, together with its data model and who has access to it. Your connections stay — you can keep using them in other workspaces.';
 
 /**
- * The head as the AI connectivity prototype built it by hand before the slot
+ * The head as the LinkAI prototype built it by hand before the slot
  * existed — `_shared/workspaces.jsx` at 9c3b0a9, its classes unchanged.
  */
 function HandBuiltHead() {
@@ -159,7 +159,7 @@ function HandBuiltHead() {
             {DELETE_TEXT}
           </Typography>
         </div>
-        <Button leftSlot={<Trash2 />} size="sm" variant="destructiveSecondary">
+        <Button leftSlot={<Trash2 />} size="sm" variant="destructiveOutline">
           Delete Workspace
         </Button>
       </div>
@@ -362,7 +362,7 @@ export const Page: Story = {
                 <Button
                   leftSlot={<Trash2 />}
                   size="sm"
-                  variant="destructiveSecondary"
+                  variant="destructiveOutline"
                 >
                   Delete Workspace
                 </Button>
@@ -380,7 +380,7 @@ export const Page: Story = {
         beforeNote="a row built on the page — the button centred on the whole block"
         beforeSource={
           <>
-            the AI connectivity prototype's own head, its markup copied from{' '}
+            the LinkAI prototype's own head, its markup copied from{' '}
             <Code>_shared/workspaces.jsx</Code> as it stood before the prop: the
             published <Code>CardHeader</Code> has no slot, so the page wrapped a{' '}
             <Code>title16</Code> and a <Code>body14</Code> in{' '}

@@ -1,6 +1,6 @@
 /**
  * Builds `ds-bundle/` — the browser-ready copy of the library that the
- * prototypes consume (Insightis, AI Connectivity). One command instead of the
+ * prototypes consume (Insightis, LinkAI). One command instead of the
  * six-step chain it replaces.
  *
  *   pnpm bundle                 # the usual case

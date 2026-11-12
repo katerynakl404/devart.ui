@@ -103,6 +103,7 @@ export const WithValue: Story = {
 export const ErrorState: Story = {
   args: {
     label: 'Bio',
+    required: true,
     isInvalid: true,
     errorText: 'This field is required.',
   },

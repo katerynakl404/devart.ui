@@ -64,5 +64,24 @@ Card padding is `p-6` at page level, `p-4` for a dense list card. Never wrap a
 
 The slot is one title line tall and centres what it holds on that line, so the
 action sits on the title's middle however long the description runs; it does
-not shrink, and the text column wraps beside it. Do not build the title row
-by hand to get a trailing link.
+not shrink, and the text column wraps beside it. Its text is 14px, so a
+`LinkButton` there is a step under the title; buttons keep their own size. Do
+not build the title row by hand to get a trailing link.
+
+When the button is the card's one act — a card that is only a title, a
+sentence and Delete — `actionsAlign="center"` puts it on the middle of the
+title and the description together instead of on the title's line. The text
+keeps at least 20rem beside it; with less, on a phone, the button goes under
+the text, at the start. Do not build this card by hand either:
+
+```jsx
+<Card variant="outline" className="p-6">
+  <CardHeader
+    actionsAlign="center"
+    actions={<Button size="sm" variant="destructiveOutline">Delete Workspace</Button>}
+  >
+    <CardTitle element="h3">Delete workspace</CardTitle>
+    <CardDescription>The workspace goes, together with its data model.</CardDescription>
+  </CardHeader>
+</Card>
+```

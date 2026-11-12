@@ -10,16 +10,15 @@ labelled input, the field with a unit suffix.
 
 ## Variants
 
-- `primary` — a well cut into the page: filled `Surface/Bg` with a border. Use
-  it for page-level fields sitting on a card.
-- `outline` — border only, no fill, for a field inside an already-filled
-  surface where a second fill would muddy the stack.
+- `outline` (default) — white fill (`Surface/Card`) with a border: the field
+  every form uses, on a card or on the grey page.
 
 ## Sizes
 
-`xs` `sm` `md` `lg` `xl`, on the same padding ladder as `Button` and `TextArea`
-(8 / 12 / 12 / 16 / 20), so a field and a button of the same size line up on one
-row. Prefer `sm` and `md`.
+`xs` `sm` `md` `lg` `xl`, horizontal padding 8 / 12 / 12 / 12 / 12. At `xs`, `sm`
+and `md` it is `Button`'s, so a field and a button of the same size line up on
+one row; at `lg` and `xl` the button opens out to 16 and 20 and the field holds
+12. `TextArea` carries the same ladder. Prefer `sm` and `md`.
 
 ## Addons
 
@@ -49,6 +48,20 @@ surface too many.
 
 Do not size the glyph either — the addon carries the field's step, and anything
 written on the icon loses to it.
+
+## A number
+
+A port, a timeout, a count: `InputGroupInput digitsOnly`, its unit after it.
+The field keeps only the digits of what is typed or pasted, so there is no "not
+a number" error to write; a range is still the form's check. Not
+`type="number"` — its spinner steps what nobody steps.
+
+```jsx
+<InputGroup label="Connection timeout">
+  <InputGroupInput digitsOnly value={timeout} onChange={(e) => setTimeout(e.target.value)} />
+  <InputGroupAddon align="inline-end">seconds</InputGroupAddon>
+</InputGroup>
+```
 
 ## States
 

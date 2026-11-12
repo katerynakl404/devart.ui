@@ -3,6 +3,7 @@ import { Database, Info, Plus, Settings } from 'lucide-react';
 import { fn } from 'storybook/test';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
+import { Skeleton } from '../Skeleton';
 import { PageHeader } from './index';
 
 const meta = {
@@ -15,6 +16,8 @@ const meta = {
     actions: { control: false },
     titleLeft: { control: false },
     titleRight: { control: false },
+    isLoading: { control: 'boolean' },
+    loadingContent: { control: false },
   },
 } satisfies Meta<typeof PageHeader>;
 
@@ -177,4 +180,38 @@ export const Condensed: Story = {
 /** Condensed and wrapping: every line of the title steps down to `heading20`. */
 export const CondensedWrapTitle: Story = {
   args: { ...LongTitle.args, condensed: true, wrapTitle: true },
+};
+
+/**
+ * The default skeleton replaces the title; the back control and `titleLeft`
+ * stay, while `titleRight` and `actions` are dropped until the title arrives.
+ * The row keeps its height.
+ */
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    onBack: fn(),
+    titleRight: (
+      <IconButton variant="tertiary" size="sm" aria-label="About files">
+        <Info />
+      </IconButton>
+    ),
+    actions: (
+      <Button size="sm" leftSlot={<Plus />}>
+        Upload
+      </Button>
+    ),
+  },
+};
+
+export const LoadingWithCustomContent: Story = {
+  args: {
+    isLoading: true,
+    loadingContent: <Skeleton rounded="full" className="h-6 w-80" />,
+  },
+};
+
+/** An empty title renders no heading — only the back control. */
+export const TitleLeftOnly: Story = {
+  args: { title: '', onBack: fn() },
 };

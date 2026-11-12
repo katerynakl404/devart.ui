@@ -48,7 +48,7 @@ const CREATE = (
 );
 
 /**
- * What §111 added, taken back off from a wrapper: the title and the glyph had
+ * What §15 added, taken back off from a wrapper: the title and the glyph had
  * no transition, and the box ran on IconButton's own `duration-fast`.
  */
 const OLD_MOTION =
@@ -73,7 +73,7 @@ function Phone({ children }: { children: ReactNode }) {
 
 /**
  * The header with a page's own padding around it. The padding glides in both
- * halves, as the AI connectivity shell's does — what differs is the header.
+ * halves, as the LinkAI shell's does — what differs is the header.
  */
 function Collapse({ old }: { old?: boolean }) {
   const [condensed, setCondensed] = useState(false);
@@ -201,7 +201,7 @@ export const Page: Story = {
             to drive it (§133).
           </>
         }
-        n={67}
+        n={15}
         state="draft"
         title="condensed — the header once the page scrolls"
         why="A header that stays on screen while the page scrolls spent window on a line already read: on a 900px window, the header and a 32px window bar took a fifth of the height, in front of the form the person came for."
@@ -222,7 +222,7 @@ export const Page: Story = {
         beforeNote="only the padding animates"
         beforeSource={
           <>
-            the live header under a wrapper that takes §111 back off —{' '}
+            the live header under a wrapper that takes §15 back off —{' '}
             <Code>[&amp;_h2]:transition-none</Code> and{' '}
             <Code>[&amp;_svg]:transition-none</Code> for the title and the
             glyph, which had none, and the box back on <Code>IconButton</Code>'s
@@ -232,13 +232,13 @@ export const Page: Story = {
         files={['src/components/PageHeader/index.tsx']}
         footnote={
           <>
-            All three take <Code>motion-reduce:transition-none</Code>. §67 had
+            All three take <Code>motion-reduce:transition-none</Code>. §15 had
             held the type still because a font-size transition reflows every
             frame. It does — for one line of one header, for a quarter of a
             second — and the jump was the cost that showed.
           </>
         }
-        n={111}
+        n={15}
         state="draft"
         title="The collapse animates whole — title, arrow, 240ms"
         why="Condensing moved the title 30 → 20px and the arrow 24 → 16px in one frame while the page's padding glided, so the header read as a jump."
@@ -273,7 +273,7 @@ export const Page: Story = {
             centred on the wrapped title and the actions keep their edge.
           </>
         }
-        n={135}
+        n={15}
         title="The title truncates; wrapTitle wraps it"
         why="The published title had no truncate and always wrapped: a long title grew the row a line at a time, and a name with nowhere to break pushed past the actions."
       />

@@ -18,6 +18,14 @@ const BADGE_SIZE_MAP: Record<
   xl: 'lg',
 };
 
+const BADGE_SIDES_MAP: Record<NonNullable<InputGroupProps['size']>, string> = {
+  xs: 'h-5 gap-0.5 rounded ps-1 pe-0.5',
+  sm: 'h-6 gap-0.5 rounded ps-2 pe-1.5',
+  md: 'h-7 gap-0.5 rounded ps-2 pe-1.5 text-xs',
+  lg: 'h-8 gap-0.5 rounded ps-2 pe-1.5 text-sm',
+  xl: 'h-9 gap-0.5 rounded ps-2 pe-1.5 text-sm',
+};
+
 interface BadgeListProps<T extends { id: string }> {
   tags: T[];
   variant?: BadgeProps['variant'];
@@ -60,6 +68,7 @@ const BadgeListComponent = <T extends { id: string }>({
             key={tag.id}
             variant={variant}
             size={BADGE_SIZE_MAP[inputGroupSize ?? 'lg']}
+            className={BADGE_SIDES_MAP[inputGroupSize ?? 'lg']}
             data-focused={badgeProps['data-focused']}
             onDelete={onDelete}
           >

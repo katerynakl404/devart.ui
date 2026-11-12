@@ -47,30 +47,46 @@ const breakpointVarsPlugin = plugin(({ addBase }) => {
  * nothing. It is for a strip whose overflow is obvious from its content, never
  * for a panel where the bar is the only sign there is more.
  *
- * Both are utilities rather than a base rule on every scroller, because which
- * of the two a region takes is a decision per region — and `globals.css` ships
- * no component-layer CSS (decision 8).
+ * The thin bar is the base for every scroller (2026-11-05): one place, so no
+ * component has to ask for it. `scrollbar-none` opts a strip out; the
+ * `scrollbar-thin` utility stays for call sites that still name it.
  */
-const scrollbarPlugin = plugin(({ addUtilities }) => {
-  addUtilities({
-    '.scrollbar-thin': {
-      'scrollbar-width': 'thin',
-      'scrollbar-color': 'hsl(var(--stroke-border)) transparent',
-      '&::-webkit-scrollbar': { width: '10px', height: '10px' },
-      '&::-webkit-scrollbar-track': { background: 'transparent' },
-      '&::-webkit-scrollbar-thumb': {
-        background: 'hsl(var(--stroke-border))',
-        'border-radius': '99px',
-        border: '3px solid transparent',
-        'background-clip': 'padding-box',
-      },
-      '&:hover::-webkit-scrollbar-thumb': {
-        background: 'hsl(var(--ink-inactive))',
-        'background-clip': 'padding-box',
-      },
+const thinScrollbar = {
+  '&::-webkit-scrollbar': { width: '10px', height: '10px' },
+  '&::-webkit-scrollbar-track, &::-webkit-scrollbar-corner': {
+    background: 'transparent',
+  },
+  '&::-webkit-scrollbar-thumb': {
+    background: 'hsl(var(--stroke-border))',
+    borderRadius: '99px',
+    border: '3px solid transparent',
+    backgroundClip: 'padding-box',
+  },
+  // Only the thumb under the pointer darkens
+  '&::-webkit-scrollbar-thumb:hover': {
+    background: 'hsl(var(--ink-inactive))',
+    backgroundClip: 'padding-box',
+  },
+};
+
+// Firefox has no thumb pseudo-elements; the standard properties would switch
+// Chrome's off too, so they apply only where the pseudo-elements do not exist.
+const thinScrollbarFallback = {
+  scrollbarWidth: 'thin',
+  scrollbarColor: 'hsl(var(--stroke-border)) transparent',
+};
+
+const scrollbarPlugin = plugin(({ addBase, addUtilities }) => {
+  addBase({
+    '*': thinScrollbar,
+    '@supports not selector(::-webkit-scrollbar)': {
+      '*': thinScrollbarFallback,
     },
+  });
+  addUtilities({
+    '.scrollbar-thin': thinScrollbar,
     '.scrollbar-none': {
-      'scrollbar-width': 'none',
+      scrollbarWidth: 'none',
       '&::-webkit-scrollbar': { display: 'none' },
     },
   });

@@ -309,9 +309,9 @@
   --btn-secondary-bg: var(--surface-card);
   --btn-secondary-bg-hover: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 5%,
+    hsl(var(--state-overlay)) var(--tint-8),
     hsl(var(--surface-card))
-  ); /* ~5% brand over card */
+  ); /* --state-hover, opaque over the card */
   /* The connector tile's hover sheet. A full-bleed pane of the card surface
      at 80% — enough ground for the Connect button to sit on, little enough
      that the mark underneath still reads. Opaque-ish by construction, so it
@@ -323,43 +323,38 @@
   );
   --btn-secondary-bg-press: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) 8%,
+    hsl(var(--state-overlay)) var(--tint-12),
     hsl(var(--surface-card))
-  ); /* ~8% brand over card — one step past hover, still opaque */
+  ); /* --state-pressed, opaque over the card */
   --btn-secondary-border: var(--slate-300); /* #CBD5E1 */
   --btn-secondary-border-hover: var(--slate-400); /* #94A3B8 */
-  --btn-outline-bg-hover: color-mix(
+  /* outline hovers like tertiary: the same neutral washes. */
+  --btn-outline-bg-hover: var(--state-hover);
+  --btn-outline-bg-press: var(--state-pressed);
+  /* primaryTertiary's label, one token a state. On light the brand steps,
+     the hover one deeper: --brand-hover on the hover wash fell to 3.66:1. On
+     dark --ink-highlight in every state: --brand-press on the press wash fell
+     to 3.09:1. AA 4.5 at rest, hover and press in both themes (§179). */
+  --btn-primary-tertiary-text: var(--brand-primary); /* #07807E */
+  --btn-primary-tertiary-text-hover: var(--brand-press); /* #066867 */
+  --btn-primary-tertiary-text-press: var(--brand-press); /* #066867 */
+  --btn-outline-destructive-border: var(--red-700); /* #B91C1C */
+  --btn-outline-destructive-border-hover: var(--red-800); /* #991B1B */
+  /* Both red buttons share one hover and press wash, as secondary and
+     tertiary share theirs. Judged by eye beside the neutral pair: lightness
+     alone (dL*) under-reads a red, and 4% / 6% read faint on light. */
+  --btn-outline-destructive-bg-hover: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) var(--tint-6),
+    hsl(var(--fb-red)) var(--tint-8),
     transparent
-  );
-  --btn-outline-bg-press: color-mix(
+  ); /* Red @8% */
+  --btn-outline-destructive-bg-press: color-mix(
     in srgb,
-    hsl(var(--brand-primary)) var(--tint-8),
+    hsl(var(--fb-red)) var(--tint-12),
     transparent
-  );
-  --btn-destructive-secondary-border: var(--red-700); /* #B91C1C */
-  --btn-destructive-secondary-border-hover: var(--red-800); /* #991B1B */
-  /* Re-stepped with the neutral ladder when interaction states became
-     overlays: neutral hover moved to dL 2.99 and this sat at 4.01, so the
-     destructive control read heavier than its neutral sibling. tint-4 lands at
-     2.67 — the closest step, inside the 0.5 parity tolerance. */
-  --btn-destructive-secondary-bg-hover: color-mix(
-    in srgb,
-    hsl(var(--fb-red)) var(--tint-4),
-    transparent
-  ); /* Red @4% over surface — dL 2.67 vs neutral 2.99 */
-  --btn-destructive-secondary-bg-press: color-mix(
-    in srgb,
-    hsl(var(--fb-red)) var(--tint-6),
-    transparent
-  ); /* Red @6% over surface — dL 4.01 vs neutral 4.48 */
-  /* Destructive TERTIARY fill. Identical to the secondary sibling on light —
-     measured at a 4.01 dL* step against the neutral --state-hover's 3.65, and
-     5.35 against --state-pressed's 5.15. The variants diverge only on dark:
-     see the .dark block. */
-  --btn-destructive-tertiary-bg-hover: var(--btn-destructive-secondary-bg-hover);
-  --btn-destructive-tertiary-bg-press: var(--btn-destructive-secondary-bg-press);
+  ); /* Red @12% */
+  --btn-destructive-tertiary-bg-hover: var(--btn-outline-destructive-bg-hover);
+  --btn-destructive-tertiary-bg-press: var(--btn-outline-destructive-bg-press);
   /* Avatar fill. Pinned to brand-600 rather than following --brand-primary,
      because the initials ON it are TEXT: on dark, --brand-primary lifts to
      brand-500 and white drops to 3.94:1, under the 4.5 body-text floor.
@@ -711,7 +706,7 @@
   --ink-primary: var(--grey-50); /* #F9FAFB */
   --ink-body: var(--grey-100); /* #F4F4F5 */
   --ink-secondary: var(--grey-300); /* #D1D5DB */
-  --ink-inactive: var(--slate-400); /* #94A3B8 */
+  --ink-inactive: var(--grey-400); /* #9CA3AF — §174: the grey ladder, not slate */
   --ink-highlight: var(--tertiary-400); /* #2EBEC4 */
   --surface-card: var(--grey-900); /* #17171E */
   --surface-card2: var(--grey-800); /* #21212C */
@@ -768,6 +763,9 @@
   /* ===== Layer 3: Component-scoped tokens (dark) ===== */
   --btn-secondary-border: var(--grey-600); /* #525258 */
   --btn-secondary-border-hover: var(--grey-500); /* #6B7280 */
+  --btn-primary-tertiary-text: var(--ink-highlight); /* #2EBEC4 */
+  --btn-primary-tertiary-text-hover: var(--ink-highlight); /* #2EBEC4 */
+  --btn-primary-tertiary-text-press: var(--ink-highlight); /* #2EBEC4 */
   /* Dark inherits nothing from light here: the ramp has to run the other way.
      Border matches the label (--fb-red-text = Red-400 on dark), exactly as light
      has both on Red-700, and hover steps LIGHTER — the same direction as
@@ -780,32 +778,23 @@
      x1.22 — the hover read as washed out, not as emphasis. red-500 -> red-400
      keeps both steps a saturated red and still rises, which is what a hover on
      a near-black card has to do. */
-  --btn-destructive-secondary-border: var(--red-500); /* #EF4444 — CR 4.74 */
-  --btn-destructive-secondary-border-hover: var(--red-400); /* #F25555 — CR 5.27 */
-  --btn-destructive-secondary-bg-hover: color-mix(
+  --btn-outline-destructive-border: var(--red-500); /* #EF4444 — CR 4.74 */
+  --btn-outline-destructive-border-hover: var(--red-400); /* #F25555 — CR 5.27 */
+  /* fb-red is a dark red in both themes, so over a near-black card the light
+     strengths barely move it: dark takes 12% / 15%. The ceiling is the red
+     label: pressed on a hovered table row it falls under 4.5:1 from 20%. */
+  --btn-outline-destructive-bg-hover: color-mix(
+    in srgb,
+    hsl(var(--fb-red)) var(--tint-12),
+    transparent
+  ); /* Red @12% */
+  --btn-outline-destructive-bg-press: color-mix(
     in srgb,
     hsl(var(--fb-red)) var(--tint-15),
     transparent
-  ); /* Red @14% over surface #991B1B */
-  --btn-destructive-secondary-bg-press: color-mix(
-    in srgb,
-    hsl(var(--fb-red)) var(--tint-20),
-    transparent
-  ); /* Red @22% over surface #7F1D1D */
-  /* Tertiary carries no border, so the fill is the whole signal — on a
-     near-black card the secondary sibling's 14%/22% lands 35% short of the
-     neutral step it has to match (3.29 against --state-hover's 5.16). Measured
-     against the live tokens: 20% and 32% put it at 5.05 and 8.76. */
-  --btn-destructive-tertiary-bg-hover: color-mix(
-    in srgb,
-    hsl(var(--fb-red)) var(--tint-20),
-    transparent
-  ); /* Red @20% over surface — dL 5.01 vs neutral 5.48 */
-  --btn-destructive-tertiary-bg-press: color-mix(
-    in srgb,
-    hsl(var(--fb-red)) var(--tint-30),
-    transparent
-  ); /* Red @30% over surface — dL 8.12 vs neutral 8.13 */
+  ); /* Red @15% */
+  --btn-destructive-tertiary-bg-hover: var(--btn-outline-destructive-bg-hover);
+  --btn-destructive-tertiary-bg-press: var(--btn-outline-destructive-bg-press);
   --input-focus: var(--slate-500); /* #64748B (dark) — kit s-focus */
   --field-border-hover: var(
     --slate-600
@@ -970,11 +959,11 @@
   --chart-surface: var(--surface-card);
   --code-comment: var(--ink-secondary);
   --btn-secondary-bg: var(--surface-card);
-  --btn-secondary-bg-hover: color-mix( in srgb, hsl(var(--brand-primary)) 5%, hsl(var(--surface-card)) );
+  --btn-secondary-bg-hover: color-mix( in srgb, hsl(var(--state-overlay)) var(--tint-8), hsl(var(--surface-card)) );
   --ds-card-scrim: color-mix( in srgb, hsl(var(--surface-card)) var(--tint-80), transparent );
-  --btn-secondary-bg-press: color-mix( in srgb, hsl(var(--brand-primary)) 8%, hsl(var(--surface-card)) );
-  --btn-outline-bg-hover: color-mix( in srgb, hsl(var(--brand-primary)) var(--tint-6), transparent );
-  --btn-outline-bg-press: color-mix( in srgb, hsl(var(--brand-primary)) var(--tint-8), transparent );
+  --btn-secondary-bg-press: color-mix( in srgb, hsl(var(--state-overlay)) var(--tint-12), hsl(var(--surface-card)) );
+  --btn-outline-bg-hover: var(--state-hover);
+  --btn-outline-bg-press: var(--state-pressed);
   --card-border-hover: color-mix( in srgb, hsl(var(--brand-primary)) var(--tint-25), transparent );
   --card-border-press: color-mix( in srgb, hsl(var(--brand-primary)) var(--tint-40), transparent );
   --card-lift-border: color-mix( in srgb, hsl(var(--brand-primary)) 22%, hsl(var(--stroke-border)) );

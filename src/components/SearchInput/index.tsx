@@ -25,64 +25,54 @@ const searchInputVariants = cva(
  * The clear button carries a tooltip, so the consumer must render a
  * TooltipProvider above it.
  *
- * With `results` it also offers what matches — a short list under the field
- * that opens only while something is typed (not on focus, not on a click into
- * the field, not with the picked name still in it; there is no whole list to
- * browse, so there is no chevron), at most `maxVisibleResults` rows, picked
- * with the pointer or the keys. Picking puts the result's name in the field
- * and calls `onSelect`. The caller matches; the field shows what it is given,
- * or `emptyText`. The list reuses the combobox mechanics `Autocomplete` is
- * built on and its option row.
+ * With `results` it lists the matches under the field while something is typed.
  */
 function SearchInput<T extends { id: string } = { id: string }>({
   placeholder,
   value,
   clearLabel = DEFAULT_CLEAR_LABEL,
   size = 'lg',
+  variant,
   className,
   ref,
+  'aria-label': ariaLabel,
+  autoFocus,
   onValueChange,
   onClear,
   results,
-  ...extension
+  getResultLabel,
+  renderResult,
+  onSelect,
+  emptyText,
 }: SearchInputProps<T>) {
   if (results) {
     return (
       <SearchInputWithResults
-        {...extension}
         placeholder={placeholder}
         value={value}
         clearLabel={clearLabel}
         size={size}
+        variant={variant}
         className={className}
         inputClassName={searchInputVariants()}
         ref={ref}
+        aria-label={ariaLabel}
+        autoFocus={autoFocus}
         onValueChange={onValueChange}
         onClear={onClear}
         results={results}
+        getResultLabel={getResultLabel}
+        renderResult={renderResult}
+        onSelect={onSelect}
+        emptyText={emptyText}
       />
     );
   }
 
-  const {
-    variant,
-    'aria-label': ariaLabel,
-    autoFocus,
-    disabled,
-    id,
-    style,
-    onKeyDown,
-  } = extension;
-  const showClear =
-    typeof value === 'string' && value !== '' && !!onClear && !disabled;
+  const showClear = typeof value === 'string' && value !== '' && !!onClear;
 
   return (
-    <InputGroup
-      size={size}
-      variant={variant}
-      className={className}
-      style={style}
-    >
+    <InputGroup size={size} variant={variant} className={className}>
       <InputGroupAddon align="inline-start">
         <Search aria-hidden />
       </InputGroupAddon>
@@ -90,18 +80,13 @@ function SearchInput<T extends { id: string } = { id: string }>({
       <InputGroupInput
         ref={ref}
         type="search"
-        id={id}
         placeholder={placeholder}
         value={value}
         onChange={
           onValueChange && ((event) => onValueChange(event.target.value))
         }
-        onKeyDown={onKeyDown}
         aria-label={ariaLabel}
         autoFocus={autoFocus}
-        disabled={disabled}
-        enterKeyHint="search"
-        autoComplete="off"
         className={searchInputVariants()}
       />
 

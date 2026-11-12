@@ -3,7 +3,12 @@
 import { Slot } from '@radix-ui/react-slot';
 import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
-import { cn, glyphStroke, secondaryDisabled } from '../../lib/utils';
+import {
+  cn,
+  ghostDisabled,
+  glyphStroke,
+  secondaryDisabled,
+} from '../../lib/utils';
 import { Spinner } from '../Spinner';
 import {
   ControlTooltip,
@@ -49,7 +54,7 @@ export const iconButtonVariants = cva(
           'border-btn-secondary-border bg-surface-card text-ink-body',
           // Opaque blends, not the translucent state washes — see Button.
           'hover:border-btn-secondary-border-hover hover:bg-btn-secondary-bg-hover',
-          'pressed:border-btn-secondary-border pressed:bg-btn-secondary-bg-press',
+          'pressed:bg-btn-secondary-bg-press',
           'focus-visible:ring-focus-ring-brand',
           secondaryDisabled
         ),
@@ -58,35 +63,23 @@ export const iconButtonVariants = cva(
           'hover:border-brand-hover hover:bg-btn-outline-bg-hover',
           'pressed:border-brand-hover pressed:bg-btn-outline-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:border-ink-inactive disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:border-ink-inactive disabled:hover:bg-transparent',
-          'aria-disabled:border-ink-inactive aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:border-ink-inactive aria-disabled:hover:bg-transparent',
-          'aria-disabled:pressed:border-ink-inactive aria-disabled:pressed:bg-transparent'
+          secondaryDisabled
         ),
         tertiary: cn(
           'border-transparent bg-transparent text-ink-body',
           'hover:bg-state-hover',
           'pressed:bg-state-pressed',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          ghostDisabled
         ),
-        // The same pill as `tertiary`, with a brand glyph. Its label — the
-        // glyph — moves through the brand ramp; the surface does not.
+        // The same pill as `tertiary`, with a brand glyph — the tokens of
+        // Button's `primaryTertiary` label.
         primaryTertiary: cn(
-          'border-transparent bg-transparent text-brand-primary',
-          'hover:bg-state-hover hover:text-brand-hover',
-          'pressed:bg-state-pressed pressed:text-brand-press',
+          'border-transparent bg-transparent text-btn-primary-tertiary-text',
+          'hover:bg-state-hover hover:text-btn-primary-tertiary-text-hover',
+          'pressed:bg-state-pressed pressed:text-btn-primary-tertiary-text-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          ghostDisabled
         ),
         // Focus ring is the kit-wide brand teal on every variant, destructive
         // included — a red ring on a red control reads as noise.
@@ -101,31 +94,28 @@ export const iconButtonVariants = cva(
           'aria-disabled:pressed:bg-state-disabled aria-disabled:hover:bg-state-disabled'
         ),
         // The secondary's destructive form — see Button.
-        destructiveSecondary: cn(
-          'border-destructiveSecondary-border bg-transparent text-fb-red-text',
-          'hover:border-destructiveSecondary-border-hover hover:bg-destructiveSecondary-bg-hover',
-          'pressed:border-destructiveSecondary-border-hover pressed:bg-destructiveSecondary-bg-press',
+        destructiveOutline: cn(
+          'border-outlineDestructive-border bg-transparent text-fb-red-text',
+          'hover:border-outlineDestructive-border-hover hover:bg-outlineDestructive-bg-hover',
+          'pressed:border-outlineDestructive-border-hover pressed:bg-outlineDestructive-bg-press',
           'focus-visible:ring-focus-ring-brand',
           secondaryDisabled
         ),
         // Low-emphasis destructive ghost: red icon, transparent fill, red-tinted
-        // hover/press. Tertiary sibling of destructiveSecondary (no border).
+        // hover/press. Tertiary sibling of destructiveOutline (no border).
         destructiveTertiary: cn(
           'border-transparent bg-transparent text-fb-red-text',
-          // Shares the destructiveSecondary fill tokens on light and goes a step
+          // Shares the destructiveOutline fill tokens on light and goes a step
           // stronger on dark, where there is no border to carry the signal.
           'hover:bg-destructiveTertiary-bg-hover',
           'pressed:bg-destructiveTertiary-bg-press',
           'focus-visible:ring-focus-ring-brand',
-          'disabled:bg-transparent disabled:text-ink-inactive',
-          'disabled:hover:bg-transparent disabled:hover:text-ink-inactive',
-          'aria-disabled:bg-transparent aria-disabled:text-ink-inactive',
-          'aria-disabled:hover:bg-transparent aria-disabled:hover:text-ink-inactive',
-          'aria-disabled:pressed:bg-transparent'
+          ghostDisabled
         ),
         transparent: cn(
-          '!p-0 m-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',
-          'focus-visible:ring-focus-ring-brand'
+          'm-0 max-h-fit max-w-fit border-none bg-transparent text-ink-body',
+          'focus-visible:ring-focus-ring-brand',
+          ghostDisabled
         ),
       },
       size: {

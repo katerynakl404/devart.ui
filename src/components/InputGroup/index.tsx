@@ -18,53 +18,22 @@ const inputGroupVariants = cva(
     'box-border',
     'relative flex w-full items-center rounded-md',
     'outline-none',
-    'transition-[border,color,box-shadow]',
-
-    // A trailing action carries the field's edge inset, so the field gives up
-    // its own rather than adding to it. The kit puts the ✕ 8px from the border
-    // in a 24px box around a 16px glyph — 12px of optical air, the same as the
-    // leading glyph opposite it. Left at the size ladder's `px-3` the two
-    // stack and the ✕ sits 24px in, visibly further from the edge than the
-    // search icon across from it.
-    //
-    // A `has-` selector rather than a prop: whether the field has a trailing
-    // action is something the markup already says, and a prop for it is a
-    // second place to get it wrong.
-    'has-[[data-slot=input-group-action]]:pe-2'
+    'transition-[border,color,box-shadow]'
   ),
   {
     variants: {
       variant: {
-        // Page-level fields sitting on Surface/Card — the field reads as a
-        // well cut into the page.
-        primary: cn(
-          'border border-stroke bg-surface-page text-ink-secondary',
-          //Hover (suppressed while focused, pressed or disabled)
-          '[&:hover:not(:focus-within):not(:active):not(:has(input:disabled))]:border-stroke-field-hover',
-          //Pressed — border swap only, no bg lift
-          '[&:active:not(:has(input:disabled))]:border-input-focus',
-          //On internal input focus state — neutral, no outer ring
-          'has-[[data-slot=input-group-control]:focus-visible]:border-input-focus'
-        ),
         outline: cn(
           'border border-stroke bg-surface-card text-ink-secondary',
           //Hover (suppressed while focused, pressed or disabled)
-          '[&:hover:not(:focus-within):not(:active):not(:has(input:disabled))]:border-stroke-field-hover',
+          '[&:hover:not(:focus-within):not(:active):not(:has([data-slot=input-group-control]:disabled))]:border-stroke-field-hover',
           //Pressed — border swap only, no bg lift
-          '[&:active:not(:has(input:disabled))]:border-input-focus',
+          '[&:active:not(:has([data-slot=input-group-control]:disabled))]:border-input-focus',
           //On internal input focus state — neutral, no outer ring
           'has-[[data-slot=input-group-control]:focus-visible]:border-input-focus'
         ),
       },
       size: {
-        // The field's horizontal edge, matching Button's ladder at the same
-        // size so a button and a field line up. Children inside the shell
-        // (input, addons) add none of their own.
-        // 6px, not 8. The one half-step on this ladder, and the conventions
-        // allow it inside a control: at 28px tall with a 14px glyph, 8px of
-        // edge leaves the icon closer to the border than to the text it
-        // introduces. The kit's .field.is-xs is 8px — this is a deliberate
-        // step tighter, see DESIGN-SYSTEM-CHANGES.
         xs: 'h-7 min-h-7 px-2',
         sm: 'h-8 min-h-8 px-3',
         md: 'h-9 min-h-9 px-3',
@@ -95,6 +64,8 @@ interface InputGroupProps
   isInvalid?: boolean;
   errorText?: string;
   label?: ReactNode;
+  /** Marks the label with an asterisk and sets `aria-required` on the input. */
+  required?: boolean;
   inputId?: string;
 }
 
@@ -110,6 +81,7 @@ function InputGroup({
   isInvalid = false,
   errorText,
   label,
+  required = false,
   inputId,
   ...props
 }: InputGroupProps) {
@@ -125,15 +97,11 @@ function InputGroup({
         inputRef,
         isInvalid,
         errorText,
+        required,
         inputId,
       }}
     >
       <div className="flex w-full flex-col gap-1">
-        {/* Label is Text/Body, one step above the hint that sits under the
-            field. Both used to be Text/Secondary, so the helper line read exactly
-            as loud as the label that owns it. The hint keeps Text/Secondary —
-            that IS its role, and the step below it (Text/Inactive) means
-            "disabled" — so the label is the one that moves. */}
         {label ? (
           <Typography
             element="label"
@@ -144,6 +112,11 @@ function InputGroup({
             htmlFor={inputId}
           >
             {label}
+            {required ? (
+              <span aria-hidden="true" className="text-fb-red-text">
+                {' *'}
+              </span>
+            ) : null}
           </Typography>
         ) : null}
 
@@ -157,25 +130,22 @@ function InputGroup({
 
             'min-w-0 has-[>textarea]:h-auto',
 
-            //Aligning
-            'has-[>[data-align=inline-start]]:[&>input]:pl-2',
-
-            'has-[>[data-align=inline-end]]:[&>input]:pr-2',
+            'has-[>[data-slot=input-group-action]]:pe-2',
 
             'has-[>[data-align=block-start]]:h-auto',
             'has-[>[data-align=block-start]]:flex-col',
-            'has-[>[data-align=block-start]]:[&>input]:pb-3',
+            '[&:has(>[data-align=block-start])>input]:pb-3',
 
             'has-[>[data-align=block-end]]:h-auto',
             'has-[>[data-align=block-end]]:flex-col',
-            'has-[>[data-align=block-end]]:[&>input]:pt-3',
+            '[&:has(>[data-align=block-end])>input]:pt-3',
 
             //Error state — red border in every state, no bg tint, no ring
             isInvalid &&
               cn(
                 'border-input-error',
-                '[&:hover:not(:focus-within):not(:active):not(:has(input:disabled))]:border-input-error',
-                '[&:active:not(:has(input:disabled))]:border-input-error',
+                '[&:hover:not(:focus-within):not(:active):not(:has([data-slot=input-group-control]:disabled))]:border-input-error',
+                '[&:active:not(:has([data-slot=input-group-control]:disabled))]:border-input-error',
                 'has-[[data-slot=input-group-control]:focus-visible]:border-input-error'
               ),
 
@@ -195,7 +165,6 @@ function InputGroup({
           <Typography
             variant="span"
             textColor="destructive"
-            // Helper text is text-xs / medium in Feedback/Red.
             className="font-medium text-fb-red-text text-xs"
           >
             {errorText}

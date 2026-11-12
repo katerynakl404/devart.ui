@@ -4,11 +4,15 @@ import { ArrowLeft } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '../../lib/utils';
 import { IconButton } from '../IconButton';
+import { Skeleton } from '../Skeleton';
 import { Typography } from '../Typography';
 
 export interface PageHeaderProps
   extends Omit<ComponentProps<'header'>, 'title'> {
-  /** The page title — an `h2`, the developers' level and the product's. */
+  /**
+   * The page title — an `h2`, the developers' level and the product's. An
+   * empty string renders no heading, leaving only `titleLeft`.
+   */
   title: ReactNode;
   /** Renders the back control. Omit it on a top-level page. */
   onBack?: () => void;
@@ -59,6 +63,13 @@ export interface PageHeaderProps
    * title and the actions keep their edge, so the row only grows taller.
    */
   wrapTitle?: boolean;
+  /**
+   * Shows `loadingContent` in place of the title. `titleLeft` and the back
+   * control stay; `titleRight` and `actions` are not rendered.
+   */
+  isLoading?: boolean;
+  /** Placeholder for the title while `isLoading`. Defaults to a `Skeleton`. */
+  loadingContent?: ReactNode;
 }
 
 /**
@@ -96,6 +107,8 @@ function PageHeader({
   titleRight,
   condensed,
   wrapTitle,
+  isLoading = false,
+  loadingContent,
   className,
   ...props
 }: PageHeaderProps) {
@@ -152,7 +165,7 @@ function PageHeader({
             clearance and the glyph sits 12px from the title, still tighter than
             the 12px the rest of the row is spaced at, which is what says the
             arrow belongs to the title rather than being its neighbour. */}
-        {/* Condensing animates whole (§111): the title's size, the arrow's box
+        {/* Condensing animates whole (§15): the title's size, the arrow's box
             and its glyph move over `--motion-slow` (240ms), the standard curve
             — the consumer animates its padding over the same — so the header
             shrinks as one thing. A title stepping 30 → 20px in a frame while
@@ -183,29 +196,42 @@ function PageHeader({
             and 20px condensed. Wrapping, it needs `min-w-0` to shrink beside
             the actions — `truncate`'s overflow gave it that for free — and
             `break-words` for a single word wider than the row. */}
-        <Typography
-          element="h2"
-          textStyle={condensed ? 'heading20' : 'heading24'}
-          textColor="primary"
-          className={cn(
-            wrapTitle ? 'min-w-0 break-words' : 'truncate',
-            'transition-all duration-slow motion-reduce:transition-none',
-            !condensed && 'md:text-3xl'
-          )}
-        >
-          {title}
-        </Typography>
+        {/* The placeholder keeps the title's line height, so the row does not
+            move when the title arrives. */}
+        {isLoading ? (
+          <div
+            className={cn(
+              'flex items-center',
+              condensed ? 'min-h-7' : 'min-h-8 md:min-h-9'
+            )}
+          >
+            {loadingContent ?? <Skeleton className="h-6 w-48" />}
+          </div>
+        ) : title ? (
+          <Typography
+            element="h2"
+            textStyle={condensed ? 'heading20' : 'heading24'}
+            textColor="primary"
+            className={cn(
+              wrapTitle ? 'min-w-0 break-words' : 'truncate',
+              'transition-all duration-slow motion-reduce:transition-none',
+              !condensed && 'md:text-3xl'
+            )}
+          >
+            {title}
+          </Typography>
+        ) : null}
         {/* `ms-2` on top of the cluster's `gap-1` puts `titleRight` 12px from
             the title — the same gap the rest of the row uses. The 4px inside
             the cluster belongs to the arrow, which is part of the title; a
             badge is a separate object sitting next to it and reads as glued on
             at 4px. */}
-        {titleRight ? (
+        {titleRight && !isLoading ? (
           <span className="ms-2 flex shrink-0 items-center">{titleRight}</span>
         ) : null}
       </div>
 
-      {actions ? (
+      {actions && !isLoading ? (
         <div className="ms-auto flex items-center gap-3">{actions}</div>
       ) : null}
     </header>

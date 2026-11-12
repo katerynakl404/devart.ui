@@ -1,34 +1,79 @@
 'use client';
 
-import type { ComponentProps } from 'react';
+import { type ChangeEvent, type ComponentProps, useMemo } from 'react';
+import { composeRefs } from '../../lib/compose-refs';
 import { cn } from '../../lib/utils';
 
-function Input({ className, type, ref, ...props }: ComponentProps<'input'>) {
+export interface InputProps extends ComponentProps<'input'> {
+  /** Takes digits only; a letter typed, pasted or dropped is dropped. */
+  digitsOnly?: boolean;
+}
+
+// Stops a letter before it lands, so typing over a selection keeps it.
+function onBeforeInput(e: InputEvent) {
+  if (e.inputType !== 'insertText' && e.inputType !== 'insertFromPaste') return;
+  if (!e.data || /^\d*$/.test(e.data)) return;
+  e.preventDefault();
+  const digits = e.data.replace(/\D+/g, '');
+  // execCommand keeps the field's undo history.
+  if (digits) document.execCommand('insertText', false, digits);
+}
+
+function blockNonDigits(el: HTMLInputElement | null) {
+  el?.addEventListener('beforeinput', onBeforeInput);
+  return () => el?.removeEventListener('beforeinput', onBeforeInput);
+}
+
+// Cleans what gets past beforeinput (a drop, autofill), keeping the caret.
+function keepDigits(e: ChangeEvent<HTMLInputElement>) {
+  const el = e.target;
+  const raw = el.value;
+  const clean = raw.replace(/\D+/g, '');
+  if (clean === raw) return;
+  const caret = el.selectionStart ?? raw.length;
+  const before = raw.slice(0, caret).replace(/\D+/g, '').length;
+  el.value = clean;
+  el.setSelectionRange(before, before);
+}
+
+function Input({
+  className,
+  type,
+  ref,
+  digitsOnly = false,
+  inputMode,
+  onChange,
+  ...props
+}: InputProps) {
+  const inputRef = useMemo(
+    () => (digitsOnly ? composeRefs(ref, blockNonDigits) : ref),
+    [digitsOnly, ref]
+  );
+
   return (
     <input
-      ref={ref}
+      ref={inputRef}
       type={type}
       data-slot="input"
+      inputMode={inputMode ?? (digitsOnly ? 'numeric' : undefined)}
+      onChange={
+        digitsOnly
+          ? (e) => {
+              keepDigits(e);
+              onChange?.(e);
+            }
+          : onChange
+      }
       className={cn(
-        // The field edge lives on the InputGroup shell; the control carries
-        // none of its own horizontal padding.
-        'h-full w-full min-w-0 px-0',
-        'bg-transparent',
-
-        // The browser draws its own clear control inside a `type="search"`
-        // field once it holds a value, and it cannot be styled — so a search
-        // field in this system showed two crosses: the native one and the
-        // component's own. The design system owns that affordance (see
-        // InputGroup.md), so the native pair is suppressed.
-        '[&::-webkit-search-cancel-button]:hidden',
-        '[&::-webkit-search-decoration]:hidden',
-        // Focus is signalled by the shell's 1px --input-focus border, never by
-        // an outer ring — brand colour never visualises form-control focus.
-        'focus-visible:outline-none',
+        'h-full w-full min-w-0 px-1.5',
+        'bg-transparent outline-none',
         'transition-[color,box-shadow]',
 
-        // Disabled keeps its pointer events so a Tooltip can say why it is off; what it loses is
-        // the hover state, which the shell (InputGroup / the field wrapper) guards with `enabled:`.
+        // Hides the browser's own clear button in a search field
+        '[&::-webkit-search-cancel-button]:hidden',
+        '[&::-webkit-search-decoration]:hidden',
+
+        //Disabled
         'disabled:cursor-not-allowed',
         'disabled:text-ink-inactive',
         'disabled:placeholder:text-ink-inactive',

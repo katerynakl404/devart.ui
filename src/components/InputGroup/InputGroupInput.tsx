@@ -1,28 +1,25 @@
 'use client';
 
-import type { ComponentProps, RefObject } from 'react';
+import type { RefObject } from 'react';
 import { useCallback } from 'react';
 import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
-import { Input } from '../Input';
+import { Input, type InputProps } from '../Input';
 import { useInputGroup } from './InputGroupContext';
 
 const inputGroupInputVariants = cva(
   cn(
-    'flex-1 rounded-none border-0 px-0',
+    'flex-1 text-ellipsis rounded-none border-0 px-0',
     'bg-transparent',
     'shadow-none',
-    'focus-visible:ring-0 focus-visible:ring-offset-0'
+    'focus-visible:ring-0'
   ),
   {
     variants: {
       variant: {
-        primary: 'text-ink-primary placeholder:text-ink-inactive',
         outline: 'text-ink-primary placeholder:text-ink-inactive',
       },
       size: {
-        // Type ladder: xs 12 / sm 12 / md-xl 14. 13px is off the agreed
-        // eight-size scale; the placeholder now matches the control.
         xs: 'text-xs placeholder:text-xs',
         sm: 'text-sm placeholder:text-sm',
         md: 'text-sm placeholder:text-sm',
@@ -44,8 +41,9 @@ function InputGroupInput({
   className,
   ref: refProp,
   ...props
-}: ComponentProps<'input'>) {
-  const { size, variant, inputRef, isInvalid, inputId } = useInputGroup();
+}: InputProps) {
+  const { size, variant, inputRef, isInvalid, required, inputId } =
+    useInputGroup();
 
   const mergedRef = useCallback(
     (el: HTMLInputElement | null) => {
@@ -69,8 +67,9 @@ function InputGroupInput({
       {...props}
       id={id ?? inputId}
       aria-invalid={isInvalid}
+      aria-required={required || undefined}
     />
   );
 }
 
-export { InputGroupInput };
+export { InputGroupInput, inputGroupInputVariants };

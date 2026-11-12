@@ -50,8 +50,8 @@ Insightis **application** repo, not this kit, and were not actionable here.
   so it also rang on mouse click), and the bare Popover/Tooltip triggers.
   **Stepper was a false positive** - it is fully headless and renders no DOM, so
   there is no element to indicate focus on.
-- **#36** Padding ladder 8/12/12/16/20 on Button, and the identical ladder on the
-  field side. The field edge now lives on the **InputGroup shell**; the control
+- **#36** Padding ladder 8/12/12/16/20 on Button; the field follows it to `md`
+  and holds 12 at `lg`/`xl` (8/12/12/12/12, amended 2026-09-20). The field edge now lives on the **InputGroup shell**; the control
   and the addons contribute none (`px-0`), which also fixed an inconsistent edge
   (6px bare vs 10px with an addon). Autocomplete and PasswordInput compose
   InputGroup, so they inherit it. `transparent`'s `!p-0` became a
@@ -463,10 +463,11 @@ dark value), and `--sidebar-width` 15.95rem -> 16rem.
 ## Open conflicts — reference vs the agreed audit decisions
 
 1. **TextArea padding**: reference says square 8px; audit #36 put it on the
-   8/12/12/16/20 ladder shared with Button. Left on the ladder.
+   field ladder 8/12/12/12/12 (Button's to `md`). Left on the ladder.
 2. **InputGroup default variant**: reference marks `primary` default; the code
    defaults to `outline`. Flipping restyles PasswordInput, Autocomplete,
-   Datepicker and File. `primary` now EXISTS and is selectable; default unchanged.
+   Datepicker and File. `primary` was added and then removed (2026-11-04): no
+   product used it, and the developers' package never had it. `outline` only.
 3. **tertiary hover**: the States tables say `Brand/Primary @6%` but the kit's
    own `kit-theme.css` renders neutral `--state-hover`, with a comment about
    moving away from the brand tint. Not flipped — it would make `tertiary` a

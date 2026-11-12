@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect } from 'storybook/test';
 import { PasswordInput } from './index';
 
 /**
@@ -27,6 +28,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  play: async ({ canvas, userEvent }) => {
+    const field = canvas.getByPlaceholderText('Enter password');
+    await expect(field).toHaveAttribute('type', 'password');
+
+    const toggle = canvas.getByRole('button', { name: 'Show password' });
+    await userEvent.click(toggle);
+
+    await expect(field).toHaveAttribute('type', 'text');
+    // The control renames itself, so the label always describes what the next
+    // press will do rather than the current state.
+    await expect(
+      canvas.getByRole('button', { name: 'Hide password' })
+    ).toBeInTheDocument();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Hide password' })
+    );
+    await expect(field).toHaveAttribute('type', 'password');
+  },
   render: (args) => (
     <div className="w-72">
       <PasswordInput {...args} />

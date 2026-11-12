@@ -69,8 +69,10 @@ const treeItemVariants = cva(
   cn(
     'flex min-h-10 flex-wrap items-center gap-x-2 gap-y-1',
     // A rule under every row; the last one ends on the border of what holds
-    // the tree — two lines there read as one thick one.
-    'border-stroke border-b py-1 last:border-b-0'
+    // the tree — two lines there read as one thick one. Transparent there,
+    // not removed: a row that became the last on folding lost the rule's
+    // height and its contents moved (2026-10-29).
+    'border-stroke border-b py-1 last:border-b-transparent'
   ),
   {
     variants: {
@@ -279,7 +281,7 @@ export const TreeLoadingRow = ({
       data-slot="tree-loading-row"
       role="status"
       className={cn(
-        'flex min-h-10 items-center gap-2 border-stroke border-b py-1',
+        'flex min-h-10 items-center gap-2 border-stroke border-b py-1 last:border-b-transparent',
         className
       )}
       style={{

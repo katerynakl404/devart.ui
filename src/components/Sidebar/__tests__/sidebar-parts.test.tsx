@@ -73,6 +73,7 @@ describe('SidebarTrigger', () => {
     withProvider(<SidebarTrigger label="Collapse sidebar" tooltip />);
 
     const trigger = screen.getByRole('button', { name: 'Collapse sidebar' });
+    fireEvent.keyDown(document.body, { key: 'Tab' });
     act(() => trigger.focus());
     expect(screen.getByRole('tooltip')).toHaveTextContent('Collapse sidebar');
   });
@@ -94,6 +95,7 @@ describe('SidebarMobileTrigger', () => {
     withProvider(<SidebarMobileTrigger label="Open sidebar" tooltip />);
 
     const trigger = screen.getByRole('button', { name: 'Open sidebar' });
+    fireEvent.keyDown(document.body, { key: 'Tab' });
     act(() => trigger.focus());
     expect(screen.getByRole('tooltip')).toHaveTextContent('Open sidebar');
     expect(trigger.hasAttribute('data-sidebar')).toBe(false);
@@ -390,6 +392,7 @@ describe('SidebarChatItem', () => {
     );
 
     const kebab = screen.getByRole('button', { name: 'Chat actions' });
+    fireEvent.keyDown(document.body, { key: 'Tab' });
     act(() => kebab.focus());
     expect(screen.getByRole('tooltip')).toHaveTextContent('Chat actions');
   });

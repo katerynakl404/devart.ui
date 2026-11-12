@@ -132,7 +132,7 @@ function TreeRows({ old }: { old?: boolean }) {
 }
 
 /**
- * §147 — the three bordered buttons switched off, in the same columns on both
+ * §80 — the three bordered buttons switched off, in the same columns on both
  * sides: which of the other two the red one turns into is the change.
  */
 function BorderedOff({ old }: { old?: boolean }) {
@@ -157,11 +157,11 @@ function BorderedOff({ old }: { old?: boolean }) {
             Delete
           </UpstreamButton>
         ) : (
-          <Button disabled size="sm" variant="destructiveSecondary">
+          <Button disabled size="sm" variant="destructiveOutline">
             Delete
           </Button>
         )}
-        <Code>{old ? 'destructiveOutline' : 'destructiveSecondary'}</Code>
+        <Code>destructiveOutline</Code>
       </div>
     </div>
   );
@@ -278,8 +278,8 @@ export const Page: Story = {
             one answer that holds on every surface. <Code>primary</Code> keeps{' '}
             <Code>--state-disabled</Code>: a filled button switched off has
             nothing else to be. The label and the fade in the After half are
-            §165; the destructive form is §147. Switch the toolbar to dark to
-            see the fill turn into the brightest thing in the row.
+            §165; the destructive form is the next case. Switch the toolbar to
+            dark to see the fill turn into the brightest thing in the row.
           </>
         }
         n={80}
@@ -319,36 +319,24 @@ export const Page: Story = {
         afterNote="switched off, the red one is the secondary"
         before={<BorderedOff old />}
         beforeNote="switched off, the red one is the outline"
-        beforeSource={
-          <>
-            the developers' <Code>Button</Code>, vendored, switched off only: at
-            rest their <Code>destructiveOutline</Code> no longer draws here,
-            because its <Code>outlineDestructive-*</Code> utilities name the
-            colour group that was renamed with it.
-          </>
-        }
+        beforeSource={UPSTREAM_SOURCE}
         files={[
           'src/components/Button/index.tsx',
           'src/components/IconButton/index.tsx',
-          'src/lib/constants.ts',
-          'globals.css',
+          'src/lib/utils.ts',
         ]}
         footnote={
           <>
-            At rest nothing moved — the same red border, red label and no fill,
-            the values carried over token for token. What moved is the name and
-            the family: <Code>destructiveOutline</Code> →{' '}
-            <Code>destructiveSecondary</Code>, named the way its sibling{' '}
-            <Code>destructiveTertiary</Code> already was, and{' '}
-            <Code>--btn-outline-destructive-*</Code> →{' '}
-            <Code>--btn-destructive-secondary-*</Code>. Both buttons read one
-            disabled fragment, <Code>secondaryDisabled</Code>. A breaking rename
-            — <strong className="font-medium text-ink-body">major</strong>.
+            At rest nothing moved — the same red border, red label and no fill.
+            Switched off, <Code>destructiveOutline</Code> takes the secondary's
+            border (<Code>--btn-secondary-border</Code>) instead of the
+            outline's <Code>--ink-inactive</Code>; both buttons read one
+            disabled fragment, <Code>secondaryDisabled</Code>. The fade is §165.
           </>
         }
-        n={147}
-        title="destructiveOutline → destructiveSecondary — the secondary's destructive form"
-        why="A red border, a red label and no fill is the secondary's destructive form, but it was named and switched off as the outline's — a different, brand-bordered button."
+        n={80}
+        title="A disabled destructiveOutline is the disabled secondary"
+        why="A red border, a red label and no fill is the secondary's destructive form, but switched off it took the outline's border — a different, brand-bordered button."
       />
 
       <ChangeCase
@@ -379,7 +367,7 @@ export const Page: Story = {
             form as it paints <Code>disabled</Code>. On an enabled{' '}
             <Code>IconButton</Code>, <Code>tooltip</Code> draws what pages
             already built by hand, an <Code>IconButton</Code> inside a{' '}
-            <Code>TooltipTrigger</Code> (19 times in the AI connectivity
+            <Code>TooltipTrigger</Code> (19 times in the LinkAI
             prototype): the pixels are the same, the prop is the change.{' '}
             <Code>Switch</Code> takes the same two props and keeps its reason
             the same way. Like every <Code>Tooltip</Code>, it needs a{' '}
@@ -412,7 +400,7 @@ export const Page: Story = {
             The rule <Code>Checkbox</Code> already follows (§163): disabled is a
             fade, not a colour swap. No fill still holds (§80) — the fade is of
             the border and the label over whatever the button sits on — and
-            hover stays off. <Code>destructiveSecondary</Code> reads the same
+            hover stays off. <Code>destructiveOutline</Code> reads the same
             fragment, so switched off it is this button, not a faded red one.
           </>
         }

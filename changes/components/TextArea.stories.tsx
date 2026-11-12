@@ -54,14 +54,15 @@ export const Page: Story = {
     <ChangePage group="TextArea" title="TextArea">
       <ChangeCase
         after={
-          <TextArea
-            defaultValue="Answer in the user's language."
-            hintText={AI_WARNING}
-            label="AI instructions"
-            maxLength={4000}
-            showCount
-            wrapperClassName="w-[360px]"
-          />
+          <div className="w-[360px]">
+            <TextArea
+              defaultValue="Answer in the user's language."
+              hintText={AI_WARNING}
+              label="AI instructions"
+              maxLength={4000}
+              showCount
+            />
+          </div>
         }
         afterNote="hintText — the left half of the row the counter already owned"
         before={

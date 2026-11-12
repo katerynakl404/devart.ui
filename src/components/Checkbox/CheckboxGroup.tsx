@@ -34,10 +34,6 @@ function CheckboxGroup({
 }: CheckboxGroupProps) {
   const valueSet = useMemo(() => new Set(value), [value]);
 
-  // The next selection is derived from `value` on every change instead of
-  // mutating `valueSet` in place: a parent that rejects a change re-renders
-  // with the same `value`, the memo keeps the mutated Set, and the box would
-  // stay checked.
   const handleCheckedChange = useCallback(
     (optionId: string, checked: boolean) => {
       const next = new Set(value);

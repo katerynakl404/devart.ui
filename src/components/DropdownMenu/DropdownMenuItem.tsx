@@ -34,8 +34,6 @@ const dropdownMenuItemVariants = cva(
     glyphStroke,
 
     //Focused state
-    // Highlight is the ONE state here: Radix focuses the item on pointer-move,
-    // so a focus ring would always paint on top of the highlight fill.
     'focus-visible:outline-none'
   ),
   {

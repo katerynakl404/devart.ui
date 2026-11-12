@@ -14,7 +14,7 @@ import { cn } from '../../lib/utils';
  * |---|---|
  * | `auto` | no width — takes whatever is left. The reading column: a name, a title, a description. Truncation here costs the user something, so this is the one that gets the slack. |
  * | `control` | 48px. A checkbox or a single toggle — a control has one correct size and does not benefit from more. |
- * | `actions` | 112px. The row's trailing cluster, matching `TableActionsCell`. |
+ * | `actions` | 112px, the label at the trailing edge. The row's trailing cluster, matching `TableActionsCell`. |
  * | `sm` | 12% — a toggle with its label, a short flag. |
  * | `md` | 16% — a connector mark and a word, a status badge, a timestamp. |
  * | `lg` | 20% — a count with a disclosure, or text with a control beside it. |
@@ -143,7 +143,8 @@ function TableHead({
         '[[data-density=compact]_&]:h-7',
         'whitespace-nowrap text-left',
         width === 'control' && 'w-12',
-        width === 'actions' && 'w-28',
+        // Over the cluster it names, which `TableActionsCell` sets right.
+        width === 'actions' && 'w-28 text-right',
         width === 'sm' && 'w-[12%]',
         width === 'md' && 'w-[16%]',
         width === 'lg' && 'w-[20%]',

@@ -112,7 +112,7 @@ function PermissionRow({
   );
 }
 
-/** §96 — rows where nothing is chosen take the workspace's Allow. */
+/** §73 — rows where nothing is chosen take the workspace's Allow. */
 function PermissionTree({ tinted }: { tinted?: boolean }) {
   return (
     <TryIt action="Hover Allow on a row with nothing chosen">
@@ -133,7 +133,7 @@ function PermissionTree({ tinted }: { tinted?: boolean }) {
   );
 }
 
-/** §103 — one row chosen Deny over the inherited Allow, and its value. */
+/** §73 — one row chosen Deny over the inherited Allow, and its value. */
 function BackToInherit({ deselectable }: { deselectable?: boolean }) {
   const [value, setValue] = useState('deny');
   return (
@@ -211,8 +211,8 @@ export const Page: Story = {
           <>
             the live rows without <Code>tinted</Code>: a row with nothing chosen
             draws no option at all, which is all the published control can say
-            about it. Both halves carry <Code>tone</Code> (§73) and{' '}
-            <Code>deselectable</Code> (§103).
+            about it. Both halves carry <Code>tone</Code> and{' '}
+            <Code>deselectable</Code>.
           </>
         }
         files={['src/components/SegmentedControl/SegmentedControlTrigger.tsx']}
@@ -221,13 +221,12 @@ export const Page: Story = {
             The solid pill stays "chosen here"; the pale one is the same value
             arrived from above. A plain unselected option keeps the neutral
             hover whatever its tone — a grey option turning red under the
-            pointer offered a Deny nobody had chosen. The section's second
-            point, tone fills that went grey in dark, fixes §73's own first
-            pass: the developers' control has no tone, so there is no Before for
-            it. Flip the toolbar to see the After hold its green and red.
+            pointer offered a Deny nobody had chosen. The tone's dark fill has
+            no Before: the developers' control has no tone. Flip the toolbar to
+            see the After hold its green and red.
           </>
         }
-        n={96}
+        n={73}
         state="draft"
         title="SegmentedControlTrigger — tinted, and tone fills in dark"
         why="A value in effect without being chosen on the row — inherited, a default — had no way to show, so an inherited Allow read exactly like a row nobody had set."
@@ -260,18 +259,18 @@ export const Page: Story = {
             had no way back and the two trees disagreed.
           </>
         }
-        n={103}
+        n={73}
         state="draft"
         title="SegmentedControl — deselectable"
         why="The docs said a segmented control always has one segment active, while an inherited row starts with none — so once a value was chosen there was no way back to Inherit."
       />
       <NoPanel
-        section={168}
+        section={73}
         title="A value picker is a radio group; the tinted value keeps its ink"
         why={
           <>
             <Code>tone</Code>, <Code>tinted</Code> and <Code>deselectable</Code>{' '}
-            are this package's own drafts (§73 §96 §103) — the developers' 1.4.0
+            are this package's own draft (§73) — the developers' 1.4.0
             has none of them, so this section has no Before. Its colour is the
             After of the three cases above; its semantics move no pixel: with{' '}
             <Code>semantics="radio"</Code> a screen reader hears “Allow, radio

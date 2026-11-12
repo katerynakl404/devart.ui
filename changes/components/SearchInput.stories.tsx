@@ -1,9 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { type ComponentType, type ReactNode, useMemo, useState } from 'react';
-import {
-  SearchInput,
-  type SearchInputProps,
-} from '../../src/components/SearchInput';
+import { type ReactNode, useMemo, useState } from 'react';
+import { SearchInput } from '../../src/components/SearchInput';
 import { TooltipProvider } from '../../src/components/Tooltip';
 import { ChangeCase, ChangePage, Code, TryIt } from '../Harness';
 import { SearchInput as UpstreamSearchInput } from '../upstream/SearchInput';
@@ -33,14 +30,6 @@ const PEOPLE = [
   'Sales Operations',
   'Taras Melnyk',
 ].map((name, i) => ({ id: `p${i}`, label: name }));
-
-/**
- * The developers' field as a page written in JavaScript met it: the props it
- * does not declare are accepted and dropped. Typed as the live props for that
- * one purpose, so the same object goes to both halves — the component itself
- * is the vendored file, unchanged.
- */
-const UpstreamLoose = UpstreamSearchInput as ComponentType<SearchInputProps>;
 
 function Labelled({ children, label }: { children: ReactNode; label: string }) {
   return (
@@ -81,42 +70,6 @@ function WithResults({ upstream }: { upstream?: boolean }) {
   );
 }
 
-/** `variant` and `disabled`, passed the same way to both fields. */
-function PassThroughs({ upstream }: { upstream?: boolean }) {
-  const [value, setValue] = useState('prod');
-  const primary: SearchInputProps = {
-    placeholder: 'Search connections…',
-    size: 'md',
-    variant: 'primary',
-  };
-  const disabled: SearchInputProps = {
-    placeholder: 'Search connections…',
-    size: 'md',
-    disabled: true,
-    value,
-    onValueChange: setValue,
-    onClear: () => setValue(''),
-  };
-  return (
-    <div className="flex flex-col gap-4">
-      <Labelled label='variant="primary" — a well cut into the card'>
-        {upstream ? (
-          <UpstreamLoose {...primary} />
-        ) : (
-          <SearchInput {...primary} />
-        )}
-      </Labelled>
-      <Labelled label="disabled">
-        {upstream ? (
-          <UpstreamLoose {...disabled} />
-        ) : (
-          <SearchInput {...disabled} />
-        )}
-      </Labelled>
-    </div>
-  );
-}
-
 function Panel({ upstream }: { upstream?: boolean }) {
   return (
     <TooltipProvider>
@@ -126,7 +79,6 @@ function Panel({ upstream }: { upstream?: boolean }) {
             <WithResults upstream={upstream} />
           </TryIt>
         </Labelled>
-        <PassThroughs upstream={upstream} />
       </div>
     </TooltipProvider>
   );
@@ -138,17 +90,17 @@ export const Page: Story = {
     <ChangePage group="SearchInput" title="SearchInput">
       <ChangeCase
         after={<Panel />}
-        afterNote="the matches under the field while typing · the props arrive"
+        afterNote="the matches under the field while typing"
         before={<Panel upstream />}
-        beforeNote="a field and nothing under it · variant and disabled dropped"
+        beforeNote="a field and nothing under it"
         beforeSource={
           <>
             the developers' own component, vendored unchanged from their 1.4.0
             into <Code>changes/upstream/SearchInput.tsx</Code>, over the live{' '}
             <Code>InputGroup</Code> — so the field is drawn the same in both
             halves and only <Code>SearchInput</Code> differs. Both get the same
-            props; the published one declares neither <Code>variant</Code> nor{' '}
-            <Code>disabled</Code>, and drops them.
+            props; the published one has no <Code>results</Code> and draws the
+            field alone.
           </>
         }
         files={[
@@ -160,17 +112,16 @@ export const Page: Story = {
           <>
             The list opens only while something is typed — not on focus, not on
             a click into the field, not with the picked name still in it — and
-            shows five and a half rows, the half saying there is more. It is{' '}
+            shows seven and a half rows, the half saying there is more. It is{' '}
             <Code>Autocomplete</Code>'s combobox and option row, so the two
-            lists look and behave alike. The rest of the pass-throughs draw
-            nothing: <Code>autoFocus</Code>, <Code>id</Code>, <Code>style</Code>
-            , <Code>onKeyDown</Code>, <Code>aria-label</Code>.
+            lists look and behave alike. The field also passes on{' '}
+            <Code>variant</Code>, <Code>aria-label</Code> and{' '}
+            <Code>autoFocus</Code>, which the products already set.
           </>
         }
         n={145}
-        state="draft"
-        title="SearchInput — the matches while typing, and the pass-throughs"
-        why="A directory search had no way to offer what it matched, and the field took eight props and dropped the rest — a page could not ask for the primary well, or switch the field off."
+        title="SearchInput — the matches while typing"
+        why="A directory search had no way to offer what it matched."
       />
     </ChangePage>
   ),

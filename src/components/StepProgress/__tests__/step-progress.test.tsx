@@ -158,6 +158,7 @@ describe('StepProgress — extensions', () => {
       steps: [{ title: 'Role' }, { title: '', ariaLabel: 'Second step' }],
       onStepSelect: vi.fn(),
     });
+    fireEvent.keyDown(document.body, { key: 'Tab' });
 
     fireEvent.focus(screen.getByRole('button', { name: 'Second step' }));
     expect(screen.queryByRole('tooltip')).toBeNull();

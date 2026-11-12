@@ -182,6 +182,31 @@ function AddonInk({ glyphClassName }: { glyphClassName?: string }) {
   );
 }
 
+/**
+ * §169 — a unit after a number, at three field widths: the live addon in
+ * body12, and the same fields with the field's 14px put back on it.
+ */
+const OLD_ADDON_TEXT = 'text-sm';
+
+function AddonUnit({ unitClassName }: { unitClassName?: string }) {
+  return (
+    <div className="flex w-[480px] gap-4">
+      {[
+        ['Connection timeout', '15', 'seconds'],
+        ['Busy timeout', '0', 'milliseconds'],
+        ['Fetch size', '0', 'rows'],
+      ].map(([label, value, unit]) => (
+        <InputGroup className="min-w-0 flex-1" key={label} label={label}>
+          <InputGroupInput defaultValue={value} inputMode="numeric" />
+          <InputGroupAddon align="inline-end" className={unitClassName}>
+            {unit}
+          </InputGroupAddon>
+        </InputGroup>
+      ))}
+    </div>
+  );
+}
+
 export const Page: Story = {
   name: 'InputGroup',
   render: () => (
@@ -317,6 +342,33 @@ export const Page: Story = {
         n={106}
         title="InputGroupAddon — the glyph in the placeholder's grey"
         why="The search icon took the addon's --ink-secondary while the placeholder beside it is --ink-inactive: two greys for one hint."
+      />
+
+      <ChangeCase
+        after={<AddonUnit />}
+        afterNote="the unit in body12 (text-xs) · the value at 14px"
+        before={<AddonUnit unitClassName={OLD_ADDON_TEXT} />}
+        beforeNote="the unit at the field's 14px"
+        beforeSource={
+          <>
+            the live fields with the field's own size put back on the addon
+            through its <Code>className</Code> — <Code>{OLD_ADDON_TEXT}</Code>.
+          </>
+        }
+        files={['src/components/InputGroup/InputGroupAddon.tsx']}
+        footnote={
+          <>
+            Only text after the value moves (<Code>align="inline-end"</Code>):
+            text before it, an <Code>@</Code> before an alias, is read with the
+            value and keeps 14px. A glyph sizes by{' '}
+            <Code>[&amp;&gt;svg]:size-*</Code>, and an <Code>xs</Code> or{' '}
+            <Code>sm</Code> field already writes 12px, so there the unit and the
+            value stay one size.
+          </>
+        }
+        n={169}
+        title="InputGroupAddon — a unit in body12, under its value"
+        why="“seconds” at the field's 14px stood as loud as the number it qualifies and read coarse beside it."
       />
 
       <ChangeCase

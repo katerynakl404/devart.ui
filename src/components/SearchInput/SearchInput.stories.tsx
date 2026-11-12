@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { type ComponentProps, useMemo, useState } from 'react';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { TooltipProvider } from '../Tooltip';
 import { Typography } from '../Typography';
 import { SearchInput } from './index';
@@ -16,7 +16,7 @@ import { SearchInput } from './index';
  *
  * With `results` it also offers what matches, in a short list that opens only
  * while something is typed — no chevron, since there is no whole list to
- * browse — at most five and a half rows (`maxVisibleResults`), picked with the
+ * browse — at most seven and a half rows, picked with the
  * pointer or the keys; picking puts the name in the field and calls
  * `onSelect`. The caller matches; the field shows what it is given, or
  * `emptyText`.
@@ -39,13 +39,11 @@ const meta = {
     },
     variant: {
       control: 'inline-radio',
-      options: ['outline', 'primary'],
+      options: ['outline'],
     },
-    disabled: { control: 'boolean' },
     value: { control: false },
     onValueChange: { control: false },
     onClear: { control: false },
-    onKeyDown: { control: false },
     onSelect: { control: false },
     results: { control: false },
     getResultLabel: { control: false },
@@ -218,10 +216,41 @@ export const WithResults: Story = {
           results={results}
           onSelect={(p) => setPicked(p.label)}
         />
-        <Typography element="p" textStyle="body14" textColor="secondary">
+        <Typography variant="p" textColor="secondary">
           {picked ? `Showing ${picked}` : 'Type a name — try “a”.'}
         </Typography>
       </div>
     );
+  },
+  play: async ({ canvas, userEvent }) => {
+    const page = within(document.body);
+    const field = canvas.getByPlaceholderText('Search users and groups…');
+
+    await userEvent.click(field);
+    await expect(page.queryByRole('listbox')).not.toBeInTheDocument();
+
+    await userEvent.type(field, 'a');
+    const list = await page.findByRole('listbox');
+    const [row] = within(list).getAllByRole('option');
+    await expect(list.clientHeight / (row?.offsetHeight ?? 1)).toBeLessThan(8);
+    await expect(list.scrollHeight).toBeGreaterThan(list.clientHeight);
+
+    await userEvent.keyboard('{ArrowDown}{Enter}');
+    await expect(field).toHaveValue('Anna Shevchenko');
+    await expect(
+      canvas.getByText('Showing Anna Shevchenko')
+    ).toBeInTheDocument();
+
+    await userEvent.clear(field);
+    await userEvent.type(field, 'zzz');
+    await expect(
+      await page.findByText('No user or group matches')
+    ).toBeInTheDocument();
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Clear search' }));
+    await waitFor(() =>
+      expect(page.queryByRole('listbox')).not.toBeInTheDocument()
+    );
+    await expect(field).toHaveFocus();
   },
 };

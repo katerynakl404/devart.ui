@@ -3,7 +3,7 @@ same variant and size scales.
 
 ## Variants
 
-`primary` `secondary` `outline` `tertiary` `destructive` `destructiveSecondary`
+`primary` `secondary` `outline` `tertiary` `destructive` `destructiveOutline`
 `destructiveTertiary` `transparent` `transparentUnderline`.
 
 There is **no `ghost`** — use `tertiary`. There is exactly one regular tertiary
@@ -16,10 +16,10 @@ is `destructiveTertiary`.
 
 ## Sizes
 
-`xs` `sm` `md` `lg` `xl`, with horizontal padding 8 / 12 / 12 / 16 / 20. `Button`,
-`IconButton`, `InputGroup` and `TextArea` share this ladder, so a button and a
-field of the same size line up on a row. Prefer `sm` and `md`; modal footer
-buttons are always `sm`.
+`xs` `sm` `md` `lg` `xl`, with horizontal padding 8 / 12 / 12 / 16 / 20. A field
+(`InputGroup`, `TextArea`) has the same edge at `xs`, `sm` and `md`, so a button
+and a field of the same size line up on a row; at `lg` and `xl` the field holds
+12. Prefer `sm` and `md`; modal footer buttons are always `sm`.
 
 ## Icons
 

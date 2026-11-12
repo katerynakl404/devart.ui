@@ -30,12 +30,12 @@ export const Page: Story = {
         why={NOT_UPSTREAM}
       />
       <NoPanel
-        section={108}
+        section={16}
         title="The DB2 mark — it fell back to a “D”"
         why={NOT_UPSTREAM}
       />
       <NoPanel
-        section={115}
+        section={16}
         title="The SQLite mark — it fell back to an “S”"
         why={NOT_UPSTREAM}
       />

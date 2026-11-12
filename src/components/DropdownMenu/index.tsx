@@ -1,6 +1,8 @@
 'use client';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { type ComponentProps, useContext, useRef } from 'react';
+import { composeRefs } from '../../lib/compose-refs';
 import { DropdownMenuCheckboxItem } from './DropdownMenuCheckboxItem';
 import { DropdownMenuContent } from './DropdownMenuContent';
 import { DropdownMenuItem } from './DropdownMenuItem';
@@ -15,16 +17,39 @@ import {
 import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 import { DropdownMenuShortcut } from './DropdownMenuShortcut';
 import { DropdownMenuSubContent } from './DropdownMenuSubContent';
+import { TriggerRefContext } from './trigger-ref';
 
 /**
  * The root component that manages the open/closed state of the dropdown.
  */
-const DropdownMenu = DropdownMenuPrimitive.Root;
+const DropdownMenu = (
+  props: ComponentProps<typeof DropdownMenuPrimitive.Root>
+) => {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <TriggerRefContext.Provider value={triggerRef}>
+      <DropdownMenuPrimitive.Root {...props} />
+    </TriggerRefContext.Provider>
+  );
+};
 
 /**
  * The element (usually a button) that toggles the dropdown menu when clicked.
  */
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+const DropdownMenuTrigger = ({
+  ref,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Trigger>) => {
+  const triggerRef = useContext(TriggerRefContext);
+
+  return (
+    <DropdownMenuPrimitive.Trigger
+      ref={composeRefs(ref, triggerRef ?? undefined)}
+      {...props}
+    />
+  );
+};
 
 /**
  * A wrapper to group related menu items, often used in conjunction with a label.

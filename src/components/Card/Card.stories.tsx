@@ -172,7 +172,7 @@ export const HeaderActions: Story = {
           actions={
             <Button
               size="sm"
-              variant="destructiveSecondary"
+              variant="destructiveOutline"
               leftSlot={<Trash2 />}
             >
               Delete Workspace

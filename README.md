@@ -50,7 +50,7 @@ Continue with Peer dependencies and Importing below.
 an ES module on `window.DevartUI`, the compiled Tailwind utilities, the tokens in
 both themes, the fonts, and one markdown guideline per component. A prototype
 drops the folder in and writes JSX against it; there is no install and no
-bundler. This is how the Insightis and AI Connectivity prototypes consume the
+bundler. This is how the Insightis and LinkAI prototypes consume the
 library.
 
 Rebuilding it is one command:
@@ -154,7 +154,7 @@ Dark mode is `darkMode: ['class']`: tokens are declared for `:root` and `.dark` 
 Override any token by redefining its `--*` variable after the import. Whether a class takes a Tailwind alpha modifier (`/20`) depends on how `src/lib/constants.ts` wraps the variable:
 
 - HSL-triplet tokens are wrapped `hsl(var(--x) / <alpha-value>)`, so `bg-brand-primary/20` works.
-- `color-mix()` tokens are exposed as bare `var(...)` and accept **no** alpha modifier — wrapping one in `hsl()` would emit invalid CSS. Current bare-`var()` keys: `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-destructive-secondary-bg-hover`, `--btn-destructive-secondary-bg-press`, `--badge-brand-bg`, `--badge-brand-border`, `--badge-brand-text`, `--badge-green-bg`, `--badge-green-border`, `--badge-green-text`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-hover`, `--card-border-press`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-bg`, `--banner-grad-ic-border`, `--banner-grad-ic-shadow`, `--overlay-scrim`.
+- `color-mix()` tokens are exposed as bare `var(...)` and accept **no** alpha modifier — wrapping one in `hsl()` would emit invalid CSS. Current bare-`var()` keys: `--btn-secondary-bg-hover`, `--btn-outline-bg-hover`, `--btn-outline-bg-press`, `--btn-outline-destructive-bg-hover`, `--btn-outline-destructive-bg-press`, `--badge-brand-bg`, `--badge-brand-border`, `--badge-brand-text`, `--badge-green-bg`, `--badge-green-border`, `--badge-green-text`, `--toast-bg-*`, `--toast-border-*`, `--segctrl-btn-hover-bg`, `--tbl-row-selected-hover`, `--icon-wrapper-bg`, `--card-border-hover`, `--card-border-press`, `--card-lift-border`, `--plan-card-featured-border`, `--dropzone-border-active`, `--dropzone-bg-active`, `--banner-grad-sub`, `--banner-grad-ic-bg`, `--banner-grad-ic-border`, `--banner-grad-ic-shadow`, `--overlay-scrim`.
 
 Geometry and typography axes are token-driven the same way, all seeded with Tailwind's own default values so adopting them changes nothing visually: `--radius-sm` / `--radius` / `--radius-md` / `--radius-lg` / `--radius-xl`, `--sidebar-width` / `--sidebar-width-icon` / `--sidebar-width-mobile`, `--shadow-thumb` / `--shadow-thumb-hover`, `--font-sans` (redefine the variable, or override `theme.fontFamily.sans` in your own preset extension, to ship a different typeface), the type scale — `--font-size-{xxs,xs,compact,sm,base,lg,xl,2xl,3xl,4xl}`, with `--line-height-{xs,sm,base,lg,xl,2xl,3xl,4xl}` paired for every step but `xxs`/`compact` (override the `sm` step, for example, by redefining both `--font-size-sm` and `--line-height-sm` in your own `:root`) — and the weight scale, `--font-weight-{light,normal,medium,semibold,bold,extrabold,black}` (override `--font-weight-semibold` in your own `:root`, for example, to change what `font-semibold` renders).
 

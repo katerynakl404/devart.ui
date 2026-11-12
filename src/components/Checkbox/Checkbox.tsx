@@ -1,6 +1,7 @@
 'use client';
 
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { Check, Minus } from 'lucide-react';
 import { type ComponentPropsWithRef, type ReactNode, useId } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 
@@ -15,12 +16,9 @@ const checkboxVariants = cva(
     'shrink-0',
     'place-content-center',
     'border-[1.5px]',
-    // Focus state — the brand ring with a Surface/Card gap (kit `.cbx`)
+    // Focus state — neutral ring with a Surface/Card gap
     focusRing,
     // Disabled state — unified opacity recipe
-    // Not `pointer-events-none`: it hides the not-allowed cursor, and the
-    // tooltip that says why the control is off. A disabled control fires
-    // nothing either way.
     'disabled:cursor-not-allowed',
     'disabled:opacity-disabled',
     // Transition
@@ -88,7 +86,7 @@ const checkboxIndicatorVariants = cva(
   {
     variants: {
       size: {
-        md: '[&>svg]:size-2.5',
+        md: '[&>svg]:size-2.5 [&>svg]:stroke-[3.6]',
       },
     },
     defaultVariants: {
@@ -152,29 +150,8 @@ function Checkbox({
       <CheckboxPrimitive.Indicator
         className={cn(checkboxIndicatorVariants({ size }), 'group/indicator')}
       >
-        <svg
-          aria-hidden="true"
-          className="group-data-[state=indeterminate]/indicator:hidden"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={1.5}
-          viewBox="0 0 10 10"
-        >
-          <path d="M9 2.25 3.5 7.75 1 5.25" />
-        </svg>
-        <svg
-          aria-hidden="true"
-          className="hidden group-data-[state=indeterminate]/indicator:block"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeWidth={1.5}
-          viewBox="0 0 10 10"
-        >
-          <path d="M1.75 5h6.5" />
-        </svg>
+        <Check className="group-data-[state=indeterminate]/indicator:hidden" />
+        <Minus className="hidden group-data-[state=indeterminate]/indicator:block" />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
@@ -207,4 +184,9 @@ function Checkbox({
 
 Checkbox.displayName = 'Checkbox';
 
-export { Checkbox, checkboxVariants };
+export {
+  Checkbox,
+  checkboxContainerVariants,
+  checkboxIndicatorVariants,
+  checkboxVariants,
+};

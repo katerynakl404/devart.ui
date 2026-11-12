@@ -12,10 +12,11 @@ Implement the Insightis UX audit (2026-09-04) and its type-scale companion.
   `CardIcon` and `Toggle` keep their own unrelated `ghost` variants.
 - `IconButton`: `aria-label` is now required. An icon-only control has no
   visible text, so without it a screen reader announces only "button".
-- `Button`, `InputGroup` and `TextArea` horizontal padding now follows one
-  ladder (8/12/12/16/20 for xs/sm/md/lg/xl) instead of a flat 10px, so a button
-  and a field of the same size share one edge. The field edge moved onto the
-  `InputGroup` shell; `Input` and the addons no longer add their own.
+- Horizontal padding is a ladder instead of a flat 10px: `Button` 8/12/12/16/20,
+  `InputGroup` and `TextArea` 8/12/12/12/12 for xs/sm/md/lg/xl, so a button and
+  a field of the same size share one edge at `xs`, `sm` and `md`. The field edge
+  moved onto the `InputGroup` shell; `Input` and the addons no longer add their
+  own.
 - `tracking-tight` now resolves to this system's -0.01em rather than Tailwind's
   stock -0.025em, via a new `letterSpacing` scale in the preset.
 

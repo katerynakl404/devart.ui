@@ -13,10 +13,7 @@ export const textAreaVariants = cva(
     'block w-full min-w-0 resize-none',
     'outline-none',
 
-    // Disabled — a real fill instead of opacity dimming, and it KEEPS its pointer events: a
-    // disabled control is the one that most needs to explain itself, and pointer-events:none
-    // means it never emits mouseover, so a Tooltip on it is attached to a dead target. What goes
-    // instead is the hover STATE: every hover utility below is guarded with `enabled:`.
+    // Disabled keeps its pointer events, so a tooltip on it still works
     'disabled:cursor-not-allowed',
     'disabled:border-stroke disabled:bg-state-disabled',
     'disabled:text-ink-inactive disabled:placeholder:text-ink-inactive'
@@ -45,12 +42,6 @@ export const textAreaVariants = cva(
         '3xl': 'rounded-3xl',
       },
       size: {
-        // The field ladder: 8 / 12 / 12 / 12 / 12. It matches Button at xs,
-        // sm and md and then holds, where Button opens out to 16 and 20 — a
-        // field is a place to put text and reads tighter the nearer its value
-        // starts to the edge, while a button's inset is what makes the label
-        // read as a target. InputGroup carries the same five values.
-        // Type ladder: xs 12 / sm 12 / md-xl 14 - 13px is off the scale.
         xs: cn('px-2 py-1', 'text-xs placeholder:text-xs'),
         sm: cn('px-3 py-1.5', 'text-sm placeholder:text-sm'),
         md: cn('px-3 py-2', 'text-sm placeholder:text-sm'),
@@ -76,27 +67,10 @@ export interface TextAreaProps
   errorText?: string;
   showCount?: boolean;
   softLimit?: boolean;
-  /**
-   * Classes for the wrapper holding the label, the field and the counter.
-   *
-   * Size the field from here, not from `className`: `className` lands on the
-   * `textarea` itself, so a width set there shapes the field while the counter
-   * stays aligned to the parent — the counter visibly detaches from the box it
-   * is counting. The field is `w-full` inside this wrapper, so constraining
-   * the wrapper moves the two together.
-   */
-  wrapperClassName?: string;
-  /**
-   * Standing guidance under the field — the left half of the same row the
-   * counter sits in, and it yields that half to `errorText` when the field is
-   * invalid, because an error about what you just typed outranks advice about
-   * what to type.
-   *
-   * It exists because the row already did: without it a field that needs both a
-   * hint and a counter has to hide the counter and rebuild the row by hand,
-   * which is what every consumer with a character limit and a caveat was doing.
-   */
+  /** Guidance under the field, beside the counter; an error takes its place. */
   hintText?: ReactNode;
+  /** Marks the label with an asterisk and makes the field required. */
+  required?: boolean;
 }
 
 const setRef = <T,>(ref: Ref<T> | undefined, value: T | null) => {
@@ -144,8 +118,8 @@ export const TextArea = ({
   maxLength,
   disabled,
   onInput,
-  wrapperClassName,
   hintText,
+  required = false,
   ...props
 }: TextAreaProps) => {
   const { 'aria-describedby': ariaDescribedBy, ...restProps } = props;
@@ -163,8 +137,6 @@ export const TextArea = ({
   const [length, syncLength] = useValueLength(innerRef, showCount);
 
   const errorId = isInvalid && errorText ? `${fieldId}-error` : undefined;
-  // The hint describes the field only while it is on screen — an error takes
-  // its place in the row, and its place in the description with it.
   const hintId = !errorId && hintText ? `${fieldId}-hint` : undefined;
   const countId = showCount ? `${fieldId}-count` : undefined;
   const describedBy =
@@ -224,6 +196,7 @@ export const TextArea = ({
       defaultValue={defaultValue}
       maxLength={softLimit ? undefined : maxLength}
       disabled={disabled}
+      required={required}
       aria-invalid={isInvalid || undefined}
       aria-describedby={describedBy}
       onInput={(event) => {
@@ -247,9 +220,7 @@ export const TextArea = ({
   }
 
   return (
-    <div className={cn('flex w-full flex-col gap-1', wrapperClassName)}>
-      {/* Label is Text/Body — see InputGroup: a field label must not sit on the
-          same ink step as the hint underneath it. */}
+    <div className="flex w-full flex-col gap-1">
       {label ? (
         <Typography
           element="label"
@@ -260,6 +231,11 @@ export const TextArea = ({
           className="text-sm"
         >
           {label}
+          {required ? (
+            <span aria-hidden="true" className="text-fb-red-text">
+              {' *'}
+            </span>
+          ) : null}
         </Typography>
       ) : null}
 

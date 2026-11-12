@@ -59,7 +59,7 @@ export const Destructive: Story = {
   render: () => (
     <Modal>
       <ModalTrigger asChild>
-        <Button variant="destructiveSecondary">Delete chat</Button>
+        <Button variant="destructiveOutline">Delete chat</Button>
       </ModalTrigger>
       <ModalContent>
         <ModalHeader>

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Plus, Settings, Trash2 } from 'lucide-react';
+import { ChevronDown, Plus, Settings, Trash2 } from 'lucide-react';
 import { fn } from 'storybook/test';
 import { TooltipProvider } from '../Tooltip';
 import { Button } from './index';
@@ -27,7 +27,7 @@ const meta = {
         'tertiary',
         'primaryTertiary',
         'destructive',
-        'destructiveSecondary',
+        'destructiveOutline',
         'destructiveTertiary',
         'transparent',
         'transparentUnderline',
@@ -62,7 +62,7 @@ const BOXED_VARIANTS = [
   ['tertiary', 'Tertiary'],
   ['primaryTertiary', 'Tertiary brand'],
   ['destructive', 'Destructive'],
-  ['destructiveSecondary', 'Destructive secondary'],
+  ['destructiveOutline', 'Destructive outline'],
   ['destructiveTertiary', 'Destructive tertiary'],
 ] as const;
 
@@ -106,7 +106,7 @@ export const WithIcons: Story = {
       <Button {...args} leftSlot={<Plus />}>
         New chat
       </Button>
-      <Button {...args} rightSlot={<Trash2 />} variant="destructiveSecondary">
+      <Button {...args} rightSlot={<Trash2 />} variant="destructiveOutline">
         Delete
       </Button>
       <Button {...args} variant="secondary">
@@ -217,9 +217,45 @@ export const WithTooltip: Story = {
   ),
 };
 
+/** The icon stays beside the label at every alignment. */
 export const FullWidth: Story = {
   args: { fullWidth: true },
   parameters: { layout: 'padded' },
+  render: (args) => (
+    <div className="flex flex-col gap-3">
+      <Button {...args} />
+      <Button {...args} leftSlot={<Plus />} size="sm" variant="secondary">
+        Add Group or User
+      </Button>
+      <Button
+        {...args}
+        align="right"
+        leftSlot={<Plus />}
+        size="sm"
+        variant="outline"
+      >
+        Add Group or User
+      </Button>
+      <Button
+        {...args}
+        align="left"
+        leftSlot={<Settings />}
+        rightSlot={<ChevronDown />}
+        size="sm"
+        variant="tertiary"
+      >
+        Account
+      </Button>
+      <Button
+        {...args}
+        rightSlot={<ChevronDown />}
+        size="sm"
+        variant="outline"
+      >
+        March 2026
+      </Button>
+    </div>
+  ),
 };
 
 /**

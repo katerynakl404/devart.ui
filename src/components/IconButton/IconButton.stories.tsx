@@ -34,7 +34,7 @@ const meta = {
         'tertiary',
         'primaryTertiary',
         'destructive',
-        'destructiveSecondary',
+        'destructiveOutline',
         'destructiveTertiary',
         'transparent',
       ],
@@ -66,7 +66,7 @@ const VARIANTS = [
   ['tertiary', 'Edit'],
   ['primaryTertiary', 'Edit'],
   ['destructive', 'Delete'],
-  ['destructiveSecondary', 'Delete'],
+  ['destructiveOutline', 'Delete'],
   ['destructiveTertiary', 'Delete'],
 ] as const;
 

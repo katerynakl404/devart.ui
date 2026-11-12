@@ -10,12 +10,14 @@ import { useTabs } from './TabsContext';
 const tabsTriggerVariants = cva(
   cn(
     'relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap',
-    '-mb-px cursor-pointer rounded-t border-0 bg-transparent font-medium text-ink-secondary',
+    'cursor-pointer rounded-t border-0 bg-transparent font-medium text-ink-secondary',
     'transition-colors',
     '[&_svg]:shrink-0',
 
-    // Underline track — transparent until active.
-    "after:absolute after:right-0 after:bottom-[-1px] after:left-0 after:h-0.5 after:rounded-[1px] after:bg-transparent after:transition-colors after:content-['']",
+    // Underline track — transparent until active. On the trigger's own bottom
+    // edge, which is the list's: the list's line lies there out of the layout
+    // (TabsList), so nothing steps down onto it (§171).
+    "after:absolute after:right-0 after:bottom-0 after:left-0 after:h-0.5 after:rounded-[1px] after:bg-transparent after:transition-colors after:content-['']",
 
     // Hover (inactive only): body text shift only — no background change.
     'enabled:data-[state=inactive]:hover:text-ink-body',

@@ -1,8 +1,49 @@
 import { Content, Portal } from '@radix-ui/react-dropdown-menu';
-import type { ComponentProps } from 'react';
-import { restoreFocusOnlyForKeyboard } from '../../lib/focus-modality';
+import { type ComponentProps, useContext } from 'react';
+import { cva } from '../../lib/cva';
+import { lastInteractionWasKeyboard } from '../../lib/focus-modality';
 import { usePortalContainer } from '../../lib/portal-container';
 import { cn } from '../../lib/utils';
+import { TriggerRefContext } from './trigger-ref';
+
+const dropdownMenuContentVariants = cva(
+  cn(
+    'z-50 rounded-lg border p-1',
+    'max-h-[var(--radix-dropdown-menu-content-available-height)]',
+    // Fluid width — menu hugs its longest item label within bounds.
+    'w-max min-w-[140px] max-w-[320px]',
+    'border-stroke bg-surface-card text-ink-body',
+    // Floating-surface elevation — the one shadow role that is redeclared
+    // for dark; `shadow-dropdown` is light-only and all but vanishes there.
+    'shadow-overlay-soft',
+    'overflow-y-auto overflow-x-hidden',
+    // The kit's own menu scrollbar — `.cl-menu-scroll`.
+    'scrollbar-thin',
+
+    // Performance optimizations to reduce forced reflows
+    'will-change-[transform,opacity]',
+    '[transform:translateZ(0)]',
+    '[backface-visibility:hidden]',
+
+    //Closed state
+    'data-[state=closed]:animate-out',
+    'data-[state=closed]:fade-out-0',
+    'data-[state=closed]:zoom-out-95',
+
+    //Opened state
+    'data-[state=open]:animate-in',
+    'data-[state=open]:fade-in-0',
+    'data-[state=open]:zoom-in-95',
+
+    //Side based animations
+    'data-[side=bottom]:slide-in-from-top-2',
+    'data-[side=left]:slide-in-from-right-2',
+    'data-[side=right]:slide-in-from-left-2',
+    'data-[side=top]:slide-in-from-bottom-2',
+
+    'origin-[--radix-dropdown-menu-content-transform-origin]'
+  )
+);
 
 /**
  * The popover container that holds all dropdown items, handling animations and positioning.
@@ -24,6 +65,20 @@ const DropdownMenuContent = ({
   ...props
 }: DropdownMenuContentProps) => {
   const container = usePortalContainer(portalContainer);
+  const triggerRef = useContext(TriggerRefContext);
+
+  // Ring only after the keyboard
+  const handleCloseAutoFocus = (event: Event) => {
+    onCloseAutoFocus?.(event);
+    const trigger = triggerRef?.current;
+    if (event.defaultPrevented || !trigger) return;
+
+    event.preventDefault();
+    if (document.activeElement === document.body) {
+      trigger.focus({ focusVisible: lastInteractionWasKeyboard() });
+    }
+  };
+
   return (
     <Portal container={container}>
       <Content
@@ -31,53 +86,8 @@ const DropdownMenuContent = ({
         sideOffset={sideOffset}
         alignOffset={alignOffset}
         collisionPadding={collisionPadding}
-        /* Closing returns focus to the trigger — and Radix does it with a
-           programmatic `focus()`, which Chrome answers with the
-           `:focus-visible` ring. So a menu opened with the mouse left a
-           focus ring sitting on its trigger afterwards, marking a row
-           nobody was navigating. Restored for the keyboard, where losing
-           your place is the worse fault; skipped for the pointer. A
-           consumer's own handler runs first and can still preventDefault. */
-        onCloseAutoFocus={(event) =>
-          restoreFocusOnlyForKeyboard(event, onCloseAutoFocus)
-        }
-        className={cn(
-          'z-50 rounded-lg border p-1',
-          'max-h-[var(--radix-dropdown-menu-content-available-height)]',
-          // Fluid width — menu hugs its longest item label within bounds.
-          'w-max min-w-[140px] max-w-[320px]',
-          'border-stroke bg-surface-card text-ink-body',
-          // Floating-surface elevation — the one shadow role that is redeclared
-          // for dark; `shadow-dropdown` is light-only and all but vanishes there.
-          'shadow-overlay-soft',
-          'overflow-y-auto overflow-x-hidden',
-          // The kit's own menu scrollbar — `.cl-menu-scroll`.
-          'scrollbar-thin',
-
-          // Performance optimizations to reduce forced reflows
-          'will-change-[transform,opacity]',
-          '[transform:translateZ(0)]',
-          '[backface-visibility:hidden]',
-
-          //Closed state
-          'data-[state=closed]:animate-out',
-          'data-[state=closed]:fade-out-0',
-          'data-[state=closed]:zoom-out-95',
-
-          //Opened state
-          'data-[state=open]:animate-in',
-          'data-[state=open]:fade-in-0',
-          'data-[state=open]:zoom-in-95',
-
-          //Side based animations
-          'data-[side=bottom]:slide-in-from-top-2',
-          'data-[side=left]:slide-in-from-right-2',
-          'data-[side=right]:slide-in-from-left-2',
-          'data-[side=top]:slide-in-from-bottom-2',
-
-          'origin-[--radix-dropdown-menu-content-transform-origin]',
-          className
-        )}
+        onCloseAutoFocus={handleCloseAutoFocus}
+        className={cn(dropdownMenuContentVariants(), className)}
         {...props}
       />
     </Portal>
@@ -86,4 +96,4 @@ const DropdownMenuContent = ({
 
 DropdownMenuContent.displayName = Content.displayName;
 
-export { DropdownMenuContent };
+export { DropdownMenuContent, dropdownMenuContentVariants };

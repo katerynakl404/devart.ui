@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { PageHeader } from '../index';
 
@@ -128,5 +129,61 @@ describe('PageHeader', () => {
 
     expect(container.firstElementChild).toHaveClass('mb-6');
     expect(container.firstElementChild).not.toHaveClass('mb-2');
+  });
+  it('renders no heading for an empty title, keeping titleLeft', () => {
+    render(
+      <PageHeader
+        title=""
+        titleLeft={<span data-testid="title-left">Back</span>}
+      />
+    );
+
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    expect(screen.getByTestId('title-left')).toBeInTheDocument();
+  });
+
+  describe('while loading', () => {
+    const renderLoading = (loadingContent?: ReactNode) =>
+      render(
+        <PageHeader
+          title="Files"
+          isLoading
+          loadingContent={loadingContent}
+          titleLeft={<span data-testid="title-left">Back</span>}
+          titleRight={<button type="button">About</button>}
+          actions={<button type="button">Upload</button>}
+        />
+      );
+
+    it('replaces the title with the default skeleton', () => {
+      const { container } = renderLoading();
+
+      expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+      expect(container.querySelector('.skeleton')).toBeInTheDocument();
+    });
+
+    it('renders loadingContent instead of the default skeleton', () => {
+      const { container } = renderLoading(
+        <span data-testid="placeholder">…</span>
+      );
+
+      expect(screen.getByTestId('placeholder')).toBeInTheDocument();
+      expect(container.querySelector('.skeleton')).not.toBeInTheDocument();
+    });
+
+    /**
+     * Fork difference: titleLeft opens the row itself, so the row keeps
+     * titleLeft and the title cluster, and no actions.
+     */
+    it('keeps titleLeft and drops titleRight and actions', () => {
+      renderLoading();
+
+      const titleLeft = screen.getByTestId('title-left');
+      expect(titleLeft).toBeInTheDocument();
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(
+        titleLeft.closest('[data-slot="page-header"]')?.childElementCount
+      ).toBe(2);
+    });
   });
 });

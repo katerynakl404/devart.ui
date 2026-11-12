@@ -18,7 +18,9 @@ interface TooltipContentProps
 function TooltipContent({
   portalContainer,
   className,
-  sideOffset = 8,
+  // The gap to the arrow's tip. Radix adds the arrow's height on top of it, so
+  // the bubble sits `sideOffset + 4` away: 4px to the tip, 8px to the bubble.
+  sideOffset = 4,
   showArrow = true,
   arrowClassName,
   children,
@@ -64,12 +66,11 @@ function TooltipContent({
       >
         {children}
         {showArrow && (
-          // 8x4, not Radix's default 10x5. The arrow is drawn INTO the
-          // `sideOffset` gap rather than beside it, so the distance a reader
-          // actually sees is `sideOffset - arrowHeight`. With the stock 5px
-          // arrow that came to 8 - 5 = 3px — and neither 5 nor 3 sits on the
-          // 4px scale. At 4px high the tip lands exactly 4px from the trigger,
-          // so all three numbers are on the grid.
+          // 8x4, not Radix's default 10x5: every number on the 4px scale. The
+          // arrow is drawn BESIDE the `sideOffset` gap, not into it — measured,
+          // the old `sideOffset = 8` put the tip 8px and the bubble 12px from
+          // the trigger, and a tooltip read as detached. 4 + 4 = tip at 4px,
+          // bubble at 8px. DESIGN-SYSTEM-CHANGES §13.
           <TooltipPrimitive.Arrow
             width={8}
             height={4}

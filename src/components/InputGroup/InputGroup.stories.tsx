@@ -29,7 +29,7 @@ const meta = {
     },
     variant: {
       control: 'select',
-      options: ['primary', 'outline'],
+      options: ['outline'],
     },
     label: { control: 'text' },
     errorText: { control: 'text' },
@@ -52,6 +52,18 @@ export const Default: Story = {
   ),
 };
 
+/** A required field is marked; an optional one is not. */
+export const Required: Story = {
+  args: { label: 'Workspace name', required: true, inputId: 'group-required' },
+  render: (args) => (
+    <div className="w-72">
+      <InputGroup {...args}>
+        <InputGroupInput placeholder="e.g. Data Analyze" />
+      </InputGroup>
+    </div>
+  ),
+};
+
 export const WithLeadingIcon: Story = {
   args: { label: 'Email', inputId: 'group-leading' },
   render: (args) => (
@@ -66,18 +78,14 @@ export const WithLeadingIcon: Story = {
   ),
 };
 
-export const WithBothIcons: Story = {
-  args: { inputId: 'group-both' },
+/** Text after the value is a unit, one step smaller than the number. */
+export const WithUnit: Story = {
+  args: { label: 'Timeout', inputId: 'group-unit' },
   render: (args) => (
     <div className="w-72">
       <InputGroup {...args}>
-        <InputGroupAddon align="inline-start">
-          <Search aria-hidden />
-        </InputGroupAddon>
-        <InputGroupInput placeholder="Search..." type="search" />
-        <InputGroupAddon align="inline-end">
-          <span className="text-ink-inactive text-xs">⌘K</span>
-        </InputGroupAddon>
+        <InputGroupInput digitsOnly defaultValue="30" />
+        <InputGroupAddon align="inline-end">seconds</InputGroupAddon>
       </InputGroup>
     </div>
   ),
@@ -141,60 +149,8 @@ export const Sizes: Story = {
 };
 
 /**
- * Two shell fills: `primary` sits on `bg-surface-page` (the page well), `outline`
- * on `bg-surface-card`. Border, hover, pressed, focus and error are identical.
- */
-export const Variants: Story = {
-  render: (args) => {
-    const variants = ['primary', 'outline'] as const;
-    return (
-      <div className="flex w-72 flex-col gap-4">
-        {variants.map((variant) => (
-          <InputGroup
-            {...args}
-            key={variant}
-            inputId={`group-${variant}`}
-            label={variant}
-            variant={variant}
-          >
-            <InputGroupAddon align="inline-start">
-              <Mail aria-hidden />
-            </InputGroupAddon>
-            <InputGroupInput placeholder="you@example.com" />
-          </InputGroup>
-        ))}
-      </div>
-    );
-  },
-};
-
-/**
- * Addons can also stack above or below the field (`block-start` /
- * `block-end`), which turns the shell into a column.
- */
-export const BlockAddons: Story = {
-  args: { inputId: 'group-block' },
-  render: (args) => (
-    <div className="flex w-72 flex-col gap-4">
-      <InputGroup {...args} inputId="group-block-start">
-        <InputGroupAddon align="block-start">
-          <span className="text-ink-secondary text-xs">To</span>
-        </InputGroupAddon>
-        <InputGroupInput placeholder="you@example.com" />
-      </InputGroup>
-      <InputGroup {...args} inputId="group-block-end">
-        <InputGroupInput placeholder="Message subject" />
-        <InputGroupAddon align="block-end">
-          <span className="text-ink-inactive text-xs">0 / 80</span>
-        </InputGroupAddon>
-      </InputGroup>
-    </div>
-  ),
-};
-
-/**
- * Search shell: the trailing clear (x) button is revealed only while the input
- * holds content, driven purely by `:placeholder-shown` on the shell.
+ * A trailing action docks straight in the field, after the input, not in an
+ * addon. Here it shows only while the field holds a value.
  */
 export const SearchWithClear: Story = {
   args: { inputId: 'group-search' },
@@ -209,18 +165,12 @@ export const SearchWithClear: Story = {
           placeholder="Find a project…"
           type="search"
         />
-        <InputGroupAddon
-          align="inline-end"
+        <InputGroupAction
+          aria-label="Clear search"
           className="group-has-[input:placeholder-shown]/input-group:hidden"
         >
-          {/* `InputGroupAction`, not an `IconButton`: an icon docked in a field
-              has no surface of its own — the field already owns hover, focus
-              and press, so a second filled box inside it reads as a control on
-              top of a control. 24px box, 16px glyph, colour-only hover. */}
-          <InputGroupAction aria-label="Clear search">
-            <X aria-hidden />
-          </InputGroupAction>
-        </InputGroupAddon>
+          <X aria-hidden />
+        </InputGroupAction>
       </InputGroup>
     </div>
   ),

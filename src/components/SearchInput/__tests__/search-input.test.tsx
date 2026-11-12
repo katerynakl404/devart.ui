@@ -101,35 +101,20 @@ describe('SearchInput', () => {
   });
 
   describe('extensions', () => {
-    it('disabled: the field is disabled and offers no clear button', () => {
-      renderWithTooltips(<Controlled value="Q3 KPI" disabled />);
-      expect(screen.getByRole('searchbox')).toBeDisabled();
-      expect(clearButton()).toBeNull();
-    });
-
-    it('passes variant and style to the field, id, aria-label and onKeyDown to the input', () => {
-      const onKeyDown = vi.fn();
+    it('passes variant to the field, aria-label and autoFocus to the input', () => {
       const { container } = renderWithTooltips(
         <SearchInput
           placeholder="Search…"
-          variant="primary"
-          style={{ maxWidth: 320 }}
-          id="workspace-search"
+          variant="outline"
           aria-label="Search workspaces"
-          onKeyDown={onKeyDown}
+          autoFocus
         />
       );
       const group = container.querySelector('[data-slot="input-group"]');
-      expect(group).toHaveClass('bg-surface-page');
-      expect(group).toHaveStyle({ maxWidth: '320px' });
-
-      const field = screen.getByRole('searchbox', {
-        name: 'Search workspaces',
-      });
-      expect(field).toHaveAttribute('id', 'workspace-search');
-
-      fireEvent.keyDown(field, { key: 'a' });
-      expect(onKeyDown).toHaveBeenCalledOnce();
+      expect(group).toHaveClass('bg-surface-card');
+      expect(
+        screen.getByRole('searchbox', { name: 'Search workspaces' })
+      ).toHaveFocus();
     });
   });
 

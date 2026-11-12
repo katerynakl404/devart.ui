@@ -153,11 +153,11 @@ These come from the design-system audit and are not optional:
 3. **Every icon-only control needs an accessible name.** `IconButton` requires
    `aria-label`; name the action ("Remove file"), not the surrounding row.
 4. **Button variants**: `primary` `secondary` `outline`
-   `tertiary` `destructive` `destructiveSecondary` `destructiveTertiary`
+   `tertiary` `destructive` `destructiveOutline` `destructiveTertiary`
    `transparent` `transparentUnderline`. There is **no `ghost`** — use
-   `tertiary`. Sizes `xs|sm|md|lg|xl` carry padding 8/12/12/16/20; `Button`,
-   `InputGroup` and `TextArea` share that ladder, so a button and a field of the
-   same size line up. Prefer `sm` and `md`.
+   `tertiary`. Sizes `xs|sm|md|lg|xl` carry padding 8/12/12/16/20; a field
+   (`InputGroup`, `TextArea`) carries 8/12/12/12/12, so a button and a field of
+   the same size line up at `xs`, `sm` and `md`. Prefer `sm` and `md`.
 5. **Size a dialog by what it holds**, never one width for everything:
    `<ModalContent size="sm|md|lg">` — `sm` (360px) a confirm the user only
    reads and answers, `md` (480px, the default) anything the user fills in,

@@ -1,7 +1,3 @@
-/**
- * The fork's extensions on top of the developers' TextArea: `hintText` and
- * `wrapperClassName`. Kept apart from `text-area.test.tsx`, which is theirs.
- */
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { TextArea } from '../index';
@@ -50,13 +46,20 @@ describe('TextArea hintText', () => {
   });
 });
 
-describe('TextArea wrapperClassName', () => {
-  it('lands on the wrapper, not on the field', () => {
-    const { container } = render(
-      <TextArea label="Notes" wrapperClassName="w-[360px]" />
-    );
+describe('TextArea required', () => {
+  it('marks nothing unless asked', () => {
+    const { container } = render(<TextArea label="Notes" />);
 
-    expect(container.firstElementChild?.className).toContain('w-[360px]');
-    expect(getTextArea().className).not.toContain('w-[360px]');
+    expect(container.querySelector('label')?.textContent).toBe('Notes');
+    expect(getTextArea()).not.toBeRequired();
+  });
+
+  it('adds the asterisk and makes the field required', () => {
+    const { container } = render(<TextArea label="Notes" required />);
+    const mark = container.querySelector('label span');
+
+    expect(container.querySelector('label')?.textContent).toBe('Notes *');
+    expect(mark).toHaveAttribute('aria-hidden', 'true');
+    expect(getTextArea()).toBeRequired();
   });
 });

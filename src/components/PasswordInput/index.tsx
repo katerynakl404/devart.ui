@@ -3,6 +3,7 @@
 import { Eye, EyeOff, Lock } from 'lucide-react';
 import type { ComponentProps, Ref } from 'react';
 import { useCallback, useState } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { IconButton, type IconButtonProps } from '../IconButton';
 import {
@@ -17,26 +18,21 @@ type PasswordToggleButtonProps = Pick<
   'rounded' | 'size' | 'variant' | 'className'
 >;
 
-/**
- * The trailing toggle's glyph has to match the leading lock, and the two are
- * sized by different mechanisms: the lock is a direct child of the addon, so
- * `[&>svg]:size-*` reaches it, while the toggle's glyph sits inside an
- * IconButton whose own `[&_svg]:size-*` out-specifies any class written on the
- * icon. Passing the step to the button is what makes both ends of the field
- * agree; writing `size-4` on the icon is what used to make them disagree.
- *
- * The kit is firmer about this: a control docked in a field is a sub-part of
- * the field (`.igrp-act`) carrying the field's glyph step and no surface of its
- * own, not an entry on the IconButton ladder. `variant="transparent"` gets the
- * "no surface" half; this map gets the "field's glyph step" half.
- */
-const TOGGLE_SIZE_BY_FIELD_SIZE = {
-  xs: 'xs',
-  sm: 'sm',
-  md: 'md',
-  lg: 'lg',
-  xl: 'xl',
-} as const satisfies Record<string, IconButtonProps['size']>;
+// The field's glyph step, as the lock
+const passwordToggleVariants = cva('', {
+  variants: {
+    size: {
+      xs: '[&_svg]:size-3.5',
+      sm: '[&_svg]:size-4',
+      md: '[&_svg]:size-4',
+      lg: '[&_svg]:size-5',
+      xl: '[&_svg]:size-5',
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
+});
 
 interface PasswordInputClassNames {
   startAddonClassName?: string;
@@ -97,9 +93,6 @@ function PasswordInput({
       inputId={inputId}
     >
       <InputGroupAddon align="inline-start" className={startAddonClassName}>
-        {/* No size class: the addon is the parent, so its `[&>svg]:size-*` step
-            sizes this glyph, and any value written here would lose to it
-            anyway. The field decides how big its own icons are. */}
         <Lock aria-hidden className="shrink-0" />
       </InputGroupAddon>
 
@@ -114,13 +107,16 @@ function PasswordInput({
         <IconButton
           aria-label={visible ? toggleHideLabel : toggleShowLabel}
           rounded="sm"
-          size={TOGGLE_SIZE_BY_FIELD_SIZE[size ?? 'md']}
+          size="sm"
           type="button"
           variant="transparent"
           {...toggleButtonProps}
+          className={cn(
+            passwordToggleVariants({ size }),
+            toggleButtonProps?.className
+          )}
           onClick={onToggleVisible}
         >
-          {/* Icon names the action: Eye reveals, EyeOff hides. */}
           {visible ? <EyeOff aria-hidden /> : <Eye aria-hidden />}
         </IconButton>
       </InputGroupAddon>
@@ -129,4 +125,4 @@ function PasswordInput({
 }
 
 export type { PasswordToggleButtonProps };
-export { PasswordInput };
+export { PasswordInput, passwordToggleVariants };

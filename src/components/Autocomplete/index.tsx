@@ -49,15 +49,23 @@ const STRIPPED_TRIGGER_ARIA = {
   'aria-controls': undefined,
 } as const;
 
+const TAGS_INSET_MAP: Record<NonNullable<InputGroupProps['size']>, string> = {
+  xs: '-ms-[5px] [&>input]:ps-1',
+  sm: '-ms-[9px] [&>input]:ps-1',
+  md: '-ms-[9px] [&>input]:ps-1',
+  lg: '-ms-[9px] [&>input]:ps-1',
+  xl: '-ms-[9px] [&>input]:ps-1',
+};
+
 const BADGE_LIST_PADDING_MAP: Record<
   NonNullable<InputGroupProps['size']>,
   string
 > = {
-  xs: 'gap-1 py-1 ps-1',
-  sm: 'gap-1.5 py-1 ps-1',
-  md: 'gap-1.5 py-1 ps-1',
-  lg: 'gap-1.5 py-1 ps-1',
-  xl: 'gap-1.5 py-1 ps-1',
+  xs: 'gap-1 py-[3px]',
+  sm: 'gap-1 py-[3px]',
+  md: 'gap-1 py-[3px]',
+  lg: 'gap-1 py-[3px]',
+  xl: 'gap-1 py-[3px]',
 };
 
 export interface AutocompleteProps<
@@ -75,9 +83,9 @@ export interface AutocompleteProps<
   listboxClassName?: string;
   noOptionsText?: ReactNode;
   loadingText?: ReactNode;
-  /** Accessible name for the clear control. Names the action. */
+  /** Accessible name of the clear button. */
   clearLabel?: string;
-  /** Accessible name for the open/close suggestions control. */
+  /** Accessible name of the button that opens the list. */
   popupIndicatorLabel?: string;
   isLoading?: boolean;
   startAddon?: ReactNode;
@@ -99,11 +107,13 @@ export function Autocomplete<
     placeholder = 'Search...',
     noOptionsText = 'No options',
     loadingText = 'Loading...',
-    clearLabel = 'Clear selection',
-    popupIndicatorLabel = 'Show suggestions',
     isLoading = false,
     size = 'lg',
     badgeVariant = 'secondary',
+    startAddon,
+    endAddon,
+    clearLabel = 'Clear selection',
+    popupIndicatorLabel = 'Show suggestions',
     label,
     className,
     inputClassName,
@@ -112,8 +122,6 @@ export function Autocomplete<
     isMultipleSelect = false,
     disableClearable = false,
     disableFiltering = false,
-    startAddon,
-    endAddon,
     renderOption,
     renderBadge,
     getOptionLabel: getOptionLabelProp,
@@ -150,10 +158,12 @@ export function Autocomplete<
     getOptionLabel: getOptionLabelProp,
     filterOptions,
     ...restProps,
+    disableCloseOnSelect:
+      restProps.disableCloseOnSelect ?? Boolean(isMultipleSelect),
   });
 
   const inputProps = getInputProps();
-
+  const listboxProps = getListboxProps();
 
   const tags = useMemo(
     () => (isMultipleSelect ? ((value || []) as T[]) : []),
@@ -162,15 +172,13 @@ export function Autocomplete<
 
   const memoizedOptions = useMemo(() => {
     if (filteredOptions.length === 0) {
-      // A `listbox` must own options, so the empty state announces as one
-      // that cannot be picked rather than as stray text inside an empty list.
       return (
         <div
           role="option"
           aria-disabled="true"
           aria-selected="false"
           tabIndex={-1}
-          className="px-4 py-5 text-center text-ink-secondary text-sm"
+          className="flex min-h-11 items-center px-3 py-2.5 text-ink-secondary text-sm"
         >
           {noOptionsText}
         </div>
@@ -214,8 +222,6 @@ export function Autocomplete<
         <Typography
           element="label"
           variant="span"
-          /* The same label as InputGroup / TextArea (§126): Text/Body, medium, 4px over the
-             field — Text/Secondary is the hint's colour, not a label's. */
           textColor="body"
           weight="medium"
           className="mb-1 block"
@@ -242,7 +248,8 @@ export function Autocomplete<
               <div
                 className={cn(
                   'flex flex-1 flex-wrap items-center',
-                  BADGE_LIST_PADDING_MAP[size ?? 'lg']
+                  BADGE_LIST_PADDING_MAP[size ?? 'lg'],
+                  hasTags && TAGS_INSET_MAP[size ?? 'lg']
                 )}
               >
                 <BadgeList<T>
@@ -266,81 +273,54 @@ export function Autocomplete<
                 />
               </div>
 
-              <InputGroupAddon align="inline-end" className="gap-0.5">
-                {endAddon}
+              {endAddon && (
+                <InputGroupAddon align="inline-end">{endAddon}</InputGroupAddon>
+              )}
 
-                {/* `InputGroupAction`, not an `IconButton asChild`.
-
-                    `asChild` made the IconButton render its child, so what
-                    landed in the addon was a bare `<svg>` — and the addon's
-                    rules read that literally. `[&>svg]:text-ink-inactive` is
-                    the DECORATIVE glyph rule, so both controls painted at the
-                    placeholder step, while `[&>button]:text-ink-secondary` and
-                    its hover step matched nothing at all. Two clickable things,
-                    one step below the text beside them, neither answering the
-                    pointer.
-
-                    The second half is worse and invisible: an `<svg>` carrying
-                    an `aria-label` and a click handler is not a control to a
-                    screen reader. `InputGroupAction` is a real `<button>`, on
-                    the `--ink-icon` / `--ink-icon-hover` pair the system keeps
-                    for a glyph with no surface. */}
-                {/* Rendered only when the field HAS a value (`showClear` is
-                    `isDirty` minus the three states that forbid clearing), so
-                    it carries no opacity gate: the control appeared on hover
-                    and focus-within, which meant a filled field looked like it
-                    had no way out until the pointer was already over it. A
-                    field the user cannot empty without discovering the control
-                    first is the thing the control exists to prevent. */}
-                {showClear && (
-                  <InputGroupAction
-                    {...getClearProps()}
-                    aria-label={clearLabel}
-                  >
-                    <X />
-                  </InputGroupAction>
-                )}
-
-                <InputGroupAction
-                  {...getPopupIndicatorProps()}
-                  aria-label={popupIndicatorLabel}
-                >
-                  <ChevronDown
-                    className={cn(
-                      'transition-transform',
-                      'duration-base',
-                      open && 'rotate-180'
-                    )}
-                  />
+              {showClear && (
+                <InputGroupAction {...getClearProps()} aria-label={clearLabel}>
+                  <X aria-hidden />
                 </InputGroupAction>
-              </InputGroupAddon>
+              )}
+
+              <InputGroupAction
+                {...getPopupIndicatorProps()}
+                aria-label={popupIndicatorLabel}
+                className="ms-0.5"
+              >
+                <ChevronDown
+                  aria-hidden
+                  className={cn(
+                    'transition-transform',
+                    'duration-200',
+                    open && 'rotate-180'
+                  )}
+                />
+              </InputGroupAction>
             </InputGroup>
           </div>
         </DropdownMenuTrigger>
 
         {open && (
           <DropdownMenuContent
-            {...getListboxProps()}
+            {...listboxProps}
             className={cn(
               'w-[--radix-dropdown-menu-trigger-width] max-w-none',
               // z-[110]: is used so the dropdown menu is rendered on top of Modal (z-100)
               'z-[110] overflow-y-auto p-2',
-              // The kit's own list scrollbar — `.cl-mention-list`.
-              'scrollbar-thin',
+              'max-h-[min(21.5rem,var(--radix-dropdown-menu-content-available-height))]',
               listboxClassName
             )}
             onCloseAutoFocus={(e) => e.preventDefault()}
             onFocusOutside={(e) => e.preventDefault()}
           >
             {isLoading ? (
-              // Same as the empty state: one unselectable option, not an
-              // empty `listbox`.
               <div
                 role="option"
                 aria-disabled="true"
                 aria-selected="false"
                 tabIndex={-1}
-                className="flex items-center justify-center gap-2 px-4 py-5 text-center text-ink-secondary text-sm"
+                className="flex min-h-11 items-center gap-2 px-3 py-2.5 text-ink-secondary text-sm"
               >
                 <Spinner size="sm" color="inherit" aria-hidden />
                 {loadingText}

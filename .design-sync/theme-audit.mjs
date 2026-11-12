@@ -62,6 +62,16 @@ const Y = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
 const Lstar = (y) => (y > 0.008856 ? 116 * Math.cbrt(y) - 16 : 903.3 * y);
 const flat = (c, bg) => (c.a >= 1 ? c.rgb : c.rgb.map((v, i) => c.a * v + (1 - c.a) * bg[i]));
 const step = (c, bg) => +Math.abs(Lstar(Y(flat(c, bg))) - Lstar(Y(bg))).toFixed(2);
+// Full colour difference (CIE76 over Lab). Lightness alone under-reads a red: a
+// red wash moves the ground mostly in hue, so dL* called 4% enough on light
+// while the eye saw it faint (2026-11-10).
+const lab = (rgb) => {
+  const [r, g, b] = rgb.map(lin);
+  const f = (t) => (t > 216 / 24389 ? Math.cbrt(t) : (24389 / 27 * t + 16) / 116);
+  const X = f((0.4124 * r + 0.3576 * g + 0.1805 * b) / 0.95047), Yl = f(0.2126 * r + 0.7152 * g + 0.0722 * b), Z = f((0.0193 * r + 0.1192 * g + 0.9505 * b) / 1.08883);
+  return [116 * Yl - 16, 500 * (X - Yl), 200 * (Yl - Z)];
+};
+const dE = (c, bg) => { const p = lab(flat(c, bg)), q = lab(bg); return +Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]).toFixed(2); };
 const ratio = (fg, bgRgb) => {
   const a = Y(flat(fg, bgRgb)), b = Y(bgRgb);
   const hi = Math.max(a, b), lo = Math.min(a, b);
@@ -79,18 +89,20 @@ const LADDERS = [
     steps: [['hover', '--btn-destructive-tertiary-bg-hover'], ['press', '--btn-destructive-tertiary-bg-press']] },
 ];
 const PARITY = [
-  // Not a ladder: a neutral row action and a destructive one are SIBLINGS on the
-  // same row, so they must weigh the same — ordering them and demanding the
-  // second be deeper is meaningless, and the audit used to report exactly that.
+  // A neutral button and a red one are SIBLINGS — in a row of actions, in a
+  // dialog footer — so the red one's hover and press may not be fainter than the
+  // neutral one's, measured as full colour difference (dE), not lightness. The
+  // ceiling is the red label: it has to hold 4.5:1 on its own wash, which is
+  // what stops a red from going heavy (dark 30% fell to 4.35:1). Strengths were
+  // set by eye beside the neutral pair (designer, 2026-11-10); this holds them.
   //
-  // Measured on the hovered row rather than the card, because that is where the
-  // pair is actually seen, and because stacking amplifies their difference
-  // non-linearly: 0.59 dLstar apart over the card becomes 1.38 over the hovered
-  // row on dark. Hence the wider tolerance here than for the card pair.
+  // The row action is measured on the hovered row too, where the pair is seen.
   { name: 'row action, neutral vs destructive (on a hovered row)', bg: '--tbl-row-hover',
-    over: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', tol: 1.5 },
-  { name: 'neutral vs destructive tertiary hover', bg: '--surface-card', a: '--state-hover', b: '--btn-destructive-tertiary-bg-hover', tol: 0.5 },
-  { name: 'neutral vs destructive tertiary press', bg: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', tol: 0.7 },
+    over: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', ink: '--fb-red-text' },
+  { name: 'neutral vs destructive hover', bg: '--surface-card', a: '--state-hover', b: '--btn-destructive-tertiary-bg-hover', ink: '--fb-red-text' },
+  { name: 'neutral vs destructive press', bg: '--surface-card', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', ink: '--fb-red-text' },
+  { name: 'neutral vs destructive hover, on the page', bg: '--surface-page', a: '--state-hover', b: '--btn-destructive-tertiary-bg-hover', ink: '--fb-red-text' },
+  { name: 'neutral vs destructive press, on the page', bg: '--surface-page', a: '--state-pressed', b: '--btn-destructive-tertiary-bg-press', ink: '--fb-red-text' },
 ];
 const SURFACES = ['--surface-page', '--surface-card', '--surface-card2', '--surface-chips'];
 const INK = [
@@ -172,9 +184,13 @@ for (const theme of ['light', 'dark']) {
     // onto the surface it sits on before anything is measured against it.
     const pUnder = P.over ? resolve(P.over, theme) : null;
     const pGround = pUnder ? flat(bg, pUnder.rgb) : bg.rgb;
-    const da = step(A, pGround), db = step(B, pGround), diff = +Math.abs(da - db).toFixed(2);
-    const line = '  parity: ' + P.name.padEnd(42) + da + ' vs ' + db + '  delta ' + diff;
-    if (diff > P.tol) note(line + '   off by more than ' + P.tol); else console.log(line);
+    const da = dE(A, pGround), db = dE(B, pGround);
+    const ink = resolve(P.ink, theme), wash = flat(B, pGround);
+    const label = ink ? ratio(ink, wash) : null;
+    const line = '  parity: ' + P.name.padEnd(48) + 'dE ' + da + ' vs ' + db + '  label ' + label + ':1';
+    if (db < da) note(line + '   the red is fainter than the neutral');
+    else if (label === null || label < 4.5) note(line + '   the red label falls under 4.5:1');
+    else console.log(line);
   }
   console.log('\n-- text contrast --');
   for (const [ink, min] of INK) for (const surf of SURFACES) pair(ink, surf, min, theme);

@@ -9,6 +9,7 @@ import type {
   RefObject,
   TouchEvent,
 } from 'react';
+import { NO_HIGHLIGHT } from './constants';
 import type {
   GetBadgeProps,
   GetClearProps,
@@ -107,6 +108,9 @@ export function createPropGetters<T>(deps: PropGetterDeps<T>) {
     onMouseDown: (e: MouseEvent) => {
       if (e.target === e.currentTarget) return;
       e.preventDefault();
+    },
+    onMouseLeave: (e: MouseEvent) => {
+      deps.setHighlightedIndex(NO_HIGHLIGHT, 'mouse', e);
     },
   });
 

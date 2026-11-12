@@ -1,10 +1,6 @@
 import { cva } from '../../lib/cva';
 import { Typography } from '../Typography';
 
-// The kit's `.ta-count`: Body 12 in --ink-inactive, right-aligned. The line
-// height is the one `text-xs` pairs with (16px, the kit's Body 12) — the same
-// line as the error text it shares the row with, so the row keeps its height
-// when the error comes and goes.
 export const textAreaCountVariants = cva(
   'ms-auto shrink-0 text-xs tabular-nums',
   {
