@@ -7,17 +7,7 @@ import { cn, focusRing } from '../../lib/utils';
 import { TooltipContent } from './TooltipContent';
 
 /**
- * Global wrapper that manages the delay and skip-delay for every tooltip below
- * it.
- *
- * `delayDuration` defaults to **300ms**, the kit's value —
- * `[data-tip]` opens on `transition: opacity .12s .3s`. Radix's own default is
- * 700, which reads as a tooltip that never comes; the 200 this package used at
- * three call sites reads as one that fires while the pointer is still moving
- * across the row.
- *
- * A consumer that wants a different pace passes its own. The sidebar rail
- * takes this one: on the rail the tooltip is the row's only name.
+ * Global wrapper that manages the delay and skip-delay for all tooltips in the application.
  */
 const TooltipProvider = ({
   delayDuration = 300,

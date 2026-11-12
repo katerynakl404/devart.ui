@@ -1,11 +1,47 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from 'vitest';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '../index';
+
+// jsdom has no top layer, but floating-ui asks every positioned element about
+// it, and nwsapi recurses on `:modal` for about a second per call.
+const TOP_LAYER = new Set([':popover-open', ':modal', ':fullscreen']);
+const nativeMatches = Element.prototype.matches;
+
+beforeAll(() => {
+  Element.prototype.matches = function (this: Element, selector: string) {
+    if (TOP_LAYER.has(selector)) return false;
+    return nativeMatches.call(this, selector);
+  };
+});
+
+afterAll(() => {
+  Element.prototype.matches = nativeMatches;
+});
+
+// jsdom has no `ResizeObserver`; Popper measures the content and the arrow with one.
+beforeEach(() => {
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+  );
+});
 
 const renderTooltip = () =>
   render(

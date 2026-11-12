@@ -103,7 +103,7 @@ rewrites that entry; it does not add a section beside it.
 | `Tabs` | §8 `TabsContent` — the inactive panel came back as an empty box<br>§171 the list's line out of the layout — the strip was 39.8px at 125% scaling |
 | `TextArea` | §41 `hintText` — the counter row's empty slot<br>§70 the hint at 400; the counter and error lines |
 | `Toast` | §75 a stack of toasts, each a different width |
-| `Tooltip` | §13 the gap — tip 4px, bubble 8px from the trigger<br>§63 the delay before it opens<br>§177 above a dialog (`z-[110]`), not behind it |
+| `Tooltip` | §13 the gap — tip 4px, bubble 8px from the trigger<br>§63 the delay before it opens<br>§177 above a dialog (`z-[110]`), not behind it<br>§184 a long tip wraps at 288px |
 | `Tour` | §122 **new** — a guided walk: Spotlight, their `GuideCard`, annotations; the card's placement, sheet, role and focus · draft |
 | `Tree` | §150 **new** — a hierarchy row by row: one step a level, an icon on every level · draft |
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
@@ -2930,6 +2930,19 @@ Now `TooltipContent` is `z-[110]` itself, and the close button's per-call
 the same gap, no reported symptom yet, so not changed on the strength of this one.
 
 **patch** (`.changeset/tooltip-above-modal.md`).
+
+## 184. `Tooltip` — a long tip wraps at 288px
+
+`src/components/Tooltip/TooltipContent.tsx`
+
+The bubble is `w-max max-w-72 whitespace-normal text-left`: a short tip hugs its
+text, a long one stops at 288px — the width of a medium menu — and wraps onto two
+or three lines. Without it a tip is one line however long, and an error message
+or a setting's explanation runs off the viewport.
+
+In the library since 2026-09-15 (reference-kit alignment) without a number;
+numbered 2026-11-12 so it is handed over with the rest of `Tooltip`. Story:
+`Tooltip` → Widths.
 
 ---
 
