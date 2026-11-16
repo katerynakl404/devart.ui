@@ -3597,11 +3597,20 @@ description, what a field is for) or a state.
   status line's mark, the words beside it carry the meaning.
 - Not an `IconButton`: it does nothing when pressed, and a button's box would
   sit between the name and the mark.
+- **Opens on a tap, not only hover and keyboard focus.** `Tooltip`'s own
+  trigger ignores a `touch` pointer by design, so on a phone the glyph never
+  opened at all; a tap goes straight through to whatever it sits in front of.
+  `IconHint` is the one tooltip with no act behind it, so opening on tap is
+  unambiguous — a second tap closes it, and tapping elsewhere already did,
+  through the tooltip's own dismiss layer. Mouse and keyboard are unchanged,
+  and so is every other tooltip: `ControlTooltip`'s buttons keep tap as their
+  action, where opening on tap would race the press.
 
 Replaces the prototype's `InfoHint` (the description ⓘ) and `ProblemMark` (the
 warning beside a tree row or a member) — two hand-built spans with a tooltip.
 
-**minor** (`.changeset/hint-clamp-tooltip.md`).
+**minor** (`.changeset/hint-clamp-tooltip.md`); the tap fix is
+**patch** (`.changeset/icon-hint-touch-tap.md`).
 
 ---
 
