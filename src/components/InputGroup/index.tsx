@@ -4,6 +4,7 @@ import { type ComponentProps, type ReactNode, useRef } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
+import { FieldLabel } from './FieldLabel';
 import { InputGroupAction } from './InputGroupAction';
 import {
   InputGroupAddon,
@@ -48,16 +49,6 @@ const inputGroupVariants = cva(
   }
 );
 
-const inputGroupLabelSizeClass: Record<
-  NonNullable<VariantProps<typeof inputGroupVariants>['size']>,
-  string
-> = {
-  xs: 'text-xs',
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-sm',
-  xl: 'text-sm',
-};
 interface InputGroupProps
   extends ComponentProps<'div'>,
     VariantProps<typeof inputGroupVariants> {
@@ -103,21 +94,9 @@ function InputGroup({
     >
       <div className="flex w-full flex-col gap-1">
         {label ? (
-          <Typography
-            element="label"
-            variant="span"
-            textColor="body"
-            weight="medium"
-            className={inputGroupLabelSizeClass[resolvedSize]}
-            htmlFor={inputId}
-          >
+          <FieldLabel size={resolvedSize} required={required} htmlFor={inputId}>
             {label}
-            {required ? (
-              <span aria-hidden="true" className="text-fb-red-text">
-                {' *'}
-              </span>
-            ) : null}
-          </Typography>
+          </FieldLabel>
         ) : null}
 
         <div

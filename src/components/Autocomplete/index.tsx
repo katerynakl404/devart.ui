@@ -19,8 +19,8 @@ import {
   InputGroupInput,
   type InputGroupProps,
 } from '../InputGroup';
+import { FieldLabel } from '../InputGroup/FieldLabel';
 import { Spinner } from '../Spinner';
-import { Typography } from '../Typography';
 import { BadgeList } from './BadgeList';
 import { OptionItem } from './OptionItem';
 
@@ -78,6 +78,12 @@ export interface AutocompleteProps<
   badgeVariant?: BadgeProps['variant'];
   placeholder?: string;
   label?: ReactNode;
+  /**
+   * Marks the label with an asterisk and sets `aria-required` on the input —
+   * the same contract as `InputGroup` and `TextArea`, off unless a form asks
+   * for it (one product marks what is required, the other what is optional).
+   */
+  required?: boolean;
   className?: string;
   inputClassName?: string;
   listboxClassName?: string;
@@ -115,6 +121,7 @@ export function Autocomplete<
     clearLabel = 'Clear selection',
     popupIndicatorLabel = 'Show suggestions',
     label,
+    required = false,
     className,
     inputClassName,
     listboxClassName,
@@ -219,16 +226,14 @@ export function Autocomplete<
   return (
     <div className={cn('relative w-full', className)}>
       {label && (
-        <Typography
-          element="label"
-          variant="span"
-          textColor="body"
-          weight="medium"
+        <FieldLabel
+          size={size ?? 'lg'}
+          required={required}
           className="mb-1 block"
           {...getInputLabelProps()}
         >
           {label}
-        </Typography>
+        </FieldLabel>
       )}
 
       <DropdownMenu open={open} modal={false} onOpenChange={setOpen}>
@@ -237,6 +242,7 @@ export function Autocomplete<
             <InputGroup
               size={size}
               variant="outline"
+              required={required}
               className={cn('group h-auto', hasTags && 'flex-wrap')}
             >
               {startAddon && (

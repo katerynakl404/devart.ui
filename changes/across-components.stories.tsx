@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronUp, EllipsisVertical, Minus, Plus } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Autocomplete } from '../src/components/Autocomplete';
 import { Button } from '../src/components/Button';
 import { Checkbox } from '../src/components/Checkbox';
 import { IconButton } from '../src/components/IconButton';
+import { InputGroup, InputGroupInput } from '../src/components/InputGroup';
 import { ModalBody, ModalHeader } from '../src/components/Modal';
 import { ScrollShadow } from '../src/components/ScrollShadow';
 import {
@@ -20,6 +22,7 @@ import {
   TableRow,
 } from '../src/components/Table';
 import { Tabs, TabsList, TabsTrigger } from '../src/components/Tabs';
+import { TextArea } from '../src/components/TextArea';
 import { ChangeCase, ChangePage, Code, TryIt } from './Harness';
 import { Checkbox as UpstreamCheckbox } from './upstream/Checkbox';
 
@@ -208,6 +211,39 @@ const BRANCHES = [
  * today's variant paint them exactly as the old one did — the variant lives in
  * the preset, not in a component, so there is no class string to reapply.
  */
+/**
+ * §186 — one form at `sm`: a field, a field built on a list, and a field that
+ * grows. `old` puts `text-sm` back on the two labels that used to hardcode it,
+ * through an attribute selector so it out-specifies the component's own class.
+ */
+const SOURCES = [
+  { id: 'wh', label: 'Sales warehouse' },
+  { id: 'crm', label: 'CRM replica' },
+];
+
+function SmallForm({ old }: { old?: boolean }) {
+  const was = old ? '[&_label]:text-sm' : '';
+  return (
+    <div className={`flex w-[320px] flex-col gap-4 ${was}`}>
+      <InputGroup label="Host" size="sm">
+        <InputGroupInput defaultValue="localhost" />
+      </InputGroup>
+      <Autocomplete
+        label="Data source"
+        options={SOURCES}
+        placeholder="Pick a source"
+        size="sm"
+      />
+      <TextArea
+        defaultValue="Read-only replica."
+        label="Description"
+        rows={2}
+        size="sm"
+      />
+    </div>
+  );
+}
+
 function Disclosures({ old }: { old?: boolean }) {
   const was = old ? { 'aria-haspopup': true } : {};
   return (
@@ -381,6 +417,42 @@ export const Page: Story = {
         n={155}
         title="pressed: — an open disclosure is not a held press"
         why="The variant matched every aria-expanded, and a disclosure carries it too: a column of pressed −'s down an opened tree, a pressed Show less, a chosen expandable ChoiceCard whose pressed fill out-ranked its chosen wash."
+      />
+
+      <ChangeCase
+        after={<SmallForm />}
+        afterNote="one FieldLabel — all three on the field's own rung"
+        before={<SmallForm old />}
+        beforeNote="the Autocomplete and the TextArea two pixels louder"
+        beforeSource={
+          <>
+            the same live fields with <Code>text-sm</Code> put back on the two
+            labels — the class they carried before, an attribute selector
+            out-specifying the single class the component writes.
+          </>
+        }
+        files={[
+          'src/components/InputGroup/FieldLabel.tsx',
+          'src/components/InputGroup/index.tsx',
+          'src/components/TextArea/index.tsx',
+          'src/components/Autocomplete/index.tsx',
+        ]}
+        footnote={
+          <>
+            The rung is the package's own and does not move:{' '}
+            <Code>label12</Code> at <Code>xs</Code> and <Code>sm</Code>,{' '}
+            <Code>label14</Code> from <Code>md</Code> — both already on the type
+            scale. What changed is that one component owns the label instead of
+            three. <Code>Autocomplete</Code> also takes <Code>required</Code>{' '}
+            for the first time, the same asterisk and <Code>aria-required</Code>{' '}
+            as <Code>InputGroup</Code>, off by default. Nothing moves at{' '}
+            <Code>md</Code>, <Code>lg</Code> or <Code>xl</Code>, which is every
+            size the products use.
+          </>
+        }
+        n={186}
+        title="A field's label — one owner, so the three fields step together"
+        why="InputGroup's label stepped down with the field; TextArea's and Autocomplete's were hardcoded at 14 and both take the same five sizes. In one form at sm, the labels disagreed by two pixels."
       />
     </ChangePage>
   ),

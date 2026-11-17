@@ -196,6 +196,38 @@ export const WithStartAddon: Story = {
   },
 };
 
+/**
+ * §186 — `required`: the asterisk on the label and `aria-required` on the
+ * input, nothing else. Off by default, because the two products mark opposite
+ * ends — one marks what is required, the other what is optional.
+ */
+export const Required: Story = {
+  args: { label: 'City', required: true },
+  play: async ({ canvas }) => {
+    await expect(canvas.getByRole('combobox')).toHaveAttribute(
+      'aria-required',
+      'true'
+    );
+    // The mark is `aria-hidden`, so the accessible name stays the label alone.
+    await expect(canvas.getByText('*', { exact: false })).toBeInTheDocument();
+  },
+};
+
+/**
+ * §186 — the label steps down with the field, as `InputGroup`'s and
+ * `TextArea`'s do: 12 at `xs` and `sm`, 14 from `md`. The three used to
+ * disagree at the two small rungs.
+ */
+export const LabelSizes: Story = {
+  render: (args) => (
+    <div className="flex w-80 flex-col gap-4">
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Autocomplete<Option> {...args} key={size} label={size} size={size} />
+      ))}
+    </div>
+  ),
+};
+
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: CITIES[0] ?? null },
   play: async ({ canvas }) => {

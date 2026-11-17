@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode, Ref } from 'react';
 import { useCallback, useId, useLayoutEffect, useRef } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
-import { Typography } from '../Typography';
+import { FieldLabel } from '../InputGroup/FieldLabel';
 import { TextAreaFooter } from './TextAreaFooter';
 import { useValueLength } from './use-value-length';
 
@@ -222,21 +222,13 @@ export const TextArea = ({
   return (
     <div className="flex w-full flex-col gap-1">
       {label ? (
-        <Typography
-          element="label"
-          variant="span"
-          textColor="body"
-          weight="medium"
+        <FieldLabel
+          size={size ?? 'md'}
+          required={required}
           htmlFor={resolvedId}
-          className="text-sm"
         >
           {label}
-          {required ? (
-            <span aria-hidden="true" className="text-fb-red-text">
-              {' *'}
-            </span>
-          ) : null}
-        </Typography>
+        </FieldLabel>
       ) : null}
 
       {textareaElement}
