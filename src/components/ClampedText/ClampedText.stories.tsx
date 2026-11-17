@@ -44,6 +44,19 @@ export const FitsWhole: Story = {
   ),
 };
 
+/** A word longer than the line — an id typed without spaces, a URL: it breaks
+ * where it has to, so the clamp counts its lines and See more appears. */
+export const LongWord: Story = {
+  args: {
+    text: `${'412'.repeat(80)} https://reports.example.com/finance/warehouse/views/monthly-close/2026/11/general-ledger-reconciliation`,
+  },
+  render: (args) => (
+    <div className="w-80">
+      <ClampedText {...args} />
+    </div>
+  ),
+};
+
 /** Handed over: See more asks the caller to show the whole text elsewhere. */
 export const HandedOver: Story = {
   render: (args) => {

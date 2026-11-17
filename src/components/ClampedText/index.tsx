@@ -25,7 +25,16 @@ import { Typography, type TypographyProps } from '../Typography';
    panel has its width, and one measurement there found nothing cut.
 
    A press on See more stops there: it sits in rows and panels whose own
-   press opens something else. */
+   press opens something else.
+
+   A word longer than the line — a URL, a path, an id typed without spaces —
+   breaks wherever it has to (`overflow-wrap: anywhere`). Unbroken, it is ONE
+   line to the clamp, so See more never appeared and the text ran out of its
+   box sideways: 575px of "412412…" in a 343px card (LinkAI, Add workspaces,
+   375px, DBM-25468). `break-words` is not enough here: the wrapper lays the
+   text out at `items-start`, its own width, and `break-word` leaves a long
+   word's minimum width where it was — `anywhere` is the value that lets the
+   box shrink to the line. Ordinary words still break between themselves. */
 
 const CLAMP = {
   1: 'line-clamp-1',
@@ -95,7 +104,10 @@ export function ClampedText({
         element="span"
         textStyle={textStyle}
         textColor={textColor}
-        className={open ? undefined : CLAMP[lines]}
+        className={cn(
+          '[overflow-wrap:anywhere]',
+          open ? undefined : CLAMP[lines]
+        )}
       >
         {text}
       </Typography>
