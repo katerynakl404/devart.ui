@@ -629,7 +629,7 @@ withIcon=true
 withIcon=false
   mb-0 px-5 pt-3.5 pb-2
 withCloseButton=true
-  mb-0 px-5 pt-3.5 pb-2 pr-16
+  mb-0 px-5 pt-3.5 pb-2 pe-16
 withCloseButton=false
   mb-0 px-5 pt-3.5 pb-2
 

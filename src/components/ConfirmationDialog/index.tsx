@@ -20,9 +20,10 @@ const confirmationDialogHeaderVariants = cva('mb-0 px-5 pt-3.5 pb-2', {
       true: 'flex-row items-center gap-2',
       false: '',
     },
-    // Keeps the title clear of the absolutely positioned close button.
+    // Its close button sits further in than a plain dialog's, so it reserves
+    // more than ModalHeader does on its own.
     withCloseButton: {
-      true: 'pr-16',
+      true: 'pe-16',
       false: '',
     },
   },
@@ -127,7 +128,7 @@ function ConfirmationDialog({
           })}
         >
           {icon}
-          <ModalTitle className="min-w-0 break-words">{title}</ModalTitle>
+          <ModalTitle>{title}</ModalTitle>
         </ModalHeader>
 
         {/* `mx-0`: this dialog has no padding of its own (`p-0`), so the

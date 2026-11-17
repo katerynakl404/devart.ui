@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from '../Tooltip';
 import { ModalClose } from './ModalClose';
+import { ModalCloseButtonContext } from './ModalContext';
 import { ModalOverlay } from './ModalOverlay';
 import { ModalPortal } from './ModalPortal';
 
@@ -71,81 +72,83 @@ export function ModalContent({
   } = closeButtonProps ?? {};
 
   return (
-    <ModalPortal>
-      <ModalOverlay />
-      <ModalPrimitive.Content
-        ref={ref}
-        // No `aria-describedby={undefined}` here any more (2026-10-27). It
-        // silenced the old Radix warning for a dialog without a Description,
-        // and it also overrode the id Radix points at one — so the
-        // `ModalDescription` sentence was never announced. Radix now leaves
-        // the attribute off by itself when no Description is mounted; a
-        // caller's own `aria-describedby` still wins (`ConfirmationDialog`).
-        className={cn(
-          // `max-h-modal` — 80% of the window, from `--modal-max-h`. It was an
-          // arbitrary `max-h-[90dvh]`: a number in a class rather than a token,
-          // and 90% left so little page around a tall dialog that the dialog
-          // read as the screen. The body scrolls inside the cap (`ModalBody`),
-          // so a dialog can hold a long tree without growing past it.
-          'flex max-h-modal flex-col',
-          modalContentVariants({ size }),
-          'fixed top-1/2 left-1/2 z-[100] w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2',
-          'rounded-2xl',
-          // Own compositing layer: without it a partial repaint inside the
-          // dialog (e.g. the close button's hover transition) re-rasterizes
-          // with a rectangular clip and square child corners leak over the
-          // rounded ones. `transform-gpu` keeps the centering translate.
-          'transform-gpu [backface-visibility:hidden]',
-          'border border-stroke',
-          'bg-surface-card p-4 shadow-modal duration-base',
+    <ModalCloseButtonContext.Provider value={isCloseButtonVisible}>
+      <ModalPortal>
+        <ModalOverlay />
+        <ModalPrimitive.Content
+          ref={ref}
+          // No `aria-describedby={undefined}` here any more (2026-10-27). It
+          // silenced the old Radix warning for a dialog without a Description,
+          // and it also overrode the id Radix points at one — so the
+          // `ModalDescription` sentence was never announced. Radix now leaves
+          // the attribute off by itself when no Description is mounted; a
+          // caller's own `aria-describedby` still wins (`ConfirmationDialog`).
+          className={cn(
+            // `max-h-modal` — 80% of the window, from `--modal-max-h`. It was an
+            // arbitrary `max-h-[90dvh]`: a number in a class rather than a token,
+            // and 90% left so little page around a tall dialog that the dialog
+            // read as the screen. The body scrolls inside the cap (`ModalBody`),
+            // so a dialog can hold a long tree without growing past it.
+            'flex max-h-modal flex-col',
+            modalContentVariants({ size }),
+            'fixed top-1/2 left-1/2 z-[100] w-[calc(100%-1.5rem)] -translate-x-1/2 -translate-y-1/2',
+            'rounded-2xl',
+            // Own compositing layer: without it a partial repaint inside the
+            // dialog (e.g. the close button's hover transition) re-rasterizes
+            // with a rectangular clip and square child corners leak over the
+            // rounded ones. `transform-gpu` keeps the centering translate.
+            'transform-gpu [backface-visibility:hidden]',
+            'border border-stroke',
+            'bg-surface-card p-4 shadow-modal duration-base',
 
-          // Closed state
-          'data-[state=closed]:fade-out-0',
-          'data-[state=closed]:slide-out-to-left-1/2',
-          'data-[state=closed]:zoom-out-95',
-          'data-[state=closed]:slide-out-to-top-[48%]',
-          'data-[state=closed]:animate-out',
+            // Closed state
+            'data-[state=closed]:fade-out-0',
+            'data-[state=closed]:slide-out-to-left-1/2',
+            'data-[state=closed]:zoom-out-95',
+            'data-[state=closed]:slide-out-to-top-[48%]',
+            'data-[state=closed]:animate-out',
 
-          // Opened state
-          'data-[state=open]:fade-in-0',
-          'data-[state=open]:zoom-in-95',
-          'data-[state=open]:slide-in-from-left-1/2',
-          'data-[state=open]:slide-in-from-top-[48%]',
-          'data-[state=open]:animate-in',
-          className
-        )}
-        {...props}
-      >
-        {children}
-        <DialogTitleFallback>{props['aria-label']}</DialogTitleFallback>
-        {isCloseButtonVisible && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <ModalClose asChild>
-                  <IconButton
-                    variant="tertiary"
-                    size="sm"
-                    rounded="md"
-                    className={cn(
-                      'absolute top-4 right-4',
-                      closeButtonClassName
-                    )}
-                    {...restCloseButtonProps}
-                    aria-label={closeLabel}
-                  >
-                    <X />
-                  </IconButton>
-                </ModalClose>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" align="end">
-                {closeLabel}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        )}
-      </ModalPrimitive.Content>
-    </ModalPortal>
+            // Opened state
+            'data-[state=open]:fade-in-0',
+            'data-[state=open]:zoom-in-95',
+            'data-[state=open]:slide-in-from-left-1/2',
+            'data-[state=open]:slide-in-from-top-[48%]',
+            'data-[state=open]:animate-in',
+            className
+          )}
+          {...props}
+        >
+          {children}
+          <DialogTitleFallback>{props['aria-label']}</DialogTitleFallback>
+          {isCloseButtonVisible && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ModalClose asChild>
+                    <IconButton
+                      variant="tertiary"
+                      size="sm"
+                      rounded="md"
+                      className={cn(
+                        'absolute top-4 right-4',
+                        closeButtonClassName
+                      )}
+                      {...restCloseButtonProps}
+                      aria-label={closeLabel}
+                    >
+                      <X />
+                    </IconButton>
+                  </ModalClose>
+                </TooltipTrigger>
+                <TooltipContent side="bottom" align="end">
+                  {closeLabel}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </ModalPrimitive.Content>
+      </ModalPortal>
+    </ModalCloseButtonContext.Provider>
   );
 }
 

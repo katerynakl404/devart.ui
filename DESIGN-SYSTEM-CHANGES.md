@@ -79,7 +79,7 @@ rewrites that entry; it does not add a section beside it.
 | `LinkButton` | §46 the kit's text link, which the package never had; without `href`, a `<button>` · draft |
 | `ListPageLayout` | §133 the header condenses, and the body takes a class |
 | `MetaRow` | §52 the line above a list, and the 4px to it; `sticky` · draft |
-| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft<br>§159 **new** — `ModalDescription`, the line under the title, and the dialog's description · draft<br>§176 `ModalBody` — the scrollbar in the dialog's padding, the fields inset 16px on both sides |
+| `Modal` | §71 a `size` ladder — sm, md, lg, xl — and a height it cannot pass · draft<br>§159 **new** — `ModalDescription`, the line under the title, and the dialog's description · draft<br>§176 `ModalBody` — the scrollbar in the dialog's padding, the fields inset 16px on both sides<br>§185 the title clears the close button, and never truncates |
 | `PageHeader` | §15 the back control and the slots; `condensed`, moving as one; the title truncates, `wrapTitle` · draft |
 | `Pagination` | §82 `showPageNumbers` — a stream read in order · draft<br>§93 a `size` rung, and the `pageFloor` recipe · draft<br>§161 `totalItems` + `pageSize` — "Showing x–y of z" beside the pager · draft |
 | `PinToggle` | §136 **new** — pin a row · draft |
@@ -2944,6 +2944,38 @@ In the library since 2026-09-15 (reference-kit alignment) without a number;
 numbered 2026-11-12 so it is handed over with the rest of `Tooltip`. Story:
 `Tooltip` → Widths.
 
+## 185. `Modal` — the title clears the close button, and never truncates
+
+`src/components/Modal/ModalHeader.tsx` · `ModalTitle.tsx` · `ModalContext.ts` ·
+`src/components/ConfirmationDialog/index.tsx`
+
+**The close button is drawn over the dialog**, not in the flow, so nothing in
+the header knew it was there. Measured 2026-11-17 in the package: a long title
+ran **32px under the ✕**. `ConfirmationDialog` had solved it for itself
+(`pr-16` on its own header) and the product kits patched the title by hand
+(`break-words` in two Insightis dialogs) — the same fix written twice and
+missing where every other dialog is built.
+
+Now `ModalContent` tells the header whether it draws one
+(`ModalCloseButtonContext`), and `ModalHeader` reserves `pe-8` while it does —
+only while it does, so a dialog without a ✕ keeps a centred title centred.
+`ConfirmationDialog` keeps a wider reserve, because its own button sits further
+in, and drops its hand-patched title.
+
+**The title is never truncated**, and gets `min-w-0 break-words`: a name with no
+spaces (a connection id) breaks instead of running out of the dialog.
+Researched 2026-11-17 against the big systems, and the weight is clear —
+Carbon forbids truncating titles and headers outright, Atlassian says never
+truncate text and, if it cannot be avoided, give a way to read the rest,
+Primer prefers wrapping. Those that do truncate a title do it as an opt-in for
+cramped places (Polaris `lineClamp`, SAP Fiori two lines then an ellipsis,
+PatternFly) — a dialog is not one, and everything that truncates then owes the
+reader the full text, which a hover tooltip cannot give on a touch screen
+(Maersk, Twilio Paste). A 50-character name inside a sentence is two lines,
+rarely three; the body scrolls, so the height is not the title's to save.
+
+**patch** (`.changeset/modal-title-clears-close.md`).
+
 ---
 
 # `Tour`
@@ -4157,6 +4189,42 @@ Radix stamps `aria-haspopup` on `DropdownMenu`, `Popover` and `Dialog` triggers 
 - `SidebarMenuButton` — keeps `active:`; its note no longer blames the variant.
 
 **patch** (`.changeset/pressed-popup-only.md`).
+
+---
+
+## 186. A field's label — one owner, so the three fields step together
+
+`src/components/InputGroup/FieldLabel.tsx` **new**, `src/components/InputGroup/index.tsx`,
+`src/components/TextArea/index.tsx`, `src/components/Autocomplete/index.tsx`
+
+- **`FieldLabel`** (internal) — the label above a field: the size rung, the asterisk and the
+  `<label>` itself, in one place. `InputGroup`, `TextArea` and `Autocomplete` render it.
+- **`Autocomplete`** — new `required`, as `InputGroup`'s: the asterisk on the label and
+  `aria-required` on the input, off unless a form asks for it.
+
+**Three components drew this label and each drew it differently.** `InputGroup`'s stepped with
+the field — 12 at `xs` and `sm`, 14 from `md` — while `TextArea` and `Autocomplete` hardcoded
+14 and both accept the same five sizes. So an `Autocomplete` beside an `Input` at `sm` carried a
+label two pixels larger than its neighbour's, in the same form, on the same row. The ladder was
+never the question: `label12` and `label14` are both on the type scale. The question was that the
+label was written three times, and only one copy knew about the ladder.
+
+The rung is unchanged — it is the package's own (`f69ebc9`), and it stops at 14 while the field's
+text goes on to 16 at `lg` and `xl` (2026-11-17: leave it there). `required` was missing from
+`Autocomplete` outright: §175 added the asterisk to `InputGroup` and `TextArea` has it, so the
+one field that cannot be marked was the one a form reaches for when the value comes from a list.
+`InputGroupInput` already reads `required` off the context, so `Autocomplete` passing it to the
+`InputGroup` it wraps is the whole of the `aria-required` half.
+
+**No visual change where the products stand**: every `TextArea` in LinkAI and Insightis is `md`,
+the one `Autocomplete` (Insightis, the metric dialog) is `lg`, and both rungs are 14 either way.
+`xs` and `sm` are where the labels now agree, and nothing uses them today.
+
+**Still different, not changed here**: `TextArea` puts native `required` on its `<textarea>`,
+which `InputGroup` deliberately does not (§175 — the browser's own validation bubble stays out of
+a form that validates itself). Behaviour, not type; left for its own decision.
+
+**minor** (`.changeset/field-label-one-owner.md`).
 
 ---
 
