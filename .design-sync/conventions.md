@@ -256,10 +256,10 @@ both so a header lines up with its own column); never re-pad a cell.
 <Table layout="fixed">
   <TableHeader>
     <TableRow>
-      <TableHead className="w-1/2">Source</TableHead>
-      <TableHead className="w-32">Status</TableHead>
-      <TableHead className="w-32 text-right">Rows</TableHead>
-      <TableHead className="w-12"><span className="sr-only">Actions</span></TableHead>
+      <TableHead>Source</TableHead>
+      <TableHead width="md">Status</TableHead>
+      <TableHead width="md" className="text-right">Rows</TableHead>
+      <TableHead width="control"><span className="sr-only">Actions</span></TableHead>
     </TableRow>
   </TableHeader>
   <TableBody>
@@ -282,12 +282,15 @@ both so a header lines up with its own column); never re-pad a cell.
 - **`layout="fixed"` plus a width on each first-row `TableHead`** for anything
   that loads, paginates or filters. The default `auto` layout re-measures every
   column from its content, so columns visibly jump between an empty state, a
-  loading `colSpan` row, and each page of data. Give one column the slack
-  (`w-1/2`, or no width at all) and pin the rest.
+  loading `colSpan` row, and each page of data. The width comes from
+  `TableHead width`, never a class: the reading column takes no width (it gets
+  the slack), the rest take a rung — `control` 48px, `sm` 12%, `md` 16%,
+  `lg` 20%, `actions` 112px — the lowest that holds the column's widest
+  reading on the narrowest table it is drawn on.
 - **Row actions go in `TableActionsCell`**, never a hand-rolled `TableCell`: it is
   a fixed 48px, right-aligned, and fades its buttons in on row hover or keyboard
   focus *without* reflowing, because the width is reserved either way. Add the
-  matching `<TableHead className="w-12">` with an `sr-only` label. Size row
+  matching `<TableHead width="control">` with an `sr-only` label. Size row
   actions `2xs` — a 24px box around a 14px glyph, one step below the shared
   Button/IconButton ladder.
 - **Clickable rows take `data-interactive`**, which is what switches the

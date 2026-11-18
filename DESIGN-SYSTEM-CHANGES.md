@@ -2643,6 +2643,21 @@ connection form's workspaces table.
 Insightis: not used — its four Actions heads set their own width and
 `text-right`, as LinkAI's did before `actions` set it.
 
+**Updated (2026-11-18, review of LinkAI !3 / !4, DBM-25175):**
+- **The head cuts its label** under `layout="fixed"`, with an ellipsis, as
+  `TableCell` cuts its text (the same `[data-layout=fixed]` hook). It ran on
+  over the next column — "Contributors" (106px) in a 96px column on a 708px
+  table printed over the Connections head. A sortable head cuts the label
+  inside its button and keeps the glyph.
+- **`WidthLadder`** — the story that shows every rung on one table; the rungs
+  were described in the code only.
+- **The examples take `width`.** `Table/FixedLayout`, `WithRowActions` and
+  the cheat sheet (`.design-sync/conventions.md`, which becomes a product's
+  `ds-bundle/README.md`) drew columns with raw `w-1/2` / `w-32` / `w-12` —
+  the two most-read examples taught the opposite of this section.
+- **Choosing a rung:** the lowest that holds the column's widest reading on
+  the narrowest table it is drawn on.
+
 The connections table set five column widths by hand — `w-12`, `w-48`,
 `w-44`, `w-52`, `w-28` — because the component had nothing to say about
 width, so the page said it. Each of those is a **reservation**: Data source held

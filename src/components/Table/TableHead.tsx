@@ -142,6 +142,15 @@ function TableHead({
         // tightened body stops reading as that body's header.
         '[[data-density=compact]_&]:h-7',
         'whitespace-nowrap text-left',
+        // Under `layout="fixed"` the label is cut with an ellipsis, as the
+        // body's cells are (`TableCell`, the same `data-layout` hook). It was
+        // not: a head narrower than its word ran on over the next column —
+        // measured on a list at a 708px table, "Contributors" (106px) in a
+        // 96px column printed over the Connections head. The whole word stays
+        // the head's accessible name; a sortable head cuts its label and keeps
+        // its glyph.
+        '[[data-layout=fixed]_&]:overflow-hidden',
+        '[[data-layout=fixed]_&]:text-ellipsis',
         width === 'control' && 'w-12',
         // Over the cluster it names, which `TableActionsCell` sets right.
         width === 'actions' && 'w-28 text-right',
@@ -159,7 +168,7 @@ function TableHead({
           type="button"
           onClick={onSort}
           className={cn(
-            'inline-flex items-center gap-1.5 rounded',
+            'inline-flex max-w-full items-center gap-1.5 rounded',
             /* The sort control is a label plus a standalone glyph — no box to
                fill — so hover and press are carried by colour alone, on the
                icon tokens. */
@@ -172,7 +181,7 @@ function TableHead({
             sortDirection && 'text-ink-body'
           )}
         >
-          {children}
+          <span className="min-w-0 truncate">{children}</span>
           <SortIcon direction={sortDirection} />
         </button>
       ) : (
