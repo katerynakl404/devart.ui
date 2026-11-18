@@ -4208,6 +4208,10 @@ Radix stamps `aria-haspopup` on `DropdownMenu`, `Popover` and `Dialog` triggers 
 
 - **`FieldLabel`** (internal) — the label above a field: the size rung, the asterisk and the
   `<label>` itself, in one place. `InputGroup`, `TextArea` and `Autocomplete` render it.
+- **`RequiredMark`** — the asterisk itself is the developers' own component (2026-11-16, their
+  `design/text-area`), taken here and rendered by `FieldLabel`: one red ` *`, `aria-hidden`,
+  at the label's own size. They wrote it because `InputGroup` and `TextArea` spelled the span
+  out twice; here the one owner of the label is the one caller.
 - **`Autocomplete`** — new `required`, as `InputGroup`'s: the asterisk on the label and
   `aria-required` on the input, off unless a form asks for it.
 

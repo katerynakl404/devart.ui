@@ -2,6 +2,7 @@
 
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '../../lib/utils';
+import { RequiredMark } from '../RequiredMark';
 import { Typography } from '../Typography';
 
 type FieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -57,11 +58,7 @@ export function FieldLabel({
       {...props}
     >
       {children}
-      {required ? (
-        <span aria-hidden="true" className="text-fb-red-text">
-          {' *'}
-        </span>
-      ) : null}
+      {required ? <RequiredMark /> : null}
     </Typography>
   );
 }

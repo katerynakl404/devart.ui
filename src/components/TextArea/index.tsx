@@ -5,6 +5,7 @@ import { useCallback, useId, useLayoutEffect, useRef } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { FieldLabel } from '../InputGroup/FieldLabel';
+import { getFooterMessage } from './get-footer-message';
 import { TextAreaFooter } from './TextAreaFooter';
 import { useValueLength } from './use-value-length';
 
@@ -136,11 +137,15 @@ export const TextArea = ({
 
   const [length, syncLength] = useValueLength(innerRef, showCount);
 
-  const errorId = isInvalid && errorText ? `${fieldId}-error` : undefined;
-  const hintId = !errorId && hintText ? `${fieldId}-hint` : undefined;
+  const message = getFooterMessage({
+    fieldId,
+    isInvalid,
+    errorText,
+    hintText,
+  });
   const countId = showCount ? `${fieldId}-count` : undefined;
   const describedBy =
-    [ariaDescribedBy, errorId ?? hintId, countId].filter(Boolean).join(' ') ||
+    [ariaDescribedBy, message?.id, countId].filter(Boolean).join(' ') ||
     undefined;
 
   const handleRef = useCallback(
@@ -234,10 +239,7 @@ export const TextArea = ({
       {textareaElement}
 
       <TextAreaFooter
-        errorId={errorId}
-        errorText={errorText}
-        hintId={hintId}
-        hintText={hintText}
+        message={message}
         countId={countId}
         length={length}
         limit={maxLength}
