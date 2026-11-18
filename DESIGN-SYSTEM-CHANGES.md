@@ -60,10 +60,9 @@ rewrites that entry; it does not add a section beside it.
 | `Alert` | §95 `title` is optional — a description-only Alert |
 | `AlertStack` | §149 **new** — several notices as one deck · draft |
 | `Annotation` | §121 **new** — `AnnotationGroup`, labels that point at controls inside a lit area · draft |
-| `Autocomplete` | §3 selected and highlighted painted the same<br>§62 the clear and the chevron painted as placeholders |
 | `Badge` | §33 the hairline is the base, not a second variant<br>§65 a fixed-height pill whose label could wrap<br>§83 `leading-none` clipped every descender<br>§86 `xs` was the same pill as `sm` — removed |
 | `Banner` | §85 the dismiss was a tertiary button on a painting<br>§90 `sm` kept the default's line gap |
-| `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveOutline` disables the same<br>§165 a disabled `secondary` fades (`--ink-body`, `opacity-disabled`), it is not repainted<br>§179 `primaryTertiary` — the label holds AA in every state, one token a state<br>§180 hover and press — one wash a family: neutral and red<br>§181 one disabled look for every unfilled button<br>§182 `Button` `xs` — the radius of `IconButton` `xs`<br>§183 `fullWidth` — the icon always beside the label<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§151 `tooltip` on `IconButton`, `Button` and `Switch` — the action or the reason on hover; a disabled control keeps it (`aria-disabled`, painted on every variant) |
+| `Button` and `IconButton` | §66 a switched-off control lit up under the pointer<br>§80 a disabled `secondary` has no fill, and `destructiveOutline` disables the same<br>§165 a disabled `secondary` fades (`--ink-body`, `opacity-disabled`), it is not repainted<br>§179 `primaryTertiary` — the label holds AA in every state, one token a state<br>§180 hover and press — one wash a family: neutral and red<br>§181 one disabled look for every unfilled button<br>§182 `Button` `xs` — the radius of `IconButton` `xs`<br>§183 `fullWidth` — the icon always beside the label<br>§101 `IconButton` `3xs` — 20px, the tree-row toggle · draft<br>§151 `tooltip` on `IconButton` and `Button` — the action or the reason on hover; a disabled control keeps it (`aria-disabled`, painted on every variant) |
 | `Card` | §4 `outline` — the hover border tint is gone<br>§59 `liftOnHover` — one elevation recipe, 1px<br>§60 `elevated` and `ghost` carry the card's box<br>§78 `variant="row"` — its height is padding, not a ceiling<br>§123 `CardFooter` `sticky` and `divided` — a tall card keeps its actions in reach, as a band of its own · draft<br>§162 `CardHeader` `actions` — the head's trailing link or button, on the title's line, a link at 14px · draft<br>§171 `CardHeader` — 4px between title and description, on the 4px step |
 | `ClampedText` | §153 **new** — a text cut to N lines, See more only when there is more · draft |
 | `CodeBlock` | §48 a snippet and the control that copies it — a header, line numbers, a height, wrapping, an error tint, syntax colours, the kit's scrollbar · draft |
@@ -75,7 +74,7 @@ rewrites that entry; it does not add a section beside it.
 | `IconHint` | §152 **new** — a glyph beside a name that says one thing on hover · draft |
 | `InlineRename` | §132 **new** — a row title edited in place · draft |
 | `Input` | §172 `digitsOnly` — a field that takes digits and nothing else · draft |
-| `InputGroup` | §7 `InputGroupAddon` resized glyphs it did not own<br>§9 a field label as loud as the hint beneath it<br>§45 `InputGroupAction` — the docked-icon inks<br>§102 `xs` — the clear ✕ where the search icon is<br>§106 `InputGroupAddon` — the glyph in the placeholder's grey<br>§169 `InputGroupAddon` — a unit in body12, under its value · draft<br>§173 a stacked addon left the value on the border<br>§175 `required` — the mark on a field's label · draft |
+| `InputGroup` | §7 `InputGroupAddon` resized glyphs it did not own<br>§9 a field label as loud as the hint beneath it — `TextArea`'s half<br>§45 `InputGroupAction` — the docked-icon inks |
 | `LinkButton` | §46 the kit's text link, which the package never had; without `href`, a `<button>` · draft |
 | `ListPageLayout` | §133 the header condenses, and the body takes a class |
 | `MetaRow` | §52 the line above a list, and the 4px to it; `sticky` · draft |
@@ -98,7 +97,6 @@ rewrites that entry; it does not add a section beside it.
 | `StatusView` | §51 the illustration is a pack — empty, and empty search<br>§104 a wider message, 48ch inside the default block<br>§107 `EmptySearchIllustration` visible on a white card |
 | `StepProgress` | §117 `size="sm"`, a state on each bar, no tooltip without a title · draft |
 | `Stepper` | §36 `StepperIndicator` — the numbered rail the headless Stepper never shipped · draft |
-| `Switch` | §151 `tooltip` — the action or the reason; a disabled switch keeps it, the off look on `data-disabled`<br>§160 `description` — a line under the label, the switch on its first line |
 | `Table` | §6 `TableHead` — the sort glyph did not hover with its label<br>§42 `TableCell` — a row that could not grow<br>§50 `TableCell` — pressed belonged to whatever was pressed<br>§53 `TableHead` `width` — a share, not a size<br>§54 `TableRow` `nested` — the child row's 8px<br>§56 `density` — a compact row step · draft<br>§76 a clickable row kept the text cursor |
 | `Tabs` | §8 `TabsContent` — the inactive panel came back as an empty box<br>§171 the list's line out of the layout — the strip was 39.8px at 125% scaling |
 | `TextArea` | §41 `hintText` — the counter row's empty slot<br>§70 the hint at 400; the counter and error lines |
@@ -109,7 +107,7 @@ rewrites that entry; it does not add a section beside it.
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
 | Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§48 `--code-*` — syntax colours, AA in both themes<br>§167 green split like red — `--fb-green` a fill in both themes, `--fb-green-text` the ink<br>§174 dark `--ink-inactive` is grey — the placeholder no longer reads blue beside a faded control |
 | Sizes and glyphs | §40 the size ladder<br>§44 the icon surface — the glyph ladder, and the bundle that had none<br>§92 glyph stroke — one weight, set in CSS |
-| Across components | §98 `Table`, `ModalBody` — the system's scrollbar<br>§99 disabled controls — the not-allowed cursor<br>§155 `pressed:` — an open disclosure is not a held press<br>§186 a field's label — one owner, so `InputGroup`, `TextArea` and `Autocomplete` step together; `Autocomplete` takes `required` |
+| Across components | §99 disabled controls — the not-allowed cursor<br>§155 `pressed:` — an open disclosure is not a held press<br>§186 a field's label — one owner, so `InputGroup`, `TextArea` and `Autocomplete` step together; `Autocomplete` takes `required` |
 | Build and tooling | §19 a variant that is not enumerated is never compiled<br>§20 `pnpm bundle` and `pnpm check-bundle-css`<br>§37 `bg-surface-card/85` compiles to nothing · open<br>§84 the class list — list markers, `last:` borders |
 | Synced from upstream | §97 the developers' 1.1.0 parts — what stays different<br>§146 the developers' 1.2.0 parts — what stays different<br>§154 the developers' 1.3.0 and 1.4.0 parts — what stays different |
 
@@ -119,7 +117,12 @@ Retired numbers, and where what they said lives now: §18 → §51 · §21 → �
 §1, §17, §25, §28, §30, §68, §89, §91 → in `upstream` · §57, §163, §164 and §99's `Checkbox` → in `upstream` (1f6a577, MR !22):
 Lucide `Check` / `Minus`, 10px at `stroke-[3.6]` · one entry per part made here (2026-11-03): §81, §127, §128, §129 → §48 (`CodeBlock`) · §108, §115 → §16 (`ConnectorLogo`) · §158 → §46 (`LinkButton`) · §134 → §52 (`MetaRow`) · §67, §111, §135 → §15 (`PageHeader`) · §96, §103, §168 → §73 (`SegmentedControl`) · §116 was given twice —
 `PromoCard` keeps it, `SearchInput` is §145 · §147 withdrawn (2026-11-10): the developers' name
-`destructiveOutline` is kept, and its disabled form is §80.
+`destructiveOutline` is kept, and its disabled form is §80 ·
+§3, §62 (`Autocomplete`), §98, §102, §106, §160, §169, §173, §175, and the parts
+§9's `InputGroup`, §74's `DropdownMenu`, §99's `Switch`, §151's `Switch` → in `upstream`
+(the eight merge requests !25 !26 !29 !30 !31 !37 !38 !39, merged 2026-11-16…18, master at
+`796efa7`): what is left of §9 is `TextArea`'s label, of §74 the tooltip that opens on
+keyboard focus, of §99 the five controls and the menu rows, of §151 `Button` and `IconButton`.
 
 Open, and the same in `upstream`, so under *Open against the kit*: §22, §24,
 §26, §29, §31, §32, §38.
@@ -227,49 +230,6 @@ the same texts instead (`Tour` does that).
 ---
 
 # `Autocomplete`
-
-## 3. `Autocomplete` — selected and highlighted painted the same
-
-`src/components/Autocomplete/OptionItem.tsx`
-
-```diff
-  'data-[highlighted=true]:bg-state-hover',
-- 'aria-selected:bg-state-hover',
-- 'aria-selected:text-ink-primary',
-+ {isSelected && <Check className="text-ink-highlight" />}   // at the row's end
-```
-
-Both states resolved to `--state-hover`, so the moment the cursor entered the
-list the current value became invisible — two different states rendered as one.
-Selected is now a check in Text/Highlight at the row's end; the text stays as
-it is, and the fill is the highlight's alone, so the two never look alike.
-
-- **Amended 2026-11-04** — selected first took its own fill, State/Pressed. In
-  a multi-select every chosen row was a filled plate, and the list read as too
-  much (Kateryna). The fill was dropped and a check added at the row's end;
-  coloured and heavier text were tried with it and left out (2026-11-05).
-
-> Also recorded as **#43** in the Insightis UX audit — `reports/2026-09-04-insightis-ux-audit.md`
-> in the **Insightis** project, not in this repository.
-
-## 62. `Autocomplete` — the clear and the chevron painted as placeholders
-
-`src/components/Autocomplete/index.tsx`
-
-Both controls were `IconButton asChild`, which renders the child instead of a
-button — so what reached the addon was a bare `<svg>`, and the addon’s rules
-read that literally. `[&>svg]:text-ink-inactive` is the DECORATIVE glyph rule,
-while `[&>button]:text-ink-secondary` and its hover step matched nothing at
-all. Two clickable controls painted at the placeholder step and never answered
-the pointer. Measured: `rgb(124 140 162)` — `--ink-inactive`.
-
-Both are `InputGroupAction` now (§45), which is also a real `<button>` under
-the `aria-label`: an `<svg>` with a label and a click handler is not a control
-to a screen reader. Measured after: two buttons, 24px, `rgb(90 106 128)` =
-`--ink-icon`, and no bare `svg` left as a direct child of the addon.
-
-Separate from §22, which lists Autocomplete for a different defect — its
-disabled option still fades at `opacity-50`.
 
 ## 126. `Autocomplete` — its label is every other field's label
 
@@ -837,8 +797,6 @@ actionsAlign?: 'title' | 'center'  // default 'title'
 
 ---
 
----
-
 
 # `CodeBlock`
 
@@ -1034,6 +992,9 @@ moved focus on purpose keeps it, and a click into another field stays there. A
 consumer’s own handler runs first and its `preventDefault` still wins.
 `DropdownMenu` and `DropdownMenuTrigger` wrap Radix’s to share the trigger’s
 ref — and the root’s `modal` — through `DropdownMenu/context.ts`.
+
+**The menu half is in `upstream`** (MR !37, `32f88e9`); what is left here is the
+tooltip paragraph below — a trigger's tooltip opening on keyboard focus only.
 
 The developers kept Radix’s own exception when they took this (2026-11-16,
 `e2c1511`): after any outside interaction with a non-modal menu, or a
@@ -1242,7 +1203,7 @@ other, so the icon's own `className` was never going to decide anything.
 
 ## 9. A field label as loud as the hint beneath it
 
-`src/components/InputGroup/index.tsx`, `src/components/TextArea/index.tsx`
+`src/components/TextArea/index.tsx` — `InputGroup`'s half is in `upstream` (MR !29)
 
 ```diff
 - textColor="secondary"
@@ -1265,104 +1226,6 @@ The action is `upstream`'s — a 24px box around a 16px glyph, no surface, the
 field's `pe-2` inset. It answers the pointer in the inks every docked icon here
 uses: `--ink-icon` → `--ink-icon-hover` (§5), where `upstream`'s goes
 `text-ink-secondary` → `hover:text-ink-primary`.
-
-## 102. `InputGroup` `xs` — the clear ✕ where the search icon is
-
-- **`InputGroupAction`** — at `xs` (read from the group) the box is the
-  14px glyph itself (`size-3.5 [&>svg]:size-3.5`), with the field's own 8px
-  trailing inset (`pe-2`, unchanged); every other size keeps the 24px box and
-  16px glyph. (A first pass used an 18px `size-4.5` box with `pe-1.5`; the
-  shipped scale has no `size-4.5`, so the box collapsed and the ✕ sat 6px in.)
-
-The leading glyph at `xs` is 14px, 8px from the border (`px-2`). The action
-kept the `sm`+ geometry — 8px of field inset plus 4px inside its 24px box —
-so the ✕ sat 12px in and a size larger than the search icon opposite it.
-From `sm` up both are 12px in, so only `xs` showed it. Seen on the
-workspaces prototype's list search beside a tree.
-
-## 106. `InputGroupAddon` — the glyph in the placeholder's grey
-
-- **`InputGroupAddon`** — `[&>svg]:text-ink-inactive`: a decorative glyph (the
-  search icon) takes the placeholder's colour. A text addon keeps
-  `text-ink-secondary`; a docked button keeps `ink-icon` / `ink-icon-hover`.
-
-The glyph inherited the addon's `--ink-secondary` (the kit's `.igrp-add`) while
-the placeholder beside it is `--ink-inactive`: a step darker in light theme,
-a step lighter in dark (rgb 209 213 219 against 148 163 184) — two greys for
-one hint. The rule existed once and was taken out as unasked-for; it was asked
-for now.
-
-## 169. `InputGroupAddon` — a unit in body12, under its value · **DRAFT**
-
-`src/components/InputGroup/InputGroupAddon.tsx`
-
-- **What** — a text addon, a unit after a number: "30 seconds", "0
-  milliseconds", "0 rows" (2026-11-02).
-- **Was** — the field's own 14px in `--ink-secondary`: the word as loud as the
-  number it qualifies, and coarse beside it.
-- **Now** — `text-xs` (body12) on an `inline-end` addon, ink unchanged: text
-  after the value is a unit. Text before it keeps the field's size — it is read
-  with the value, Insightis's `@` before a metric alias (`@net_revenue`). A glyph
-  sizes by `[&>svg]:size-*` and does not move; an `xs` or `sm` field already
-  writes 12px, so there the unit and the value stay one size.
-- **From** — LinkAI, the connection form's number fields.
-- **Used in** (2026-11-03) — LinkAI: every unit in the connection form
-  (`inline-end`). Insightis: no text after a value; one text addon before one,
-  the metric dialog's `@` (`MxMetricDialog`), which this leaves at 14px.
-
-**patch** (`.changeset/input-group-addon-unit.md`).
-
-## 173. `InputGroup` — a stacked addon left the value on the border
-
-`src/components/InputGroup/index.tsx`
-
-- **What** — an addon above or below the value (`block-start` / `block-end`):
-  "To" over an address, "0 / 80" under a subject (2026-11-04).
-- **Was** — the value sat on the field's edge, 0px from the bottom border under
-  "To" and from the top border over "0 / 80". The 12px was written as
-  `has-[>[data-align=block-start]]:[&>input]:pb-3`; Tailwind 3 compiles that pair
-  to `… > input:has(> [data-align])` — the `:has` lands on the input, which has no
-  children, so the rule never matched. Same for the two `inline-*` rules beside
-  them (`pl-2` / `pr-2`).
-- **Now** — `[&:has(>[data-align=block-start])>input]:pb-3` (and `pt-3` for
-  `block-end`): 10px above "To", 12px under the value; 12px over the value, 10px
-  under "0 / 80". The two `inline-*` rules are removed, not repaired — the gap
-  there is the addon's own `me-2` / `ms-2`, and a working `pl-2` would double it
-  to 16.
-- **Theirs** — the same four classes, the same dead rules.
-- **Used in** (2026-11-04) — the `BlockAddons` story only; LinkAI and Insightis
-  stack no addon.
-
-**patch** (`.changeset/input-group-block-addons.md`).
-
----
-
-## 175. `InputGroup` — `required`, the mark on a field's label
-
-`src/components/InputGroup/index.tsx`, `InputGroupContext.ts`, `InputGroupInput.tsx`
-
-- **What** — which fields of a form have to be filled in, said on the label.
-- **Was** — nothing. `label` took a `ReactNode` and that was the whole of it, so
-  a product that marks its required fields drew the mark itself and passed a
-  node: LinkAI's kit has a `Required` component — one `<span>`, ` *` in
-  `text-fb-red-text` — written into four labels by hand, and every form that
-  forgets it is marked differently from the one beside it.
-- **Now** — `required`: the asterisk after the label in `fb-red-text`,
-  `aria-hidden` (so it is not read twice), and `aria-required` on the input,
-  which is what a screen reader announces. Nothing else moves — no native
-  `required`, so the browser's own validation bubble stays out of a form that
-  validates itself.
-- **Theirs** — no mark and no prop.
-- **From** — LinkAI, `linkai-kit/Required` (2026-11-05).
-- **Used in** (2026-11-05) — **the two products mark opposite ends.** LinkAI
-  marks what is REQUIRED (the connection form's fields, Create workspace's
-  name, Request a data source) and leaves the optional bare; Insightis marks
-  what is OPTIONAL — "Description (optional)", in `font-normal` secondary ink
-  (`insightis-kit/WsDialogs`) — and leaves the required bare. The prop serves
-  LinkAI's convention; which of the two the system should hold is a question of
-  its own, and this § does not answer it.
-
-**minor** (`.changeset/input-group-required.md`).
 
 ---
 
@@ -3426,36 +3289,21 @@ viewBox; they are artwork, not UI glyphs.
 
 # Across components
 
-## 98. `Table`, `ModalBody` — the system's scrollbar
-
-- **`Table`** — the frame (`data-slot="table-container"`) adds
-  `scrollbar-thin`. It is a scroller: across for a wide table, and down
-  wherever a parent gives it a height — in a dialog it shrinks to the body and
-  scrolls itself, with the platform's bar: 16px, arrows on Windows.
-- **`ModalBody`** — adds `scrollbar-thin`. It wraps `ScrollShadow`, which sets
-  no bar of its own, so a long dialog body scrolled with the platform's too.
-
-Both now draw the bar the system's own lists draw (DropdownMenu,
-Autocomplete, CodeBlock). Raised by the workspaces prototype's table preview
-(PRD Workspaces F-21), twenty rows in a dialog.
-
 ## 99. Disabled controls — the not-allowed cursor
 
 - **`SegmentedControlTrigger`**, **`TabsTrigger`**, **`Toggle`**,
-  **`Switch`**, **`DropdownMenuItem`**,
+  **`DropdownMenuItem`**,
   **`DropdownMenuCheckboxItem`**, **`DropdownMenuRadioItem`** — no
   `disabled:pointer-events-none` (`data-[disabled]:` on the menu items), which
   `upstream` still carries beside `cursor-not-allowed`. With no pointer events
   the cursor is never asked for, so a switched-off control showed the arrow,
   and a tooltip could not open on it. Hover recipes are behind `enabled:`, so
-  nothing lights up (`Switch`: behind `:not([data-disabled])`, and its off look
-  on `data-disabled`, since §151).
+  nothing lights up.
 - **`AccordionTrigger`** — `disabled:cursor-not-allowed`.
-- **`Switch`** `tertiary` row — `has-[[data-disabled]]:cursor-not-allowed` (was
-  `has-[:disabled]:`, §151) in place of `has-[:disabled]:pointer-events-none`;
-  the row neither lights nor presses.
 
-`RadioButton`, `Button` and `IconButton` already work this way in `upstream`.
+`RadioButton`, `Button` and `IconButton` already work this way in `upstream`,
+and `Switch` does since MR !26 — its track and its `tertiary` row both key on
+`data-disabled` there (`e88067c`).
 Raised by the workspaces prototype: a Permissions row out of the data model
 scope, whose Allow / Deny is switched off.
 
@@ -3562,11 +3410,16 @@ caller's.
 
 # `IconButton`, `Button`, `Switch` tooltip
 
-## 151. `IconButton`, `Button`, `Switch` — `tooltip`; a disabled control keeps it
+## 151. `IconButton`, `Button` — `tooltip`; a disabled control keeps it
 
 `src/components/Tooltip/ControlTooltip.tsx` (internal) ·
 `src/components/IconButton/index.tsx` · `src/components/Button/index.tsx` ·
-`src/components/Switch/index.tsx` · `src/lib/utils.ts` (`secondaryDisabled`)
+`src/lib/utils.ts` (`secondaryDisabled`)
+
+**`Switch`'s half is in `upstream`** (MR !26, `e88067c`): the same props, the
+track keeping its own `data-state` under the trigger, the off look on
+`data-disabled`, and — since the developers' `f7463ae` — a soft-disabled switch
+that submits nothing in a form. What is left here is `Button` and `IconButton`.
 
 ```ts
 tooltip?: ReactNode | true   // true → the aria-label; a node → that, over a longer accessible name
@@ -3585,10 +3438,6 @@ tooltipSide?: 'top' | 'right' | 'bottom' | 'left'   // default 'top'
   the reason a button is off; the prototype built it three times as a disabled
   `Button` in a focusable span in a `Tooltip` ("Add Workspace", "Set Up" on an
   inactive connection, a workspace's Set Up while creating).
-- **`Switch`** (2026-10-27) — the same props. The trigger's own `data-state`
-  (`closed`, `delayed-open`) used to land on the track over `checked` /
-  `unchecked` and wipe its colour — why pages put a span between the two; the
-  switch keeps its own now, and the open tooltip joins its `aria-describedby`.
 - **A disabled control keeps its tooltip** (2026-10-27) — on all three. A
   `disabled` button is out of the tab order and, in the products' browsers,
   reports no hover, so the reason reached nobody. With `disabled` and a
@@ -3602,16 +3451,9 @@ tooltipSide?: 'top' | 'right' | 'bottom' | 'left'   // default 'top'
   paint `disabled`, hover and press switched off. The snapshot moves on every
   `buttonVariants` / `iconButtonVariants` line, because the default
   `primary` is on every line.
-- **`Switch` keys its off look on `data-disabled`** (2026-10-27), not
-  `:disabled` / `:enabled` — Radix stamps it on a disabled switch, and the
-  soft-disabled form carries it too — so both fade, show the not-allowed
-  cursor and do not light on hover; the `tertiary` row likewise
-  (`has-[[data-disabled]]`). The attribute is set by `disabledProps`
-  (2026-11-18, the developers' shape of the helper), so every soft-disabled
-  control carries it, `Button` and `IconButton` included.
-- A disabled-with-tooltip `Switch` inside a `<form>` submits nothing: Radix's
-  hidden input is given no `name` while the switch is soft-disabled
-  (2026-11-18, the developers' fix — it used to submit its value).
+- **The soft-disabled form carries `data-disabled`** as well as
+  `aria-disabled`, set by `disabledProps` (2026-11-18, the developers' shape of
+  the helper), so a recipe may key an off look on the attribute.
 - Like every `Tooltip`, it needs a `TooltipProvider` above it.
 
 **minor** (`.changeset/hint-clamp-tooltip.md`; `Button`, `Switch` and the
@@ -3669,34 +3511,6 @@ Was the prototype's `DescriptionClamp` (a row's description in its hint panel
 and in the pickers).
 
 **minor** (`.changeset/hint-clamp-tooltip.md`).
-
----
-
-# `Switch`
-
-## 160. `Switch` — `description`
-
-`src/components/Switch/index.tsx`
-
-```ts
-description?: ReactNode   // a line under the label
-```
-
-- **What** — a label with an explanation under it beside a switch ("Active" /
-  "Inactive connections stop syncing data but keep their configuration"),
-  built by hand twice in the prototype's connection form (2026-10-27).
-- **Look** — `body12`, `--ink-secondary`: the field hint's scale under the 14px
-  label, 2px below it (`gap-0.5`, as `ChoiceCard` sets its description); faded
-  with the label when disabled.
-- **A11y** — the switch's `aria-describedby`, joined with the caller's own and,
-  while open, its tooltip's.
-- **Alignment** — with a description the row is `items-start`, so the switch
-  sits on the label's first line however long the description runs; an `sm`
-  track (16px) moves 2px down to the middle of the 20px line beside the label.
-- A description with no `label` renders too; without either the switch is bare,
-  as before.
-
-**minor** (`.changeset/switch-description.md`).
 
 ---
 
