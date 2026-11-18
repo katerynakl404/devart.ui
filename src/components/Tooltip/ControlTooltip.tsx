@@ -6,18 +6,17 @@ import { TooltipContent } from './TooltipContent';
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left';
 
-/** Content for a `tooltip` prop; `true` uses the label. */
+/**
+ * What a control's `tooltip` prop shows: `true` reuses the `aria-label`;
+ * an empty value means no tooltip.
+ */
 export function resolveTooltip(
   tooltip: ReactNode | true | undefined,
-  label: ReactNode
+  ariaLabel: ReactNode
 ): ReactNode | undefined {
-  const content = tooltip === true ? label : tooltip;
-  const empty =
-    content === undefined ||
-    content === null ||
-    content === false ||
-    content === '';
-  return empty ? undefined : content;
+  const content = tooltip === true ? ariaLabel : tooltip;
+  if (content == null || content === false || content === '') return undefined;
+  return content;
 }
 
 /** Wraps a control in a tooltip when there is content. */
@@ -39,23 +38,28 @@ export function ControlTooltip({
   );
 }
 
-/** Keeps a disabled control with a tooltip focusable. */
-export function inertForTooltip<E extends Element>(
+function swallowClick(event: MouseEvent) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+/**
+ * Props for a disabled control. A native `disabled` button gets no hover or
+ * focus, so its tooltip would never open. With a tooltip the control is
+ * soft-disabled instead: `aria-disabled`, still focusable, clicks swallowed.
+ * Spread after the consumer's props so `onClick` is replaced.
+ */
+export function disabledProps(
   disabled: boolean | undefined,
-  hasTooltip: boolean,
-  onClick: ((event: MouseEvent<E>) => void) | undefined
-): {
-  disabled: boolean | undefined;
-  'aria-disabled'?: true;
-  onClick: ((event: MouseEvent<E>) => void) | undefined;
-} {
-  if (!disabled || !hasTooltip) return { disabled, onClick };
+  hasTooltip: boolean
+) {
+  if (!disabled) return {};
+
+  if (!hasTooltip) return { disabled: true };
+
   return {
-    disabled: undefined,
     'aria-disabled': true,
-    onClick: (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    },
-  };
+    'data-disabled': '',
+    onClick: swallowClick,
+  } as const;
 }

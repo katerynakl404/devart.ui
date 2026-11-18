@@ -7,7 +7,7 @@ import { cva, type VariantProps } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
 import {
   ControlTooltip,
-  inertForTooltip,
+  disabledProps,
   resolveTooltip,
   type TooltipSide,
 } from '../Tooltip/ControlTooltip';
@@ -189,7 +189,6 @@ const Switch = ({
   description,
   tooltip,
   tooltipSide = 'top',
-  onClick,
   labelPosition,
   gap,
   containerVariant,
@@ -204,7 +203,6 @@ const Switch = ({
   // The sm track lines up with the label's first line only beside it
   const besideLabel = labelPosition !== 'top' && labelPosition !== 'bottom';
   const tip = resolveTooltip(tooltip, props['aria-label']);
-  const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
   const track = (
     <SwitchTrack
@@ -224,8 +222,7 @@ const Switch = ({
         !label && !description && className
       )}
       {...props}
-      {...inert}
-      {...(inert['aria-disabled'] ? { 'data-disabled': '' } : {})}
+      {...disabledProps(disabled, tip !== undefined)}
     >
       <SwitchPrimitives.Thumb
         className={cn(switchThumbVariants({ variant, size }))}

@@ -12,7 +12,7 @@ import {
 import { Spinner } from '../Spinner';
 import {
   ControlTooltip,
-  inertForTooltip,
+  disabledProps,
   resolveTooltip,
   type TooltipSide,
 } from '../Tooltip/ControlTooltip';
@@ -170,7 +170,6 @@ export function IconButton({
   tooltip,
   tooltipSide = 'top',
   disabled,
-  onClick,
   ref,
   children,
   ...props
@@ -180,7 +179,6 @@ export function IconButton({
   const spinnerSize =
     size === '3xs' || size === '2xs' || size === 'xs' ? 'xs' : 'sm';
   const tip = resolveTooltip(tooltip, props['aria-label']);
-  const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
   const button = (
     <Comp
@@ -193,7 +191,7 @@ export function IconButton({
       )}
       aria-busy={isLoading || undefined}
       {...props}
-      {...inert}
+      {...disabledProps(disabled, tip !== undefined)}
     >
       {isLoading ? (
         // Decorative: `aria-busy` on the control conveys the loading state.

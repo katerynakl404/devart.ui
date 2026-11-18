@@ -3597,10 +3597,12 @@ tooltipSide?: 'top' | 'right' | 'bottom' | 'left'   // default 'top'
   `buttonVariants` / `iconButtonVariants` line, because the default
   `primary` is on every line.
 - **`Switch` keys its off look on `data-disabled`** (2026-10-27), not
-  `:disabled` / `:enabled` — Radix stamps it on a disabled switch, and
-  `Switch` stamps it on the focusable form — so both fade, show the
-  not-allowed cursor and do not light on hover; the `tertiary` row likewise
-  (`has-[[data-disabled]]`).
+  `:disabled` / `:enabled` — Radix stamps it on a disabled switch, and the
+  soft-disabled form carries it too — so both fade, show the not-allowed
+  cursor and do not light on hover; the `tertiary` row likewise
+  (`has-[[data-disabled]]`). The attribute is set by `disabledProps`
+  (2026-11-18, the developers' shape of the helper), so every soft-disabled
+  control carries it, `Button` and `IconButton` included.
 - Known difference: a disabled-with-tooltip `Switch` inside a `<form>` still
   submits its value (Radix's hidden input is not disabled).
 - Like every `Tooltip`, it needs a `TooltipProvider` above it.

@@ -13,7 +13,7 @@ import {
 import { Spinner } from '../Spinner';
 import {
   ControlTooltip,
-  inertForTooltip,
+  disabledProps,
   resolveTooltip,
   type TooltipSide,
 } from '../Tooltip/ControlTooltip';
@@ -196,7 +196,6 @@ const Button = ({
   tooltip,
   tooltipSide = 'top',
   disabled,
-  onClick,
   ref,
   leftSlot = null,
   rightSlot = null,
@@ -214,7 +213,6 @@ const Button = ({
     (align !== undefined || Boolean(rightSlot)) &&
     (align === 'left' || !(isLoading || leftSlot));
   const tip = resolveTooltip(tooltip, props['aria-label']);
-  const inert = inertForTooltip(disabled, tip !== undefined, onClick);
 
   const button = (
     <Comp
@@ -226,7 +224,7 @@ const Button = ({
       ref={ref}
       aria-busy={isLoading || undefined}
       {...props}
-      {...inert}
+      {...disabledProps(disabled, tip !== undefined)}
     >
       {isLoading ? (
         <Spinner
