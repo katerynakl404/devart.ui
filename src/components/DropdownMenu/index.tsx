@@ -1,8 +1,9 @@
 'use client';
 
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
-import { type ComponentProps, useContext, useRef } from 'react';
+import { type ComponentProps, useContext, useMemo, useRef } from 'react';
 import { composeRefs } from '../../lib/compose-refs';
+import { DropdownMenuContext } from './context';
 import { DropdownMenuCheckboxItem } from './DropdownMenuCheckboxItem';
 import { DropdownMenuContent } from './DropdownMenuContent';
 import { DropdownMenuItem } from './DropdownMenuItem';
@@ -17,22 +18,25 @@ import {
 import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 import { DropdownMenuShortcut } from './DropdownMenuShortcut';
 import { DropdownMenuSubContent } from './DropdownMenuSubContent';
-import { TriggerRefContext } from './trigger-ref';
 
 /**
  * The root component that manages the open/closed state of the dropdown.
  */
-const DropdownMenu = (
-  props: ComponentProps<typeof DropdownMenuPrimitive.Root>
-) => {
-  const triggerRef = useRef<HTMLButtonElement>(null);
+const DropdownMenu = ({
+  modal = true,
+  ...props
+}: ComponentProps<typeof DropdownMenuPrimitive.Root>) => {
+  const triggerRef = useRef<HTMLElement>(null);
+  const context = useMemo(() => ({ triggerRef, modal }), [modal]);
 
   return (
-    <TriggerRefContext.Provider value={triggerRef}>
-      <DropdownMenuPrimitive.Root {...props} />
-    </TriggerRefContext.Provider>
+    <DropdownMenuContext.Provider value={context}>
+      <DropdownMenuPrimitive.Root modal={modal} {...props} />
+    </DropdownMenuContext.Provider>
   );
 };
+
+DropdownMenu.displayName = 'DropdownMenu';
 
 /**
  * The element (usually a button) that toggles the dropdown menu when clicked.
@@ -41,15 +45,16 @@ const DropdownMenuTrigger = ({
   ref,
   ...props
 }: ComponentProps<typeof DropdownMenuPrimitive.Trigger>) => {
-  const triggerRef = useContext(TriggerRefContext);
-
-  return (
-    <DropdownMenuPrimitive.Trigger
-      ref={composeRefs(ref, triggerRef ?? undefined)}
-      {...props}
-    />
+  const context = useContext(DropdownMenuContext);
+  const triggerRef = useMemo(
+    () => composeRefs(ref, context?.triggerRef),
+    [ref, context?.triggerRef]
   );
+
+  return <DropdownMenuPrimitive.Trigger ref={triggerRef} {...props} />;
 };
+
+DropdownMenuTrigger.displayName = 'DropdownMenuTrigger';
 
 /**
  * A wrapper to group related menu items, often used in conjunction with a label.

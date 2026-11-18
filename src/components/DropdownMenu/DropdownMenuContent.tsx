@@ -1,10 +1,11 @@
 import { Content, Portal } from '@radix-ui/react-dropdown-menu';
-import { type ComponentProps, useContext } from 'react';
+import { type ComponentProps, useContext, useRef } from 'react';
+import { composeEventHandlers } from '../../lib/compose-event-handlers';
 import { cva } from '../../lib/cva';
-import { lastInteractionWasKeyboard } from '../../lib/focus-modality';
+import { restoreFocus } from '../../lib/focus-modality';
 import { usePortalContainer } from '../../lib/portal-container';
 import { cn } from '../../lib/utils';
-import { TriggerRefContext } from './trigger-ref';
+import { DropdownMenuContext } from './context';
 
 const dropdownMenuContentVariants = cva(
   cn(
@@ -45,6 +46,15 @@ const dropdownMenuContentVariants = cva(
   )
 );
 
+type InteractOutsideEvent = Parameters<
+  NonNullable<ComponentProps<typeof Content>['onInteractOutside']>
+>[0];
+
+/** Right-click, or Ctrl+click — the macOS right-click. */
+const isContextMenuClick = (event: Event) =>
+  event instanceof MouseEvent &&
+  (event.button === 2 || (event.button === 0 && event.ctrlKey));
+
 /**
  * The popover container that holds all dropdown items, handling animations and positioning.
  */
@@ -60,22 +70,42 @@ const DropdownMenuContent = ({
   sideOffset = 4,
   alignOffset = 0,
   collisionPadding = 8,
-  onCloseAutoFocus,
   ref,
+  onCloseAutoFocus,
+  onInteractOutside,
   ...props
 }: DropdownMenuContentProps) => {
   const container = usePortalContainer(portalContainer);
-  const triggerRef = useContext(TriggerRefContext);
+  const context = useContext(DropdownMenuContext);
+  const skipFocusRestoreRef = useRef(false);
 
-  // Ring only after the keyboard
+  // Radix's rule: after any outside interaction with a non-modal menu, or a
+  // right-click outside, focus stays where the user put it.
+  const handleInteractOutside = (event: InteractOutsideEvent) => {
+    if (!context) return;
+
+    const isContextMenu = isContextMenuClick(event.detail.originalEvent);
+    if (!context.modal || isContextMenu) skipFocusRestoreRef.current = true;
+  };
+
+  // Radix refocuses the trigger with a plain `focus()`, and browsers' own
+  // `:focus-visible` rules then often show the ring after a mouse pick. The
+  // ring is decided from the last interaction instead, and Radix's
+  // outside-interaction rule is kept.
   const handleCloseAutoFocus = (event: Event) => {
+    // Not composed through the helper on purpose: the flag is read and reset
+    // before the consumer's handler runs, so one that prevents the event
+    // cannot leave it stale.
+    const skipFocusRestore = skipFocusRestoreRef.current;
+    skipFocusRestoreRef.current = false;
+
     onCloseAutoFocus?.(event);
-    const trigger = triggerRef?.current;
+    const trigger = context?.triggerRef.current;
     if (event.defaultPrevented || !trigger) return;
 
     event.preventDefault();
-    if (document.activeElement === document.body) {
-      trigger.focus({ focusVisible: lastInteractionWasKeyboard() });
+    if (!skipFocusRestore && document.activeElement === document.body) {
+      restoreFocus(trigger);
     }
   };
 
@@ -87,6 +117,10 @@ const DropdownMenuContent = ({
         alignOffset={alignOffset}
         collisionPadding={collisionPadding}
         onCloseAutoFocus={handleCloseAutoFocus}
+        onInteractOutside={composeEventHandlers(
+          onInteractOutside,
+          handleInteractOutside
+        )}
         className={cn(dropdownMenuContentVariants(), className)}
         {...props}
       />

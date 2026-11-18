@@ -16,7 +16,7 @@ import {
   User,
 } from 'lucide-react';
 import { useState } from 'react';
-import { fn } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { Button } from '../Button';
 import { TooltipProvider } from '../Tooltip';
 import {
@@ -325,5 +325,81 @@ export const SegmentedItem: Story = {
         </DropdownMenu>
       </TooltipProvider>
     );
+  },
+};
+
+const expectMenuClosed = () =>
+  waitFor(() =>
+    expect(within(document.body).queryByRole('menu')).not.toBeInTheDocument()
+  );
+
+/**
+ * Closing returns focus to the trigger; the ring shows only when the menu was
+ * closed from the keyboard.
+ */
+export const FocusReturn: Story = {
+  render: (args) => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="secondary">Actions</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent {...args} align="start">
+        <DropdownMenuItem onSelect={fn()}>Rename</DropdownMenuItem>
+        <DropdownMenuItem onSelect={fn()}>Duplicate</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const body = within(document.body);
+    const trigger = canvas.getByRole('button', { name: 'Actions' });
+
+    await userEvent.click(trigger);
+    await userEvent.click(
+      await body.findByRole('menuitem', { name: 'Rename' })
+    );
+    await expectMenuClosed();
+    await waitFor(() => expect(trigger).toHaveFocus());
+    await expect(
+      trigger.matches(':focus-visible'),
+      'no ring after a mouse pick'
+    ).toBe(false);
+
+    await userEvent.keyboard('{Enter}');
+    await body.findByRole('menu');
+    await userEvent.keyboard('{Escape}');
+    await expectMenuClosed();
+    await waitFor(() => expect(trigger).toHaveFocus());
+    await expect(
+      trigger.matches(':focus-visible'),
+      'ring after a keyboard close'
+    ).toBe(true);
+  },
+};
+
+/** As in Radix, a click outside a non-modal menu leaves focus where it landed. */
+export const NonModalOutsideClick: Story = {
+  render: (args) => (
+    <div className="flex flex-col items-center gap-6">
+      <p>Click here to close</p>
+      <DropdownMenu modal={false}>
+        <DropdownMenuTrigger asChild>
+          <Button variant="secondary">Actions</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent {...args} align="start">
+          <DropdownMenuItem onSelect={fn()}>Rename</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  ),
+  play: async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: 'Actions' });
+
+    await userEvent.click(trigger);
+    await within(document.body).findByRole('menu');
+    await userEvent.click(canvas.getByText('Click here to close'));
+    await expectMenuClosed();
+    // Past Radix's close-focus timeout
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(trigger).not.toHaveFocus();
   },
 };

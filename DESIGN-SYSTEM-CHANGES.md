@@ -1023,16 +1023,22 @@ keeps one boolean — was the last interaction this document saw a keystroke or 
 pointer — from a capture-phase `keydown`/`pointerdown` pair (modifier-only
 presses do not count, or holding Shift before a click would make that click a
 keyboard interaction). `DropdownMenuContent` hands focus back to the trigger
-itself, as Radix would, with `focus({ focusVisible })` set from that boolean:
-after the keyboard the ring shows, after the pointer it does not. Focus lands on
-the trigger either way, so the next Tab goes on from the menu’s button. (The
-first version skipped the restore for the pointer altogether; the next Tab then
-started from the top of the page — found handing `Select` over, 2026-11-05.)
+itself, as Radix would, through `restoreFocus(trigger)` — `focus({ ...options,
+focusVisible })` set from that boolean: after the keyboard the ring shows, after
+the pointer it does not. Focus lands on the trigger either way, so the next Tab
+goes on from the menu’s button. (The first version skipped the restore for the
+pointer altogether; the next Tab then started from the top of the page — found
+handing `Select` over, 2026-11-05.)
 The hand-back runs only when focus went nowhere (`document.body`): an item that
 moved focus on purpose keeps it, and a click into another field stays there. A
 consumer’s own handler runs first and its `preventDefault` still wins.
-`DropdownMenu` and `DropdownMenuTrigger` wrap Radix’s to hand the trigger’s ref
-to the content.
+`DropdownMenu` and `DropdownMenuTrigger` wrap Radix’s to share the trigger’s
+ref — and the root’s `modal` — through `DropdownMenu/context.ts`.
+
+The developers kept Radix’s own exception when they took this (2026-11-16,
+`e2c1511`): after any outside interaction with a non-modal menu, or a
+right-click / Ctrl+click outside any menu, focus stays where the user put it,
+so `onInteractOutside` sets a flag the close handler reads and clears.
 
 Handing focus back also opened the tooltip around a trigger — `RowMenuButton`’s
 ⋮, `SidebarChatItem`’s — because Radix opens one on any focus: after a mouse

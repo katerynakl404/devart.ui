@@ -1,6 +1,23 @@
 import { fireEvent } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { lastInteractionWasKeyboard } from '../focus-modality';
+import { describe, expect, it, vi } from 'vitest';
+import { lastInteractionWasKeyboard, restoreFocus } from '../focus-modality';
+
+describe('restoreFocus', () => {
+  it('shows the ring only after the keyboard and keeps the given options', () => {
+    const element = document.createElement('button');
+    const focus = vi.spyOn(element, 'focus');
+
+    fireEvent.keyDown(document.body, { key: 'Escape' });
+    restoreFocus(element, { preventScroll: true });
+    fireEvent.pointerDown(document.body);
+    restoreFocus(element);
+
+    expect(focus.mock.calls).toEqual([
+      [{ preventScroll: true, focusVisible: true }],
+      [{ focusVisible: false }],
+    ]);
+  });
+});
 
 describe('lastInteractionWasKeyboard', () => {
   it('is true after a keystroke', () => {
