@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
-import { expect, waitFor, within } from 'storybook/test';
-import { Select, type SelectOption } from './index';
+import { useEffect, useState } from 'react';
+import { useArgs } from 'storybook/preview-api';
+import { expect, fn, waitFor, within } from 'storybook/test';
+import {
+  Select,
+  type SelectOption,
+  type SelectOptionBase,
+  type SelectProps,
+} from './index';
 
 const AUTH: SelectOption[] = [
   { id: 'password', label: 'Password' },
@@ -42,12 +48,17 @@ const meta = {
     disabled: false,
     isInvalid: false,
     clearable: false,
+    required: false,
+    value: null,
+    onValueChange: fn(),
   },
   argTypes: {
     size: { control: 'inline-radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    value: { control: 'text' },
     options: { control: false },
-    value: { control: false },
     onValueChange: { control: false },
+    getOptionLabel: { control: false },
+    getOptionDisabled: { control: false },
   },
   decorators: [
     (Story) => (
@@ -61,20 +72,47 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Controlled(args: Story['args']) {
-  const [value, setValue] = useState<string | null>(args?.value ?? null);
+type SelectArgs = SelectProps<SelectOptionBase>;
+
+type ArgsSelectProps = SelectArgs & {
+  updateArgs: (args: Partial<SelectArgs>) => void;
+};
+
+/**
+ * `value` follows the args both ways: a pick updates the Controls panel, and a
+ * value typed there updates the field. The local copy keeps the field live
+ * where nothing re-renders the story on `updateArgs` (the test runner).
+ */
+function ArgsSelect({ updateArgs, ...args }: ArgsSelectProps) {
+  const [value, setValue] = useState<string | null>(args.value ?? null);
+
+  useEffect(() => {
+    setValue(args.value ?? null);
+  }, [args.value]);
+
   return (
     <Select
-      {...(args as Parameters<typeof Select>[0])}
+      {...args}
       value={value}
-      onValueChange={setValue}
+      onValueChange={(next) => {
+        setValue(next);
+        args.onValueChange?.(next);
+        updateArgs({ value: next });
+      }}
     />
   );
 }
 
+// Storybook hooks run only in a story's render function, so `useArgs` lives
+// here and the React state in ArgsSelect
+const renderSelect: Story['render'] = function Render(args) {
+  const [, updateArgs] = useArgs<SelectArgs>();
+  return <ArgsSelect {...args} updateArgs={updateArgs} />;
+};
+
 /** Nothing chosen: the placeholder. A pick closes the list. */
 export const Default: Story = {
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
   play: async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Authentication' });
     await userEvent.click(trigger);
@@ -86,8 +124,18 @@ export const Default: Story = {
     await waitFor(() =>
       expect(page.queryByRole('listbox')).not.toBeInTheDocument()
     );
+  },
+};
 
-    await userEvent.click(trigger);
+/** The chosen option is marked in the list; Escape closes it. */
+export const WithValue: Story = {
+  args: { value: 'key' },
+  render: renderSelect,
+  play: async ({ canvas, userEvent }) => {
+    const page = within(document.body);
+    await userEvent.click(
+      canvas.getByRole('combobox', { name: 'Authentication' })
+    );
     await expect(
       await page.findByRole('option', { name: 'Public key' })
     ).toHaveAttribute('aria-selected', 'true');
@@ -98,15 +146,10 @@ export const Default: Story = {
   },
 };
 
-export const WithValue: Story = {
-  args: { value: 'key' },
-  render: (args) => <Controlled {...args} />,
-};
-
 /** The clear button empties the field without opening the list. */
 export const Clearable: Story = {
   args: { value: 'key', clearable: true },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
   play: async ({ canvas, userEvent }) => {
     const trigger = canvas.getByRole('combobox', { name: 'Authentication' });
     await userEvent.click(
@@ -120,10 +163,42 @@ export const Clearable: Story = {
   },
 };
 
+/**
+ * The clear button acts on a click, like any button: a screen-reader or
+ * scripted click clears, a right-click does not.
+ */
+export const ClearOnClick: Story = {
+  args: { value: 'key', clearable: true },
+  render: renderSelect,
+  play: async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('combobox', { name: 'Authentication' });
+    const clear = canvas.getByRole('button', { name: 'Clear selection' });
+
+    await userEvent.pointer({ keys: '[MouseRight]', target: clear });
+    await expect(trigger, 'a right-click keeps the value').toHaveTextContent(
+      'Public key'
+    );
+
+    clear.click();
+    await waitFor(() => expect(trigger).toHaveTextContent('Choose a method'));
+  },
+};
+
+/** A value missing from `options` shows the placeholder, as `null` does. */
+export const UnknownValue: Story = {
+  args: { value: 'removed' },
+  render: renderSelect,
+  play: async ({ canvas }) => {
+    const trigger = canvas.getByRole('combobox', { name: 'Authentication' });
+    await expect(trigger).toHaveTextContent('Choose a method');
+    await expect(trigger).toHaveAttribute('data-placeholder');
+  },
+};
+
 /** Asterisk on the label, announced as required; no clear button. */
 export const Required: Story = {
   args: { value: 'key', clearable: true, required: true },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
   play: async ({ canvas }) => {
     await expect(
       canvas.getByRole('combobox', { name: 'Authentication' })
@@ -138,11 +213,14 @@ export const Required: Story = {
 /** In a form, `name` and `required` work as on a native select. */
 export const InAForm: Story = {
   args: { required: true, name: 'auth' },
-  render: (args) => (
-    <form aria-label="Connection">
-      <Controlled {...args} />
-    </form>
-  ),
+  render: function Render(args) {
+    const [, updateArgs] = useArgs<SelectArgs>();
+    return (
+      <form aria-label="Connection">
+        <ArgsSelect {...args} updateArgs={updateArgs} />
+      </form>
+    );
+  },
   play: async ({ canvas, userEvent }) => {
     const form = canvas.getByRole('form', {
       name: 'Connection',
@@ -168,7 +246,7 @@ export const InAForm: Story = {
 /** An option may have the empty id: a default that is no explicit value. */
 export const EmptyIdOption: Story = {
   args: { label: 'Protocol', options: PROTOCOLS, value: '' },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
   play: async ({ canvas, userEvent }) => {
     const page = within(document.body);
     const field = canvas.getByRole('combobox', { name: 'Protocol' });
@@ -197,17 +275,26 @@ export const EmptyIdOption: Story = {
 /** A longer list scrolls after seven and a half rows. */
 export const LongList: Story = {
   args: { label: 'Region', placeholder: 'Choose a region', options: REGIONS },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
 };
 
 export const Sizes: Story = {
-  render: (args) => (
-    <div className="flex flex-col gap-4">
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <Controlled key={size} {...args} size={size} label={size} />
-      ))}
-    </div>
-  ),
+  render: function Render(args) {
+    const [, updateArgs] = useArgs<SelectArgs>();
+    return (
+      <div className="flex flex-col gap-4">
+        {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+          <ArgsSelect
+            key={size}
+            {...args}
+            size={size}
+            label={size}
+            updateArgs={updateArgs}
+          />
+        ))}
+      </div>
+    );
+  },
 };
 
 /** A required field left empty: the asterisk and the error together. */
@@ -217,10 +304,32 @@ export const ErrorState: Story = {
     isInvalid: true,
     errorText: 'Choose an authentication method.',
   },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
+  play: async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('combobox', { name: 'Authentication' });
+    const group = trigger.closest('[data-slot=input-group]') as HTMLElement;
+    const errorBorder = getComputedStyle(group).borderColor;
+
+    // Keyboard open with the pointer away, so no hover rule paints the border
+    trigger.focus();
+    await userEvent.keyboard('{Enter}');
+    await within(document.body).findByRole('listbox');
+    // Past the border colour transition
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(
+      getComputedStyle(group).borderColor,
+      'the error border stays while the list is open'
+    ).toBe(errorBorder);
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() =>
+      expect(
+        within(document.body).queryByRole('listbox')
+      ).not.toBeInTheDocument()
+    );
+  },
 };
 
 export const Disabled: Story = {
   args: { disabled: true, value: 'password' },
-  render: (args) => <Controlled {...args} />,
+  render: renderSelect,
 };

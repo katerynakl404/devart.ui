@@ -212,6 +212,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **ResizableMainSideLayout** | react-resizable-panels | — *(main pane plus a side pane that collapses to nothing)* |
 | **ScrollShadow** | Custom | `focusable` *(a Tab stop only while it overflows with nothing focusable inside)* |
 | **SearchInput** | InputGroup | `size`, `variant` *(results dropdown is this package's extension)* |
+| **Select** | Radix Select | `size` |
 | **SelectableListCard** | CVA | `layout` (`card` | `row`) |
 | **SegmentedControl** | Radix Tabs + CVA | `variant`, `size`, `rounded` |
 | **Separator** | Radix Separator | `variant`, `orientation` |

@@ -1215,7 +1215,18 @@ compound[1] tinted=true, tone=positive
 compound[2] tinted=true, tone=negative
   inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap font-medium text-ink-secondary transition-[background-color,color,box-shadow] duration-fast [&_svg]:shrink-0 enabled:data-[state=inactive]:hover:bg-segctrl-hover-bg enabled:data-[state=inactive]:hover:text-ink-primary enabled:data-[state=inactive]:hover:shadow-segctrl-hover data-[state=active]:bg-surface-card dark:data-[state=active]:bg-surface-chips data-[state=active]:text-ink-primary data-[state=active]:shadow-segctrl-active focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card disabled:cursor-not-allowed disabled:opacity-disabled h-8 px-3 text-sm [&_svg]:size-3.5 rounded data-[state=active]:bg-fb-red dark:data-[state=active]:bg-fb-red data-[state=active]:text-content-on-solid data-[state=active]:shadow-none data-[state=inactive]:bg-fb-red/10 data-[state=inactive]:text-fb-red-text enabled:data-[state=inactive]:hover:bg-fb-red/10 enabled:data-[state=inactive]:hover:text-fb-red-text
 
-## components/Select/index.tsx — selectClearVariants
+## components/Select/Select.tsx — selectGroupVariants
+
+defaultVariants: isInvalid=false
+
+(defaults)
+  px-0 has-[>[data-slot=input-group-action]]:pe-0 has-[[data-slot=input-group-control][data-state=open]]:border-input-focus
+isInvalid=false
+  px-0 has-[>[data-slot=input-group-action]]:pe-0 has-[[data-slot=input-group-control][data-state=open]]:border-input-focus
+isInvalid=true
+  px-0 has-[>[data-slot=input-group-action]]:pe-0 has-[[data-slot=input-group-control][data-state=open]]:border-input-error
+
+## components/Select/SelectClearButton.tsx — selectClearVariants
 
 defaultVariants: size=md
 
@@ -1232,29 +1243,39 @@ size=lg
 size=xl
   absolute top-1/2 -translate-y-1/2 end-[38px]
 
-## components/Select/index.tsx — selectItemVariants
+## components/Select/SelectItem.tsx — selectItemVariants
 
 (defaults)
   min-h-11 gap-2.5 rounded px-3 py-2.5 text-ink-primary text-sm leading-normal [&_svg]:size-4 [&_svg]:stroke-[2.5]
 
-## components/Select/index.tsx — selectTriggerVariants
+## components/Select/SelectList.tsx — selectContentVariants
+
+(defaults)
+  rounded-lg border border-stroke bg-surface-card text-ink-body shadow-overlay-soft overflow-y-auto overflow-x-hidden scrollbar-thin will-change-[transform,opacity] [transform:translateZ(0)] [backface-visibility:hidden] data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 w-[calc(var(--radix-select-trigger-width)+2px)] min-w-0 max-w-none z-[110] p-0 max-h-[min(21.5rem,var(--radix-select-content-available-height))] origin-[--radix-select-content-transform-origin]
+
+## components/Select/SelectList.tsx — selectViewportVariants
+
+(defaults)
+  p-2 [&[data-radix-select-viewport]]:[scrollbar-width:auto] [&[data-radix-select-viewport]::-webkit-scrollbar]:block
+
+## components/Select/SelectTrigger.tsx — selectTriggerVariants
 
 defaultVariants: size=md
 
 (defaults)
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
 size=xs
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-2 text-xs [&>svg]:size-3.5
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-2 text-xs [&>svg]:size-3.5
 size=sm
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
 size=md
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-sm [&>svg]:size-4
 size=lg
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-base [&>svg]:size-5
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-base [&>svg]:size-5
 size=xl
-  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 bg-transparent text-start text-ink-primary outline-none cursor-pointer data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-base [&>svg]:size-5
+  group/select flex h-full w-full min-w-0 items-center justify-between gap-2 cursor-pointer bg-transparent text-start text-ink-primary outline-none data-[placeholder]:text-ink-inactive disabled:cursor-not-allowed disabled:text-ink-inactive px-3 text-base [&>svg]:size-5
 
-## components/Select/index.tsx — selectValueVariants
+## components/Select/SelectTrigger.tsx — selectValueVariants
 
 defaultVariants: size=md, withClear=false
 

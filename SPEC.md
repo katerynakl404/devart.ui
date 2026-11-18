@@ -392,9 +392,10 @@ alone re-themes it.
 
 #### Portals
 
-Nine components render through a portal to `document.body` — `Modal`, `Sheet`,
-`Popover`, `DropdownMenu`, `Tooltip`, `TruncatedTitleTooltip` — as does Sonner's
-`Toaster`. A theme class on a subtree does not reach them: a dialog opened from
+Ten components render through a portal to `document.body` — `Modal`, `Sheet`,
+`Popover`, `DropdownMenu`, `Select`, `Tooltip`, `TruncatedTitleTooltip`, and
+through them `ConfirmationDialog`, `Datepicker` and `Autocomplete` — as does
+Sonner's `Toaster`. A theme class on a subtree does not reach them: a dialog opened from
 inside a scoped theme renders under whatever class the document root carries.
 Scoped theming is therefore safe for page chrome and unsafe for any surface that
 opens a portaled overlay, unless the same class is also on `<html>`.
