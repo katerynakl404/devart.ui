@@ -3603,8 +3603,9 @@ tooltipSide?: 'top' | 'right' | 'bottom' | 'left'   // default 'top'
   (`has-[[data-disabled]]`). The attribute is set by `disabledProps`
   (2026-11-18, the developers' shape of the helper), so every soft-disabled
   control carries it, `Button` and `IconButton` included.
-- Known difference: a disabled-with-tooltip `Switch` inside a `<form>` still
-  submits its value (Radix's hidden input is not disabled).
+- A disabled-with-tooltip `Switch` inside a `<form>` submits nothing: Radix's
+  hidden input is given no `name` while the switch is soft-disabled
+  (2026-11-18, the developers' fix — it used to submit its value).
 - Like every `Tooltip`, it needs a `TooltipProvider` above it.
 
 **minor** (`.changeset/hint-clamp-tooltip.md`; `Button`, `Switch` and the

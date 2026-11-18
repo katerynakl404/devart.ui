@@ -1652,36 +1652,38 @@ size=sm
 size=default
   relative box-border flex touch-none select-none items-center rounded-full border-2 border-transparent bg-surface-chips data-[disabled]:pointer-events-none data-[disabled]:opacity-disabled [&>span:last-child]:transition-[left] [&>span:last-child]:duration-fast [&>span:last-child]:ease-out motion-reduce:[&>span:last-child]:transition-none h-5 w-20
 
-## components/Switch/index.tsx — switchContainerVariants
+## components/Switch/Switch.tsx — switchContainerVariants
 
 defaultVariants: labelPosition=right, gap=md, variant=default, withDescription=false
 
 (defaults)
-  flex items-center flex-row-reverse gap-3
+  group/switch flex items-center flex-row-reverse gap-3
 labelPosition=left
-  flex items-center flex-row gap-3
+  group/switch flex items-center flex-row gap-3
 labelPosition=right
-  flex items-center flex-row-reverse gap-3
+  group/switch flex items-center flex-row-reverse gap-3
 labelPosition=top
-  flex items-center flex-col-reverse gap-3
+  group/switch flex items-center flex-col-reverse gap-3
 labelPosition=bottom
-  flex items-center flex-col gap-3
+  group/switch flex items-center flex-col gap-3
 gap=sm
-  flex items-center flex-row-reverse gap-2
+  group/switch flex items-center flex-row-reverse gap-2
 gap=md
-  flex items-center flex-row-reverse gap-3
+  group/switch flex items-center flex-row-reverse gap-3
 gap=lg
-  flex items-center flex-row-reverse gap-4
+  group/switch flex items-center flex-row-reverse gap-4
 variant=default
-  flex items-center flex-row-reverse gap-3
+  group/switch flex items-center flex-row-reverse gap-3
 variant=tertiary
-  flex items-center flex-row-reverse gap-3 cursor-pointer rounded transition-colors duration-fast hover:bg-state-hover active:bg-state-pressed has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:hover:bg-transparent has-[[data-disabled]]:active:bg-transparent
+  group/switch flex items-center flex-row-reverse gap-3 cursor-pointer rounded transition-colors duration-fast hover:bg-state-hover pressed:bg-state-pressed has-[[data-disabled]]:cursor-not-allowed has-[[data-disabled]]:hover:bg-transparent has-[[data-disabled]]:pressed:bg-transparent
 withDescription=true
-  flex items-center flex-row-reverse gap-3 items-start
+  group/switch flex items-center flex-row-reverse gap-3
 withDescription=false
-  flex items-center flex-row-reverse gap-3
+  group/switch flex items-center flex-row-reverse gap-3
+compound[0] withDescription=true, labelPosition=left,right
+  group/switch flex items-center gap-3
 
-## components/Switch/index.tsx — switchThumbVariants
+## components/Switch/SwitchControl.tsx — switchThumbVariants
 
 defaultVariants: variant=accent, size=default
 
@@ -1694,7 +1696,7 @@ size=default
 size=sm
   pointer-events-none flex items-center justify-center origin-right rounded-full transition-all bg-content-on-solid shadow-thumb ring-0 data-[state=unchecked]:ms-0 size-3 min-h-3 min-w-3 data-[state=checked]:ms-3
 
-## components/Switch/index.tsx — switchVariants
+## components/Switch/SwitchControl.tsx — switchVariants
 
 defaultVariants: variant=accent, size=default, rounded=default, withDescription=false
 

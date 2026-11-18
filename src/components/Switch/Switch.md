@@ -37,9 +37,12 @@ keeps the text clickable. `labelPosition` puts it left / right / top / bottom.
 
 `description` puts a line under the label that says what switching does —
 `body12` in `--ink-secondary`, 2px under it, and the switch's
-`aria-describedby`. With a description the row aligns to the top, so the switch
-sits on the label's first line. Do not build the label-plus-explanation row by
-hand beside a bare switch.
+`aria-describedby`. A described switch needs a name — `label`, `aria-label`
+or `aria-labelledby`; the props type asks for one. With the label beside it
+(`left`, `right`) the row aligns to the top, so the switch sits on the label's
+first line; above or below (`top`, `bottom`) there is no first line to meet and
+the row stays centred. Do not build the label-plus-explanation row by hand
+beside a bare switch.
 
 `containerVariant="tertiary"` turns the whole label row into a hover/press
 surface — for a settings list where the row, not the switch, is the target.
@@ -50,8 +53,9 @@ surface — for a settings list where the row, not the switch, is the target.
 `true` shows the `aria-label`. The same prop and code as `IconButton` and
 `Button`. With `disabled` the switch is rendered `aria-disabled` (and stamped
 `data-disabled`, which the off look keys on): it stays in the tab order so the
-reason opens on focus, looks exactly as disabled, and does not toggle. Do not
-wrap a switch in a span to hold a tooltip — the trigger's `data-state` used to
+reason opens on focus, looks exactly as disabled, and does not toggle. Inside
+a `<form>` it submits nothing: Radix's hidden input loses its `name` while the
+switch is soft-disabled. Do not wrap a switch in a span to hold a tooltip — the trigger's `data-state` used to
 land on the track and wipe its colour; the component keeps its own.
 
 ## Confirming a change

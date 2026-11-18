@@ -75,8 +75,9 @@ export const WithoutLabel: Story = {
 /**
  * `description` — a line under the label that says what switching does:
  * `body12`, `--ink-secondary`, 2px under the label, and the switch's
- * `aria-describedby`. The row aligns to the top, so the switch sits on the
- * label's first line however long the description runs — `sm` included.
+ * `aria-describedby`. With the label beside it the row aligns to the top, so
+ * the switch sits on the label's first line however long the description runs
+ * — `sm` included; with the label above or below, the row stays centred.
  */
 export const WithDescription: Story = {
   args: {
