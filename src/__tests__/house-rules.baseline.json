@@ -1,0 +1,179 @@
+{
+  "components/Accordion/AccordionTrigger.tsx": {
+    "conditional-class": 1
+  },
+  "components/ActivityTray/ActivityTrayItem.tsx": {
+    "active-variant": 1
+  },
+  "components/Alert/index.tsx": {
+    "conditional-class": 2
+  },
+  "components/AlertStack/index.tsx": {
+    "class-map": 1,
+    "conditional-class": 4
+  },
+  "components/Autocomplete/BadgeList.tsx": {
+    "class-map": 1
+  },
+  "components/Autocomplete/index.tsx": {
+    "class-map": 2,
+    "conditional-class": 3
+  },
+  "components/Avatar/index.tsx": {
+    "components-per-file": 3
+  },
+  "components/Banner/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/Button/index.tsx": {
+    "conditional-class": 4
+  },
+  "components/Card/CardHeader.tsx": {
+    "conditional-class": 5
+  },
+  "components/Checkbox/Checkbox.tsx": {
+    "conditional-class": 1
+  },
+  "components/Checkbox/CheckboxGroup.tsx": {
+    "conditional-class": 2
+  },
+  "components/CodeBlock/index.tsx": {
+    "conditional-class": 6
+  },
+  "components/Datepicker/Calendar.tsx": {
+    "conditional-class": 2
+  },
+  "components/Datepicker/CalendarDropdown.tsx": {
+    "conditional-class": 1
+  },
+  "components/DialogTitleFallback/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/DropdownMenu/DropdownMenuCheckboxItem.tsx": {
+    "active-variant": 1
+  },
+  "components/DropdownMenu/DropdownMenuItem.tsx": {
+    "active-variant": 3,
+    "conditional-class": 2
+  },
+  "components/DropdownMenu/DropdownMenuLabel.tsx": {
+    "conditional-class": 1
+  },
+  "components/DropdownMenu/DropdownMenuRadioItem.tsx": {
+    "active-variant": 1
+  },
+  "components/DropdownMenu/index.tsx": {
+    "components-per-file": 2
+  },
+  "components/File/index.tsx": {
+    "active-variant": 1,
+    "conditional-class": 5
+  },
+  "components/FilterMenu/index.tsx": {
+    "conditional-class": 3,
+    "components-per-file": 2
+  },
+  "components/Foundations/index.tsx": {
+    "conditional-class": 1,
+    "components-per-file": 14
+  },
+  "components/IconButton/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/InputGroup/FieldLabel.tsx": {
+    "class-map": 1
+  },
+  "components/ListSelectionBar/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/MetaRow/index.tsx": {
+    "components-per-file": 3
+  },
+  "components/PageHeader/index.tsx": {
+    "conditional-class": 4
+  },
+  "components/Pagination/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/Pagination/size.ts": {
+    "class-map": 1
+  },
+  "components/RadioButton/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/Resizable/index.tsx": {
+    "components-per-file": 2
+  },
+  "components/ResizableMainSideLayout/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/ScrollShadow/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/SearchInput/SearchInputWithResults.tsx": {
+    "type-literal-cast": 2
+  },
+  "components/SelectableListCard/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/Sheet/index.tsx": {
+    "components-per-file": 7
+  },
+  "components/Sidebar/SidebarAccount.tsx": {
+    "components-per-file": 3
+  },
+  "components/Sidebar/SidebarChatItem.tsx": {
+    "conditional-class": 2,
+    "active-variant": 1
+  },
+  "components/Sidebar/SidebarMenuButton.tsx": {
+    "active-variant": 2
+  },
+  "components/Sidebar/SidebarMenuSub.tsx": {
+    "conditional-class": 2,
+    "active-variant": 1,
+    "components-per-file": 3
+  },
+  "components/Sidebar/SidebarMobileTrigger.tsx": {
+    "conditional-class": 1
+  },
+  "components/Sidebar/SidebarNavItem.tsx": {
+    "active-variant": 1
+  },
+  "components/Sidebar/index.tsx": {
+    "conditional-class": 3
+  },
+  "components/Skeleton/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/StatusView/index.tsx": {
+    "conditional-class": 3,
+    "components-per-file": 3
+  },
+  "components/Stepper/StepperIndicator.tsx": {
+    "conditional-class": 6
+  },
+  "components/Table/TableHead.tsx": {
+    "conditional-class": 7,
+    "components-per-file": 2
+  },
+  "components/Table/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/TextArea/index.tsx": {
+    "conditional-class": 1
+  },
+  "components/Toast/ToastMessage/constants.ts": {
+    "class-map": 2
+  },
+  "components/Toggle/index.tsx": {
+    "active-variant": 8
+  },
+  "components/Tooltip/index.tsx": {
+    "components-per-file": 2
+  },
+  "components/Tree/index.tsx": {
+    "conditional-class": 2,
+    "components-per-file": 3
+  }
+}
