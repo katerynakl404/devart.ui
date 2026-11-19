@@ -4246,7 +4246,7 @@ those systems accept that.
 
 ---
 
-## 190. `SelectableListCard` — the checkbox of a row whose content is two lines · **FOUND, NOT FIXED**
+## 190. `SelectableListCard` — the checkbox of a row whose content is two lines
 
 `src/components/SelectableListCard/index.tsx`
 
@@ -4260,35 +4260,15 @@ checkbox's centre sat **16px below** the switch's and the name's. Passing
 `items-start` to move it up overshoots the other way: the checkbox is 18px
 and the title's line is 20px, so it then sat **3px above** them.
 
-A caller cannot reach that span, so the product holds it to a 20px box in its
-own stylesheet (`_shared/pages.css`, `.lk-card`) until this is fixed here.
+A caller cannot reach that span, so the slot now carries the line itself:
+`h-5 self-start`, and its own `items-center` lands the checkbox on the title
+whatever the caller aligns the card to. The bridge LinkAI held meanwhile
+(`_shared/pages.css`, `.lk-card`) goes with this bundle.
 
-- **What a row of more than one line needs:** the checkbox held to the FIRST
-  line of `cardContent`, not to the card. The same is true of the `menu`
-  slot, which `-my-0.5 ms-auto` centres against the whole card — LinkAI
-  renders its own ⋮ inside `cardContent` for exactly that reason, which is a
-  component being worked around rather than used.
+- **The `menu` slot still centres against the whole card** (`-my-0.5
+  ms-auto`), so a multi-line row that wants its ⋮ level with the title still
+  has to draw its own — LinkAI does, which is a component being worked
+  around rather than used. Not fixed here; it is the same defect one slot
+  along.
 - **The 18px checkbox** is itself off the 4px step, and it is what makes
   "align to the top" land 1px out even where the card is one line.
-
-## 191. `Switch` — the thumb reads as sitting low · **FOUND, NOT FIXED**
-
-`src/components/Switch/SwitchControl.tsx`, `--shadow-thumb`
-
-From — LinkAI, every list row and card (DBM-25175). Reported repeatedly.
-
-The thumb IS centred: measured at size `sm`, a 16px track, a 12px thumb,
-2.00px of clearance above and 2.00px below. What tilts it is the elevation
-recipe. `--shadow-thumb` is `0 1px 2px rgba(0,0,0,.2)` plus a `0 0 0 .5px`
-hairline: on a thumb with 2px of room the offset blur reaches 3px below it,
-so the bottom gap is tinted over its whole height while the top stays clean,
-and the eye reads the tint as the gap being smaller.
-
-- **The hairline is the part that does the work** — it is what makes a white
-  thumb perceivable on the medium-grey off-track, and it is symmetric.
-- **The offset blur is the part that tilts it.** Halving it (`0 .5px 1px`)
-  keeps the lift and reads centred; removing the offset entirely would too.
-  The product halves it in its own stylesheet meanwhile.
-- Both sizes carry the same 2px clearance, so both are affected; it shows
-  most at `sm`, where the thumb is 12px and the tint is a larger share of
-  what the eye has to judge the gap by.
