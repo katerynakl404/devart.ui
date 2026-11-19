@@ -267,11 +267,13 @@ export const WithRowActions: Story = {
     <Table {...args} layout="fixed">
       <TableHeader>
         <TableRow>
-          <TableHead className="w-32">Invoice</TableHead>
-          <TableHead className="w-28">Status</TableHead>
+          <TableHead width="md">Invoice</TableHead>
+          <TableHead width="sm">Status</TableHead>
           <TableHead>Method</TableHead>
-          <TableHead className="w-28 text-right">Amount</TableHead>
-          <TableHead className="w-12">
+          <TableHead width="md" className="text-right">
+            Amount
+          </TableHead>
+          <TableHead width="control">
             <span className="sr-only">Actions</span>
           </TableHead>
         </TableRow>
@@ -350,6 +352,46 @@ export const AlwaysVisibleActions: Story = {
  * filtered page, or the `colSpan` row an empty/loading state renders. Both
  * tables below hold the same columns; only the fixed one still lines up.
  */
+/**
+ * The width ladder — every rung of `TableHead width` on one table. `control`
+ * and `actions` are sizes (48 / 112px); `sm`, `md`, `lg` are SHARES of the
+ * table (12 / 16 / 20%), so they narrow with it; `auto` takes what is left —
+ * the reading column. Pick a column's rung as the lowest that holds its
+ * widest reading on the narrowest table it is drawn on. Narrow the canvas: the
+ * shares shrink, the sizes hold, and a head too narrow for its word is cut
+ * with an ellipsis like its cells.
+ */
+export const WidthLadder: Story = {
+  render: (args) => (
+    <Table {...args} layout="fixed">
+      <TableHeader>
+        <TableRow>
+          <TableHead width="control">
+            <span className="sr-only">Select</span>
+          </TableHead>
+          <TableHead>auto — the rest</TableHead>
+          <TableHead width="sm">sm — 12%</TableHead>
+          <TableHead width="md">md — 16%</TableHead>
+          <TableHead width="lg">lg — 20%</TableHead>
+          <TableHead width="actions">actions — 112px</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        <TableRow>
+          <TableCell>48px</TableCell>
+          <TableCell className="font-medium">
+            The reading column: a name, a title — the one that gets the slack
+          </TableCell>
+          <TableCell>A flag</TableCell>
+          <TableCell>A mark and a word</TableCell>
+          <TableCell>A count with a disclosure</TableCell>
+          <TableCell className="text-right">⟳ ✎ 🗑</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  ),
+};
+
 export const FixedLayout: Story = {
   render: (args) => {
     const rows = (
@@ -371,9 +413,11 @@ export const FixedLayout: Story = {
     const head = (
       <TableHeader>
         <TableRow>
-          <TableHead className="w-1/2">Invoice</TableHead>
-          <TableHead className="w-32">Status</TableHead>
-          <TableHead className="w-32 text-right">Amount</TableHead>
+          <TableHead>Invoice</TableHead>
+          <TableHead width="md">Status</TableHead>
+          <TableHead width="md" className="text-right">
+            Amount
+          </TableHead>
         </TableRow>
       </TableHeader>
     );
