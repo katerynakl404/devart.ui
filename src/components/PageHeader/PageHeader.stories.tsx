@@ -115,7 +115,7 @@ export const WithTitleRightAndActions: Story = {
 /** The title truncates rather than pushing the actions off the row. */
 export const LongTitle: Story = {
   args: {
-    title: 'Primary analytics warehouse — production replica, EMEA region',
+    title: 'Primary analytics warehouse, production replica, EMEA region',
     onBack: fn(),
     actions: (
       <Button size="sm" variant="secondary">

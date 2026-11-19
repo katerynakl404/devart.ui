@@ -85,9 +85,9 @@ describe('SidebarMobileTrigger', () => {
    * the attribute here would silently make every such selector match both.
    */
   it('carries no data-sidebar attribute', () => {
-    withProvider(<SidebarMobileTrigger label="Toggle sidebar" />);
+    withProvider(<SidebarMobileTrigger label="Toggle Sidebar" />);
 
-    const trigger = screen.getByRole('button', { name: 'Toggle sidebar' });
+    const trigger = screen.getByRole('button', { name: 'Toggle Sidebar' });
     expect(trigger.hasAttribute('data-sidebar')).toBe(false);
   });
 

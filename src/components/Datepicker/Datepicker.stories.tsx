@@ -14,7 +14,7 @@ const meta = {
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
   args: {
-    confirmLabel: 'Set date',
+    confirmLabel: 'Set Date',
     onSelect: fn(),
     onConfirm: fn(),
   },

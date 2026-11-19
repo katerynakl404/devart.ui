@@ -171,8 +171,8 @@ const PEOPLE = [
   'Anna Shevchenko',
   'BI & Reporting Analysts',
   'David Miller',
-  'External Contractors — Data Migration 2026',
-  'Finance & Accounting — EMEA',
+  'External Contractors, Data Migration 2026',
+  'Finance & Accounting, EMEA',
   'Iryna Bondar',
   'John Doe',
   'Maria Kovalenko',
@@ -217,7 +217,7 @@ export const WithResults: Story = {
           onSelect={(p) => setPicked(p.label)}
         />
         <Typography variant="p" textColor="secondary">
-          {picked ? `Showing ${picked}` : 'Type a name — try “a”.'}
+          {picked ? `Showing ${picked}` : 'Type a name. Try “a”.'}
         </Typography>
       </div>
     );

@@ -24,7 +24,7 @@ const meta = {
   component: SidebarMobileTrigger,
   tags: ['autodocs'],
   args: {
-    label: 'Toggle sidebar',
+    label: 'Toggle Sidebar',
     variant: 'tertiary',
     size: 'sm',
     tooltip: false,

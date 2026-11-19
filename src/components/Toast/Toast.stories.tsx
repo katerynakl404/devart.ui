@@ -95,7 +95,7 @@ export const Appearances: Story = {
       />
       <ToastMessage
         duration={Number.POSITIVE_INFINITY}
-        message="Failed to upload — try again."
+        message="Failed to upload. Try again."
         onClose={() => undefined}
         variant="error"
       />
@@ -118,14 +118,14 @@ export const States: Story = {
         variant="error"
       />
       <ToastMessage
-        description="The alias @mrr_growth already belongs to another metric — change the highlighted field."
+        description="The alias @mrr_growth already belongs to another metric. Change the highlighted field."
         duration={Number.POSITIVE_INFINITY}
         message="Metric not saved"
         onClose={() => undefined}
         variant="error"
       />
       <ToastMessage
-        description="No close affordance — dismissed by the countdown alone."
+        description="No close affordance. The countdown dismisses it."
         duration={Number.POSITIVE_INFINITY}
         message="Jira checked successfully"
         variant="success"

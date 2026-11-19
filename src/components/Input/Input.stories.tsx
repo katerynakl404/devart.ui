@@ -11,7 +11,7 @@ const meta = {
   component: Input,
   tags: ['autodocs'],
   args: {
-    placeholder: 'Type here...',
+    placeholder: 'Type here…',
     disabled: false,
   },
   argTypes: {

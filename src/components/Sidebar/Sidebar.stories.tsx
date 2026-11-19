@@ -553,7 +553,7 @@ export const MobileOverlay: Story = {
       <ProductSidebar {...args} />
       <SidebarInset className="min-h-0">
         <header className="flex shrink-0 items-center gap-3 border-stroke border-b px-6 py-4">
-          <SidebarMobileTrigger label="Toggle sidebar" />
+          <SidebarMobileTrigger label="Toggle Sidebar" />
           <Typography element="h1" textStyle="title20">
             Connections
           </Typography>
@@ -592,9 +592,9 @@ function OpenSheetOnMount() {
 }
 
 const SHELL_ROWS = [
-  { name: 'Postgres — analytics', status: 'Connected', rows: '1.2M' },
+  { name: 'Postgres analytics', status: 'Connected', rows: '1.2M' },
   { name: 'Salesforce', status: 'Syncing', rows: '480K' },
-  { name: 'S3 — raw events', status: 'Connected', rows: '8.4M' },
+  { name: 'S3 raw events', status: 'Connected', rows: '8.4M' },
   { name: 'HubSpot', status: 'Error', rows: '—' },
 ];
 

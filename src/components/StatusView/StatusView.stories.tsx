@@ -158,7 +158,7 @@ export const EmptyState: Story = {
     size: 'lg',
     title: 'No matches found',
     description:
-      'No data sources match your search or filters — try a different term or clear them.',
+      'No data sources match your search or filters. Try a different term or clear them.',
     icon: <SearchX aria-hidden="true" className="size-12 text-ink-inactive" />,
     withIconHalo: false,
   },

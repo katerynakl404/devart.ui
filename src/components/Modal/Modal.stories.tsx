@@ -172,7 +172,7 @@ export const Sizes: Story = {
             'lg',
             '576px',
             'New connection',
-            'The multi-step wizard — a long connector name and a two-line token field both need the extra width.',
+            'The multi-step wizard: a long connector name and a two-line token field both need the extra width.',
           ],
         ] as const
       ).map(([size, width, title, body]) => (

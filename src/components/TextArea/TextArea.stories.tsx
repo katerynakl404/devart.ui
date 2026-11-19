@@ -12,7 +12,7 @@ const meta = {
   component: TextArea,
   tags: ['autodocs'],
   args: {
-    placeholder: 'Type your message...',
+    placeholder: 'Type your message…',
     variant: 'outline',
     size: 'md',
     rounded: 'md',
@@ -53,7 +53,7 @@ export const Default: Story = {
    * message pushes the send button off the screen.
    */
   play: async ({ canvas, userEvent }) => {
-    const field = canvas.getByPlaceholderText('Type your message...');
+    const field = canvas.getByPlaceholderText('Type your message…');
     const initialHeight = field.offsetHeight;
 
     await userEvent.click(field);

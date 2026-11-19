@@ -108,9 +108,7 @@ describe('DropdownMenuSegmentedItem', () => {
     const { item } = setup();
 
     expect(item).toHaveAccessibleName(/^Theme\s*: Light$/);
-    expect(item).toHaveAccessibleDescription(
-      'Left and right arrows change it.'
-    );
+    expect(item).toHaveAccessibleDescription('Left and right arrows change it');
     expect(screen.queryAllByRole('tab')).toHaveLength(0);
   });
 

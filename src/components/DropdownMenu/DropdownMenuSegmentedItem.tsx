@@ -73,7 +73,7 @@ const DropdownMenuSegmentedItem = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  hint = 'Left and right arrows change it.',
+  hint = 'Left and right arrows change it',
   disabled = false,
   className,
   onKeyDown,

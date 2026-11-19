@@ -110,9 +110,9 @@ export function Autocomplete<
   FreeSolo extends boolean | undefined = false,
 >(props: AutocompleteProps<T, Multiple, FreeSolo>) {
   const {
-    placeholder = 'Search...',
+    placeholder = 'Search…',
     noOptionsText = 'No options',
-    loadingText = 'Loading...',
+    loadingText = 'Loading…',
     isLoading = false,
     size = 'lg',
     badgeVariant = 'secondary',

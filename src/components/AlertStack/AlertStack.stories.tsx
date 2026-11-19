@@ -23,7 +23,7 @@ const blocked = (
   <Alert key="b" variant="warning" size="md" title="Sales is unavailable to its members" description="Your plan no longer includes Workspaces. Nothing was deleted." />
 );
 const restored = (
-  <Alert key="r" variant="success" size="md" title="Marketing is available again" description="Everything is where it was — its connections, metrics and files." />
+  <Alert key="r" variant="success" size="md" title="Marketing is available again" description="Everything is where it was: its connections, metrics and files." />
 );
 const trial = (
   <Alert key="t" variant="info" size="md" title="Your trial ends in 3 days" description="After that, Sales becomes unavailable to members until you choose Pro." />

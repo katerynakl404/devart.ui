@@ -73,10 +73,10 @@ export const Tones: Story = {
           tooltip="The warehouse the finance team reports from."
         />
       </Row>
-      <Row name="Sales — EMEA">
+      <Row name="Sales, EMEA">
         <IconHint
           variant="warning"
-          label="What is wrong with Sales — EMEA"
+          label="What is wrong with Sales, EMEA"
           tooltip="Nothing included yet."
         />
       </Row>
@@ -84,7 +84,7 @@ export const Tones: Story = {
         <IconHint
           variant="error"
           label="What is wrong with Oracle ERP (staging)"
-          tooltip="Connection to host failed — the host is not reachable."
+          tooltip="Connection to host failed. The host is not reachable."
         />
       </Row>
       <Row name="Product analytics">
@@ -122,7 +122,7 @@ export const StatusLine: Story = {
           <IconHint variant="error" />
         </span>
         <Typography element="span" textStyle="body14" textColor="primary">
-          Connection to host failed — the host is not reachable.
+          Connection to host failed. The host is not reachable.
         </Typography>
       </span>
     </div>

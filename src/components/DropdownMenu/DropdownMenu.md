@@ -133,7 +133,7 @@ dismissed.
   focus stays on the row.
 - **The row is what assistive technology reads.** The segments are hidden
   from it; the row's name is the label plus the current value ("Theme:
-  Light"), and its description is `hint` ("Left and right arrows change it."
+  Light"), and its description is `hint` ("Left and right arrows change it"
   by default).
 - **An option with an `icon` shows the glyph alone** and carries its `label`
   as a tooltip — hung on a wrapper, because a tooltip on the segment would
