@@ -101,11 +101,6 @@ export const preset: Partial<Config> = {
       aria: {
         invalid: 'invalid="true"',
       },
-      spacing: {
-        // The boolean-control box (Checkbox, RadioButton). Named because the
-        // two disagreed - 18px vs 20px - and one was an arbitrary value.
-        control: '1.125rem',
-      },
       opacity: {
         disabled: 'var(--opacity-disabled)',
         // Tint steps. Stock Tailwind has no 6/8/12, and those three were the

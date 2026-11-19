@@ -49,7 +49,7 @@ const radioVariants = cva(
         ),
       },
       size: {
-        md: 'size-control',
+        md: 'size-[18px]',
       },
     },
     defaultVariants: {
