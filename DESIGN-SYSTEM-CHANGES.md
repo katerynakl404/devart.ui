@@ -3491,6 +3491,23 @@ then.
   which must stay a glance.
 - A press on See more stops there: it sits in rows and panels whose own press
   opens something else.
+- **A word longer than the line breaks** — `overflow-wrap: anywhere` on the
+  text (2026-11-17, DBM-25468). Unbroken, a URL or an id typed without spaces
+  was one line to the clamp: See more never appeared and the text ran out of
+  its box sideways (575px in a 343px card, LinkAI's Add workspaces at 375).
+  `break-words` does not fix it — the text sits at `items-start`, its own
+  width, and `break-word` keeps a long word's minimum width; `anywhere` lets
+  the box shrink to the line. Story `LongWord`; test
+  `__tests__/clamped-text.test.tsx`. **patch**
+  (`.changeset/clamped-text-long-word.md`).
+  - **From** — LinkAI, a workspace's description in Add workspaces (DBM-25468).
+  - **Used in** (2026-11-17) — LinkAI: `ChoiceCard` descriptions in Add
+    workspaces and the connection form's workspace step (`_shared/form.jsx`),
+    Add connections and Add to Permissions (`_shared/workspaces.jsx`), the
+    row hint's description (`RowMark`). Measured at 375 before and after:
+    ordinary descriptions keep their width and height, only the unbroken one
+    changes (575px → the card's 263px). Insightis: not checked — no clone on
+    this machine.
 
 Was the prototype's `DescriptionClamp` (a row's description in its hint panel
 and in the pickers).
