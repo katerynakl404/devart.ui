@@ -115,11 +115,7 @@ export interface SwitchControlProps
   tooltipSide?: TooltipSide;
   /** Id of the description under the label; also aligns the track with it. */
   descriptionId?: string;
-  /**
-   * The label is beside the switch, not above or below it. Only then does the
-   * `sm` track step down to the label's first line; above or below there is no
-   * first line to meet and the 2px would only push the track off centre.
-   */
+  /** The sm track lines up with the label's first line only beside it. */
   besideLabel?: boolean;
 }
 

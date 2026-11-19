@@ -65,7 +65,7 @@ const switchDescriptionClasses = cn(
 );
 
 interface SwitchBaseProps
-  extends Omit<SwitchControlProps, 'besideLabel' | 'descriptionId' | 'tooltip'>,
+  extends Omit<SwitchControlProps, 'descriptionId' | 'tooltip'>,
     Omit<
       VariantProps<typeof switchContainerVariants>,
       'variant' | 'withDescription'
@@ -95,8 +95,6 @@ const Switch = ({
   const id = idProp ?? generatedId;
   const descriptionId = useId();
   const withDescription = Boolean(description);
-  // The sm track lines up with the label's first line only beside it
-  const besideLabel = labelPosition !== 'top' && labelPosition !== 'bottom';
 
   if (!label && !description) {
     return (
@@ -125,7 +123,7 @@ const Switch = ({
       <SwitchControl
         id={id}
         descriptionId={withDescription ? descriptionId : undefined}
-        besideLabel={besideLabel}
+        besideLabel={labelPosition !== 'top' && labelPosition !== 'bottom'}
         {...controlProps}
       />
       {withDescription ? (
