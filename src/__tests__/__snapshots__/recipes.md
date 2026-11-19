@@ -858,24 +858,8 @@ disabled=false
 
 ## components/IconHint/index.tsx — iconHintVariants
 
-defaultVariants: variant=neutral, size=sm
-
 (defaults)
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
-variant=neutral
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
-variant=info
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-brand-tertiary [&_svg]:size-3.5
-variant=warning
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-attention [&_svg]:size-3.5
-variant=error
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-red-text [&_svg]:size-3.5
-variant=success
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-green-text [&_svg]:size-3.5
-size=sm
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-3.5
-size=md
-  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast hover:text-ink-icon-hover focus-visible:text-ink-icon-hover [&_svg]:size-4
+  group/icon-hint inline-flex shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand
 
 ## components/InputGroup/InputGroupAction.tsx — inputGroupActionVariants
 
@@ -1484,6 +1468,29 @@ size=sm
   flex flex-col gap-1 p-4
 size=md
   flex flex-col gap-1.5 p-5
+
+## components/StatusMark/index.tsx — statusMarkVariants
+
+defaultVariants: variant=neutral, size=sm, interactive=false
+
+(defaults)
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5
+variant=neutral
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5
+variant=warning
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-attention [&_svg]:size-3.5
+variant=error
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-fb-red-text [&_svg]:size-3.5
+size=sm
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5
+size=md
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-4
+interactive=true
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5
+interactive=false
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5
+compound[0] variant=neutral, interactive=true
+  inline-flex shrink-0 rounded-sm [&_svg]:stroke-2 text-ink-icon transition-colors duration-fast [&_svg]:size-3.5 group-hover/icon-hint:text-ink-icon-hover group-focus-visible/icon-hint:text-ink-icon-hover
 
 ## components/StatusView/index.tsx — containerVariants
 

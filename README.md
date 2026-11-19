@@ -196,6 +196,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **GuideCard** | CVA + Typography | `width`, `side` *(the card of a tour step; placement, scrim and focus stay with `Tour`)* |
 | **IconCard** | CVA | `disabled` *(icon-and-caption catalog tile; `IconCardSkeleton`)* |
 | **IconButton** | CVA + Radix Slot | `variant`, `size`, `rounded` |
+| **IconHint** | CVA + Radix Tooltip | `variant`, `size` *(the glyph that explains itself on hover, on focus, and on a tap where there is no hover; not a control — nothing is clickable on a desktop; `tooltip` and `label` required)* |
 | **Input** | HTML | — |
 | **InputGroup** | Custom | `variant`, `size`, `align` |
 | **ListPageLayout** | Custom | — *(one scroll container, centred column, sticky header)* |
@@ -220,6 +221,7 @@ Breakpoints behave unlike every other token. `--breakpoint-sm` / `--breakpoint-m
 | **Sidebar** | Custom + Radix Slot/Tooltip | `variant`, `size` |
 | **Skeleton** | CSS | `animation`, `rounded` |
 | **Spinner** | Custom | `size`, `color` |
+| **StatusMark** | CVA | `variant`, `size`, `interactive` *(the state's glyph alone, always `aria-hidden`; the explaining one is `IconHint`)* |
 | **StatusView** | CVA | `ladder`, `size`, `surface`, `tone`, `circles`; per part `iconSize`, `titleSize`, `contentWidth` |
 | **StepProgress** | CVA + Radix Tooltip | `labelPosition`, `size` *(`size` is this package's)* |
 | **StepSlider** | Radix Slider | `size` |

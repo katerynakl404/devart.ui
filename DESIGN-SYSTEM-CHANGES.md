@@ -3451,16 +3451,25 @@ description, what a field is for) or a state.
   `success` (the tick). The tones are `Alert`'s glyph tones, so a state reads
   the same in a banner and beside a name.
 - `size` — `sm` 14px beside a 14px name, `md` 16px beside a 16px title.
-- `tooltip` + `label` — it takes focus (the kit's ring) and names itself.
-  Without a `tooltip` it is the glyph alone, hidden from assistive tech: a
-  status line's mark, the words beside it carry the meaning.
-- Not an `IconButton`: it does nothing when pressed, and a button's box would
-  sit between the name and the mark.
+- `tooltip` + `label` — **both required** (2026-11-19). The glyph with nothing
+  to explain is `StatusMark` (§188).
+- **It is a glyph, not a control** (2026-11-19). On a desktop pressing it does
+  nothing, so it is not marked or painted as one — no `button`, no pointer
+  cursor. Touch is not its business either: the long press belongs to
+  `Tooltip` (§189), so this component holds no rule of its own about the
+  pointer.
 
 Replaces the prototype's `InfoHint` (the description ⓘ) and `ProblemMark` (the
 warning beside a tree row or a member) — two hand-built spans with a tooltip.
+Merging them into one component is what put two jobs behind one prop; §188
+separates them again.
 
-**minor** (`.changeset/hint-clamp-tooltip.md`).
+**minor** (`.changeset/hint-clamp-tooltip.md`); the split is **major**
+(`.changeset/icon-hint-split-and-status-mark.md`).
+
+The error to avoid here is taking half of each: a control that is clickable on
+a desktop where hover has already shown the words gives the pointer cursor a
+promise nothing keeps.
 
 ---
 
@@ -4131,3 +4140,123 @@ separator under the card head stood at 393.25 device pixels (2026-11-03):
     heads tighten by 2px.
 
 **patch** (`.changeset/device-pixel-grid.md`).
+
+## 188. New — `StatusMark` · **DRAFT**
+
+`src/components/StatusMark/index.tsx`
+
+The glyph that says a state and nothing else: the triangle for a warning, the
+cross in a circle for an error, the tick for success, the ⓘ for a note.
+
+- Decoration, always — `aria-hidden`, no focus, no words of its own. The words
+  beside it carry the meaning: a status line's mark, the mark on a row.
+- `variant` — `neutral` (the note and the description) · `warning` · `error`.
+  `Alert`'s glyph tones, so a state reads the same in a banner and beside a
+  name.
+- `size` — `sm` 14px beside a 14px name, `md` 16px beside a 16px title.
+- `interactive` — inside a control that can be hovered or focused, which
+  today is `IconHint`'s button (`group/icon-hint`). Only the neutral note has
+  a step to take: a state's colour **is** the state, and brightening it would
+  read as the state changing.
+
+It was the `tooltip`-less half of `IconHint` (§152), where one prop swapped the
+whole render — a focusable `role="img"` with it, an `aria-hidden` span without.
+Two renders and two accessibility contracts behind one prop is the thing
+`COMPONENT-RULES.md` › "One component, one job" names, and `IconHint` now
+renders this inside its button rather than repainting the glyph itself.
+
+- **From** — the review of the Connections work on a phone (2026-11-19).
+- **Used in** — LinkAI: `RowMark`, `StatusLine` (the two call sites that
+  passed no `tooltip`). Insightis: no call sites.
+
+**major** (`.changeset/icon-hint-split-and-status-mark.md`).
+
+---
+
+## 189. `Tooltip` — a long press where there is no hover · **DRAFT**
+
+`src/components/Tooltip/TooltipTrigger.tsx`, `TooltipRoot.tsx`, `context.ts`
+
+Radix's trigger ignores a `touch` pointer in its own `onPointerMove` by
+design, so every tooltip in this kit was silent on a phone — all fourteen
+components that carry one. A LONG PRESS opens it; the tap is left alone.
+
+- **Why a press and not a tap.** The tap already belongs to the trigger: a
+  `Badge` that opens its log, a `Button` that runs its action, a row's ⋮ that
+  opens its menu. Opening on tap would race every one of them — which is why
+  a per-component fix could never reach the control tooltips on `Button`,
+  `IconButton` and `Switch`. A long press collides with nothing.
+- **The delays are MUI's** — 700ms to open (`enterTouchDelay`), 1500ms after
+  the finger lifts before it closes (`leaveTouchDelay`). Angular Material's
+  `matTooltip` settled on the same gesture (`touchGestures`,
+  `touchLongPressShowDelay`). We follow them rather than invent.
+- **`touchGestures`** — `auto` (default) or `off`, for a trigger whose own
+  long press means something: a text selection, a drag. Angular Material's
+  axis and its name.
+- **It lives in the primitive**, as it does in both of those systems, so a
+  consumer never writes a rule about the pointer. `Tooltip` keeps the open
+  state and shares it through `TooltipContext` (`null` under a bare Radix
+  root); a consumer's own `open` / `onOpenChange` still win.
+
+Known limit, MUI's too: on iOS a long press over text can still start a
+selection. The native context menu is suppressed once our press has fired.
+Discoverability is the trade — a press is quieter than a tap, and both of
+those systems accept that.
+
+- **From** — the review of the Connections work on a phone (2026-11-19).
+- **Used in** — every tooltip in the kit: Badge, CodeBlock, DropdownMenu,
+  IconHint, ListSelectionBar, MetaRow, Modal, PinToggle, RowMenuButton,
+  SearchInput, Sidebar, StepProgress, StepSlider, TruncatedTitleTooltip.
+
+**minor** (`.changeset/tooltip-long-press.md`).
+
+---
+
+---
+
+## 190. `SelectableListCard` — the checkbox of a row whose content is two lines · **FOUND, NOT FIXED**
+
+`src/components/SelectableListCard/index.tsx`
+
+From — LinkAI, both lists' cards below `md` (DBM-25175).
+
+In `layout="row"` the checkbox span is a flex child of the `Card`, and the
+card's own `align-items` decides where it lands. On a one-line row that is
+the title's line and it is right. On a card of two or three lines it is the
+middle of the whole card — measured on the connections card at 390px, the
+checkbox's centre sat **16px below** the switch's and the name's. Passing
+`items-start` to move it up overshoots the other way: the checkbox is 18px
+and the title's line is 20px, so it then sat **3px above** them.
+
+A caller cannot reach that span, so the product holds it to a 20px box in its
+own stylesheet (`_shared/pages.css`, `.lk-card`) until this is fixed here.
+
+- **What a row of more than one line needs:** the checkbox held to the FIRST
+  line of `cardContent`, not to the card. The same is true of the `menu`
+  slot, which `-my-0.5 ms-auto` centres against the whole card — LinkAI
+  renders its own ⋮ inside `cardContent` for exactly that reason, which is a
+  component being worked around rather than used.
+- **The 18px checkbox** is itself off the 4px step, and it is what makes
+  "align to the top" land 1px out even where the card is one line.
+
+## 191. `Switch` — the thumb reads as sitting low · **FOUND, NOT FIXED**
+
+`src/components/Switch/SwitchControl.tsx`, `--shadow-thumb`
+
+From — LinkAI, every list row and card (DBM-25175). Reported repeatedly.
+
+The thumb IS centred: measured at size `sm`, a 16px track, a 12px thumb,
+2.00px of clearance above and 2.00px below. What tilts it is the elevation
+recipe. `--shadow-thumb` is `0 1px 2px rgba(0,0,0,.2)` plus a `0 0 0 .5px`
+hairline: on a thumb with 2px of room the offset blur reaches 3px below it,
+so the bottom gap is tinted over its whole height while the top stays clean,
+and the eye reads the tint as the gap being smaller.
+
+- **The hairline is the part that does the work** — it is what makes a white
+  thumb perceivable on the medium-grey off-track, and it is symmetric.
+- **The offset blur is the part that tilts it.** Halving it (`0 .5px 1px`)
+  keeps the lift and reads centred; removing the offset entirely would too.
+  The product halves it in its own stylesheet meanwhile.
+- Both sizes carry the same 2px clearance, so both are affected; it shows
+  most at `sm`, where the thumb is 12px and the tint is a larger share of
+  what the eye has to judge the gap by.
