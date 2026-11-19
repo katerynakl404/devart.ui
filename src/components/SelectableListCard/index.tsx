@@ -102,6 +102,18 @@ const SelectableListCard = (props: SelectableListCardProps) => {
         <span
           className={cn(
             'hidden flex-none items-center justify-center',
+            // The checkbox belongs to the item's FIRST line, not to the
+            // middle of the item. On a one-line row the two are the same
+            // place; on a row whose content is two or three lines they are
+            // not, and the card's own `align-items` decided it — centred,
+            // the checkbox fell into the gap between the lines (16px below
+            // the title, measured on LinkAI's connections card at 390px);
+            // `items-start` passed in to lift it overshot by 3px, because
+            // the checkbox is 18px and a title line is 20px. `h-5` IS that
+            // line, so `items-center` inside it lands on the title whatever
+            // the caller aligns the card to, and `self-start` keeps it there
+            // when the card stretches its children.
+            'h-5 self-start',
             'group-data-[has-selection]/list:flex',
             isSelected && 'flex'
           )}
