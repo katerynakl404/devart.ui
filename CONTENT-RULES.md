@@ -29,14 +29,15 @@ product's text until the product overrides it, so it is written to this file fro
   label: `confirmLabel` sounds like a field label and is a `Button`'s own words. The defaults that
   are Title Case for that reason: `Set Date` (`SingleDatePicker`, `DateRangePicker` — the confirm
   `Button`), `Show Less` (`AlertStack` — a `Button`), `Select All` / `Deselect All`
-  (`ListSelectionBar` — a `Button`), `See More` / `See Less` (`ClampedText` — an acting
-  `LinkButton`), `Exit Selection`, `Clear Selection` and `Clear Search` (tooltips on an icon
-  button), and `Toggle Sidebar` (`SidebarRail` puts it in `title`; the two triggers can show it as
-  a tooltip).
-- **A `LinkButton` is whichever its `href` makes it.** With `href` it renders an `<a>` and goes
-  somewhere, so it is a link: sentence case (`See all`). Without one it renders a
-  `<button type="button">` and acts, so it is a button: Title Case (`See More`, `Select All`). Its
-  look is the same either way, which is why the element, not the styling, decides.
+  (`ListSelectionBar` — a `Button`), `Exit Selection`, `Clear Selection` and `Clear Search`
+  (tooltips on an icon button), and `Toggle Sidebar` (`SidebarRail` puts it in `title`; the two
+  triggers can show it as a tooltip).
+- **A `LinkButton` is sentence case, whatever it does**: `See more`, `See less`, `See all`. It
+  reads as a link — same weight, same colour, underlined on hover — and a reader cases what they
+  see, not what the element turns out to be. Deciding by `href` was tried and dropped
+  (owner's call, 2026-11-19): it shipped two identical-looking labels in two cases over a
+  difference nobody can perceive, and it made every such label a question about markup before it
+  could be written. Title Case stays with what reads as a button.
 - **A prop that can render both ways takes Title Case**, because the tooltip is the visible one.
   An `aria-label` with no tooltip behind it stays sentence case: `Clear selection` in
   `Autocomplete` and `Select`, `First page`, `Remove file`, `Show password`, `Scrollable content`,

@@ -22,8 +22,8 @@ What changes:
   metrics and files.` Documentation prose keeps its dashes, and `—` stays as the empty-value mark
   in a cell.
 - **Title Case for the labels that act**, after reading where each one lands rather than what its
-  prop is called: `Select All` and `Deselect All` (`ListSelectionBar`, a `Button`), `See More` and
-  `See Less` (`ClampedText`, a `LinkButton` with no `href`, which renders a `<button>`),
+  prop is called: `Select All` and `Deselect All` (`ListSelectionBar`, a `Button`), `See more` and
+  `See less` (`ClampedText`, a `LinkButton` with no `href`, which renders a `<button>`),
   `Exit Selection` (`ListSelectionBar`), `Clear Selection` (`MetaRow`) and `Clear Search`
   (`SearchInput`) — the last three are the tooltip of an icon button. `Clear selection` in
   `Autocomplete` and `Select` stays sentence case, because there it is an `aria-label` with no

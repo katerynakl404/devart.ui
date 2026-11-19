@@ -11,7 +11,7 @@ import { cn } from '../../lib/utils';
 import { LinkButton } from '../LinkButton';
 import { Typography, type TypographyProps } from '../Typography';
 
-/* ClampedText — a text cut to a number of lines, with "See More" when there
+/* ClampedText — a text cut to a number of lines, with "See more" when there
    is more, and only then.
 
    Two ways to read the rest:
@@ -46,9 +46,9 @@ export interface ClampedTextProps {
   textColor?: TypographyProps['textColor'];
   /** Show the whole text somewhere else instead of opening it in place. */
   onMore?: () => void;
-  /** @default 'See More' */
+  /** @default 'See more' */
   moreLabel?: string;
-  /** @default 'See Less' */
+  /** @default 'See less' */
   lessLabel?: string;
   className?: string;
 }
@@ -59,8 +59,8 @@ export function ClampedText({
   textStyle = 'body14',
   textColor = 'primary',
   onMore,
-  moreLabel = 'See More',
-  lessLabel = 'See Less',
+  moreLabel = 'See more',
+  lessLabel = 'See less',
   className,
 }: ClampedTextProps) {
   const ref = useRef<HTMLSpanElement | null>(null);
