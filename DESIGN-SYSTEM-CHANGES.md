@@ -105,7 +105,7 @@ rewrites that entry; it does not add a section beside it.
 | `Tour` | §122 **new** — a guided walk: Spotlight, their `GuideCard`, annotations; the card's placement, sheet, role and focus · draft |
 | `Tree` | §150 **new** — a hierarchy row by row: one step a level, an icon on every level · draft |
 | `Typography` | §100 an 18px rung, as prod sets it<br>§113 `lineThrough` ran along the tops of the lowercase |
-| Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§48 `--code-*` — syntax colours, AA in both themes<br>§167 green split like red — `--fb-green` a fill in both themes, `--fb-green-text` the ink<br>§174 dark `--ink-inactive` is grey — the placeholder no longer reads blue beside a faded control |
+| Tokens and colour | §2 dark destructive border — hover made it *less* visible<br>§5 `--ink-icon` / `--ink-icon-hover` — a standalone icon<br>§6a table rows as washes that stack; `--brand-300` retuned<br>§87 **new** — colour packs, `palettes.css` · draft<br>§48 `--code-*` — syntax colours, AA in both themes<br>§124 the chat-landing backgrounds were one product's — removed<br>§125 dark scrim on the page's grey, not on a navy<br>§167 green split like red — `--fb-green` a fill in both themes, `--fb-green-text` the ink<br>§174 dark `--ink-inactive` is grey — the placeholder no longer reads blue beside a faded control |
 | Sizes and glyphs | §40 the size ladder<br>§44 the icon surface — the glyph ladder, and the bundle that had none<br>§92 glyph stroke — one weight, set in CSS |
 | Across components | §99 disabled controls — the not-allowed cursor<br>§155 `pressed:` — an open disclosure is not a held press<br>§186 a field's label — one owner, so `InputGroup`, `TextArea` and `Autocomplete` step together; `Autocomplete` takes `required` |
 | Build and tooling | §19 a variant that is not enumerated is never compiled<br>§20 `pnpm bundle` and `pnpm check-bundle-css`<br>§37 `bg-surface-card/85` compiles to nothing · open<br>§84 the class list — list markers, `last:` borders |
@@ -118,7 +118,7 @@ Retired numbers, and where what they said lives now: §18 → §51 · §21 → �
 Lucide `Check` / `Minus`, 10px at `stroke-[3.6]` · one entry per part made here (2026-11-03): §81, §127, §128, §129 → §48 (`CodeBlock`) · §108, §115 → §16 (`ConnectorLogo`) · §158 → §46 (`LinkButton`) · §134 → §52 (`MetaRow`) · §67, §111, §135 → §15 (`PageHeader`) · §96, §103, §168 → §73 (`SegmentedControl`) · §116 was given twice —
 `PromoCard` keeps it, `SearchInput` is §145 · §147 withdrawn (2026-11-10): the developers' name
 `destructiveOutline` is kept, and its disabled form is §80 ·
-§3, §62 (`Autocomplete`), §98, §102, §106, §160, §169, §173, §175, and the parts
+§3, §62, §126 (`Autocomplete`), §98, §102, §106, §160, §169, §173, §175, and the parts
 §9's `InputGroup`, §74's `DropdownMenu`, §99's `Switch`, §151's `Switch` → in `upstream`
 (the eight merge requests !25 !26 !29 !30 !31 !37 !38 !39, merged 2026-11-16…18, master at
 `796efa7`): what is left of §9 is `TextArea`'s label, of §74 the tooltip that opens on
@@ -230,30 +230,6 @@ the same texts instead (`Tour` does that).
 ---
 
 # `Autocomplete`
-
-## 126. `Autocomplete` — its label is every other field's label
-
-`src/components/Autocomplete/index.tsx`
-
-Every field draws its label the same way — `InputGroup`, `PasswordInput` (through
-`inputGroupProps`) and `TextArea`: Text/Body, medium, 4px over the field.
-`Autocomplete` drew its own in **Text/Secondary** with **6px** under it, so in one
-form (Insightis "Create metric": Name · Alias · Definition · Data Source) the last
-label read as a hint and sat 2px further from its field. Owner's call (2026-10-16):
-all labels identical.
-
-```diff
-- textColor="secondary"
-- className="mb-1.5 block"
-+ textColor="body"
-+ className="mb-1 block"
-```
-
-Text/Secondary stays the hint's colour (`hintText` under the field), which is
-what the InputGroup comment already says. A recipe fix with no API change:
-**patch** (`.changeset/autocomplete-label.md`).
-
----
 
 # `Badge`
 
