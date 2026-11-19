@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { dropdownMenuItemVariants } from '../DropdownMenu/DropdownMenuItem';
-import { toRadix } from './empty-id';
+import { toRadix } from './radix-value';
 
 // On top of the DropdownMenu item: taller rows and a bolder check
 const selectItemVariants = cva(

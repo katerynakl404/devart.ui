@@ -5,7 +5,7 @@ import { useId, useRef, useState } from 'react';
 import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { InputGroup } from '../InputGroup';
-import { fromRadix, toRadix } from './empty-id';
+import { fromRadix, toRadix } from './radix-value';
 import { SelectClearButton } from './SelectClearButton';
 import { SelectItem } from './SelectItem';
 import { SelectList } from './SelectList';
@@ -103,7 +103,6 @@ function Select<T extends SelectOptionBase = SelectOption>({
         )}
       </InputGroup>
 
-      {/* Radix would submit EMPTY_ID for an option whose own id is empty */}
       {name && <input type="hidden" name={name} value={chosen?.id ?? ''} />}
 
       <SelectList triggerRef={triggerRef}>
