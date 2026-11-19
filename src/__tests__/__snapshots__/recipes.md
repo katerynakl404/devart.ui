@@ -1012,6 +1012,23 @@ size=lg
 size=xl
   max-w-modal-xl
 
+## components/Modal/ModalHeader.tsx — modalHeaderVariants
+
+defaultVariants: align=left, withCloseButton=false
+
+(defaults)
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left
+align=left
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left
+align=center
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-center
+align=right
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-right
+withCloseButton=true
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left pe-8
+withCloseButton=false
+  mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left
+
 ## components/PasswordInput/index.tsx — passwordToggleVariants
 
 defaultVariants: size=md

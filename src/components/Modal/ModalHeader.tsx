@@ -5,43 +5,46 @@ import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { useModalHasCloseButton } from './ModalContext';
 
-const modalHeaderVariants = cva('mb-3 flex flex-shrink-0 flex-col gap-1.5', {
-  variants: {
-    align: {
-      left: 'text-left',
-      center: 'text-center',
-      right: 'text-right',
+export const modalHeaderVariants = cva(
+  'mb-3 flex flex-shrink-0 flex-col gap-1.5',
+  {
+    variants: {
+      align: {
+        left: 'text-left',
+        center: 'text-center',
+        right: 'text-right',
+      },
+      /**
+       * The close button is drawn over the dialog, not in the flow, so nothing
+       * in the header knows it is there: a long title ran underneath it
+       * (measured: 32px under, 2026-11-17). Reserved only while the button is
+       * shown, so a dialog without one keeps a centred title centred.
+       *
+       * `ConfirmationDialog` carried this reserve by hand and the product kits
+       * patched the title with `break-words` beside it; both drop their copy.
+       */
+      withCloseButton: {
+        true: 'pe-8',
+        false: '',
+      },
     },
-  },
-  defaultVariants: {
-    align: 'left',
-  },
-});
+    defaultVariants: {
+      align: 'left',
+      withCloseButton: false,
+    },
+  }
+);
 
 interface ModalHeaderProps
   extends ComponentProps<'div'>,
     VariantProps<typeof modalHeaderVariants> {}
 
-/**
- * The close button is drawn over the dialog, not in the flow, so nothing in
- * the header knows it is there: a long title ran underneath it (measured: 32px
- * under, 2026-11-17). The header reserves its end padding while the button is
- * shown —  carried that reserve by hand, and the product
- * kits patched the title with  beside it.
- *
- * Reserved only while the button is there, so a dialog without one keeps a
- * centred title centred.
- */
 export function ModalHeader({ className, align, ...props }: ModalHeaderProps) {
-  const hasCloseButton = useModalHasCloseButton();
+  const withCloseButton = useModalHasCloseButton();
 
   return (
     <div
-      className={cn(
-        modalHeaderVariants({ align }),
-        hasCloseButton && 'pe-8',
-        className
-      )}
+      className={cn(modalHeaderVariants({ align, withCloseButton }), className)}
       {...props}
     />
   );
