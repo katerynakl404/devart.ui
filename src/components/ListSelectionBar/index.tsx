@@ -9,9 +9,9 @@ import { Skeleton } from '../Skeleton';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
 import { Typography } from '../Typography';
 
-const DEFAULT_SELECT_ALL_LABEL = 'Select all';
-const DEFAULT_DESELECT_ALL_LABEL = 'Deselect all';
-const DEFAULT_EXIT_SELECTION_LABEL = 'Exit selection';
+const DEFAULT_SELECT_ALL_LABEL = 'Select All';
+const DEFAULT_DESELECT_ALL_LABEL = 'Deselect All';
+const DEFAULT_EXIT_SELECTION_LABEL = 'Exit Selection';
 
 interface ListSelectionBarProps {
   className?: string;

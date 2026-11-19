@@ -27,7 +27,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     placeholder: 'Search conversations…',
-    clearLabel: 'Clear search',
+    clearLabel: 'Clear Search',
     size: 'lg',
     onValueChange: fn(),
     onClear: fn(),
@@ -88,12 +88,12 @@ export const Default: Story = {
     const field = canvas.getByRole('searchbox');
     await expect(field).toBeVisible();
     await expect(
-      canvas.queryByRole('button', { name: 'Clear search' })
+      canvas.queryByRole('button', { name: 'Clear Search' })
     ).toBeNull();
 
     await userEvent.type(field, 'q');
     await expect(
-      await canvas.findByRole('button', { name: 'Clear search' })
+      await canvas.findByRole('button', { name: 'Clear Search' })
     ).toBeVisible();
   },
   render: (args) => (
@@ -108,21 +108,21 @@ export const WithValue: Story = {
   args: { value: 'Q3 KPI' },
   play: async ({ args, canvas, userEvent }) => {
     const field = canvas.getByRole('searchbox');
-    const clear = canvas.getByRole('button', { name: 'Clear search' });
+    const clear = canvas.getByRole('button', { name: 'Clear Search' });
 
     await userEvent.click(field);
     await userEvent.tab();
     await expect(clear).toHaveFocus();
     await expect(
       await within(document.body).findByRole('tooltip')
-    ).toHaveTextContent('Clear search');
+    ).toHaveTextContent('Clear Search');
 
     await userEvent.click(clear);
     await expect(args.onClear).toHaveBeenCalledOnce();
     await expect(field).toHaveValue('');
     await expect(field).toHaveFocus();
     await expect(
-      canvas.queryByRole('button', { name: 'Clear search' })
+      canvas.queryByRole('button', { name: 'Clear Search' })
     ).toBeNull();
   },
   render: (args) => (
@@ -142,7 +142,7 @@ const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 export const Sizes: Story = {
   args: { value: 'Q3 KPI' },
   play: async ({ canvas }) => {
-    const buttons = canvas.getAllByRole('button', { name: 'Clear search' });
+    const buttons = canvas.getAllByRole('button', { name: 'Clear Search' });
     await expect(buttons).toHaveLength(SIZES.length);
 
     for (const [index, button] of buttons.entries()) {
@@ -247,7 +247,7 @@ export const WithResults: Story = {
       await page.findByText('No user or group matches')
     ).toBeInTheDocument();
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Clear search' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Clear Search' }));
     await waitFor(() =>
       expect(page.queryByRole('listbox')).not.toBeInTheDocument()
     );

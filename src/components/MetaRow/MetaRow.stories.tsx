@@ -95,7 +95,7 @@ export const StableHeight: Story = {
         <MetaRow>
           <MetaRow.Count>{on ? '2 selected' : '5 connections'}</MetaRow.Count>
           <LinkButton onClick={() => setOn((v) => !v)}>
-            {on ? 'Deselect all' : 'Select all'}
+            {on ? 'Deselect All' : 'Select All'}
           </LinkButton>
           {on ? (
             <MetaRow.End>

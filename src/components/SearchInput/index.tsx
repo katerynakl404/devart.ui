@@ -8,7 +8,7 @@ import { SearchInputClearButton } from './SearchInputClearButton';
 import { SearchInputWithResults } from './SearchInputWithResults';
 import type { SearchInputProps } from './types';
 
-const DEFAULT_CLEAR_LABEL = 'Clear search';
+const DEFAULT_CLEAR_LABEL = 'Clear Search';
 
 const searchInputVariants = cva(
   cn(

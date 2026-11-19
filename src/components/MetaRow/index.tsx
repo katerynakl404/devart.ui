@@ -65,7 +65,7 @@ export interface MetaRowProps
    * Give it a handler whenever the row has a selection to leave.
    */
   onClear?: () => void;
-  /** @default 'Clear selection' */
+  /** @default 'Clear Selection' */
   clearLabel?: string;
   /**
    * CSS length for the sticky `top` — a page whose header is itself sticky
@@ -112,7 +112,7 @@ function MetaRow({
   sticky,
   stickyOffset,
   onClear,
-  clearLabel = 'Clear selection',
+  clearLabel = 'Clear Selection',
   className,
   style,
   children,

@@ -25,18 +25,26 @@ product's text until the product overrides it, so it is written to this file fro
 - Capitals belong to proper nouns and product names in either case: `Postgres`, `Salesforce`,
   `Amazon S3`, `Pro` — and they keep them inside a sentence-case string: `Add to Permissions`,
   `Add MCP Server to Claude`.
-- **Where the string lands decides, not the prop name.** Three defaults in this package are
-  Title Case for that reason: `Set Date` (`SingleDatePicker` and `DateRangePicker` render it as
-  the confirm `Button`'s own words), `Show Less` (`AlertStack`, likewise a `Button`) and
-  `Toggle Sidebar` (`SidebarRail` puts it in `title`, and `SidebarTrigger` /
-  `SidebarMobileTrigger` can show it as a tooltip). `AlertStack`'s neighbour
-  `Show {n} more notices` is an `aria-label` and no tooltip, so it is sentence case. A prop that
-  can render both ways takes Title Case, because the tooltip is the visible one.
-- **Not swept yet.** The same rule catches defaults nobody has looked at: `Select all` and
-  `Deselect all` (`ListSelectionBar`, both inside a `Button`) and `Exit selection` (its tooltip)
-  should be Title Case. `See more` / `See less` (`ClampedText`) sit in a `LinkButton`, which the
-  rule above puts on neither side — a link is sentence case, a button is not. Settle the
-  `LinkButton` case and sweep all four at once, rather than one label at a time.
+- **Where the string lands decides, not the prop name.** Read the component before you case a
+  label: `confirmLabel` sounds like a field label and is a `Button`'s own words. The defaults that
+  are Title Case for that reason: `Set Date` (`SingleDatePicker`, `DateRangePicker` — the confirm
+  `Button`), `Show Less` (`AlertStack` — a `Button`), `Select All` / `Deselect All`
+  (`ListSelectionBar` — a `Button`), `See More` / `See Less` (`ClampedText` — an acting
+  `LinkButton`), `Exit Selection`, `Clear Selection` and `Clear Search` (tooltips on an icon
+  button), and `Toggle Sidebar` (`SidebarRail` puts it in `title`; the two triggers can show it as
+  a tooltip).
+- **A `LinkButton` is whichever its `href` makes it.** With `href` it renders an `<a>` and goes
+  somewhere, so it is a link: sentence case (`See all`). Without one it renders a
+  `<button type="button">` and acts, so it is a button: Title Case (`See More`, `Select All`). Its
+  look is the same either way, which is why the element, not the styling, decides.
+- **A prop that can render both ways takes Title Case**, because the tooltip is the visible one.
+  An `aria-label` with no tooltip behind it stays sentence case: `Clear selection` in
+  `Autocomplete` and `Select`, `First page`, `Remove file`, `Show password`, `Scrollable content`,
+  and `AlertStack`'s `Show {n} more notices`. So the same words can ship in two cases across two
+  components, and that is the rule working, not a slip.
+- **A string the products have already fixed wins over this file.** `More actions for {row}` on
+  every row's ⋮ (`RowMenuButton`, `SidebarChatItem`) stays as `LinkAI/linkai-kit/README.md` rule 6
+  writes it, tooltip or not.
 
 ## Dashes
 

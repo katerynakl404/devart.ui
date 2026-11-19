@@ -22,7 +22,7 @@ const renderBar = (overrides: Partial<ListSelectionBarProps> = {}) =>
 
 const linkButton = (name: string) => screen.getByRole('button', { name });
 const exitButton = () =>
-  screen.queryByRole('button', { name: 'Exit selection' });
+  screen.queryByRole('button', { name: 'Exit Selection' });
 
 describe('ListSelectionBar', () => {
   it('shows the title and offers to select all while nothing is selected', () => {
@@ -34,7 +34,7 @@ describe('ListSelectionBar', () => {
     expect(screen.queryByText('3 selected')).toBeNull();
     expect(exitButton()).toBeNull();
 
-    fireEvent.click(linkButton('Select all'));
+    fireEvent.click(linkButton('Select All'));
 
     expect(onSelectAll).toHaveBeenCalledOnce();
     expect(onClearSelection).not.toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe('ListSelectionBar', () => {
     expect(screen.getByText('3 selected')).toBeInTheDocument();
     expect(screen.queryByText('24 files')).toBeNull();
 
-    fireEvent.click(linkButton('Select all'));
+    fireEvent.click(linkButton('Select All'));
     expect(onSelectAll).toHaveBeenCalledOnce();
 
     const exit = exitButton();
@@ -67,9 +67,9 @@ describe('ListSelectionBar', () => {
       onClearSelection,
     });
 
-    expect(screen.queryByRole('button', { name: 'Select all' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Select All' })).toBeNull();
 
-    fireEvent.click(linkButton('Deselect all'));
+    fireEvent.click(linkButton('Deselect All'));
 
     expect(onClearSelection).toHaveBeenCalledOnce();
     expect(onSelectAll).not.toHaveBeenCalled();
@@ -79,17 +79,17 @@ describe('ListSelectionBar', () => {
   it('ignores allSelected while nothing is selected', () => {
     renderBar({ allSelected: true, isEmpty: true });
 
-    expect(linkButton('Select all')).toBeDisabled();
-    expect(screen.queryByRole('button', { name: 'Deselect all' })).toBeNull();
+    expect(linkButton('Select All')).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Deselect All' })).toBeNull();
   });
 
   it('disables select-all only when the list is empty and nothing is selected', () => {
     const { unmount } = renderBar({ isEmpty: true });
-    expect(linkButton('Select all')).toBeDisabled();
+    expect(linkButton('Select All')).toBeDisabled();
     unmount();
 
     renderBar({ isEmpty: true, selectedCount: 3 });
-    expect(linkButton('Select all')).toBeEnabled();
+    expect(linkButton('Select All')).toBeEnabled();
   });
 
   it('renders no controls while pending and keeps the caption under the skeleton', () => {

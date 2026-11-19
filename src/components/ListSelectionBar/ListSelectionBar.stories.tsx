@@ -54,10 +54,10 @@ export const Idle: Story = {
   play: async ({ args, canvas, userEvent }) => {
     await expect(canvas.getByText('24 files')).toBeVisible();
     await expect(
-      canvas.queryByRole('button', { name: 'Exit selection' })
+      canvas.queryByRole('button', { name: 'Exit Selection' })
     ).not.toBeInTheDocument();
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Select all' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Select All' }));
     await expect(args.onSelectAll).toHaveBeenCalledOnce();
     await expect(args.onClearSelection).not.toHaveBeenCalled();
   },
@@ -71,11 +71,11 @@ export const Selecting: Story = {
     await expect(canvas.queryByText('24 files')).not.toBeInTheDocument();
     // Not everything is selected yet, so the link still offers select-all.
     await expect(
-      canvas.getByRole('button', { name: 'Select all' })
+      canvas.getByRole('button', { name: 'Select All' })
     ).toBeEnabled();
 
     await userEvent.click(
-      canvas.getByRole('button', { name: 'Exit selection' })
+      canvas.getByRole('button', { name: 'Exit Selection' })
     );
     await expect(args.onClearSelection).toHaveBeenCalledOnce();
     await expect(args.onSelectAll).not.toHaveBeenCalled();
@@ -88,10 +88,10 @@ export const AllSelected: Story = {
   play: async ({ args, canvas, userEvent }) => {
     await expect(canvas.getByText('24 selected')).toBeVisible();
     await expect(
-      canvas.queryByRole('button', { name: 'Select all' })
+      canvas.queryByRole('button', { name: 'Select All' })
     ).not.toBeInTheDocument();
 
-    await userEvent.click(canvas.getByRole('button', { name: 'Deselect all' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Deselect All' }));
     await expect(args.onClearSelection).toHaveBeenCalledOnce();
     await expect(args.onSelectAll).not.toHaveBeenCalled();
   },
@@ -103,7 +103,7 @@ export const EmptyList: Story = {
   play: async ({ canvas }) => {
     await expect(canvas.getByText('0 files')).toBeVisible();
     await expect(
-      canvas.getByRole('button', { name: 'Select all' })
+      canvas.getByRole('button', { name: 'Select All' })
     ).toBeDisabled();
   },
 };

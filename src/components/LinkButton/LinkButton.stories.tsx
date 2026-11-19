@@ -95,7 +95,7 @@ export const AsButton: Story = {
         <Typography textStyle="body14" textColor="secondary">
           {all ? '5 selected' : '5 connections'} ·{' '}
           <LinkButton onClick={() => setAll((v) => !v)}>
-            {all ? 'Deselect all' : 'Select all'}
+            {all ? 'Deselect All' : 'Select All'}
           </LinkButton>
         </Typography>
         <LinkButton

@@ -21,6 +21,13 @@ What changes:
   scans faster: `Failed to upload. Try again.`, `Everything is where it was: its connections,
   metrics and files.` Documentation prose keeps its dashes, and `—` stays as the empty-value mark
   in a cell.
+- **Title Case for the labels that act**, after reading where each one lands rather than what its
+  prop is called: `Select All` and `Deselect All` (`ListSelectionBar`, a `Button`), `See More` and
+  `See Less` (`ClampedText`, a `LinkButton` with no `href`, which renders a `<button>`),
+  `Exit Selection` (`ListSelectionBar`), `Clear Selection` (`MetaRow`) and `Clear Search`
+  (`SearchInput`) — the last three are the tooltip of an icon button. `Clear selection` in
+  `Autocomplete` and `Select` stays sentence case, because there it is an `aria-label` with no
+  tooltip behind it: the same words, two cases, decided by where they land.
 
 What deliberately does **not** change, because each renders as a button's own words or as a
 tooltip: `Set Date` (`SingleDatePicker`, `DateRangePicker`), `Show Less` (`AlertStack`) and
@@ -33,8 +40,10 @@ the default.
 
 Every changed string is a prop with a default, so a consumer passing its own label is untouched.
 
-`CONTENT-RULES.md` is loaded from `CLAUDE.md` beside `SPEC.md` and `COMPONENT-RULES.md`. It also
-records what it has not settled: whether a single-sentence description or error line ends in a
-period, whether the uppercase section labels stay given that M3 rejects caps blocks, and four
-labels the new rule catches that nobody has swept yet (`Select all` / `Deselect all` /
-`Exit selection` in `ListSelectionBar`, and `See more` / `See less` in a `LinkButton`).
+`More actions for {row}` on every row's ⋮ keeps its sentence case although it reaches a tooltip:
+the products fixed that wording (`LinkAI/linkai-kit` rule 6) and a product's own string outranks
+this file.
+
+`CONTENT-RULES.md` is loaded from `CLAUDE.md` beside `SPEC.md` and `COMPONENT-RULES.md`. Two
+questions it records rather than answers: whether a single-sentence description or error line ends
+in a period, and whether the uppercase section labels stay given that M3 rejects caps blocks.

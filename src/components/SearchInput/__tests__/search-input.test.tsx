@@ -40,7 +40,7 @@ const renderWithTooltips = (ui: ReactNode) =>
   render(<TooltipProvider>{ui}</TooltipProvider>);
 
 const clearButton = () =>
-  screen.queryByRole('button', { name: 'Clear search' });
+  screen.queryByRole('button', { name: 'Clear Search' });
 
 describe('SearchInput', () => {
   it('shows no clear button while empty; typing reveals it', () => {
