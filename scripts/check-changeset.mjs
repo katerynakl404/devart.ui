@@ -9,7 +9,7 @@
 // 2 = the check itself could not run (no diff base, bad changeset frontmatter).
 
 import { execFileSync } from 'node:child_process';
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const PACKAGE_NAME = '@devart/ui-react';
@@ -177,16 +177,29 @@ function requiredBump(baseSha, entries) {
   return { bump, reasons };
 }
 
-/** Bump declared for this package by any changeset present on the branch. */
-function declaredBump() {
-  const dir = path.join(repoRoot, '.changeset');
+/**
+ * Bump declared by the changesets THIS merge request adds or edits.
+ *
+ * A changeset already on the base branch belongs to a merge request that
+ * passed its own gate, and it stays in `.changeset/` until a release
+ * consumes it. Counting those here makes the gate inert: a single pending
+ * `major` on the base branch declares `major` for every later merge
+ * request, whatever that request changes.
+ */
+function declaredBump(entries) {
   let bump = 'none';
   const files = [];
 
-  for (const name of readdirSync(dir)) {
-    if (!name.endsWith('.md') || name === 'README.md') continue;
+  const own = entries
+    .filter(({ status }) => status !== 'D')
+    .map(({ file }) => file)
+    .filter((file) => file.startsWith('.changeset/') && file.endsWith('.md'))
+    .filter((file) => !file.slice('.changeset/'.length).includes('/'))
+    .filter((file) => path.basename(file) !== 'README.md');
 
-    const source = readFileSync(path.join(dir, name), 'utf8');
+  for (const file of own) {
+    const name = path.basename(file);
+    const source = readFileSync(path.join(repoRoot, file), 'utf8');
     const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
     if (!frontmatter) {
       console.error(
@@ -267,7 +280,7 @@ if (required === 'none') {
   process.exit(0);
 }
 
-const { bump: declared, files } = declaredBump();
+const { bump: declared, files } = declaredBump(entries);
 
 console.log(`[check-changeset] required bump: ${required}`);
 console.log(`[check-changeset] declared bump: ${declared}`);
@@ -275,7 +288,9 @@ console.log(`[check-changeset] declared bump: ${declared}`);
 if (declared === 'none') {
   fail([
     `This MR changes the published surface of ${PACKAGE_NAME} and needs a`,
-    `changeset with at least a \`${required}\` bump. None was found in .changeset/.`,
+    `changeset with at least a \`${required}\` bump. This branch adds none.`,
+    'Changesets already on the base branch belong to earlier merge requests',
+    'and do not count for this one.',
     '',
     'Detected changes:',
     ...summarize(reasons),
