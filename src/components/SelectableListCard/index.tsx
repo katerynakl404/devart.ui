@@ -28,6 +28,12 @@ interface SelectableListCardCardLayout extends SelectableListCardBaseProps {
 
 interface SelectableListCardRowLayout extends SelectableListCardBaseProps {
   layout: 'row';
+  /**
+   * Where the checkbox sits on a row whose content is more than one line.
+   * On a one-line row the two land in the same place.
+   * @default 'first-line'
+   */
+  checkboxAlign?: 'first-line' | 'center';
   cardClassName?: string;
   selectedClassName?: string;
   cardContent: ReactNode;
@@ -46,6 +52,20 @@ interface SelectableListCardRowLayout extends SelectableListCardBaseProps {
 type SelectableListCardProps =
   | SelectableListCardCardLayout
   | SelectableListCardRowLayout;
+
+/**
+ * The checkbox belongs either to the row's first line or to the middle of the
+ * row, and only the caller knows which: a row that reads as a title over a
+ * description wants it on the title; a row that reads as one block wants it
+ * centred.
+ *
+ * `h-5` IS a text line, so the slot's own `items-center` lands the 18px
+ * checkbox on the 20px line; `items-start` on the card overshoots by 3px.
+ */
+const CHECKBOX_ALIGN = {
+  'first-line': 'h-5 self-start',
+  center: 'self-center',
+} as const;
 
 /**
  * A list item that reveals a checkbox once the list enters selection mode.
@@ -71,6 +91,7 @@ const SelectableListCard = (props: SelectableListCardProps) => {
 
   if (props.layout === 'row') {
     const {
+      checkboxAlign = 'first-line',
       cardClassName,
       selectedClassName,
       cardContent,
@@ -102,18 +123,7 @@ const SelectableListCard = (props: SelectableListCardProps) => {
         <span
           className={cn(
             'hidden flex-none items-center justify-center',
-            // The checkbox belongs to the item's FIRST line, not to the
-            // middle of the item. On a one-line row the two are the same
-            // place; on a row whose content is two or three lines they are
-            // not, and the card's own `align-items` decided it — centred,
-            // the checkbox fell into the gap between the lines (16px below
-            // the title, measured on LinkAI's connections card at 390px);
-            // `items-start` passed in to lift it overshot by 3px, because
-            // the checkbox is 18px and a title line is 20px. `h-5` IS that
-            // line, so `items-center` inside it lands on the title whatever
-            // the caller aligns the card to, and `self-start` keeps it there
-            // when the card stretches its children.
-            'h-5 self-start',
+            CHECKBOX_ALIGN[checkboxAlign],
             'group-data-[has-selection]/list:flex',
             isSelected && 'flex'
           )}

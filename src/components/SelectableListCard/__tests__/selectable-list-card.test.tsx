@@ -15,6 +15,8 @@ const LABEL = 'Select report.pdf';
 const checkbox = () => screen.getByRole('checkbox', { name: LABEL });
 const checkboxes = () => screen.getAllByRole('checkbox', { name: LABEL });
 const content = () => screen.getByText('report.pdf');
+/** The span the checkbox sits in — what `checkboxAlign` steers. */
+const checkboxSlot = () => checkbox().closest('span.flex-none') as HTMLElement;
 const rightSlot = <button type="button">Actions</button>;
 
 const baseProps = {
@@ -82,6 +84,28 @@ describe('SelectableListCard', () => {
       );
 
       expect(checkbox()).toHaveAttribute('data-state', 'checked');
+    });
+
+    it('holds the checkbox to the first line, or centres it on request', () => {
+      const { rerender } = render(
+        <SelectableListCard {...baseProps} {...handlers()} layout="row" />
+      );
+
+      // The slot IS one text line (h-5), so its own items-center lands the
+      // checkbox on the first line however tall the row grows.
+      expect(checkboxSlot()).toHaveClass('h-5', 'self-start');
+
+      rerender(
+        <SelectableListCard
+          {...baseProps}
+          {...handlers()}
+          layout="row"
+          checkboxAlign="center"
+        />
+      );
+
+      expect(checkboxSlot()).toHaveClass('self-center');
+      expect(checkboxSlot()).not.toHaveClass('self-start');
     });
 
     it('renders the right slot', () => {

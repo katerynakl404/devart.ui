@@ -4260,10 +4260,16 @@ checkbox's centre sat **16px below** the switch's and the name's. Passing
 `items-start` to move it up overshoots the other way: the checkbox is 18px
 and the title's line is 20px, so it then sat **3px above** them.
 
-A caller cannot reach that span, so the slot now carries the line itself:
+A caller cannot reach that span, so the slot carries the line itself:
 `h-5 self-start`, and its own `items-center` lands the checkbox on the title
 whatever the caller aligns the card to. The bridge LinkAI held meanwhile
 (`_shared/pages.css`, `.lk-card`) goes with this bundle.
+
+Which line the checkbox belongs to is the caller’s to say, though: not
+every multi-line row reads as a title over a description, and one that
+reads as a single block wants its checkbox in the middle. `checkboxAlign`
+carries the two — `first-line`, the default and the measurement above, and
+`center`.
 
 - **The `menu` slot still centres against the whole card** (`-my-0.5
   ms-auto`), so a multi-line row that wants its ⋮ level with the title still
