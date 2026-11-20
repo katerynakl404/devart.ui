@@ -8,7 +8,7 @@ import { cn } from '../../lib/utils';
 /* The line is a border on a box of no size, not a 1px box filled with the
    colour: a border is snapped to whole device pixels, a fill is not. At 125%
    display scaling the fill is 1.25 device pixels, smeared over two rows
-   wherever the layout lands it on a fraction (§170). */
+   wherever the layout lands it on a fraction. */
 const separatorVariants = cva('shrink-0', {
   variants: {
     variant: {

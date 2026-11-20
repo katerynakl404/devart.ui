@@ -112,6 +112,29 @@ const TITLE_BY_SIZE = {
  * So the action sits 12 below the text at `lg` and 8 at `sm`, not at the
  * block's gap. `xs` and `md` have no kit value and take none.
  */
+/* The cap stays only where it says something the block does not: inside
+   `md` (448px) a 12px message stops at 48ch, about 388px in DM Sans. `sm`
+   (384px) is already that measure, so there the cap is dropped. */
+const statusViewDescriptionVariants = cva('text-balance', {
+  variants: {
+    caps: { true: 'max-w-[48ch]', false: '' },
+    compact: { true: 'leading-normal', false: 'leading-relaxed' },
+  },
+  defaultVariants: { caps: false, compact: false },
+});
+
+/* One action or two, and no more. `max-w-xs` caps the row so a stacked pair
+   does not stretch to the width of the block. */
+const statusViewActionsVariants = cva('flex w-full max-w-xs', {
+  variants: {
+    orientation: {
+      inline: 'flex-row items-center justify-center gap-3',
+      stacked: 'flex-col gap-3',
+    },
+  },
+  defaultVariants: { orientation: 'inline' },
+});
+
 const ACTIONS_OFFSET_BY_SIZE = {
   xs: '',
   sm: 'mt-0.5',
@@ -447,11 +470,10 @@ const StatusView = ({
                where it says something the block does not: inside `md` (448px)
                a 12px message stops at 48ch, about 388px in DM Sans. `sm`
                (384px) is already that measure, so there the cap is dropped. */
-            className={cn(
-              capsMessage && 'max-w-[48ch]',
-              'text-balance',
-              isCompact ? 'leading-normal' : 'leading-relaxed'
-            )}
+            className={statusViewDescriptionVariants({
+              caps: capsMessage,
+              compact: isCompact,
+            })}
             element="p"
             textColor="secondary"
             textStyle={DESCRIPTION_BY_SIZE[size ?? 'md']}
@@ -471,11 +493,8 @@ const StatusView = ({
              `max-w-xs` caps the row so a stacked pair does not stretch to the
              width of the block. */
           className={cn(
-            'flex w-full max-w-xs',
-            ACTIONS_OFFSET_BY_SIZE[size ?? 'md'],
-            actionsOrientation === 'stacked'
-              ? 'flex-col gap-3'
-              : 'flex-row items-center justify-center gap-3'
+            statusViewActionsVariants({ orientation: actionsOrientation }),
+            ACTIONS_OFFSET_BY_SIZE[size ?? 'md']
           )}
         >
           {resolvedActions}
@@ -494,4 +513,6 @@ export {
   EmptyStateIllustration,
   haloVariants,
   StatusView,
+  statusViewActionsVariants,
+  statusViewDescriptionVariants,
 };

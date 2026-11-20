@@ -2,7 +2,13 @@ import type { ReactNode, Ref } from 'react';
 import type { VariantProps } from '../../lib/cva';
 import type { inputGroupVariants } from '../InputGroup';
 
-interface SearchInputProps<T extends { id: string } = { id: string }> {
+/** What the results list reads from a result when no getter is given. */
+interface SearchResultBase {
+  id: string;
+  label?: string;
+}
+
+interface SearchInputProps<T extends SearchResultBase = SearchResultBase> {
   placeholder: string;
   value?: string;
   clearLabel?: string;
@@ -26,4 +32,4 @@ interface SearchInputProps<T extends { id: string } = { id: string }> {
   emptyText?: ReactNode;
 }
 
-export type { SearchInputProps };
+export type { SearchInputProps, SearchResultBase };

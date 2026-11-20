@@ -4,26 +4,67 @@ import { cn } from '../../lib/utils';
 
 /* 4px between the title and the description, not 6: off the 4px step, 6px is
    7.5 device pixels at 125% display scaling, and everything under the head —
-   a separator, the next row — landed on a half pixel (§171). */
+   a separator, the next row — landed on a half pixel. */
 const cardHeaderVariants = cva('', {
   variants: {
     layout: {
       vertical: cn('flex flex-col space-y-1'),
       horizontal: cn('flex items-center gap-3.5'),
     },
+    /* The vertical head turns into a row around its text column and the
+       actions; the column keeps the head's own 4px rhythm. */
+    withActions: { true: '', false: '' },
+    actionsAlign: { title: '', center: '' },
   },
+  compoundVariants: [
+    {
+      layout: 'vertical',
+      withActions: true,
+      class: 'flex-row items-start gap-3 space-y-0',
+    },
+    /* The card's one act: the text keeps at least 20rem beside it and the act
+       goes under it once there is less. */
+    {
+      layout: 'vertical',
+      withActions: true,
+      actionsAlign: 'center',
+      class: 'flex-wrap items-center gap-y-4',
+    },
+  ],
   defaultVariants: {
     layout: 'vertical',
+    withActions: false,
+    actionsAlign: 'title',
   },
 });
 
+/** The text column, which gives way to the act beside it. */
+const cardHeaderTextVariants = cva('flex min-w-0 flex-1 flex-col space-y-1', {
+  variants: {
+    oneAct: { true: 'basis-80', false: '' },
+  },
+  defaultVariants: { oneAct: false },
+});
+
+/** The trailing slot: one title line tall, or centred on title and description. */
+const cardHeaderActionsVariants = cva(
+  'flex shrink-0 items-center gap-2 text-sm',
+  {
+    variants: {
+      align: { title: 'h-6', center: 'self-center' },
+      oneAct: { true: '', false: 'ms-auto' },
+    },
+    defaultVariants: { align: 'title', oneAct: false },
+  }
+);
+
 interface CardHeaderProps
   extends ComponentProps<'div'>,
-    VariantProps<typeof cardHeaderVariants> {
+    Omit<VariantProps<typeof cardHeaderVariants>, 'withActions'> {
   leftSlot?: ReactNode;
   /**
    * What the card's head offers, on its trailing edge: a "Permissions →"
-   * link, an Export button, Delete Workspace. (2026-10-27)
+   * link, an Export button, Delete Workspace.
    *
    * The slot is one title line tall — 24px, `CardTitle`'s line — and centres
    * what it holds on that line, so a link, a 24px icon button and a 32px
@@ -44,10 +85,10 @@ interface CardHeaderProps
    * card whose content goes on below. `center`: on the middle of the title and
    * the description together — the card's one act, a card that is only the
    * head and its button (Delete connection). Without a description the two
-   * are the same. (2026-11-03)
+   * are the same.
    *
    * With `center` the text keeps at least 20rem beside the act, and the act
-   * goes under it, at the start, once there is less (2026-11-04).
+   * goes under it, at the start, once there is less.
    */
   actionsAlign?: 'title' | 'center';
 }
@@ -69,8 +110,8 @@ const CardHeader = ({
   /* The card's one act: the text keeps at least 20rem beside it, and the act
      goes under the text once there is less — not a sentence squeezed into a
      column a few words wide. Wrapped, it stands at the start. The Insightis
-     kit's own row did this (2026-10-22, "кнопка мала опускатись під"); the
-     LinkAI kit's squeezed (2026-11-04). 20rem, not the text's own width: a
+     kit's own row did this; the
+     LinkAI kit's squeezed it instead. 20rem, not the text's own width: a
      two-line sentence on a wide card keeps its button beside it. */
   const oneAct = hasActions && !horizontal && actionsAlign === 'center';
 
@@ -78,11 +119,11 @@ const CardHeader = ({
     <div
       ref={ref}
       className={cn(
-        cardHeaderVariants({ layout }),
-        // The vertical head turns into a row around its text column and the
-        // actions; the column keeps the head's own 4px rhythm.
-        hasActions && !horizontal && 'flex-row items-start gap-3 space-y-0',
-        oneAct && 'flex-wrap items-center gap-y-4',
+        cardHeaderVariants({
+          layout,
+          withActions: hasActions,
+          actionsAlign,
+        }),
         className
       )}
       {...props}
@@ -93,25 +134,17 @@ const CardHeader = ({
           {children}
         </div>
       ) : hasActions ? (
-        <div
-          className={cn(
-            'flex min-w-0 flex-1 flex-col space-y-1',
-            oneAct && 'basis-80'
-          )}
-        >
-          {children}
-        </div>
+        <div className={cardHeaderTextVariants({ oneAct })}>{children}</div>
       ) : (
         children
       )}
       {hasActions ? (
         <div
           data-slot="card-header-actions"
-          className={cn(
-            'flex shrink-0 items-center gap-2 text-sm',
-            !oneAct && 'ms-auto',
-            actionsAlign === 'center' ? 'self-center' : 'h-6'
-          )}
+          className={cardHeaderActionsVariants({
+            align: actionsAlign,
+            oneAct,
+          })}
         >
           {actions}
         </div>
@@ -122,4 +155,9 @@ const CardHeader = ({
 
 CardHeader.displayName = 'CardHeader';
 
-export { CardHeader, cardHeaderVariants };
+export {
+  CardHeader,
+  cardHeaderActionsVariants,
+  cardHeaderTextVariants,
+  cardHeaderVariants,
+};

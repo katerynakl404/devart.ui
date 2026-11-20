@@ -16,8 +16,7 @@ const promoCardVariants = cva('', {
     part: {
       /* The card's hover hangs on the ROOT (`group/promo-card`), not on the
          link: the dismiss sits over the link's corner, and with `hover:` on the
-         link the pointer reaching it took the hover off the card it is part of
-         (§116). */
+         link the pointer reaching it took the hover off the card it is part of */
       root: 'group/promo-card relative w-full',
       surface: cn(
         'flex w-full items-start gap-2 text-start',

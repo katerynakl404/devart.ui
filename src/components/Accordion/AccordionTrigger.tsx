@@ -3,6 +3,7 @@
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDown } from 'lucide-react';
 import type { ComponentProps } from 'react';
+import { cva, type VariantProps } from '../../lib/cva';
 import { cn, focusRing } from '../../lib/utils';
 
 /**
@@ -18,35 +19,41 @@ import { cn, focusRing } from '../../lib/utils';
  * reaching for `className="text-base"` here is a page deciding typography,
  * which is the thing the rest of this system exists to prevent.
  */
+const accordionTriggerVariants = cva(
+  cn(
+    'group/accordion-trigger',
+    'relative flex flex-1 items-center justify-between gap-3',
+    'rounded-lg p-3',
+    'text-ink-primary',
+    'font-medium',
+    focusRing,
+    'transition-all',
+    // Not `pointer-events-none`: it hides the not-allowed cursor and the
+    // tooltip that says why the control is off.
+    'disabled:cursor-not-allowed',
+    'disabled:opacity-disabled',
+    '[&[data-state=open]>svg]:rotate-180'
+  ),
+  {
+    variants: {
+      size: { sm: 'text-sm', md: 'text-base' },
+    },
+    defaultVariants: { size: 'sm' },
+  }
+);
+
 const AccordionTrigger = ({
   className,
   children,
-  size = 'sm',
+  size,
   ...props
-}: ComponentProps<typeof AccordionPrimitive.Trigger> & {
-  size?: 'sm' | 'md';
-}) => {
+}: Omit<ComponentProps<typeof AccordionPrimitive.Trigger>, 'size'> &
+  VariantProps<typeof accordionTriggerVariants>) => {
   return (
     <AccordionPrimitive.Header data-testid="accordion-header" className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
-        className={cn(
-          'group/accordion-trigger',
-          'relative flex flex-1 items-center justify-between gap-3',
-          'rounded-lg p-3',
-          'text-ink-primary',
-          size === 'md' ? 'text-base' : 'text-sm',
-          'font-medium',
-          focusRing,
-          'transition-all',
-          // Not `pointer-events-none`: it hides the not-allowed cursor, and the
-          // tooltip that says why the control is off. A disabled control fires
-          // nothing either way.
-          'disabled:cursor-not-allowed',
-          'disabled:opacity-disabled',
-          '[&[data-state=open]>svg]:rotate-180',
-          className
-        )}
+        className={cn(accordionTriggerVariants({ size }), className)}
         {...props}
       >
         {children}
@@ -58,4 +65,4 @@ const AccordionTrigger = ({
 
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
-export { AccordionTrigger };
+export { AccordionTrigger, accordionTriggerVariants };

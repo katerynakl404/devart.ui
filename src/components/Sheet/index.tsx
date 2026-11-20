@@ -77,7 +77,7 @@ const sheetVariants = cva(
     'bg-surface-card',
     // The edge the side draws (`border-r`, `border-t`…) in the system's
     // line. Uncoloured it took Tailwind's default grey-200 — a white stripe
-    // down a dark sheet, the sidebar drawer's included (2026-10-27).
+    // down a dark sheet, the sidebar drawer's included.
     'border-stroke',
 
     'shadow-lg',
@@ -259,7 +259,7 @@ function SheetDescription({
  * A layout helper for the scrollable middle section of the sheet.
  * Usually contains the main content between header and footer.
  *
- * As `ModalBody` (§176, §178): it spans the sheet's width (`-mx-6`, out over
+ * As `ModalBody`: it spans the sheet's width (`-mx-6`, out over
  * `SheetContent`'s `p-6`) and puts the padding back inside, so the scrollbar —
  * the system's `scrollbar-thin` — sits against the sheet's edge, and
  * `useGutterInset` pads the right by the measured left padding less the bar:

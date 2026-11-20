@@ -132,7 +132,7 @@ function ConfirmationDialog({
         </ModalHeader>
 
         {/* `mx-0`: this dialog has no padding of its own (`p-0`), so the
-            body has none to reach over; `px-5` is its inset (§176) */}
+            body has none to reach over; `px-5` is its inset */}
         <ModalBody className="mx-0 px-5 pb-5">
           <Typography id={descriptionId} variant="p" textColor="secondary">
             {description}

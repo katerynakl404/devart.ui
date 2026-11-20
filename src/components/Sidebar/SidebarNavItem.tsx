@@ -21,7 +21,7 @@ const sidebarNavItemVariants = cva(
     // `SidebarNavigationItems` rows carry.
     'font-medium text-ink-secondary text-sm',
     // The label starts at its icon on whatever element `asChild` puts the
-    // row — a `<button>` centres its text, and the label sat mid-row (§142).
+    // row — a `<button>` centres its text, and the label sat mid-row.
     'text-start',
     'transition-colors duration-fast',
     'hover:bg-state-hover active:bg-state-pressed',

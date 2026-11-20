@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { cva } from '../../lib/cva';
 import { Typography } from '../Typography';
 import { EllipsisIndicator } from './EllipsisIndicator';
 import { FirstButton } from './FirstButton';
@@ -10,6 +11,14 @@ import { PageButton } from './PageButton';
 import { PrevButton } from './PrevButton';
 import type { PaginationSize } from './size';
 import { getPaginationRange, isEllipsisItem } from './utils';
+
+/** The pager's own row: the buttons tighten with the rung. */
+const paginationRowVariants = cva('flex items-center', {
+  variants: {
+    size: { sm: 'gap-2', xs: 'gap-1' },
+  },
+  defaultVariants: { size: 'sm' },
+});
 
 export interface PaginationProps {
   currentPage: number;
@@ -47,7 +56,7 @@ export interface PaginationProps {
    * How many items the whole list holds. With `pageSize`, the pager reads
    * out its range — "Showing 26–50 of 60", `body12` in `--ink-secondary` — on
    * the leading edge of one band, the controls on the trailing edge, wrapping
-   * under each other when the band is too narrow. **Draft.** (2026-10-27)
+   * under each other when the band is too narrow. **Draft.**
    *
    * The readout this doc and `Pagination.md` already asked for ("always show
    * the current range and the total") was built by hand beside the pager on
@@ -95,7 +104,7 @@ const Pagination = ({
   const isLastPage = currentPage === totalPages;
 
   const pager = (
-    <div className={`flex items-center ${size === 'xs' ? 'gap-1' : 'gap-2'}`}>
+    <div className={paginationRowVariants({ size })}>
       {showFirstLast && (
         <FirstButton
           onClick={() => onPageChange(1)}
@@ -178,4 +187,4 @@ const Pagination = ({
 
 Pagination.displayName = 'Pagination';
 
-export { Pagination };
+export { Pagination, paginationRowVariants };

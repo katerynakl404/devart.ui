@@ -16,7 +16,7 @@ const tabsTriggerVariants = cva(
 
     // Underline track — transparent until active. On the trigger's own bottom
     // edge, which is the list's: the list's line lies there out of the layout
-    // (TabsList), so nothing steps down onto it (§171).
+    // (TabsList), so nothing steps down onto it.
     "after:absolute after:right-0 after:bottom-0 after:left-0 after:h-0.5 after:rounded-[1px] after:bg-transparent after:transition-colors after:content-['']",
 
     // Hover (inactive only): body text shift only — no background change.

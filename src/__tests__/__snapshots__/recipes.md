@@ -19,6 +19,17 @@ variant=divided
 variant=standalone
   
 
+## components/Accordion/AccordionTrigger.tsx — accordionTriggerVariants
+
+defaultVariants: size=sm
+
+(defaults)
+  group/accordion-trigger relative flex flex-1 items-center justify-between gap-3 rounded-lg p-3 text-ink-primary font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand transition-all disabled:cursor-not-allowed disabled:opacity-disabled [&[data-state=open]>svg]:rotate-180 text-sm
+size=sm
+  group/accordion-trigger relative flex flex-1 items-center justify-between gap-3 rounded-lg p-3 text-ink-primary font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand transition-all disabled:cursor-not-allowed disabled:opacity-disabled [&[data-state=open]>svg]:rotate-180 text-sm
+size=md
+  group/accordion-trigger relative flex flex-1 items-center justify-between gap-3 rounded-lg p-3 text-ink-primary font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand transition-all disabled:cursor-not-allowed disabled:opacity-disabled [&[data-state=open]>svg]:rotate-180 text-base
+
 ## components/ActivityTray/ActivityTrayItem.tsx — activityTrayItemIconVariants
 
 defaultVariants: layout=single
@@ -133,7 +144,7 @@ size=md
 
 ## components/Alert/index.tsx — alertVariants
 
-defaultVariants: variant=neutral, size=sm
+defaultVariants: variant=neutral, size=sm, withIllustration=false
 
 (defaults)
   flex items-start max-sm:flex-wrap rounded-lg border border-stroke bg-surface-card2 gap-2.5 px-3 py-2.5
@@ -151,6 +162,40 @@ size=sm
   flex items-start max-sm:flex-wrap rounded-lg border border-stroke bg-surface-card2 gap-2.5 px-3 py-2.5
 size=md
   flex items-start max-sm:flex-wrap rounded-lg border border-stroke bg-surface-card2 gap-3 px-3.5 py-3
+withIllustration=true
+  flex items-start max-sm:flex-wrap rounded-lg border border-stroke bg-surface-card2 gap-2.5 px-3 py-2.5 items-center
+withIllustration=false
+  flex items-start max-sm:flex-wrap rounded-lg border border-stroke bg-surface-card2 gap-2.5 px-3 py-2.5
+
+## components/AlertStack/index.tsx — alertStackEdgeVariants
+
+defaultVariants: layer=front, edges=1
+
+(defaults)
+  pointer-events-auto absolute cursor-pointer p-0 transition-transform duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand inset-x-3 top-2 z-[1] group-hover/edges:translate-y-1 bottom-0
+layer=front
+  pointer-events-auto absolute cursor-pointer p-0 transition-transform duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand inset-x-3 top-2 z-[1] group-hover/edges:translate-y-1 bottom-0
+layer=back
+  pointer-events-auto absolute cursor-pointer p-0 transition-transform duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand inset-x-6 top-4 z-0 group-hover/edges:translate-y-2 bottom-0
+edges=1
+  pointer-events-auto absolute cursor-pointer p-0 transition-transform duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand inset-x-3 top-2 z-[1] group-hover/edges:translate-y-1 bottom-0
+edges=2
+  pointer-events-auto absolute cursor-pointer p-0 transition-transform duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand inset-x-3 top-2 z-[1] group-hover/edges:translate-y-1 bottom-2
+
+## components/AlertStack/index.tsx — alertStackVariants
+
+defaultVariants: open=false
+
+(defaults)
+  relative isolate
+open=true
+  flex flex-col gap-3
+open=false
+  relative isolate
+edges=1
+  relative isolate pb-2
+edges=2
+  relative isolate pb-4
 
 ## components/Annotation/index.tsx — annotationGroupVariants
 
@@ -449,9 +494,35 @@ divided=true
 divided=false
   flex items-center gap-2
 
+## components/Card/CardHeader.tsx — cardHeaderActionsVariants
+
+defaultVariants: align=title, oneAct=false
+
+(defaults)
+  flex shrink-0 items-center gap-2 text-sm h-6 ms-auto
+align=title
+  flex shrink-0 items-center gap-2 text-sm h-6 ms-auto
+align=center
+  flex shrink-0 items-center gap-2 text-sm self-center ms-auto
+oneAct=true
+  flex shrink-0 items-center gap-2 text-sm h-6
+oneAct=false
+  flex shrink-0 items-center gap-2 text-sm h-6 ms-auto
+
+## components/Card/CardHeader.tsx — cardHeaderTextVariants
+
+defaultVariants: oneAct=false
+
+(defaults)
+  flex min-w-0 flex-1 flex-col space-y-1
+oneAct=true
+  flex min-w-0 flex-1 flex-col space-y-1 basis-80
+oneAct=false
+  flex min-w-0 flex-1 flex-col space-y-1
+
 ## components/Card/CardHeader.tsx — cardHeaderVariants
 
-defaultVariants: layout=vertical
+defaultVariants: layout=vertical, withActions=false, actionsAlign=title
 
 (defaults)
   flex flex-col space-y-1
@@ -459,6 +530,18 @@ layout=vertical
   flex flex-col space-y-1
 layout=horizontal
   flex items-center gap-3.5
+withActions=true
+  flex flex-col space-y-1
+withActions=false
+  flex flex-col space-y-1
+actionsAlign=title
+  flex flex-col space-y-1
+actionsAlign=center
+  flex flex-col space-y-1
+compound[0] layout=vertical, withActions=true
+  flex flex-col space-y-1 flex-row items-start gap-3 space-y-0
+compound[1] layout=vertical, withActions=true, actionsAlign=center
+  flex flex-col space-y-1 flex-row items-start gap-3 space-y-0 flex-wrap items-center gap-y-4
 
 ## components/Card/CardIcon.tsx — cardIconVariants
 
@@ -670,7 +753,7 @@ size=sm
 
 ## components/DropdownMenu/DropdownMenuItem.tsx — dropdownMenuItemVariants
 
-defaultVariants: variant=default
+defaultVariants: variant=default, inset=false, isExternal=false
 
 (defaults)
   relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-ink-body focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed
@@ -680,6 +763,14 @@ variant=danger
   relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-fb-red-text focus:bg-fb-red/8 data-[highlighted]:bg-fb-red/8 active:bg-fb-red/12
 variant=accent
   relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none font-medium text-ink-highlight focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed
+inset=true
+  relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-ink-body focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed pl-8
+inset=false
+  relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-ink-body focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed
+isExternal=true
+  relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-ink-body focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed [&_[data-slot=dropdown-menu-item-external]]:size-3.5
+isExternal=false
+  relative flex items-center gap-2 rounded px-3 py-1.5 text-sm outline-none transition-colors cursor-pointer select-none [transform:translateZ(0)] data-[disabled]:cursor-not-allowed data-[disabled]:text-ink-inactive [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:stroke-2 focus-visible:outline-none text-ink-body focus:bg-state-hover data-[highlighted]:bg-state-hover active:bg-state-pressed
 
 ## components/File/index.tsx — fileVariants
 
@@ -951,30 +1042,43 @@ size=xl
 
 ## components/LinkButton/index.tsx — linkButtonVariants
 
-defaultVariants: tone=brand, variant=standalone
+defaultVariants: variant=primary, inline=false
 
 (defaults)
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline no-underline hover:underline text-ink-highlight
-variant=standalone
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline no-underline hover:underline text-ink-highlight
-variant=inline
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline underline [text-decoration-color:color-mix(in_srgb,currentColor_25%,transparent)] hover:[text-decoration-color:currentColor] text-ink-highlight
-tone=brand
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline no-underline hover:underline text-ink-highlight
-tone=body
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline no-underline hover:underline text-ink-body hover:text-ink-highlight
-tone=onSolid
-  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] border-none bg-transparent p-0 transition-colors [text-decoration-thickness:1px] [text-underline-offset:25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:text-ink-inactive aria-disabled:hover:text-ink-inactive aria-disabled:hover:no-underline no-underline hover:underline text-content-on-solid
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-ink-highlight no-underline hover:underline
+variant=primary
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-ink-highlight no-underline hover:underline
+variant=secondary
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-ink-body hover:text-ink-highlight no-underline hover:underline
+variant=white
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-content-on-solid no-underline hover:underline
+inline=false
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-ink-highlight no-underline hover:underline
+inline=true
+  inline-flex items-center gap-1.5 cursor-pointer font-medium text-[length:inherit] leading-[inherit] m-0 appearance-none border-none bg-transparent p-0 text-start font-[family-name:inherit] transition-colors decoration-1 underline-offset-[25%] [&_svg]:size-4 [&_svg]:shrink-0 focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card aria-disabled:cursor-not-allowed aria-disabled:text-ink-inactive aria-disabled:no-underline aria-disabled:hover:text-ink-inactive text-ink-highlight underline decoration-link-underline hover:decoration-current
 
-## components/MetaRow/index.tsx — metaRowVariants
+## components/MetaRow/MetaRow.tsx — metaRowPartVariants
 
-defaultVariants: variant=cluster, sticky=false
+defaultVariants: part=count
+
+(defaults)
+  shrink-0 whitespace-nowrap
+part=count
+  shrink-0 whitespace-nowrap
+part=actions
+  ms-auto inline-flex shrink-0 items-center gap-1
+part=clear
+  ms-auto [[data-slot=meta-row-actions]+&]:-ms-1
+
+## components/MetaRow/MetaRow.tsx — metaRowVariants
+
+defaultVariants: align=start, sticky=false
 
 (defaults)
   flex flex-wrap items-center gap-3 gap-y-2 min-h-11 py-1.5 border-none text-sm leading-5 bg-transparent
-variant=cluster
+align=start
   flex flex-wrap items-center gap-3 gap-y-2 min-h-11 py-1.5 border-none text-sm leading-5 bg-transparent
-variant=split
+align=between
   flex flex-wrap items-center gap-3 gap-y-2 min-h-11 py-1.5 border-none text-sm leading-5 justify-between bg-transparent
 sticky=false
   flex flex-wrap items-center gap-3 gap-y-2 min-h-11 py-1.5 border-none text-sm leading-5 bg-transparent
@@ -1012,6 +1116,54 @@ withCloseButton=true
   mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left pe-8
 withCloseButton=false
   mb-3 flex flex-shrink-0 flex-col gap-1.5 text-left
+
+## components/PageHeader/index.tsx — pageHeaderBackIconVariants
+
+defaultVariants: condensed=false
+
+(defaults)
+  transition-all duration-slow motion-reduce:transition-none !size-6
+condensed=true
+  transition-all duration-slow motion-reduce:transition-none
+condensed=false
+  transition-all duration-slow motion-reduce:transition-none !size-6
+
+## components/PageHeader/index.tsx — pageHeaderLoadingVariants
+
+defaultVariants: condensed=false
+
+(defaults)
+  flex items-center min-h-8 md:min-h-9
+condensed=true
+  flex items-center min-h-7
+condensed=false
+  flex items-center min-h-8 md:min-h-9
+
+## components/PageHeader/index.tsx — pageHeaderTitleVariants
+
+defaultVariants: condensed=false, wrap=false
+
+(defaults)
+  transition-all duration-slow motion-reduce:transition-none md:text-3xl truncate
+condensed=true
+  transition-all duration-slow motion-reduce:transition-none truncate
+condensed=false
+  transition-all duration-slow motion-reduce:transition-none md:text-3xl truncate
+wrap=true
+  transition-all duration-slow motion-reduce:transition-none md:text-3xl min-w-0 break-words
+wrap=false
+  transition-all duration-slow motion-reduce:transition-none md:text-3xl truncate
+
+## components/Pagination/index.tsx — paginationRowVariants
+
+defaultVariants: size=sm
+
+(defaults)
+  flex items-center gap-2
+size=sm
+  flex items-center gap-2
+size=xs
+  flex items-center gap-1
 
 ## components/PasswordInput/index.tsx — passwordToggleVariants
 
@@ -1458,16 +1610,40 @@ leaving=false
 (defaults)
   pointer-events-auto fixed bg-overlay-scrim backdrop-blur-spotlight [transition:clip-path_var(--spotlight-move)] motion-reduce:transition-none
 
+## components/StatTile/index.tsx — statTilePartVariants
+
+defaultVariants: part=header
+
+(defaults)
+  flex items-start justify-between gap-3
+part=header
+  flex items-start justify-between gap-3
+part=label
+  font-semibold text-xxs uppercase leading-4 tracking-caps
+part=description
+  font-normal text-xs
+
+## components/StatTile/index.tsx — statTileValueVariants
+
+defaultVariants: size=md
+
+(defaults)
+  font-semibold tabular-nums text-2xl
+size=sm
+  font-semibold tabular-nums text-xl
+size=md
+  font-semibold tabular-nums text-2xl
+
 ## components/StatTile/index.tsx — statTileVariants
 
 defaultVariants: size=md
 
 (defaults)
-  flex flex-col gap-1.5 p-5
+  flex flex-col bg-surface-card hover:border-stroke gap-1.5 p-5
 size=sm
-  flex flex-col gap-1 p-4
+  flex flex-col bg-surface-card hover:border-stroke gap-1 p-4
 size=md
-  flex flex-col gap-1.5 p-5
+  flex flex-col bg-surface-card hover:border-stroke gap-1.5 p-5
 
 ## components/StatusMark/index.tsx — statusMarkVariants
 
@@ -1550,6 +1726,32 @@ size=md
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-10 [&_svg]:size-5
 size=lg
   flex shrink-0 items-center justify-center rounded-full bg-state-hover text-ink-secondary size-14 [&_svg]:size-7
+
+## components/StatusView/index.tsx — statusViewActionsVariants
+
+defaultVariants: orientation=inline
+
+(defaults)
+  flex w-full max-w-xs flex-row items-center justify-center gap-3
+orientation=inline
+  flex w-full max-w-xs flex-row items-center justify-center gap-3
+orientation=stacked
+  flex w-full max-w-xs flex-col gap-3
+
+## components/StatusView/index.tsx — statusViewDescriptionVariants
+
+defaultVariants: caps=false, compact=false
+
+(defaults)
+  text-balance leading-relaxed
+caps=true
+  text-balance max-w-[48ch] leading-relaxed
+caps=false
+  text-balance leading-relaxed
+compact=true
+  text-balance leading-normal
+compact=false
+  text-balance leading-relaxed
 
 ## components/StepProgress/StepProgress.tsx — stepProgressStepsVariants
 
@@ -1761,6 +1963,36 @@ withDescription=false
   relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-5 w-9 px-0.5 rounded-full
 compound[0] size=sm, withDescription=true
   relative inline-flex justify-start items-center shrink-0 cursor-pointer transition-colors before:absolute before:-inset-x-1 before:-inset-y-3 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card focus-visible:ring-focus-ring-brand data-[disabled]:cursor-not-allowed data-[disabled]:opacity-disabled data-[state=checked]:bg-brand-primary [&:not([data-disabled])]:data-[state=checked]:hover:bg-brand-hover data-[state=unchecked]:bg-switch-off-bg [&:not([data-disabled])]:data-[state=unchecked]:hover:bg-switch-off-bg-hover h-4 w-7 px-0.5 rounded-full mt-0.5
+
+## components/Table/TableHead.tsx — tableHeadSortVariants
+
+defaultVariants: sorted=false
+
+(defaults)
+  inline-flex max-w-full items-center gap-1.5 rounded group transition-colors hover:text-ink-icon-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-table-header-bg
+sorted=true
+  inline-flex max-w-full items-center gap-1.5 rounded group transition-colors hover:text-ink-icon-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-table-header-bg text-ink-body
+sorted=false
+  inline-flex max-w-full items-center gap-1.5 rounded group transition-colors hover:text-ink-icon-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus-ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-table-header-bg
+
+## components/Table/TableHead.tsx — tableHeadVariants
+
+defaultVariants: width=auto
+
+(defaults)
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0
+width=auto
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0
+width=control
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0 w-12
+width=actions
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0 w-28 text-right
+width=sm
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0 w-[12%]
+width=md
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0 w-[16%]
+width=lg
+  h-9 px-4 py-0 align-middle [[data-density=compact]_&]:h-7 whitespace-nowrap text-left [[data-layout=fixed]_&]:overflow-hidden [[data-layout=fixed]_&]:text-ellipsis font-medium text-ink-secondary text-xs leading-4 [&:has([role=checkbox])]:pe-0 w-[20%]
 
 ## components/Tabs/TabsTrigger.tsx — tabsTriggerVariants
 

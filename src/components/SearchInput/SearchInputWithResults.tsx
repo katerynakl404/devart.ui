@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { useAutocomplete } from '../../hooks/use-autocomplete';
+import { composeRefs } from '../../lib/compose-refs';
 import { cn } from '../../lib/utils';
 import { OptionItem } from '../Autocomplete/OptionItem';
 import {
@@ -19,21 +20,16 @@ import {
 } from '../DropdownMenu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../InputGroup';
 import { SearchInputClearButton } from './SearchInputClearButton';
-import type { SearchInputProps } from './types';
+import type { SearchInputProps, SearchResultBase } from './types';
 
 const MAX_VISIBLE_ROWS = 7.5;
 
-interface SearchInputWithResultsProps<T extends { id: string }>
+interface SearchInputWithResultsProps<T extends SearchResultBase>
   extends Omit<SearchInputProps<T>, 'results' | 'clearLabel'> {
   results: readonly T[];
   clearLabel: string;
   inputClassName: string;
 }
-
-const assignRef = <E,>(ref: Ref<E> | undefined, node: E | null) => {
-  if (typeof ref === 'function') ref(node);
-  else if (ref) (ref as { current: E | null }).current = node;
-};
 
 // The combobox semantics live on the input, as in Autocomplete
 const STRIPPED_TRIGGER_ARIA = {
@@ -46,7 +42,7 @@ const STRIPPED_TRIGGER_ARIA = {
  * `SearchInput` with `results`: lists the matches under the field while
  * something is typed, with `Autocomplete`'s keys and option row.
  */
-function SearchInputWithResults<T extends { id: string }>({
+function SearchInputWithResults<T extends SearchResultBase>({
   placeholder,
   value,
   clearLabel,
@@ -66,10 +62,7 @@ function SearchInputWithResults<T extends { id: string }>({
   emptyText = 'No matches',
 }: SearchInputWithResultsProps<T>) {
   const labelOf = useCallback(
-    (r: T) =>
-      getResultLabel
-        ? getResultLabel(r)
-        : String((r as { label?: unknown }).label ?? r.id),
+    (r: T) => (getResultLabel ? getResultLabel(r) : (r.label ?? r.id)),
     [getResultLabel]
   );
   const [ownQuery, setOwnQuery] = useState('');
@@ -120,11 +113,8 @@ function SearchInputWithResults<T extends { id: string }>({
 
   const inputProps = getInputProps();
   const hookInputRef = inputProps.ref;
-  const setInput = useCallback(
-    (node: HTMLInputElement | null) => {
-      assignRef(hookInputRef as Ref<HTMLInputElement> | undefined, node);
-      assignRef(ref, node);
-    },
+  const setInput = useMemo(
+    () => composeRefs(hookInputRef as Ref<HTMLInputElement> | undefined, ref),
     [hookInputRef, ref]
   );
 
@@ -132,11 +122,12 @@ function SearchInputWithResults<T extends { id: string }>({
   const hookListboxRef = listboxProps.ref;
   // State, not a ref: the portal mounts the list a render after `open`
   const [listboxNode, setListboxNode] = useState<HTMLDivElement | null>(null);
-  const setListbox = useCallback(
-    (node: HTMLDivElement | null) => {
-      setListboxNode(node);
-      assignRef(hookListboxRef as Ref<HTMLDivElement> | undefined, node);
-    },
+  const setListbox = useMemo(
+    () =>
+      composeRefs(
+        setListboxNode,
+        hookListboxRef as Ref<HTMLDivElement> | undefined
+      ),
     [hookListboxRef]
   );
   // Measured, not fixed: `renderResult` rows can be taller

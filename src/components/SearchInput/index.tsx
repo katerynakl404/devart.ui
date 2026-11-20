@@ -6,7 +6,7 @@ import { cn } from '../../lib/utils';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../InputGroup';
 import { SearchInputClearButton } from './SearchInputClearButton';
 import { SearchInputWithResults } from './SearchInputWithResults';
-import type { SearchInputProps } from './types';
+import type { SearchInputProps, SearchResultBase } from './types';
 
 const DEFAULT_CLEAR_LABEL = 'Clear Search';
 
@@ -27,7 +27,7 @@ const searchInputVariants = cva(
  *
  * With `results` it lists the matches under the field while something is typed.
  */
-function SearchInput<T extends { id: string } = { id: string }>({
+function SearchInput<T extends SearchResultBase = SearchResultBase>({
   placeholder,
   value,
   clearLabel = DEFAULT_CLEAR_LABEL,

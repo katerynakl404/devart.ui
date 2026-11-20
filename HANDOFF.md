@@ -9,10 +9,10 @@ A § leaves `DESIGN-SYSTEM-CHANGES.md` only when the developers have **released*
 | | |
 |---|---|
 | design base | `upstream` **1.4.0 — `f69ebc9`** (since 2026-10-28, the 1.3/1.4 sync §154). Packages are cut from it; `git diff f69ebc9 master -- <files>` is what is still ahead |
-| developers now | `796efa7` (2026-11-18). Eight of her merge requests are in: `773d5d8` `6dc3101` `e88067c` on 2026-11-06, then `ee7bdb5` `27214a4` `69e3dd8` `32f88e9` `0d7843d` `4d72640` on 2026-11-16. Andrii refactored what he merged — `f7463ae` (`disabledProps`, `Switch` split), `e2c1511` (`DropdownMenu` context, `restoreFocus`), `85bfe0f` + `b6c5b36` (`Select` split) — and those are in the library since 2026-11-18, with `261513b` (no `size-control`) since 2026-11-19. Oleksii's own work rides on top: `LinkButton` `StatTile` `MetaRow` `FilterMenu` `AlertStack`, `Badge` and `File` fixes, none of it taken yet |
+| developers now | `796efa7` (2026-11-18). Eight of her merge requests are in: `773d5d8` `6dc3101` `e88067c` on 2026-11-06, then `ee7bdb5` `27214a4` `69e3dd8` `32f88e9` `0d7843d` `4d72640` on 2026-11-16. Andrii refactored what he merged — `f7463ae` (`disabledProps`, `Switch` split), `e2c1511` (`DropdownMenu` context, `restoreFocus`), `85bfe0f` + `b6c5b36` (`Select` split) — and those are in the library since 2026-11-18, with `261513b` (no `size-control`) since 2026-11-19. Oleksii's own work rides on top: `LinkButton` `StatTile` `MetaRow` `FilterMenu` `AlertStack`, `Badge` and `File` fixes — **taken back on 2026-11-20**: `LinkButton`, `StatTile`, `MetaRow` and `AlertStack` are now byte-identical to theirs (component, stories and tests), `File` took their `dismissLabel`, and `globals.css` took `--link-underline`. `FilterMenu` is the one that did not come whole: they removed the hierarchy in a commit of its own, so ours keeps it — §148 |
 | open MRs (MCP, 2026-11-19) | **merged**: !25 !26 (2026-11-06), !29 !30 !31 !37 !38 !39 (2026-11-16). **Still open**: !40 (now targeting `master`) !41 !42 !44 !45 !46 !47 !48 — **every pipeline green**, no conflicts, no review comments, and **!44 approved** (Andrii, 2026-11-18 21:15). On 2026-11-18 he rebased the whole remaining chain onto master himself and re-applied her commits onto his own split; `git range-diff` says each of hers came through unchanged. His own commits on the open branches: `12f633a` `a36d358` (`design/search-input`), `2ef7fc5` (`design/text-area`), `261513b` (`design/controls`) |
 | stacked on her branches | `oleksiip` cut his own MRs on top of the chain: !27 StatTile → `design/switch`, !32 FilterMenu → `design/autocomplete`, !33 AlertStack → !32, !43 Badge hairline → `design/digits-only` (2026-11-10: the library's `--badge-border` and base `border-badge-border`, identical — the rest of `Badge` is still ahead). Those bases are merged now, and his work with them, so only `design/digits-only` and the links above it still carry anyone else's MR: **no force-push from `design/search-input` up** — changes go forward as new links of the chain |
-| differences left | **133** entries in the `DESIGN-SYSTEM-CHANGES` index (143 → 141 after !22 → 131 after the eight → 133 on 2026-11-19, when an audit found §124 and §125 written up but never indexed and §126 already in `upstream`). Index and sections now agree both ways: every number has a section, every section a number — goal: 0 |
+| differences left | **132** entries in the `DESIGN-SYSTEM-CHANGES` index (143 → 141 after !22 → 131 after the eight → 133 on 2026-11-19 → **132 on 2026-11-20**: five closed because the developers ported those components themselves — §33's hairline, §46, §47, §52, §149 — against four newly numbered, §191 `File`, §192 `Badge`, §193 `Typography` `h3`, §194 `Foundations`; §188 §189 §190 were written up on 2026-11-19 and never indexed). Index and sections agree both ways — `node scripts/sync-audit.mjs` asserts it. Goal: 0 |
 | route | **A** — branch `design/<KEY>-<slug>` pushed to their project, MR inside it, their CI runs (2026-10-28) |
 | her role in their project | **Developer** (access level 30) — confirmed by the MCP, 2026-10-28. Can push a branch; merging stays theirs |
 | `katerynak/design-system` a GitLab fork of theirs | not needed for route A |
@@ -20,6 +20,7 @@ A § leaves `DESIGN-SYSTEM-CHANGES.md` only when the developers have **released*
 | grouping | **one MR per component** if it is not big (≈300 lines, ≈5 §s, or any 🔴 → split by §); one commit per § |
 | GitLab MCP | `Design system/.mcp.json` → built-in server, GitLab 19.5.1, **connected** 2026-10-28 as `katerynak`; all write tools denied — also those of the GitLab plugin (`mcp__plugin_gitlab_gitlab__*`) |
 | worktree | `Design system/_handoff` (own `core.autocrlf=input`) |
+| audit | `node scripts/sync-audit.mjs` — what moved in `upstream` since the last run, our own house-rule debt (theirs subtracted), comment weight, and whether the index and the sections still agree. State in `.sync-audit.json`; `--where` prints each violating line, `--full` rescans, `--write` stores the new baseline |
 
 Status: `prepared` (local commit, gates green) → `published` (Draft MR) → `in review` → `merged` →
 `released vX.Y.Z` → § retired.
@@ -86,8 +87,22 @@ Index of `DESIGN-SYSTEM-CHANGES.md`: 127 entries — 85 signed off, 41 draft, 1 
   `SearchResultsList.tsx` and `use-search-results.ts` beside it and `SearchInputProps` no longer
   generic. §145 gave `results` to `SearchInput` itself, and LinkAI calls it that way in
   `linkai-kit.stories.js` and `_shared/workspaces.js` — under their shape the list there goes blank
-  until both are rewritten. Nothing carried; the library keeps the one component. Decide with !40:
-  if it merges as it stands, this moves then, and the two LinkAI call sites move with it.
+  until both are rewritten. **Half of it is carried, which this entry used to deny:** the library
+  has `SearchInputWithResults.tsx` as its own file since `1d00a57` (2026-11-12) and `SearchInput`
+  delegates to it when `results` is given, so only the public shape still differs — theirs drops
+  `results` from `SearchInput` entirely. Their `SearchResultBase` typing came over on 2026-11-20,
+  which removed the two `as { … }` casts their review named. Decide with !40: if it merges as it
+  stands, the public shape moves then, and the two LinkAI call sites move with it.
+  `Issues/oleksiip/AIINS-2343` ("extended search input") is already stacked on the whole open
+  chain, so this is theirs to extend either way.
+
+- **Their `StatTile` carries two classes the `Card` MR has to remove (2026-11-20).** It sets
+  `bg-surface-card hover:border-stroke` on the tile, which is them neutralising, by hand and in one
+  component, the two things §4 and §60 change about `Card outline` — their outline card has no fill
+  and tints its border on hover, ours is filled and does not. The library took their file verbatim,
+  so the two classes are a no-op here and the components stay byte-identical. When §4 goes over,
+  those two classes come out of `StatTile` in the same MR, or they stay as dead weight that
+  contradicts the card under them.
 
 - **`scrollbar-thin` on `Table` and `ModalBody` is now spare (2026-11-18).** !30 put the thin bar
   in the preset as a base rule on `*`, so both surfaces draw it in `upstream` without the class —
@@ -102,10 +117,6 @@ Index of `DESIGN-SYSTEM-CHANGES.md`: 127 entries — 85 signed off, 41 draft, 1 
 - **`Input` hides the browser's own ✕ in `type="search"` (2026-11-10).** In the library since 2026-09-20 (`[&::-webkit-search-cancel-button]:hidden` on the base `Input`); the package hides it only inside `SearchInput`. Not dead code: Insightis builds two search fields by hand — `InputGroupInput type="search"` with its own clear button (ChatLibrary, DsCatalog) — and without the rule Chrome draws a second ✕ there. Kept out of the digitsOnly MR on purpose (unrelated, it only shares the file); hand over with the next `Input` / `SearchInput` change.
 
 - **`--ink-inactive` reads blue (2026-11-05, her call: recolour later, from an existing token).** It is `--slate-450` #7C8CA2 — the lightest step of the slate text ladder, so the hue shows most (placeholders, disabled text, decorative icons: 216 uses in 39 files). Candidates already in the ramps: `--grey-500` #6B7280 (neutral, 4.8:1 on white, close to `--ink-secondary` in weight), `--grey-400` #9CA3AF (neutral, 2.5:1 — too faint for text). Decide on a side-by-side of the form story (`Review/Form fields`), both themes; a token change, so the developers' `apps/web/src/index.css` too.
-- **`Checkbox` disabled mark, no §.** Theirs fades the checked/indeterminate mark to `ink-inactive`
-  (`disabled:data-[state=checked]:text-ink-inactive`), which leaves it barely visible on the faded fill;
-  ours removed that line — "disabled is an opacity fade, not a colour swap" (`Checkbox.md`). A real
-  difference with no § number: record it, or it will never be handed over.
 - **`Checkbox` exports.** Ours exports `Checkbox, checkboxVariants`; theirs also
   `checkboxContainerVariants, checkboxIndicatorVariants`. Copying our file would remove two exports
   — a major for them. Keep theirs.

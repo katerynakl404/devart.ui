@@ -10,7 +10,7 @@ interface ModalDescriptionProps
 
 /**
  * The sentence under a dialog's title: what the dialog is for ("Link
- * connections to Finance"), or what answering it does. (2026-10-27)
+ * connections to Finance"), or what answering it does.
  *
  * `Modal.md` documented it and the package never had it, so every dialog
  * with a line under its title wrapped `ModalTitle` and a `Typography` in a

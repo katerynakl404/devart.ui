@@ -2,10 +2,41 @@
 
 import { ArrowLeft } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { IconButton } from '../IconButton';
 import { Skeleton } from '../Skeleton';
 import { Typography } from '../Typography';
+
+/* The arrow is sized against the TITLE, not against the row: beside a 20px
+   condensed title a 24px arrow stops reading as the title's own control. */
+const pageHeaderBackIconVariants = cva(
+  'transition-all duration-slow motion-reduce:transition-none',
+  {
+    variants: { condensed: { true: '', false: '!size-6' } },
+    defaultVariants: { condensed: false },
+  }
+);
+
+/** The placeholder keeps the title's line height, so the row does not move. */
+const pageHeaderLoadingVariants = cva('flex items-center', {
+  variants: { condensed: { true: 'min-h-7', false: 'min-h-8 md:min-h-9' } },
+  defaultVariants: { condensed: false },
+});
+
+const pageHeaderTitleVariants = cva(
+  'transition-all duration-slow motion-reduce:transition-none',
+  {
+    variants: {
+      condensed: { true: '', false: 'md:text-3xl' },
+      /* Wrapping needs `min-w-0` to shrink beside the actions, which
+         `truncate`'s overflow supplied for free, and `break-words` for a
+         single word wider than the row. */
+      wrap: { true: 'min-w-0 break-words', false: 'truncate' },
+    },
+    defaultVariants: { condensed: false, wrap: false },
+  }
+);
 
 export interface PageHeaderProps
   extends Omit<ComponentProps<'header'>, 'title'> {
@@ -83,7 +114,7 @@ export interface PageHeaderProps
  *
  * The title is the kit's `.cl-page-title`: `heading30` (500), stepping to
  * `heading24` below `md` — the same `text-2xl md:text-3xl` as Typography's `h2`
- * variant — and `heading20` once condensed. Insightis set it first; §110.
+ * variant — and `heading20` once condensed. Insightis set it first.
  *
  * Two details are what make it read as one unit rather than three parts:
  *
@@ -165,7 +196,7 @@ function PageHeader({
             clearance and the glyph sits 12px from the title, still tighter than
             the 12px the rest of the row is spaced at, which is what says the
             arrow belongs to the title rather than being its neighbour. */}
-        {/* Condensing animates whole (§15): the title's size, the arrow's box
+        {/* Condensing animates whole: the title's size, the arrow's box
             and its glyph move over `--motion-slow` (240ms), the standard curve
             — the consumer animates its padding over the same — so the header
             shrinks as one thing. A title stepping 30 → 20px in a frame while
@@ -184,14 +215,13 @@ function PageHeader({
             variant="tertiary"
           >
             <ArrowLeft
-              className={cn(
-                'transition-all duration-slow motion-reduce:transition-none',
-                !condensed && '!size-6'
-              )}
+              className={pageHeaderBackIconVariants({
+                condensed: Boolean(condensed),
+              })}
             />
           </IconButton>
         ) : null}
-        {/* The kit's `.cl-page-title` (§110): 24px below `md`, 30px from it —
+        {/* The kit's `.cl-page-title`: 24px below `md`, 30px from it —
             `md:text-3xl` over `heading24` is Typography's own `h2` variant —
             and 20px condensed. Wrapping, it needs `min-w-0` to shrink beside
             the actions — `truncate`'s overflow gave it that for free — and
@@ -200,10 +230,9 @@ function PageHeader({
             move when the title arrives. */}
         {isLoading ? (
           <div
-            className={cn(
-              'flex items-center',
-              condensed ? 'min-h-7' : 'min-h-8 md:min-h-9'
-            )}
+            className={pageHeaderLoadingVariants({
+              condensed: Boolean(condensed),
+            })}
           >
             {loadingContent ?? <Skeleton className="h-6 w-48" />}
           </div>
@@ -212,11 +241,10 @@ function PageHeader({
             element="h2"
             textStyle={condensed ? 'heading20' : 'heading24'}
             textColor="primary"
-            className={cn(
-              wrapTitle ? 'min-w-0 break-words' : 'truncate',
-              'transition-all duration-slow motion-reduce:transition-none',
-              !condensed && 'md:text-3xl'
-            )}
+            className={pageHeaderTitleVariants({
+              condensed: Boolean(condensed),
+              wrap: Boolean(wrapTitle),
+            })}
           >
             {title}
           </Typography>
@@ -238,4 +266,9 @@ function PageHeader({
   );
 }
 
-export { PageHeader };
+export {
+  PageHeader,
+  pageHeaderBackIconVariants,
+  pageHeaderLoadingVariants,
+  pageHeaderTitleVariants,
+};

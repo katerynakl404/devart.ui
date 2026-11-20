@@ -37,7 +37,7 @@ import { Typography } from '../Typography';
    container (`Tree`), the row (`TreeItem`) and the line a branch shows while
    its children load (`TreeLoadingRow`). */
 
-/** The row toggle (`IconButton` `3xs`, §101) and the gap after it. */
+/** The row toggle (`IconButton` `3xs`) and the gap after it. */
 export const TREE_INDENT = 28;
 
 const TreeContext = createContext<{ inset: number }>({ inset: 16 });
@@ -71,7 +71,7 @@ const treeItemVariants = cva(
     // A rule under every row; the last one ends on the border of what holds
     // the tree — two lines there read as one thick one. Transparent there,
     // not removed: a row that became the last on folding lost the rule's
-    // height and its contents moved (2026-10-29).
+    // height and its contents moved.
     'border-stroke border-b py-1 last:border-b-transparent'
   ),
   {
@@ -79,9 +79,9 @@ const treeItemVariants = cva(
       variant: {
         /**
          * A node. The pointer works on these. A row's wash, not a control's
-         * (§6a, as Table's rows): `state-hover` over the card is exactly
+         * (as Table's rows): `state-hover` over the card is exactly
          * `surface-card2` on dark, so a hovered node took the head's tone and
-         * ran into it (2026-10-27). The row wash sits between the two.
+         * ran into it. The row wash sits between the two.
          */
         default: 'hover:bg-tbl-row-hover',
         /**
@@ -89,7 +89,7 @@ const treeItemVariants = cva(
          * catalogs: the card's second surface, no hover, the name a step up.
          * `surface-card2`, not the page's grey: on dark the page is darker
          * than the card, and a head on it read as a hole in the card rather
-         * than as the row over its branch (2026-10-27). card2 is a step
+         * than as the row over its branch. card2 is a step
          * lighter than the card on dark and a tinted band on light.
          */
         head: 'bg-surface-card2',

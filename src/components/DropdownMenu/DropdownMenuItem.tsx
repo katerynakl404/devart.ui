@@ -65,9 +65,21 @@ const dropdownMenuItemVariants = cva(
           'active:bg-state-pressed'
         ),
       },
+      /** Aligns the label with the rows that carry a leading glyph. */
+      inset: { true: 'pl-8', false: '' },
+      /**
+       * A trailing affordance sits a step under the 16px leading glyph; the
+       * base's own `[&_svg]:size-4` would otherwise win.
+       */
+      isExternal: {
+        true: '[&_[data-slot=dropdown-menu-item-external]]:size-3.5',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      inset: false,
+      isExternal: false,
     },
   }
 );
@@ -99,18 +111,11 @@ const DropdownMenuItem = ({
   ...props
 }: ComponentProps<typeof Item> &
   VariantProps<typeof dropdownMenuItemVariants> & {
-    inset?: boolean;
-    /** The row opens a new tab: trailing arrow plus a spoken note. */
-    isExternal?: boolean;
     /** The note `isExternal` adds to the row's name. */
     externalLabel?: string;
   }) => {
   const itemClassName = cn(
-    dropdownMenuItemVariants({ variant }),
-    inset && 'pl-8',
-    // A trailing affordance sits a step under the 16px leading glyph; the
-    // recipe's own `[&_svg]:size-4` would otherwise win.
-    isExternal && '[&_[data-slot=dropdown-menu-item-external]]:size-3.5',
+    dropdownMenuItemVariants({ variant, inset, isExternal }),
     className
   );
 

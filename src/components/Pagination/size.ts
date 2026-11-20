@@ -1,3 +1,5 @@
+import { cva } from '../../lib/cva';
+
 /**
  * The pager's rung. **Draft.**
  *
@@ -13,7 +15,9 @@
 export type PaginationSize = 'sm' | 'xs';
 
 /** The square the page numbers and the nav buttons are drawn in. */
-export const PAGINATION_BOX: Record<PaginationSize, string> = {
-  sm: 'size-8',
-  xs: 'size-6',
-};
+export const paginationBoxVariants = cva('', {
+  variants: {
+    size: { sm: 'size-8', xs: 'size-6' },
+  },
+  defaultVariants: { size: 'sm' },
+});

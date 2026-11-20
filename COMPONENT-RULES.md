@@ -107,13 +107,43 @@ module → the SPEC tree line. A cross-cutting behaviour → a SPEC Component Co
 
 - `variant` is style only, with the kit's values: `primary` / `secondary` / `white` (!24). Layout is
   `align` or `layout` (!28).
+- **`tone` is not banned, the SECOND `variant` is.** SPEC decision 4 reads as "never `tone`", and
+  checked against their tree on 2026-11-20 that is too strong: their own `StatusView` ships a `tone`
+  axis. What !24 rejected was `LinkButton` splitting ONE style axis in two — `tone` for the colour
+  and `variant` for the underline — so the component had no `variant` a reader could name. A single
+  `variant` plus a second, differently-named semantic axis is their own shape. §73's
+  `SegmentedControl` `tone` is therefore not a defect to fix before handing it over.
 - Modifiers and states are boolean axes (`inline`, `open`); one prop name keeps one type across
   components (!24, !33).
 - Name by role, not position (`actions`, not `end`); `part` values match the `data-slot` suffixes (!28).
   No numbers as words (!33).
 
+## Read off the five they ported themselves (2026-11-20)
+
+`LinkButton`, `StatTile`, `MetaRow`, `FilterMenu` and `AlertStack` were built in their package
+from this library's files, so the diff between the two versions is their review, written out.
+
+- ✔ **Every structural part carries `data-slot`** — `stat-tile`, `stat-tile-header`,
+  `stat-tile-label`, `stat-tile-value`, `meta-row-actions`. Ours had none on `StatTile`.
+- **A compound API is split** — `MetaRow.Count` / `MetaRow.End` became `MetaRowCount` /
+  `MetaRowActions`, each in its own file, named by role; `index.tsx` re-exports.
+- **The explanation leaves the code.** A ten-line comment on why a link inherits its font size
+  became "A link takes the size of the text it sits in." The reasoning belongs in the changeset
+  and in `DESIGN-SYSTEM-CHANGES.md`; a `§` number, a date or a name never belongs in a source
+  comment, and neither does a line of Ukrainian.
+- **A token beats a `color-mix()` written in place** — our inline
+  `[text-decoration-color:color-mix(…currentColor 25%…)]` became `--link-underline` plus
+  `decoration-link-underline`; same pixels, one name.
+- **They add what we left out.** Their `LinkButton` has a real `disabled` that cancels the click on
+  an `<a>`, and `aria-disabled:cursor-not-allowed`; their `AlertStack` is controlled
+  (`open` + `onOpenChange`) and takes `ref`. Taking their file back is not only a rename.
+
 ## Checked and not rules
 
+- **`class-map` over-reports.** `house-rules.test.ts` counts every `Record<_, string>`, so a map of
+  CSS declarations (`Foundations/tokens.ts` `Decls`) or a cast of theme colours is flagged as a
+  class map. `scripts/sync-audit.mjs` narrows it to a `const` whose values read as class strings;
+  the baseline still carries the two false positives.
 - Splitting by length alone; `displayName` everywhere (their Select parts have none); arbitrary lengths
   in rem (a nit — they kept `end-[34px]` in Select); `context.ts` vs `<Component>Context.ts` (both live
   in their tree).

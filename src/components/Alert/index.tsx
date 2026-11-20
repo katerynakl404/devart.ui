@@ -68,10 +68,18 @@ const alertVariants = cva(
         sm: 'gap-2.5 px-3 py-2.5',
         md: 'gap-3 px-3.5 py-3',
       },
+      /* A glyph aligns with the title by sharing its line box. The plate is
+         taller than one line, so with it the copy centres on the plate
+         instead of hanging off its top edge. */
+      withIllustration: { true: 'items-center', false: '' },
     },
     /* sm is the default: every inline use of Alert predates md, and the component was drawn for
        the footnote case first. */
-    defaultVariants: { variant: 'neutral', size: 'sm' },
+    defaultVariants: {
+      variant: 'neutral',
+      size: 'sm',
+      withIllustration: false,
+    },
   }
 );
 
@@ -185,90 +193,93 @@ const Alert = ({
   className,
   ref,
   ...props
-}: AlertProps) => (
-  /* `status`, not `alert`: these announce a state change politely and must not
-     interrupt what the person is doing. A true `alert` role is for something
-     that cannot wait, which none of these are. */
-  // biome-ignore lint/a11y/useSemanticElements: <output> is a phrasing-only form result, not a block notice
-  <div
-    ref={ref}
-    role="status"
-    className={cn(
-      alertVariants({ variant, size }),
-      /* A glyph aligns with the title by sharing its line box. The plate is
-         taller than one line, so with it the copy centres on the plate instead
-         of hanging off its top edge. */
-      illustration ? 'items-center' : null,
-      className
-    )}
-    {...props}
-  >
-    {illustration ? (
-      <span
-        aria-hidden="true"
-        className={cn(
-          alertIconVariants({ variant, size }),
-          alertIllustrationVariants({ size }),
-          illustrationClassName
-        )}
-      >
-        {illustration}
-      </span>
-    ) : icon ? (
-      /* No nudge: the glyph box is 16px and so is the title's line box, so they
-         align by being the same box. */
-      <span
-        aria-hidden="true"
-        className={cn(alertIconVariants({ variant, size }), iconClassName)}
-      >
-        {icon}
-      </span>
-    ) : null}
+}: AlertProps) => {
+  // Without a title the description IS the notice, and reads at the title's
+  // weight rather than as a second line under nothing.
+  const descriptionPart = title ? 'description' : 'message';
 
-    <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-      {/* No title, no empty line box: the description takes the first line,
-          so the glyph — sized to that line — still sits on it. */}
-      {title ? (
+  return (
+    /* `status`, not `alert`: these announce a state change politely and must not
+       interrupt what the person is doing. A true `alert` role is for something
+       that cannot wait, which none of these are. */
+    // biome-ignore lint/a11y/useSemanticElements: <output> is a phrasing-only form result, not a block notice
+    <div
+      ref={ref}
+      role="status"
+      className={cn(
+        alertVariants({
+          variant,
+          size,
+          withIllustration: Boolean(illustration),
+        }),
+        className
+      )}
+      {...props}
+    >
+      {illustration ? (
         <span
+          aria-hidden="true"
           className={cn(
-            alertTextVariants({ part: 'title', size }),
-            titleClassName
+            alertIconVariants({ variant, size }),
+            alertIllustrationVariants({ size }),
+            illustrationClassName
           )}
         >
-          {title}
+          {illustration}
+        </span>
+      ) : icon ? (
+        /* No nudge: the glyph box is 16px and so is the title's line box, so they
+           align by being the same box. */
+        <span
+          aria-hidden="true"
+          className={cn(alertIconVariants({ variant, size }), iconClassName)}
+        >
+          {icon}
         </span>
       ) : null}
 
-      {description ? (
-        <span
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        {/* No title, no empty line box: the description takes the first line,
+            so the glyph — sized to that line — still sits on it. */}
+        {title ? (
+          <span
+            className={cn(
+              alertTextVariants({ part: 'title', size }),
+              titleClassName
+            )}
+          >
+            {title}
+          </span>
+        ) : null}
+
+        {description ? (
+          <span
+            className={cn(
+              alertTextVariants({ part: descriptionPart, size }),
+              descriptionClassName
+            )}
+          >
+            {description}
+          </span>
+        ) : null}
+      </div>
+
+      {actions ? (
+        <div
           className={cn(
-            alertTextVariants({
-              part: title ? 'description' : 'message',
-              size,
-            }),
-            descriptionClassName
+            'flex shrink-0 items-center gap-1.5 self-center',
+            // Under `sm` the actions drop under the copy instead of squeezing it
+            // into a column of single words.
+            'max-sm:w-full max-sm:self-start max-sm:pl-6',
+            actionsClassName
           )}
         >
-          {description}
-        </span>
+          {actions}
+        </div>
       ) : null}
     </div>
-
-    {actions ? (
-      <div
-        className={cn(
-          'flex shrink-0 items-center gap-1.5 self-center',
-          // Under `sm` the actions drop under the copy instead of squeezing it
-          // into a column of single words.
-          'max-sm:w-full max-sm:self-start max-sm:pl-6',
-          actionsClassName
-        )}
-      >
-        {actions}
-      </div>
-    ) : null}
-  </div>
-);
+  );
+};
 
 Alert.displayName = 'Alert';
 

@@ -17,7 +17,7 @@ export const modalHeaderVariants = cva(
       /**
        * The close button is drawn over the dialog, not in the flow, so nothing
        * in the header knows it is there: a long title ran underneath it
-       * (measured: 32px under, 2026-11-17). Reserved only while the button is
+       * (measured: 32px under). Reserved only while the button is
        * shown, so a dialog without one keeps a centred title centred.
        *
        * `ConfirmationDialog` carried this reserve by hand and the product kits

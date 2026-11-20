@@ -1,6 +1,7 @@
 'use client';
 
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { RequiredMark } from '../RequiredMark';
 import { Typography } from '../Typography';
@@ -18,15 +19,20 @@ type FieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
  * carried a label two pixels larger than its neighbour's.
  *
  * It stops at 14 while the field's own text goes on to 16 at `lg` and `xl` —
- * the ladder as the package has always drawn it (2026-11-17: leave it there).
+ * the ladder as the package has always drawn it.
  */
-const fieldLabelSizeClass: Record<FieldSize, string> = {
-  xs: 'text-xs',
-  sm: 'text-xs',
-  md: 'text-sm',
-  lg: 'text-sm',
-  xl: 'text-sm',
-};
+const fieldLabelVariants = cva('', {
+  variants: {
+    size: {
+      xs: 'text-xs',
+      sm: 'text-xs',
+      md: 'text-sm',
+      lg: 'text-sm',
+      xl: 'text-sm',
+    },
+  },
+  defaultVariants: { size: 'md' },
+});
 
 export interface FieldLabelProps
   extends Omit<ComponentPropsWithoutRef<'label'>, 'children'> {
@@ -54,7 +60,7 @@ export function FieldLabel({
       variant="span"
       textColor="body"
       weight="medium"
-      className={cn(fieldLabelSizeClass[size], className)}
+      className={cn(fieldLabelVariants({ size }), className)}
       {...props}
     >
       {children}

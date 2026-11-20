@@ -187,6 +187,9 @@ export const THEME_COLORS = {
   'card-border-hover': 'var(--card-border-hover)',
   'card-border-press': 'var(--card-border-press)',
   'card-lift-border': 'var(--card-lift-border)',
+  link: {
+    underline: 'var(--link-underline)',
+  },
   plan: {
     'card-featured-border': 'var(--plan-card-featured-border)',
   },

@@ -1,16 +1,6 @@
 {
-  "components/Accordion/AccordionTrigger.tsx": {
-    "conditional-class": 1
-  },
   "components/ActivityTray/ActivityTrayItem.tsx": {
     "active-variant": 1
-  },
-  "components/Alert/index.tsx": {
-    "conditional-class": 2
-  },
-  "components/AlertStack/index.tsx": {
-    "class-map": 1,
-    "conditional-class": 4
   },
   "components/Autocomplete/BadgeList.tsx": {
     "class-map": 1
@@ -27,9 +17,6 @@
   },
   "components/Button/index.tsx": {
     "conditional-class": 4
-  },
-  "components/Card/CardHeader.tsx": {
-    "conditional-class": 5
   },
   "components/Checkbox/Checkbox.tsx": {
     "conditional-class": 1
@@ -53,8 +40,7 @@
     "active-variant": 1
   },
   "components/DropdownMenu/DropdownMenuItem.tsx": {
-    "active-variant": 3,
-    "conditional-class": 2
+    "active-variant": 3
   },
   "components/DropdownMenu/DropdownMenuLabel.tsx": {
     "conditional-class": 1
@@ -74,29 +60,13 @@
     "components-per-file": 2
   },
   "components/Foundations/index.tsx": {
-    "conditional-class": 1,
     "components-per-file": 14
   },
   "components/IconButton/index.tsx": {
     "conditional-class": 1
   },
-  "components/InputGroup/FieldLabel.tsx": {
-    "class-map": 1
-  },
   "components/ListSelectionBar/index.tsx": {
     "conditional-class": 1
-  },
-  "components/MetaRow/index.tsx": {
-    "components-per-file": 3
-  },
-  "components/PageHeader/index.tsx": {
-    "conditional-class": 4
-  },
-  "components/Pagination/index.tsx": {
-    "conditional-class": 1
-  },
-  "components/Pagination/size.ts": {
-    "class-map": 1
   },
   "components/RadioButton/index.tsx": {
     "conditional-class": 1
@@ -109,9 +79,6 @@
   },
   "components/ScrollShadow/index.tsx": {
     "conditional-class": 1
-  },
-  "components/SearchInput/SearchInputWithResults.tsx": {
-    "type-literal-cast": 2
   },
   "components/SelectableListCard/index.tsx": {
     "conditional-class": 1
@@ -134,9 +101,6 @@
     "active-variant": 1,
     "components-per-file": 3
   },
-  "components/Sidebar/SidebarMobileTrigger.tsx": {
-    "conditional-class": 1
-  },
   "components/Sidebar/SidebarNavItem.tsx": {
     "active-variant": 1
   },
@@ -147,14 +111,12 @@
     "conditional-class": 1
   },
   "components/StatusView/index.tsx": {
-    "conditional-class": 3,
     "components-per-file": 3
   },
   "components/Stepper/StepperIndicator.tsx": {
     "conditional-class": 6
   },
   "components/Table/TableHead.tsx": {
-    "conditional-class": 7,
     "components-per-file": 2
   },
   "components/Table/index.tsx": {
@@ -168,9 +130,6 @@
   },
   "components/Toggle/index.tsx": {
     "active-variant": 8
-  },
-  "components/Tooltip/index.tsx": {
-    "components-per-file": 2
   },
   "components/Tree/index.tsx": {
     "conditional-class": 2,

@@ -16,7 +16,7 @@ const TabsList = ({
       // a `::before` of no height, out of the layout. As the list's own border
       // it rendered 0.8px at 125% display scaling while the triggers stepped
       // down onto it by a full 1px (`-mb-px`) — the strip came out 39.8px and
-      // everything under it sat on a quarter device pixel (§171). `::before`,
+      // everything under it sat on a quarter device pixel. `::before`,
       // not `::after`: painted before the triggers, so the underline lies over
       // it.
       //

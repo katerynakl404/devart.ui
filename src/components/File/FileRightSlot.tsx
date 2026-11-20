@@ -11,6 +11,7 @@ interface FileRightSlotProps {
   isError?: boolean;
   onRetry?: () => void;
   onDismiss?: () => void;
+  dismissLabel?: string;
 }
 
 export const FileRightSlot = ({
@@ -19,6 +20,7 @@ export const FileRightSlot = ({
   isError,
   onRetry,
   onDismiss,
+  dismissLabel,
 }: FileRightSlotProps) => {
   if (slot) {
     return slot;
@@ -32,13 +34,13 @@ export const FileRightSlot = ({
     return (
       <div className="flex items-center gap-1">
         <FileRetry onRetry={onRetry} />
-        <FileDismiss onDismiss={onDismiss} />
+        <FileDismiss onDismiss={onDismiss} label={dismissLabel} />
       </div>
     );
   }
 
   if (onDismiss) {
-    return <FileDismiss onDismiss={onDismiss} />;
+    return <FileDismiss onDismiss={onDismiss} label={dismissLabel} />;
   }
 
   return null;

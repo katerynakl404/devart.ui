@@ -12,7 +12,9 @@ const meta = {
     description: 'linked to this workspace',
     size: 'md',
   },
-  argTypes: { size: { control: 'inline-radio', options: ['sm', 'md'] } },
+  argTypes: {
+    size: { control: 'inline-radio', options: ['sm', 'md'] },
+  },
 } satisfies Meta<typeof StatTile>;
 
 export default meta;

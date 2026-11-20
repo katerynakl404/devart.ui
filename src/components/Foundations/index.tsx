@@ -2,6 +2,7 @@
 
 import { type ReactNode, useEffect, useState } from 'react';
 import { THEME_COLORS } from '../../lib/constants';
+import { cva } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Typography } from '../Typography';
 import {
@@ -30,19 +31,18 @@ import {
  * truncates to `brand-600 · dar…` — which is the half of it that matters, since
  * the whole point of the line is to say when a token moves under a theme.
  */
+const gridVariants = cva('grid gap-x-3 gap-y-2', {
+  variants: {
+    wide: {
+      true: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+      false: 'grid-cols-3 sm:grid-cols-4 lg:grid-cols-6',
+    },
+  },
+  defaultVariants: { wide: false },
+});
+
 function Grid({ children, wide }: { children: ReactNode; wide?: boolean }) {
-  return (
-    <div
-      className={cn(
-        'grid gap-x-3 gap-y-2',
-        wide
-          ? 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4'
-          : 'grid-cols-3 sm:grid-cols-4 lg:grid-cols-6'
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={gridVariants({ wide })}>{children}</div>;
 }
 
 function Group({ title, children }: { title: string; children: ReactNode }) {
@@ -479,26 +479,71 @@ function Fill({ h = 'h-6' }: { h?: string }) {
  * `gap-4` and `m-4` are all 16.
  */
 const DURATIONS = [
-  ['duration-fast', '--motion-fast', '120ms', 'micro-feedback: colour, opacity, an icon swapping'],
-  ['duration-base', '--motion-base', '180ms', 'surface changes: background, border, shadow, transform'],
-  ['duration-slow', '--motion-slow', '240ms', 'larger moves: a panel opening, a row leaving a list'],
+  [
+    'duration-fast',
+    '--motion-fast',
+    '120ms',
+    'micro-feedback: colour, opacity, an icon swapping',
+  ],
+  [
+    'duration-base',
+    '--motion-base',
+    '180ms',
+    'surface changes: background, border, shadow, transform',
+  ],
+  [
+    'duration-slow',
+    '--motion-slow',
+    '240ms',
+    'larger moves: a panel opening, a row leaving a list',
+  ],
 ];
 
 /* The window an undoable action keeps its way back on screen. It sits here rather than with the
    durations because it is NOT one: nothing animates for four seconds. It is a reading window, and
    it is listed beside them so nobody reaches for --motion-slow when they mean this. */
-const WINDOWS = [['--undo-window', '4000ms', 'how long an undo stays reachable — a toast and an inline Undo give the same time']];
+const WINDOWS = [
+  [
+    '--undo-window',
+    '4000ms',
+    'how long an undo stays reachable — a toast and an inline Undo give the same time',
+  ],
+];
 
 /* The four list movements. Each one is replayed on click, because a motion token shown as a number
    is a number: the only way to review an exit is to watch it. */
 const MOVES = [
-  ['animate-row-in', 'a row arriving', 'The height opens first and the text fades in only once there is room for it.'],
-  ['animate-row-out', 'a row leaving', 'It FADES first (0–40%) and only then collapses. Fading and shrinking together is the version that looks abrupt: the row is still legible while the list is already moving under it.'],
-  ['animate-row-swap-in', 'a slot whose contents change', 'For a removal that leaves an undo behind. The box stays put, the height travels BETWEEN the two contents and never through zero — out-then-in reads as two events.'],
-  ['animate-panel-out', 'a panel with nothing left to say', 'Fades and settles 4px down.'],
+  [
+    'animate-row-in',
+    'a row arriving',
+    'The height opens first and the text fades in only once there is room for it.',
+  ],
+  [
+    'animate-row-out',
+    'a row leaving',
+    'It FADES first (0–40%) and only then collapses. Fading and shrinking together is the version that looks abrupt: the row is still legible while the list is already moving under it.',
+  ],
+  [
+    'animate-row-swap-in',
+    'a slot whose contents change',
+    'For a removal that leaves an undo behind. The box stays put, the height travels BETWEEN the two contents and never through zero — out-then-in reads as two events.',
+  ],
+  [
+    'animate-panel-out',
+    'a panel with nothing left to say',
+    'Fades and settles 4px down.',
+  ],
 ] as const;
 
-function MoveRow({ cls, what, why }: { cls: string; what: string; why: string }) {
+function MoveRow({
+  cls,
+  what,
+  why,
+}: {
+  cls: string;
+  what: string;
+  why: string;
+}) {
   const [playing, setPlaying] = useState(false);
   return (
     <div className="flex flex-col gap-2 rounded-lg border border-stroke p-3">
@@ -519,9 +564,15 @@ function MoveRow({ cls, what, why }: { cls: string; what: string; why: string })
       </div>
       <div className="overflow-hidden rounded-md bg-surface-chips p-2">
         <div
-          className={cn('flex items-center gap-2 rounded-md bg-surface-card px-2 py-1.5', playing && cls)}
+          className={cn(
+            'flex items-center gap-2 rounded-md bg-surface-card px-2 py-1.5',
+            playing && cls
+          )}
           onAnimationEnd={() => setPlaying(false)}
-          style={{ ['--row-height' as string]: '34px', ['--row-from' as string]: '34px' }}
+          style={{
+            ['--row-height' as string]: '34px',
+            ['--row-from' as string]: '34px',
+          }}
         >
           <span className="inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-card2 text-ink-body text-xs">
             1
@@ -547,7 +598,9 @@ export function Motion() {
             <span
               aria-hidden
               className="h-14 w-full rounded-md border border-stroke bg-surface-chips"
-              style={{ transition: `background-color var(${token}) ease-in-out` }}
+              style={{
+                transition: `background-color var(${token}) ease-in-out`,
+              }}
             />
             <Typography element="span" textStyle="body12">
               {cls}
@@ -560,7 +613,10 @@ export function Motion() {
       </Grid>
       <div className="flex flex-col gap-2">
         {WINDOWS.map(([token, ms, use]) => (
-          <div className="flex flex-col gap-1 rounded-lg border border-stroke p-3" key={token}>
+          <div
+            className="flex flex-col gap-1 rounded-lg border border-stroke p-3"
+            key={token}
+          >
             <Typography element="span" textStyle="body12">
               <code>{token}</code> — {ms}
             </Typography>

@@ -47,8 +47,8 @@ const sidebarMenuButtonVariants = cva(
 
     //Pressed — State/Pressed fill only, while the press lasts. This button
     //doubles as a Collapsible disclosure trigger, and an open group is not a
-    //pressed button. (`pressed:` held every open group painted until §155
-    //narrowed it to popup triggers; `active:` was the way round it.)
+    //pressed button. (`pressed:` held every open group painted until it was
+    //narrowed to popup triggers; `active:` was the way round it.)
     'active:bg-state-pressed',
 
     //Focus state — neutral card-gap brand ring (matches Button/IconButton)

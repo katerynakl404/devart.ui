@@ -5,6 +5,7 @@ const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
       'font-size': [{ text: ['xxs', 'compact'] }],
+      tracking: [{ tracking: ['caps'] }],
     },
   },
 });
@@ -46,8 +47,8 @@ export const pageFloor = 'pb-8';
  * `--icon-stroke`. Production draws every glyph at 2 in a 24 viewBox, at 16px
  * and at 14px alike; the box does the scaling, not the stroke.
  *
- * 1.75 was the value here until 2026-10-06. The kit tried it the same day and
- * reverted it: it made the identical glyph 12% lighter than in prod.
+ * 1.75 was tried and reverted: it made the identical glyph 12% lighter than
+ * in prod.
  *
  * The rule is still worth stating although it equals the default. A CSS
  * `stroke-width` beats the attribute on the `<svg>`, so a glyph passed in with

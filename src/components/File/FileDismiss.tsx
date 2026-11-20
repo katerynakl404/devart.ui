@@ -3,22 +3,23 @@
 import { X } from 'lucide-react';
 import { IconButton } from '../IconButton';
 
+const DEFAULT_DISMISS_LABEL = 'Dismiss';
+
 interface FileDismissProps {
   onDismiss: () => void;
-  /** Accessible name for the control. Names the action, not the file row. */
   label?: string;
 }
 
 export const FileDismiss = ({
   onDismiss,
-  label = 'Remove file',
+  label = DEFAULT_DISMISS_LABEL,
 }: FileDismissProps) => {
   return (
     <IconButton
-      aria-label={label}
       variant="transparent"
       size="sm"
       onClick={onDismiss}
+      aria-label={label}
     >
       <X className="size-4 text-ink-secondary" />
     </IconButton>

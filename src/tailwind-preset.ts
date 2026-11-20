@@ -11,7 +11,7 @@ import { THEME_COLORS } from './lib/constants';
    it opens is open — a menu, a popover, a dialog (`aria-haspopup`), a select
    (`role="combobox"`). Not every `aria-expanded`: a disclosure — an open
    section, a tree branch, "Show less" — says its state with its glyph, and
-   matched here it sat pressed for as long as it was open (§155). */
+   matched here it sat pressed for as long as it was open. */
 const pressedVariantPlugin = plugin(({ addVariant }) => {
   addVariant('pressed', [
     '&:active',
@@ -47,7 +47,7 @@ const breakpointVarsPlugin = plugin(({ addBase }) => {
  * nothing. It is for a strip whose overflow is obvious from its content, never
  * for a panel where the bar is the only sign there is more.
  *
- * The thin bar is the base for every scroller (2026-11-05): one place, so no
+ * The thin bar is the base for every scroller: one place, so no
  * component has to ask for it. `scrollbar-none` opts a strip out; the
  * `scrollbar-thin` utility stays for call sites that still name it.
  */

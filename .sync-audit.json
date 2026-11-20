@@ -1,0 +1,3170 @@
+{
+  "audited": "2026-11-20",
+  "upstream": "796efa7a4960ff18858c07a52e2a4ef9b58779d6",
+  "files": {
+    "src/components/Accordion/Accordion.tsx": {
+      "ours": "aaaed7a1a6512b63986768b08b681efc39adca81",
+      "theirs": "aaaed7a1a6512b63986768b08b681efc39adca81",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Accordion/AccordionContent.tsx": {
+      "ours": "31215b16457019a256313da2c45e0bca5ab35c6d",
+      "theirs": "31215b16457019a256313da2c45e0bca5ab35c6d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Accordion/AccordionItem.tsx": {
+      "ours": "9b41bac577a6c53b690b2c0694e724f93cc282e2",
+      "theirs": "cfa444461e50dee0fe9731886b9c0883c899ae2d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Accordion/AccordionTrigger.tsx": {
+      "ours": "2ba53740582ac15721402f9f339750757dbc3ddb",
+      "theirs": "4b09415e2b09cd7e0bf68fa668e82b3a20adc0b3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 15,
+      "lines": 69,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Accordion/index.tsx": {
+      "ours": "2510f2603a828cb28f0364082a628a7e463907f2",
+      "theirs": "2510f2603a828cb28f0364082a628a7e463907f2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/ActivityTrayContent.tsx": {
+      "ours": "f93944f8a7fb465046c2a7470926bc27ead1a60d",
+      "theirs": "539bce524b0ada1ecb80b8b6f4993e283769b692",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 38,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/ActivityTrayContext.ts": {
+      "ours": "63325e75dd5d57624a4b5e0597b61f56da3fae3c",
+      "theirs": "63325e75dd5d57624a4b5e0597b61f56da3fae3c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 28,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/ActivityTrayHeader.tsx": {
+      "ours": "036755d0f488508b8b0c48aa70671c091607e2f9",
+      "theirs": "a524c616ffd02e5089ef02f065ec61c2ba50098d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 109,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/ActivityTrayItem.tsx": {
+      "ours": "86dfe642489895ca9c23472fa81d32db8957bd4c",
+      "theirs": "3bebbf0923db97a4c8c39c073fadc82088f237f3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 307,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/ActivityTrayItem.types.ts": {
+      "ours": "3f1efea613ab4407ef1e432de3185bb85741a825",
+      "theirs": "3f1efea613ab4407ef1e432de3185bb85741a825",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 29,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ActivityTray/index.tsx": {
+      "ours": "c1816a20069ea76ae4e8dab0eb97ab65c665aed2",
+      "theirs": "1311c486182dc485f8e14a90e24e15993730eee6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 190,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Alert/index.tsx": {
+      "ours": "b8b910bfe1e18633f86b57076f484e5836d0e147",
+      "theirs": "1c1aced71c4789db226315e26b5d9488ee2c467e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 34,
+      "lines": 293,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/AlertStack/index.tsx": {
+      "ours": "fe149312c8ecd279b6db20ff9a7aa77f84dbecb0",
+      "theirs": "fe149312c8ecd279b6db20ff9a7aa77f84dbecb0",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 42,
+      "lines": 246,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Annotation/index.tsx": {
+      "ours": "a81a7b93d65fc40233dbce3bf04ea38d7858914a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 26,
+      "lines": 252,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/AsyncList/index.tsx": {
+      "ours": "4796c3b7c995634d3f6c7866baa0d43ee7dea450",
+      "theirs": "4796c3b7c995634d3f6c7866baa0d43ee7dea450",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 89,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Autocomplete/BadgeList.tsx": {
+      "ours": "6182f39530931a8240e1ab68af5c18cc1115d940",
+      "theirs": "596d87c719005a6394f392f46bba066e402ddc2a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 84,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Autocomplete/OptionItem.tsx": {
+      "ours": "00263567bda6888d4b3fb091571d3687b9287e2a",
+      "theirs": "00263567bda6888d4b3fb091571d3687b9287e2a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 63,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Autocomplete/index.tsx": {
+      "ours": "83d01b23e1e8fe2e7b947517e28991025844758d",
+      "theirs": "1a89452f39a7c72f660239e1861678ee0f649bd4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 16,
+      "lines": 343,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Avatar/AvatarProvider.tsx": {
+      "ours": "1a5690d45a4c149aaed0d14c1443394b6802fc09",
+      "theirs": "1a5690d45a4c149aaed0d14c1443394b6802fc09",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Avatar/index.tsx": {
+      "ours": "7ad45d194ae4a572e811369ccc0c9ff38244a4e0",
+      "theirs": "116fc58329081d579036c5b32732fd3a313c5fc6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 110,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Badge/index.tsx": {
+      "ours": "363bbbbbd4dbfffec3a1b04014465b0b1e3f53b7",
+      "theirs": "14234ebe86b043452688018174982a953464ebf4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 40,
+      "lines": 208,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Banner/index.tsx": {
+      "ours": "c89ad8870a69fd6df7d6d634838bcdf768b3b693",
+      "theirs": "e6cee04dc538b5ef365a070992cd5b7608262bfb",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 299,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Button/index.tsx": {
+      "ours": "444dabe8fd8a3d9c32beff41f81db2302838eaa8",
+      "theirs": "a890e9ae29fa14cd4f953f8428d795dd936add32",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 25,
+      "lines": 273,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardContent.tsx": {
+      "ours": "dc78d07590cc1fe0e1810504278a7ab6c6400a74",
+      "theirs": "dc78d07590cc1fe0e1810504278a7ab6c6400a74",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 15,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardDescription.tsx": {
+      "ours": "d3ecb269aad01f996627e6ab4ce728401af8377b",
+      "theirs": "d3ecb269aad01f996627e6ab4ce728401af8377b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardDivider.tsx": {
+      "ours": "66e1c862e0e8e966576bb96c64b0dc250c715104",
+      "theirs": "5b61d8f8e8f437204e7c10e5127a20a3931cfb7a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 15,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardFooter.tsx": {
+      "ours": "d53480f344415d4b2889a26fd1453d5d6d2c74a9",
+      "theirs": "b7590f6434839cbe2a2a0ac982764e849bf583ba",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardHeader.tsx": {
+      "ours": "7f4f16edaeacc3b61804fceccdf96c4aa3c910e5",
+      "theirs": "26cb3793e34faec936836ddb70a5236b66d7d89a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 34,
+      "lines": 164,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardIcon.tsx": {
+      "ours": "f2be18c1fdb55fb24810160f1a31e9c1976876f6",
+      "theirs": "f2be18c1fdb55fb24810160f1a31e9c1976876f6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 58,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardSectionLabel.tsx": {
+      "ours": "9669e9d14a59c70d187d4be782c83f44b910e739",
+      "theirs": "c54d9282878ebed5e3c325d24c51248616410eaa",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 26,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/CardTitle.tsx": {
+      "ours": "4ddd4ec40fe4fc5bb27953d583fae249b150a64d",
+      "theirs": "4ddd4ec40fe4fc5bb27953d583fae249b150a64d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Card/index.tsx": {
+      "ours": "5368f72f193dd129d15fc1a9300420e6eed43d6a",
+      "theirs": "20055aeafb5c873e98d15b597720b5f0fd4d9d3a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 48,
+      "lines": 169,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Checkbox/Checkbox.tsx": {
+      "ours": "fc6087e3eef82c795af8791ed2df855bc3968630",
+      "theirs": "2d6c4606cd0db7a72c665c27d7a0e6d94b6e71d3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 193,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Checkbox/CheckboxGroup.tsx": {
+      "ours": "90cd176a8525efa9fdbfbe5170376819b9bcf371",
+      "theirs": "90cd176a8525efa9fdbfbe5170376819b9bcf371",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 111,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Checkbox/index.tsx": {
+      "ours": "c837046a8fcf4cbdcb7a1838217eead32eae042e",
+      "theirs": "c837046a8fcf4cbdcb7a1838217eead32eae042e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCard.tsx": {
+      "ours": "95d26f335444d9378a109d8f33b05888adc0a1b4",
+      "theirs": "36b87839afdab86e2c53c39f220b812526943733",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 19,
+      "lines": 201,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardBody.tsx": {
+      "ours": "31ea3041de1fc2aca78c18578cf94e82b3f71355",
+      "theirs": "31ea3041de1fc2aca78c18578cf94e82b3f71355",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardButton.tsx": {
+      "ours": "37733114d7a518875665d50bd01477cca99e1fdb",
+      "theirs": "37733114d7a518875665d50bd01477cca99e1fdb",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 27,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardExpandable.tsx": {
+      "ours": "67c347a60df1aa5a48357029703f4b9093718d39",
+      "theirs": "67c347a60df1aa5a48357029703f4b9093718d39",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 68,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardIcon.tsx": {
+      "ours": "a15da3b006227240714e55c37e952d232cbf2b5d",
+      "theirs": "a15da3b006227240714e55c37e952d232cbf2b5d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardLabel.tsx": {
+      "ours": "cfd1ae3447ea7503215de57307e860875a84f4a1",
+      "theirs": "cfd1ae3447ea7503215de57307e860875a84f4a1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 38,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceCardRadioMark.tsx": {
+      "ours": "26ab34801d421fc0279caefe5314aafb7c5068f5",
+      "theirs": "26ab34801d421fc0279caefe5314aafb7c5068f5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 29,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/ChoiceGroup.tsx": {
+      "ours": "09bea5d371815c16c29eb58419c7d483274db412",
+      "theirs": "72d988684ebb7a9b6ef057a84f790e3e21cc4998",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 10,
+      "lines": 57,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/context.ts": {
+      "ours": "d8f3ceb0e089d3c6bc9a834926181e8c889cd277",
+      "theirs": "d8f3ceb0e089d3c6bc9a834926181e8c889cd277",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 17,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/first-enabled-value.ts": {
+      "ours": "4f5a218636d35ef3ab4f3197b4a5ee602adcd000",
+      "theirs": "4f5a218636d35ef3ab4f3197b4a5ee602adcd000",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 19,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/index.tsx": {
+      "ours": "4ae1eb672c8c2dead087fea1c2334d5010d1316a",
+      "theirs": "4ae1eb672c8c2dead087fea1c2334d5010d1316a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 18,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/types.ts": {
+      "ours": "d3929c908aa2f53812e3696087950189992785b0",
+      "theirs": "de10688113b9d3f64640130525d953ba4ed13028",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 41,
+      "lines": 90,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/use-arrow-navigation.ts": {
+      "ours": "2e7daa729bf97df49a4efb86dc80a48bddf3d5bb",
+      "theirs": "2e7daa729bf97df49a4efb86dc80a48bddf3d5bb",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 45,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/use-choice-card-state.ts": {
+      "ours": "d0a258e44ed8c689b056e5780060a31cf27967e7",
+      "theirs": "d0a258e44ed8c689b056e5780060a31cf27967e7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 61,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ChoiceCard/use-choice-group-state.ts": {
+      "ours": "6eefc12745bd6a1726dc0dd6b037e5bb3040b3e4",
+      "theirs": "6eefc12745bd6a1726dc0dd6b037e5bb3040b3e4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 62,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/CircularProgress/index.tsx": {
+      "ours": "83939b285c5ec863617b904a01a1ee9265bee386",
+      "theirs": "83939b285c5ec863617b904a01a1ee9265bee386",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 92,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ClampedText/index.tsx": {
+      "ours": "14e4602bddd9c359004aff3623b6223de68acb44",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 8,
+      "lines": 128,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/CodeBlock/index.tsx": {
+      "ours": "746436b49a35c8d7f75d1c0373e65df0f5f37b58",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "conditional-class": 6
+      },
+      "comment": 62,
+      "lines": 270,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Collapsible/index.tsx": {
+      "ours": "7568564b4f0d43442ec5cfc6b1bb00ce58ca7470",
+      "theirs": "7568564b4f0d43442ec5cfc6b1bb00ce58ca7470",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ConfirmationDialog/index.tsx": {
+      "ours": "132dbc1c4bf887be4cf15d3f1390cf5f7bda4411",
+      "theirs": "90ca575cb2687db970ae19f9749a521e762e13a8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 12,
+      "lines": 174,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ConnectorLogo/index.tsx": {
+      "ours": "67824d976ca209207d3dd685b4d28aa559e2381a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 34,
+      "lines": 139,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ConnectorLogo/logos.ts": {
+      "ours": "69074fbeeda75758ba19e9496af1fe3fd1e4338a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 4,
+      "lines": 70,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Counter/index.tsx": {
+      "ours": "d2a43069c3674274eb55f58cf2bcb45d890ee92a",
+      "theirs": "ad6631ea6ad78411804b46f923bc076473829a45",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 73,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/CtaBanner/index.tsx": {
+      "ours": "da05212bb6f58edde633427ee0d554c5deb6dd8a",
+      "theirs": "da05212bb6f58edde633427ee0d554c5deb6dd8a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/Calendar.tsx": {
+      "ours": "529e993b66002aef02eba408efbb8e18aafd4c88",
+      "theirs": "2e2012855181da42ee443dc9713451dc85ae8c04",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 22,
+      "lines": 175,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/CalendarChevron.tsx": {
+      "ours": "3f4e9dad1c3d91186f792e9c69ba4757eac522d2",
+      "theirs": "3f4e9dad1c3d91186f792e9c69ba4757eac522d2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 31,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/CalendarDayButton.tsx": {
+      "ours": "b834e9df053c937d6177dff4919bcfa970b05149",
+      "theirs": "58eb67ffc811b3025814a78569bda89cc84e7db7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 15,
+      "lines": 88,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/CalendarDropdown.tsx": {
+      "ours": "b5dc63313fa54a1d211b703f540be676bdafe063",
+      "theirs": "b5dc63313fa54a1d211b703f540be676bdafe063",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 69,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/CalendarRoot.tsx": {
+      "ours": "0961aab38042e8a353b51d6b25f83d47322633c6",
+      "theirs": "0961aab38042e8a353b51d6b25f83d47322633c6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/CalendarWeekNumber.tsx": {
+      "ours": "bc1b211692070cc363e257cfc6443f926f35988d",
+      "theirs": "bc1b211692070cc363e257cfc6443f926f35988d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 20,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/DateRangePicker.tsx": {
+      "ours": "854badfebd39934fc76d587305bd9d27feeb3333",
+      "theirs": "854badfebd39934fc76d587305bd9d27feeb3333",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 122,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/SingleDatePicker.tsx": {
+      "ours": "431650069957323d181a9dbfeb63f880495d2242",
+      "theirs": "431650069957323d181a9dbfeb63f880495d2242",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 19,
+      "lines": 124,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/constants.ts": {
+      "ours": "6883eb9540fe6ef62aec075fd96673ff3ec7f061",
+      "theirs": "6883eb9540fe6ef62aec075fd96673ff3ec7f061",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 9,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/date-utils.ts": {
+      "ours": "20f0496a1619d275b663150b348373bb39fe4e01",
+      "theirs": "20f0496a1619d275b663150b348373bb39fe4e01",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 67,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Datepicker/index.tsx": {
+      "ours": "c262b83f42209af3a693a97fb2d61d365a0754ff",
+      "theirs": "c262b83f42209af3a693a97fb2d61d365a0754ff",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DialogTitleFallback/index.tsx": {
+      "ours": "7e5887e54345a4aed8d44e4737580834897b7c4b",
+      "theirs": "7e5887e54345a4aed8d44e4737580834897b7c4b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuCheckboxItem.tsx": {
+      "ours": "cd9552cbbae6c58ec197963528973060962c877e",
+      "theirs": "e93a91f59e5c92ba64b3816943e0c9ddc3545fe6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 61,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuContent.tsx": {
+      "ours": "e2bf01b9824ed9d2d88e807e1557a022f5cab6bd",
+      "theirs": "b30778bccde23204e915d63c502d5470dc2186dd",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 22,
+      "lines": 134,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuItem.tsx": {
+      "ours": "f75e13c33b6b58630f1ebc54f516eedbaef954c0",
+      "theirs": "ffa2dd6db5860e5bac7613456f7958c7fec9fa36",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 45,
+      "lines": 148,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuLabel.tsx": {
+      "ours": "1a27e0372c08563b151f43775eec098850b4a285",
+      "theirs": "ffc225cfec5cf905d3972d871abe6186325cfe97",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 33,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuRadioItem.tsx": {
+      "ours": "5ad2624d2c7c25d315aef385b03119d0cf16f346",
+      "theirs": "0768f818133d2aa96fc0f7126877b89aea8b162f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 59,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuRow.tsx": {
+      "ours": "c3da10f2db29aac04ecc8b089446fef56b1bc34f",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 13,
+      "lines": 38,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuSegmentedItem.tsx": {
+      "ours": "48dbefbd7934ca0d0be68d43e5af7bd475182bbf",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 49,
+      "lines": 191,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuSeparator.tsx": {
+      "ours": "720c79d87ac863247a0fa6fdb907faf3d8b22c17",
+      "theirs": "720c79d87ac863247a0fa6fdb907faf3d8b22c17",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 25,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuShortcut.tsx": {
+      "ours": "7f27ff413aad0bb55deb5aa353ee135f16fc9961",
+      "theirs": "7f27ff413aad0bb55deb5aa353ee135f16fc9961",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 22,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/DropdownMenuSubContent.tsx": {
+      "ours": "4ee05b3eb4529dd0026303247a4d4c30e2a7d16e",
+      "theirs": "ef17611bdb07c418b1a6281cbd9d5543cb312c84",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 50,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/context.ts": {
+      "ours": "f941cc3766efd39ea05e626d7be3ce55819b8494",
+      "theirs": "f941cc3766efd39ea05e626d7be3ce55819b8494",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 19,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/DropdownMenu/index.tsx": {
+      "ours": "60c894377ae7420a89f8ead0f49ec38e2bac129b",
+      "theirs": "202dbc5edcea6e205353ff36ca232b5d3b7896b5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 18,
+      "lines": 99,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/File/FileDismiss.tsx": {
+      "ours": "31befcce3252302cbd8bc03f38bb9a5130b9dd40",
+      "theirs": "31befcce3252302cbd8bc03f38bb9a5130b9dd40",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 28,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/File/FileRetry.tsx": {
+      "ours": "64afcfd65d2fb493f7c9ae8ce5e2227765d01d79",
+      "theirs": "70ad48d3320d38d440472549b31c0dc61901765a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 27,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/File/FileRightSlot.tsx": {
+      "ours": "048818216aa85b2983e0949f1958a2e3dbf15cb8",
+      "theirs": "048818216aa85b2983e0949f1958a2e3dbf15cb8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/File/FileSkeleton.tsx": {
+      "ours": "7be17aaabad626868e7effeb1b058b70cace2202",
+      "theirs": "7be17aaabad626868e7effeb1b058b70cace2202",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/File/index.tsx": {
+      "ours": "27ce9282ce65d6257b1cf0451fe62558c5bb3229",
+      "theirs": "55d6b1c34b928eb404acce745c4a716cd4cbdbbe",
+      "inUpstream": true,
+      "rules": {
+        "conditional-class": 1
+      },
+      "comment": 10,
+      "lines": 185,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/FilterChips/index.tsx": {
+      "ours": "2462773d667aa3ec9e3a40eb08ad4db2f8fe1b68",
+      "theirs": "a3ff199f67f8b1340adf4c6229ed6aa4851251e4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 21,
+      "lines": 92,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/FilterMenu/index.tsx": {
+      "ours": "3c1d130065f6f280ba5c40c9a0d6165da1aee4d7",
+      "theirs": "dcaa06d8e25fd10db14bdec1cc3d0815f7e2952f",
+      "inUpstream": true,
+      "rules": {
+        "conditional-class": 3,
+        "components-per-file": 1
+      },
+      "comment": 25,
+      "lines": 208,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Foundations/index.tsx": {
+      "ours": "163772ec05ab512c1ca8e855da5e9a061084ec2f",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "components-per-file": 13
+      },
+      "comment": 98,
+      "lines": 688,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Foundations/tokens.ts": {
+      "ours": "8fbf1c532fe040bb61fc4c5b805f7fceb9b92e74",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 39,
+      "lines": 123,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCard.tsx": {
+      "ours": "b66c0958206af085973d30b8d24415d1c32a0b63",
+      "theirs": "b66c0958206af085973d30b8d24415d1c32a0b63",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 90,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardArrow.tsx": {
+      "ours": "ddb89a6779fa6c5911d67f3326af5afd16082699",
+      "theirs": "ddb89a6779fa6c5911d67f3326af5afd16082699",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 72,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardBody.tsx": {
+      "ours": "246150ceea1828c042a467da3c8e985f92bcf254",
+      "theirs": "246150ceea1828c042a467da3c8e985f92bcf254",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 30,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardFooter.tsx": {
+      "ours": "1d9476ce0a512db1e0cca4efa01dee9a8bfff670",
+      "theirs": "1d9476ce0a512db1e0cca4efa01dee9a8bfff670",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 14,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardHeader.tsx": {
+      "ours": "7c47e82012515ac0074e03443f91a799cef17c78",
+      "theirs": "7c47e82012515ac0074e03443f91a799cef17c78",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 14,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardIcon.tsx": {
+      "ours": "8c1738c480c8f9010f15a37a27555f5cb7e15389",
+      "theirs": "8c1738c480c8f9010f15a37a27555f5cb7e15389",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/GuideCardTitle.tsx": {
+      "ours": "eee0edf28e4eae3593a5a4772b1330b559cf3471",
+      "theirs": "eee0edf28e4eae3593a5a4772b1330b559cf3471",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 38,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/arrow-position.ts": {
+      "ours": "159e9908d6e977119b923d6853304eb438bc4687",
+      "theirs": "159e9908d6e977119b923d6853304eb438bc4687",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/index.tsx": {
+      "ours": "12e4488217b59625a4bcea1ec547f5320f653efd",
+      "theirs": "12e4488217b59625a4bcea1ec547f5320f653efd",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 19,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/types.ts": {
+      "ours": "5bbf9022bf12db3f3f92114e05ea300c8c5883cc",
+      "theirs": "5bbf9022bf12db3f3f92114e05ea300c8c5883cc",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 22,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/GuideCard/use-guide-card-motion.ts": {
+      "ours": "cc8be8c8eb39095deece5e3ff00e38e29d706862",
+      "theirs": "cc8be8c8eb39095deece5e3ff00e38e29d706862",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/HighlightText/index.tsx": {
+      "ours": "e99d5e68b9c628a13dcdb9869585d270ad8df0c2",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 4,
+      "lines": 73,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/IconButton/index.tsx": {
+      "ours": "abff350205c8bdba92440865ff98f7dca1022715",
+      "theirs": "ab51d7770cd568b7c568de55aca15b30af5f67c5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 16,
+      "lines": 211,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/IconCard/IconCardSkeleton.tsx": {
+      "ours": "509e932d9430670404e50ff7947559ec6a9882d9",
+      "theirs": "f5db0ffd85ddf155ff3feee38ec257541dfa4fce",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 37,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/IconCard/index.tsx": {
+      "ours": "46668a518b38d5602f56f734c7ab7d4297ea6f30",
+      "theirs": "4315b1825d176d15dd1fb2cb6553357211161d3b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 41,
+      "lines": 197,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/IconHint/index.tsx": {
+      "ours": "f7c618f38a584f41e623d92da090b95b9df02f40",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 8,
+      "lines": 71,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InlineRename/index.tsx": {
+      "ours": "81807018b179f0d2c09e40cdbf5d0ad0466a3dd8",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 40,
+      "lines": 156,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Input/index.tsx": {
+      "ours": "65165fb7d1a8a10a167aafc13df4b74d003af544",
+      "theirs": "fc6957c73aed3d3c488344f575658f06abc4eac8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 88,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/FieldLabel.tsx": {
+      "ours": "468f6e04070787cb3ba43d7181361b588aed906c",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 19,
+      "lines": 71,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/InputGroupAction.tsx": {
+      "ours": "d13f59547d11264869797d6d181fe839ef50c2f2",
+      "theirs": "d13f59547d11264869797d6d181fe839ef50c2f2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 58,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/InputGroupAddon.tsx": {
+      "ours": "48947be437bbf0323d733f812e48befb7e5a3792",
+      "theirs": "2ca43551090445b5e1218ac9043be0482fe16194",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 12,
+      "lines": 108,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/InputGroupContext.ts": {
+      "ours": "06261d619a7f6cfa0df5fd63910090b79ef2d217",
+      "theirs": "06261d619a7f6cfa0df5fd63910090b79ef2d217",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 35,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/InputGroupInput.tsx": {
+      "ours": "ba77fa50bd28db53aabefb09453f0065f76f0638",
+      "theirs": "229ebcae4375537712f71ddce613034d7fd2e675",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 76,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/InputGroup/index.tsx": {
+      "ours": "f79b4a5b551b92ae29de37a29bba710da2fe1d66",
+      "theirs": "0c34326c7f4bcf9cf261dc46ee32b43789017871",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 166,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/LinkButton/index.tsx": {
+      "ours": "5ba9ea430107efefaddf211d1b77f3c2f79f96dc",
+      "theirs": "5ba9ea430107efefaddf211d1b77f3c2f79f96dc",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 28,
+      "lines": 156,
+      "sectionRefs": 0,
+      "dates": 1
+    },
+    "src/components/ListPageLayout/index.tsx": {
+      "ours": "db79f69414c8b0c2594ed1b917e5d639b951db23",
+      "theirs": "8f57503ab5cff4e261547a1769d7f8b39ae6cd3c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 26,
+      "lines": 172,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ListPageLayout/use-list-header-height.ts": {
+      "ours": "f758478e70b1eff02d9b075519a76e15afa20b90",
+      "theirs": "51afcda4456865573cc9110a04057f04691e8ef4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 12,
+      "lines": 62,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ListSelectionBar/index.tsx": {
+      "ours": "a955eccc9fb0a66cccc565e32387cd2a203ac3b7",
+      "theirs": "2ebbac928ad4ce51d45baca7823d7f649496c4b3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 137,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/MetaRow/index.tsx": {
+      "ours": "f973f1ed9da16ad3d2b7ec0feaa9ef881fd8ea82",
+      "theirs": "f973f1ed9da16ad3d2b7ec0feaa9ef881fd8ea82",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 11,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/Modal.tsx": {
+      "ours": "63f8e4c2f701117b80432b421bccf179104842f6",
+      "theirs": "63f8e4c2f701117b80432b421bccf179104842f6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 6,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalBody.tsx": {
+      "ours": "c90396d02fcc954742ca89f9aea65735a2eb8ddf",
+      "theirs": "0da912c23b60137425bc191b960a5da9365bd815",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 14,
+      "lines": 58,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalClose.tsx": {
+      "ours": "c73835d83cd72cf50e0b62ee6fd5467317174833",
+      "theirs": "c73835d83cd72cf50e0b62ee6fd5467317174833",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 6,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalContent.tsx": {
+      "ours": "1d3a7567a90f52db7e2114fe3c595a51cf6ea277",
+      "theirs": "c65b7da21dd7ad299395fc54117830044bbe48c7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 33,
+      "lines": 156,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalContext.ts": {
+      "ours": "9a6a69bc8d969434fc18232048231e8d04088d74",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 1,
+      "lines": 9,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalDescription.tsx": {
+      "ours": "8d7c14b406685570379e7523c885d0daa6d17c8d",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 16,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalFooter.tsx": {
+      "ours": "4e69010e22ed38e445a70f43fa17b6ad3d05c11b",
+      "theirs": "3a52350d7852970333e4487fb18eccf91f4c49bc",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 47,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalHeader.tsx": {
+      "ours": "8cd2d7ba7ab7c8bd64eccc59a587f09c667156a1",
+      "theirs": "d56b46b091720c424f6d041b2336818c35855e45",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 54,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalOverlay.tsx": {
+      "ours": "03f8dbd9ab9f8dfffbfb117affcf359c1c8d0e6c",
+      "theirs": "1b3941a18cca0deaf2667ea41c8810842e2fafd6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 35,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalPortal.tsx": {
+      "ours": "87e6f8cd5cad64afbf04aefedea289a1a6e10acd",
+      "theirs": "87e6f8cd5cad64afbf04aefedea289a1a6e10acd",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 6,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalTitle.tsx": {
+      "ours": "a6d59ae5c3517bdf8d5448352cf88033ff21735c",
+      "theirs": "958401edd3a857bcc2498ff55092d75151fe6a0b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 35,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/ModalTrigger.tsx": {
+      "ours": "6802ad6e685f9fb67ee6b4d1c41bd886644ae512",
+      "theirs": "6802ad6e685f9fb67ee6b4d1c41bd886644ae512",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 6,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Modal/index.tsx": {
+      "ours": "e1fc85566089fef2e2c29e14ba9d105d16df93da",
+      "theirs": "9d6023606ca5e9a3855200df22d63ad5ca23bb41",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 14,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/PageHeader/index.tsx": {
+      "ours": "bd71fc52905f44abea31281ed8112c624854d442",
+      "theirs": "ab38a897d761ae4da97948902407c141344381fd",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 81,
+      "lines": 275,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/EllipsisIndicator.tsx": {
+      "ours": "584d338d941c9a31f3746fcdbce97cc7f5bc5803",
+      "theirs": "d3bcff8cfb4b7249e82dff56a7c63beb87bb4f1f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/FirstButton.tsx": {
+      "ours": "b009d79e4662d7158ad918ac6d8f506a39be1e20",
+      "theirs": "69218904e72992f1879d630cc14d2b3bb5786934",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/LastButton.tsx": {
+      "ours": "ff1eed4212205b6883435b5496e4b3d0c9fb7608",
+      "theirs": "73dd5b0023478de73b5f7c899af91bc43f162671",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/NavButton.tsx": {
+      "ours": "ff5007871b7d94391326b31c8740cfd0a82611aa",
+      "theirs": "68b3dd25e1673ce94c6a9994b23936557c41a843",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 37,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/NextButton.tsx": {
+      "ours": "c1676825a1095ada37bac693636f92a0d4e9051f",
+      "theirs": "6e706fcf68e35eb065b5c80a10a0846d0bbf7234",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/PageButton.tsx": {
+      "ours": "af213fbe3ae391cf4f0a5994ef5a9d26e7887f07",
+      "theirs": "c6987d22a919b31f9ca77fc7d5ee2ed0ad93b71e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/PrevButton.tsx": {
+      "ours": "7244bd5d718534ffe36748a64053b9cadd05e86f",
+      "theirs": "0f22b00380d9f07593130d7cc8d64109ecc4d70d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 34,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/index.tsx": {
+      "ours": "1a729482cc381482c13d3bbf10370c0da5113487",
+      "theirs": "3176348970619dbd83bdf1e052ce32a18c49ccf2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 40,
+      "lines": 191,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/size.ts": {
+      "ours": "b28175e7af612126307623e536694c174784fdc3",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 13,
+      "lines": 24,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Pagination/utils.ts": {
+      "ours": "438cbfcb5806f2ecced4bbebc96093eb8fcfded4",
+      "theirs": "438cbfcb5806f2ecced4bbebc96093eb8fcfded4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 97,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/PasswordInput/index.tsx": {
+      "ours": "0dd14ac7984df7e7b4f0e54ef5d1640d8f221219",
+      "theirs": "0dd14ac7984df7e7b4f0e54ef5d1640d8f221219",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 10,
+      "lines": 129,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/PinToggle/index.tsx": {
+      "ours": "3db8401ee931c1e8b5e5908376971a2165135ba7",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 22,
+      "lines": 107,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/PopoverContent.tsx": {
+      "ours": "8ba8dc6e8de4726189a775891a3aceb3623bf5af",
+      "theirs": "05ae1e9c1b4919c8a02b1e9c53b003756215de8e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 30,
+      "lines": 137,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/PopoverTrigger.tsx": {
+      "ours": "2df700b79cb099e97072b48a0dc74eb6fb1be443",
+      "theirs": "24011318327a124828bf80629b0841505fd3de5f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 57,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/context.ts": {
+      "ours": "f8a70e51bcb0b0fbffaf03dc988ab9a73c37868f",
+      "theirs": "f8a70e51bcb0b0fbffaf03dc988ab9a73c37868f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 52,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/index.tsx": {
+      "ours": "d290c58a3c9060fdb4962762f4a04a67c783a27d",
+      "theirs": "d290c58a3c9060fdb4962762f4a04a67c783a27d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 15,
+      "lines": 74,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/resolve-side.ts": {
+      "ours": "9b229ff0896e3ea95b67b1d80d828bda1b77461d",
+      "theirs": "9b229ff0896e3ea95b67b1d80d828bda1b77461d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 75,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/use-close-on-viewport-change.ts": {
+      "ours": "d0d132d065d6b855879f83ffaa709b0e29c8b679",
+      "theirs": "d0d132d065d6b855879f83ffaa709b0e29c8b679",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 49,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/use-hover-intent.ts": {
+      "ours": "7f0d1028116de2fce189b714ef4ad53877848bee",
+      "theirs": "7f0d1028116de2fce189b714ef4ad53877848bee",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 100,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/use-placement-side.ts": {
+      "ours": "2b8fb2510b744fd874c64fdd213938a0555560e8",
+      "theirs": "2b8fb2510b744fd874c64fdd213938a0555560e8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 89,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Popover/use-popover-root.ts": {
+      "ours": "88c5af14490c6d9bbffa04af1eabc677eca24039",
+      "theirs": "88c5af14490c6d9bbffa04af1eabc677eca24039",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 22,
+      "lines": 205,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/PortalContainer/index.tsx": {
+      "ours": "2efdb11e81deb2be5c269141712d24b72273e21e",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 20,
+      "lines": 50,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ProgressBar/index.tsx": {
+      "ours": "1c7fcaac09607779af5570b20a2579c0da2cde07",
+      "theirs": "77b01024fecbfc1ba2327c72a8ea162b3f646e76",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 106,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/PromoCard/index.tsx": {
+      "ours": "ac55b7d16c84ad6c58484edcbba0d29a35bd8e4d",
+      "theirs": "c4f16bca5df73099d5caaefaeee7c23e117a7e45",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 47,
+      "lines": 196,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/RadioButton/RadioGroup.tsx": {
+      "ours": "67591a923307c0e7031d0362163904d6e4c6f438",
+      "theirs": "67591a923307c0e7031d0362163904d6e4c6f438",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 19,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/RadioButton/index.tsx": {
+      "ours": "aa0cb7662091a5e838806d7d035df89320d149d9",
+      "theirs": "f3e6a73a94eeaf693eb77f660fae46b85c92ed9b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 175,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/RequiredMark/index.tsx": {
+      "ours": "5999a006815a977dfa7f521d0851e98ef30b4b34",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 2,
+      "lines": 15,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Resizable/index.tsx": {
+      "ours": "896a7442f9cd1e5f9eeb17910844c06dc6249e9f",
+      "theirs": "896a7442f9cd1e5f9eeb17910844c06dc6249e9f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 55,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ResizableMainSideLayout/index.tsx": {
+      "ours": "a50f34c3dbf9e4b5f2f83b07c723a362ec07d0d9",
+      "theirs": "a50f34c3dbf9e4b5f2f83b07c723a362ec07d0d9",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 15,
+      "lines": 130,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/RowMenuButton/index.tsx": {
+      "ours": "44968ffe1be58320d41fa2a6f059399061335ae6",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 41,
+      "lines": 151,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ScrollShadow/focusable.ts": {
+      "ours": "e4100a4188b185fe25e1f8d9898bab71897d354d",
+      "theirs": "e4100a4188b185fe25e1f8d9898bab71897d354d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 10,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ScrollShadow/index.tsx": {
+      "ours": "1c7d6d46cbf065dc51346d5c4a3cb13fb07d64e9",
+      "theirs": "7ea9a07823972c3009b87127bb19a8a3a3b11661",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 125,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ScrollShadow/use-scroll-shadow-tab-stop.ts": {
+      "ours": "0522886138eaa9a58cad8601684aee7c0146e2bb",
+      "theirs": "3c02fafcbcc312b9e49052fc003c8521cb55fc00",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 101,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SearchInput/SearchInputClearButton.tsx": {
+      "ours": "5d9cf4bc70543916f2f1e38f0494891c530e2579",
+      "theirs": "5d9cf4bc70543916f2f1e38f0494891c530e2579",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 43,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SearchInput/SearchInputWithResults.tsx": {
+      "ours": "5f15965c9a3402d5bac98713fbe682aba344c965",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 11,
+      "lines": 242,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SearchInput/index.tsx": {
+      "ours": "2021763905681484cd1e4900af222004b7fc83ab",
+      "theirs": "91e0c0ec59810f801f2a5d9373af418d2bcbc98e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 101,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SearchInput/types.ts": {
+      "ours": "08634e0fd5b8498d03d0f0ef60cf1f38a30e1a60",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 6,
+      "lines": 36,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/SegmentedControl.tsx": {
+      "ours": "01d0bf851bc2664faaa7ad3366fe9cf735289a3d",
+      "theirs": "5905c76b06f93516988bc306bb6bf932dac7f3bb",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 18,
+      "lines": 85,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/SegmentedControlContent.tsx": {
+      "ours": "47998efc39ec125bf85304edf5e84c7e23753a68",
+      "theirs": "47998efc39ec125bf85304edf5e84c7e23753a68",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/SegmentedControlContext.ts": {
+      "ours": "8d0a70f2e57cf952a780469fa0527ede95efa057",
+      "theirs": "c480d0c8c871b6129037e21a782e35b34419ed4c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/SegmentedControlList.tsx": {
+      "ours": "6749070472f6bdee4baecc7375d54403e919007f",
+      "theirs": "c32f6933808c6a05c2680e39e95c8634e35f75f1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/SegmentedControlTrigger.tsx": {
+      "ours": "374fea1cb7860955b187cc2ca10c3cf54750b617",
+      "theirs": "0cb4570a9baab64e234f7c4a0b842259ed8563c9",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 63,
+      "lines": 232,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SegmentedControl/index.tsx": {
+      "ours": "28a162a0e9bec461bcce83fadb608d77050abb77",
+      "theirs": "28a162a0e9bec461bcce83fadb608d77050abb77",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 16,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/Select.tsx": {
+      "ours": "abb8fb8ad9113c12a91d06b7fb14a40f079ad6ed",
+      "theirs": "1caf25243aaa69a9d31ecb3aa06b16e3278b5d19",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 123,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/SelectClearButton.tsx": {
+      "ours": "740b96edb97abe4ae42cbb7b0aad994bab24f017",
+      "theirs": "740b96edb97abe4ae42cbb7b0aad994bab24f017",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/SelectItem.tsx": {
+      "ours": "afea80fbd319f618cb91566e5063c0b7609e63e7",
+      "theirs": "206e67ea5947306eaf1212cef66c2ffa32bd7784",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/SelectList.tsx": {
+      "ours": "101816d60d3af2d2816d419b492cf41bff1fc2ca",
+      "theirs": "31a000cf3e94f707d2ac21f8b35f6873a721e837",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 8,
+      "lines": 73,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/SelectTrigger.tsx": {
+      "ours": "42cdea3c8865afc76f0c2c56ad50d41dd43b9447",
+      "theirs": "42cdea3c8865afc76f0c2c56ad50d41dd43b9447",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 119,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/index.tsx": {
+      "ours": "f4173776a74b83920cf8270a754235f11ac73e79",
+      "theirs": "f4173776a74b83920cf8270a754235f11ac73e79",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/radix-value.ts": {
+      "ours": "4e7e05b3fbed9f9faa4ac03c9376ce8912feaa0a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 1,
+      "lines": 6,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Select/types.ts": {
+      "ours": "ccb2654efe97594ee4c7dd989bb8b44572f39af1",
+      "theirs": "ccb2654efe97594ee4c7dd989bb8b44572f39af1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 8,
+      "lines": 49,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/SelectableListCard/index.tsx": {
+      "ours": "d197bf6e23f15f21916bd3dc44bb08a544f4a6bc",
+      "theirs": "d0744e2d1a323cf3f55962f59ab0727e9ca2d52b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 44,
+      "lines": 240,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Separator/index.tsx": {
+      "ours": "66bb747fa6eccc50e9ab95510efe391fa6c7124a",
+      "theirs": "a635a8a2068c5cb61e368dae429faa587d843a34",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sheet/index.tsx": {
+      "ours": "dc03bee9d7968488fa3efc2d5a62bec436ea669e",
+      "theirs": "d08106fc575fb9a6155966da37b5fb1bb300f861",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 70,
+      "lines": 319,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarAccount.tsx": {
+      "ours": "d892bf4aeb6b8cebf6840023108f2b8ac6466bc1",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "components-per-file": 2
+      },
+      "comment": 43,
+      "lines": 174,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarChatItem.tsx": {
+      "ours": "7140ca980b017ed2811f0e4348b4e88d04a1b912",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "conditional-class": 2
+      },
+      "comment": 81,
+      "lines": 257,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarContent.tsx": {
+      "ours": "de530bec99e45fc6d266e2aea5da37a42c4035f1",
+      "theirs": "9295d764941191f99e62741d5fcfc9e45b4ea105",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 35,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarFooter.tsx": {
+      "ours": "3308ccf9951fb7829fca984913e04ffa8798079b",
+      "theirs": "441e62b0e1902229201c6db969bc53d4d6cbb975",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 9,
+      "lines": 28,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarGroup.tsx": {
+      "ours": "ff7ea3ae55befee0705149721a34131f1300b485",
+      "theirs": "ff7ea3ae55befee0705149721a34131f1300b485",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 20,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarHeader.tsx": {
+      "ours": "1e151857fd9291097531855dbd95c32e8ce73bed",
+      "theirs": "65937b14d73dfe2962630b257e5f0c0ff55cecba",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 22,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarInset.tsx": {
+      "ours": "c9c67d43b5fee6dfec64af22e0ae42f5d7a57f03",
+      "theirs": "12cfbc5c6981f2ec517bd035924d3cd7aefb56d1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 33,
+      "lines": 62,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMenu.tsx": {
+      "ours": "afc9da0e5c7ec683737f2fdee90a03bdd24da703",
+      "theirs": "d6232b95900e0fcdbcc118a833cef45e20113fef",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 27,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMenuButton.tsx": {
+      "ours": "8009e1ca5b5fb1c5e55bf8281d6c6d1956449ef5",
+      "theirs": "7cfce904d313f5637876b1972c31290b2954597a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 40,
+      "lines": 181,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMenuItem.tsx": {
+      "ours": "59271d1529babc5421fb9e0a1f17bf1fab14fdda",
+      "theirs": "59271d1529babc5421fb9e0a1f17bf1fab14fdda",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMenuRow.tsx": {
+      "ours": "ce5829b942f3ab48650477ef88e999be11d8243e",
+      "theirs": "05bb286347203fd345a940bd442aab44cf642c94",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 12,
+      "lines": 59,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMenuSub.tsx": {
+      "ours": "dfae23859703d7a1409c9a6fbd2db9d65a9a26a8",
+      "theirs": "78a480e5f851e507fc54c7135018bb93ec870eae",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 20,
+      "lines": 100,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarMobileTrigger.tsx": {
+      "ours": "e129d814e7e58298123023a5685506bccf599004",
+      "theirs": "9e82f31018546a324ba5c72fac06f227637ad8c5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 19,
+      "lines": 92,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarNavItem.tsx": {
+      "ours": "2b13081c2e606948a115de402a0e674353aba2eb",
+      "theirs": "90812997534d6e499cb926cb49f69e12428b5ded",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 35,
+      "lines": 181,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarNavigationItems.tsx": {
+      "ours": "871c6f403f7c6d7cdfd8c477b18754643b7f670a",
+      "theirs": "765a86009a8c2c968f5c8dcc2f4a422c3ac0684c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 237,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarPanelHeader.tsx": {
+      "ours": "911001e13c95f54b6b4caebce722bd24a6846814",
+      "theirs": "6e7eabd426303b062e548dd833359907cae3f5e3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 35,
+      "lines": 94,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarProvider.tsx": {
+      "ours": "e4ceba50cacbeaa5ba823809ab360c294d7bc179",
+      "theirs": "8cb33907f3c3ec16818a8b21825242bba4a1b54f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 127,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarRail.tsx": {
+      "ours": "4245605cf40b143caebc35e6a1afe84033a4dc61",
+      "theirs": "4245605cf40b143caebc35e6a1afe84033a4dc61",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 48,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarSection.tsx": {
+      "ours": "a81b2f9afe288d91b1d0abe45a179420e48b5e66",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 33,
+      "lines": 137,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/SidebarTrigger.tsx": {
+      "ours": "93b9f971bf751904c07fbdab672ab8e6fe4e5742",
+      "theirs": "1659aa9fe035f63feb79b02cde4eaa39004c560b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 20,
+      "lines": 84,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/index.tsx": {
+      "ours": "3539e01f8bc291cced3d96964319dfe17c500ad1",
+      "theirs": "942ed015308e7d66d2c2c1e6b0dbb2e7ad1473ff",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 19,
+      "lines": 245,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Sidebar/types.ts": {
+      "ours": "0e4d6c302f35dcd8aefbac01a538900362270f9e",
+      "theirs": "0e4d6c302f35dcd8aefbac01a538900362270f9e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 51,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Skeleton/index.tsx": {
+      "ours": "cc5cf4b87e9cdfc4d86605280b9694252cb6334d",
+      "theirs": "cc5cf4b87e9cdfc4d86605280b9694252cb6334d",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 86,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Spinner/index.tsx": {
+      "ours": "b260f8bf679c4c4279658747ebe11220d0eb44f9",
+      "theirs": "32fcb8cb49c6c134cf2aea706523f290a7434ce3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 62,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Spotlight/index.tsx": {
+      "ours": "dfbe6afb86d4d84481506020c456dfeb4045083c",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 31,
+      "lines": 223,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StatTile/index.tsx": {
+      "ours": "be89bd4d69c17c310e75eac075bdfe69d2b82496",
+      "theirs": "be89bd4d69c17c310e75eac075bdfe69d2b82496",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 17,
+      "lines": 132,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StatusMark/index.tsx": {
+      "ours": "e9d67e101162b5638ee344b67b59f3caef391a79",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 12,
+      "lines": 113,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StatusView/index.tsx": {
+      "ours": "73ae13dfc75291099240b480da9b0a302e997461",
+      "theirs": "821dbf7f64322e9a904327c9d3f3d96262e0a022",
+      "inUpstream": true,
+      "rules": {
+        "components-per-file": 2
+      },
+      "comment": 56,
+      "lines": 519,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepProgress/StepProgress.tsx": {
+      "ours": "ed5d17a27c48c8fc955873b8835c941b2bee62c4",
+      "theirs": "1e21a9143160d327d02c8df1674df307e24a6d85",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 117,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepProgress/StepProgressBar.tsx": {
+      "ours": "8794dfcdaf8629213d8e86bfb10b989cce8aa94c",
+      "theirs": "ff67fdfdd3dd4a1ede8c613447cf26720e124088",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 158,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepProgress/StepProgressHeader.tsx": {
+      "ours": "f495551cf305abcde1e717bf445bac674ce8305b",
+      "theirs": "fdfa868ea22a57b85adbe0f80a9274469562e864",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 94,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepProgress/index.tsx": {
+      "ours": "e298bf83e08f402b6b5f6de9a3d5d99c9bac12b1",
+      "theirs": "a3371cb934412d34584ceca282510564cb349fa3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepProgress/types.ts": {
+      "ours": "b0eaa519beb9c340863fc00508fca702cc33115a",
+      "theirs": "6ca9e93d49203c7ba4f39743ed1df636a8b800d5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 29,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/StepSlider/index.tsx": {
+      "ours": "8d8b100b410f8310fb2457caada361274c426fb2",
+      "theirs": "7e3ba322245ac23417ae1721fc97f202e5da8ea6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 10,
+      "lines": 198,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Stepper/Stepper.tsx": {
+      "ours": "c8f809eaeb0793ff4df510ac40f260f866bb69ce",
+      "theirs": "c8f809eaeb0793ff4df510ac40f260f866bb69ce",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 35,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Stepper/StepperIndicator.tsx": {
+      "ours": "4740bd64fb59bd2cec02c7b20b0f8bcf9a3b31d4",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "conditional-class": 6
+      },
+      "comment": 37,
+      "lines": 155,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Stepper/index.tsx": {
+      "ours": "63c061b697ea3f5e46b8b3c8f156e431b8bfc815",
+      "theirs": "9c57cb74233d0c60089274f144c6980b304828d2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 16,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Stepper/types.ts": {
+      "ours": "8484db937ad22f98ab88c432cd805b68b69719c6",
+      "theirs": "8484db937ad22f98ab88c432cd805b68b69719c6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 18,
+      "lines": 52,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Stepper/use-stepper.ts": {
+      "ours": "afd0b09988241ab87502ab247746aca4283b80f0",
+      "theirs": "afd0b09988241ab87502ab247746aca4283b80f0",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 71,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Switch/Switch.tsx": {
+      "ours": "0d92c8228141b04cd566e11d7864e9d66a10086c",
+      "theirs": "869e71ab2e893a1c7d2388a8ca7f3b68c07ff846",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 150,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Switch/SwitchControl.tsx": {
+      "ours": "87ae713f6a4615b2b5a7156cd65819de4a071c2b",
+      "theirs": "5154f0e79b1640cf949098360368b33ebde38d75",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 16,
+      "lines": 168,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Switch/SwitchRoot.tsx": {
+      "ours": "569fb57cf49df9d390a7698bb76cc0ac27fb576a",
+      "theirs": "569fb57cf49df9d390a7698bb76cc0ac27fb576a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 33,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Switch/index.tsx": {
+      "ours": "9fdf38b8f9e1f6f3794e399fae730c0115ef6ec1",
+      "theirs": "9fdf38b8f9e1f6f3794e399fae730c0115ef6ec1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 4,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Switch/types.ts": {
+      "ours": "79d57088cc97364345c2f23cdbf257898188b932",
+      "theirs": "79d57088cc97364345c2f23cdbf257898188b932",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 18,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableActionsCell.tsx": {
+      "ours": "de93b6a665bfe42a67f5087dd588b8a5a8c6230e",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 42,
+      "lines": 80,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableBody.tsx": {
+      "ours": "c0d8331500d1e6bce7bd40f1da0337a185950eaa",
+      "theirs": "9f77ebea86fce88b24d992f54caa2f45c99bc825",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 25,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableCaption.tsx": {
+      "ours": "14dd7da0ccc7e42417f641b3257ed852ef814bb8",
+      "theirs": "1bfe9ea08447e5fc2efe65faf5999ae9b433880c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 15,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableCell.tsx": {
+      "ours": "07472e9dce67e99cbebcb0873a061cd7311dc608",
+      "theirs": "d1d4d6d0af41f1e726ef27deacc395d32fecb06a",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 59,
+      "lines": 98,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableFooter.tsx": {
+      "ours": "bc8c7a0b2e11a4e308c724a43f98a5c32c5a94b4",
+      "theirs": "2241cd7e60fecb68f04bc8f50545265c107e24af",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 20,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableHead.tsx": {
+      "ours": "863ab1c7cb357c9754602a141543215350d63ca7",
+      "theirs": "0ec9f2620dcf11e03cf5fc8fed9212f028eb7f86",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 28,
+      "lines": 157,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableHeader.tsx": {
+      "ours": "6f7013fe68c67faa308b9ee30be62094a70eebad",
+      "theirs": "f5f4b2b7585fc51b21bc4bc1db5863df816234c3",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 8,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/TableRow.tsx": {
+      "ours": "e3f81aa2bcfecc30cf1c14ff8b69858fc27630f9",
+      "theirs": "d5ff0ae2b839b878f88a7a8ec38aabd20c889e88",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 28,
+      "lines": 52,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Table/index.tsx": {
+      "ours": "e910ede49ae942b5508ed173ca025260d59f912d",
+      "theirs": "d8d2cba7079af0d888b4ce767e619b2ade051c98",
+      "inUpstream": true,
+      "rules": {
+        "conditional-class": 1
+      },
+      "comment": 30,
+      "lines": 96,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/Tabs.tsx": {
+      "ours": "08f175edf8e98b86d5a40a773c91ee95ad13aa3c",
+      "theirs": "08f175edf8e98b86d5a40a773c91ee95ad13aa3c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 29,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/TabsContent.tsx": {
+      "ours": "442e0766e89043cedc9ccf1118035b9440445768",
+      "theirs": "f1b40063f6c156192dbcdefd7258a9e015ee9e30",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 33,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/TabsContext.ts": {
+      "ours": "bdc1b410a310fbb3fc1863a7953d84dbe614df12",
+      "theirs": "bdc1b410a310fbb3fc1863a7953d84dbe614df12",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 22,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/TabsList.tsx": {
+      "ours": "58c56bbb8ee979d5468cd66db7355d6e691acf45",
+      "theirs": "17b8197ea1856bccbd30dc684604ed622b16dd01",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 13,
+      "lines": 41,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/TabsTrigger.tsx": {
+      "ours": "1754e943f6499b0375e3125cfb7b5e5020493b3d",
+      "theirs": "82b3a1cd1fd4b89a3f994411f9577dec7010352c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 69,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tabs/index.tsx": {
+      "ours": "f2cca6aba9c8b6ec2f8d7d8a47dccc4f69efb97b",
+      "theirs": "f2cca6aba9c8b6ec2f8d7d8a47dccc4f69efb97b",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 7,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TextArea/TextAreaCount.tsx": {
+      "ours": "ca773a736000c841d3bc63cb1cd4dd6d1f5c673f",
+      "theirs": "6bd95ab0d1c746492d41d821eef76f8d47f94d70",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 46,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TextArea/TextAreaFooter.tsx": {
+      "ours": "63d7bc4e9718759311909d405d0d02750693e175",
+      "theirs": "e6a3acf85ee8a2ba558fbb1ae6f0bcf591e9bdd4",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 57,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TextArea/get-footer-message.ts": {
+      "ours": "c122da8a07ee93b0d3103b829d6b2eef8179a543",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 1,
+      "lines": 28,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TextArea/index.tsx": {
+      "ours": "87bb288b37131b65fdee1f05fd49953468ba2028",
+      "theirs": "4f0f2f753a80cd81125eee32a8ad788da2dc59d8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 8,
+      "lines": 251,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TextArea/use-value-length.ts": {
+      "ours": "e712bcc3992e6b06c741617e0bf9211cad80b3e1",
+      "theirs": "e712bcc3992e6b06c741617e0bf9211cad80b3e1",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 20,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/Timeline.tsx": {
+      "ours": "9b9228fb5a66dd852bd919ba2f7279d4925fa9a7",
+      "theirs": "9b9228fb5a66dd852bd919ba2f7279d4925fa9a7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 20,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/TimelineContent.tsx": {
+      "ours": "ef7be314c18935b2b8f7721dcb103dcabd60c36e",
+      "theirs": "ef7be314c18935b2b8f7721dcb103dcabd60c36e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 41,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/TimelineHeader.tsx": {
+      "ours": "20210156d2a33d7847008e2ddd8041a7604cdcbf",
+      "theirs": "49ee435e498fe93470ad1e23904db57f0700180e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 47,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/TimelineStep.tsx": {
+      "ours": "030de953ddb79797f82b132d6800778b95977728",
+      "theirs": "85dadb6fb43e7c0f11e6abdd95283258ee7612f5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 99,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/TimelineStepMarker.tsx": {
+      "ours": "fdfeef7269a44f0f76ddf77ad9502a901689dd5a",
+      "theirs": "c9b1aa6a3f80bebfdf33b0c9064b9b17ed3f3c98",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 53,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Timeline/index.tsx": {
+      "ours": "3242152185b6aea8994b24c266e9764c67cba138",
+      "theirs": "3242152185b6aea8994b24c266e9764c67cba138",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 11,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/ToastMessage/ToastProgress.tsx": {
+      "ours": "380ce71e3735987034050382c6aff0556bbeddda",
+      "theirs": "380ce71e3735987034050382c6aff0556bbeddda",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 32,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/ToastMessage/constants.ts": {
+      "ours": "ca990ac277dc0c0f525024ab720f74e2d613638d",
+      "theirs": "9ce1b8440ad681537802b17386c070d27feab53e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 61,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/ToastMessage/index.tsx": {
+      "ours": "55303d261f30b9339468d107e5be77b599974db2",
+      "theirs": "b4be8e761d96f8dcaadf8c1412bfa3751c7eeb2e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 132,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/Toaster.tsx": {
+      "ours": "5b00b7871131dbef56da1d0bd306add565c4e7ec",
+      "theirs": "5b00b7871131dbef56da1d0bd306add565c4e7ec",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 17,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/index.tsx": {
+      "ours": "7689a4e5ef7d3fe9e981dca33ab3793c4f2fced8",
+      "theirs": "7689a4e5ef7d3fe9e981dca33ab3793c4f2fced8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 11,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toast/toast.tsx": {
+      "ours": "49cdb020c795686b502b2294fc5b9ec22691de01",
+      "theirs": "5fc5f6fcb1b949148dd525166ffcb08086c99ae0",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 2,
+      "lines": 86,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Toggle/index.tsx": {
+      "ours": "7ab9e6192399d4a26e69945538d411f63bccb054",
+      "theirs": "93459f3989d47a296caf53fb1073deb5bd87b566",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 145,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ToggleGroup/ToggleGroupContext.ts": {
+      "ours": "78c11354631fcdcab42c1ac3e6c640374f912bc8",
+      "theirs": "78c11354631fcdcab42c1ac3e6c640374f912bc8",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 24,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ToggleGroup/ToggleGroupItem.tsx": {
+      "ours": "4be3d0705702d622977dbf7f84a97248baf3f248",
+      "theirs": "2b3c1ff521651ed025f6008000b48ea72975bb6c",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 59,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/ToggleGroup/index.tsx": {
+      "ours": "815070c10ce08ec680e24677de8684dabbe5c7ca",
+      "theirs": "815070c10ce08ec680e24677de8684dabbe5c7ca",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 56,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/ControlTooltip.tsx": {
+      "ours": "77d44d273c886bae64e5cc7a697bf0a3cc052e55",
+      "theirs": "77d44d273c886bae64e5cc7a697bf0a3cc052e55",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 66,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/TooltipContent.tsx": {
+      "ours": "fe96a0c78b752965f3d30e21660c408327104151",
+      "theirs": "131b7ff30b4f04d52ef3b3d390ca9e6dc8f10456",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 7,
+      "lines": 73,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/TooltipRoot.tsx": {
+      "ours": "54b9c308deb58b1f480024b2d72660c7fe18deb9",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 15,
+      "lines": 64,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/TooltipTrigger.tsx": {
+      "ours": "de04b89af29c7d2bf10a4f141680d22eab1ee0bc",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 6,
+      "lines": 111,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/context.ts": {
+      "ours": "d0c113ec538d14fe0ba3f2a177f5aa7153e138bb",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 3,
+      "lines": 15,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tooltip/index.tsx": {
+      "ours": "8833d33f86e0dfaebb4aabaca94714793a6b7310",
+      "theirs": "b2ad1d79e2530150f19d86f938a55fcde1426324",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 3,
+      "lines": 23,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tour/TourCard.tsx": {
+      "ours": "7df1a28f450ba715a1432f7b82be7d2a7acc2d9a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 24,
+      "lines": 156,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tour/index.tsx": {
+      "ours": "13d3c3f51ab147aef05bdfef86f2a142a989de2b",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 45,
+      "lines": 371,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tour/place.ts": {
+      "ours": "50697bb95e88a00d6a7209b5a26dc8f87172cc9a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 21,
+      "lines": 117,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Tree/index.tsx": {
+      "ours": "5bd04b91e1a0405b8398c3303dae97701c1e502c",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {
+        "conditional-class": 2,
+        "components-per-file": 2
+      },
+      "comment": 54,
+      "lines": 305,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/TruncatedTitleTooltip/index.tsx": {
+      "ours": "a59d555848ba2884fc120a29d637ef08fdc5b8fd",
+      "theirs": "c308df1fb98f25852ae6c4ca6a5984d59ff8717f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 20,
+      "lines": 93,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/components/Typography/index.tsx": {
+      "ours": "770bbe6ec3adf3228324a9522f6c64f99713c659",
+      "theirs": "dacb1f79230030f4e4ed2531303f405ae3ae25a9",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 27,
+      "lines": 222,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/constants.ts": {
+      "ours": "3fe48757b9f07404077a8b55731d7a5aa00f0447",
+      "theirs": "3fe48757b9f07404077a8b55731d7a5aa00f0447",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 4,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/index.tsx": {
+      "ours": "661a80b3f707e22275a897507da86b82aacae4c7",
+      "theirs": "661a80b3f707e22275a897507da86b82aacae4c7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 8,
+      "lines": 477,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/prop-getters.ts": {
+      "ours": "9b105b8fc60b1201d8ec6878cb667bb84fd86d64",
+      "theirs": "9b105b8fc60b1201d8ec6878cb667bb84fd86d64",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 189,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/types.ts": {
+      "ours": "8724e8916150ceee4556b5d60d9478298b3716c6",
+      "theirs": "8724e8916150ceee4556b5d60d9478298b3716c6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 4,
+      "lines": 179,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-autocomplete-keyboard.ts": {
+      "ours": "05b8be730d9cb4a550310214ef04461de651c67f",
+      "theirs": "05b8be730d9cb4a550310214ef04461de651c67f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 201,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-autocomplete-selection.ts": {
+      "ours": "44a89ad3dfde299e6f69e24dcaba6efa8d354ff2",
+      "theirs": "44a89ad3dfde299e6f69e24dcaba6efa8d354ff2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 157,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-autocomplete-state.ts": {
+      "ours": "4c245e60a6c42e1def04bdb8eb6c4f18046efc45",
+      "theirs": "4c245e60a6c42e1def04bdb8eb6c4f18046efc45",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 1,
+      "lines": 164,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-badge-navigation.ts": {
+      "ours": "170e9fd4746b6846bc1b8d5ae16abef6ec46ed2e",
+      "theirs": "170e9fd4746b6846bc1b8d5ae16abef6ec46ed2e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 102,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-filtered-options.ts": {
+      "ours": "e2c84ed41f4cca3a5ab6cb08acfd2283c20a8c8e",
+      "theirs": "e2c84ed41f4cca3a5ab6cb08acfd2283c20a8c8e",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 72,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-grouped-options.ts": {
+      "ours": "3d9a09cbfe01dbefe6643d751438fb689be406be",
+      "theirs": "3d9a09cbfe01dbefe6643d751438fb689be406be",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 42,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/use-highlight-index.ts": {
+      "ours": "6067a9809eb14b5565355d2e9813f14fc811f8d9",
+      "theirs": "6067a9809eb14b5565355d2e9813f14fc811f8d9",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 202,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-autocomplete/utils.ts": {
+      "ours": "16de9187ad3aacebdb21cd5a6482c99fd64c4ee6",
+      "theirs": "16de9187ad3aacebdb21cd5a6482c99fd64c4ee6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 87,
+      "lines": 287,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-gutter-inset/index.ts": {
+      "ours": "03ba73733a6ca39f67d2b5b8c4d734d5427ad035",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 15,
+      "lines": 57,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-mobile.tsx": {
+      "ours": "a97f56e93dcdc6fc347e1e4874e715dea96651fa",
+      "theirs": "a97f56e93dcdc6fc347e1e4874e715dea96651fa",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 11,
+      "lines": 41,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-scroll-shadow/constants.ts": {
+      "ours": "42335c400a1e1a042f5851d8df5581a7aad5ce34",
+      "theirs": "42335c400a1e1a042f5851d8df5581a7aad5ce34",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 2,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-scroll-shadow/get-mask-image.ts": {
+      "ours": "d56fe3619c145d376735cfb5b4dc7d2f8721ace5",
+      "theirs": "d56fe3619c145d376735cfb5b4dc7d2f8721ace5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-scroll-shadow/index.ts": {
+      "ours": "e02aecdb3ae703a65f38c9889660c743d001d254",
+      "theirs": "e02aecdb3ae703a65f38c9889660c743d001d254",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 164,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-scroll-shadow/types.ts": {
+      "ours": "e47064bd5d87d8f9fbcb59f720a1c5f4f3307aa2",
+      "theirs": "e47064bd5d87d8f9fbcb59f720a1c5f4f3307aa2",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 0,
+      "lines": 11,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-target-rect/geometry.ts": {
+      "ours": "31ad1dcaa379b94a802f450109dd5a6509758913",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 33,
+      "lines": 123,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-target-rect/index.ts": {
+      "ours": "5cd34bae6a9e182a2d7568c00ce91cf1e60c5724",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 16,
+      "lines": 95,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-target-rect/portal.ts": {
+      "ours": "c25a6175f8db7150ee75fc54d3a59a93c1f0ed07",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 5,
+      "lines": 21,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-target-rect/react-dom.d.ts": {
+      "ours": "2e9a81edc8e07e1b7cafbc9f7ba8c954405a418d",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 7,
+      "lines": 17,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/hooks/use-target-rect/use-measure.ts": {
+      "ours": "d937ac3ad35c187048e64e5f70a6898a3153111f",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 17,
+      "lines": 98,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/breakpoints.ts": {
+      "ours": "a19081d33d0744a0643ff9314c89962ed4f11ff5",
+      "theirs": "a19081d33d0744a0643ff9314c89962ed4f11ff5",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 14,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/button-keyboard.ts": {
+      "ours": "088660c8adf446756fbb38a4a28bbdd90c8056e6",
+      "theirs": "088660c8adf446756fbb38a4a28bbdd90c8056e6",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 14,
+      "lines": 29,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/compose-event-handlers.ts": {
+      "ours": "61f6848a9d6ef7933307987111fd484b94c7c556",
+      "theirs": "61f6848a9d6ef7933307987111fd484b94c7c556",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 5,
+      "lines": 16,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/compose-refs.ts": {
+      "ours": "666eb8df392ca9c7256d563f25d16048aede5238",
+      "theirs": "666eb8df392ca9c7256d563f25d16048aede5238",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 6,
+      "lines": 30,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/constants.ts": {
+      "ours": "8aed41a890cf23974b274f69a2b361506a4a42df",
+      "theirs": "bf618148c330cd82d64545e1647067d487ad9bfb",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 21,
+      "lines": 205,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/cva.ts": {
+      "ours": "d8d8be621e45a3c18e362b152101cb5a2e993b23",
+      "theirs": "d8d8be621e45a3c18e362b152101cb5a2e993b23",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 22,
+      "lines": 39,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/focus-modality.ts": {
+      "ours": "7b6992d0d4e58ea902500bcc4bb0a8d293b0c3e7",
+      "theirs": "7b6992d0d4e58ea902500bcc4bb0a8d293b0c3e7",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 12,
+      "lines": 52,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/portal-container.ts": {
+      "ours": "8e63b8c1735c5a4d758e19d1fd205b9c2cbb046a",
+      "theirs": null,
+      "inUpstream": false,
+      "rules": {},
+      "comment": 15,
+      "lines": 28,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/lib/utils.ts": {
+      "ours": "bb5af1c7ec16d3e55d2acf3f1403d1096a33930f",
+      "theirs": "a5a21978c2363715773bc9f186d5753fa850ce50",
+      "inUpstream": true,
+      "rules": {
+        "conditional-class": 1
+      },
+      "comment": 63,
+      "lines": 112,
+      "sectionRefs": 0,
+      "dates": 0
+    },
+    "src/tailwind-preset.ts": {
+      "ours": "3f49d0774d59c160e868e663053459778b067d3d",
+      "theirs": "4322723afe06f7b34d51ce6c53733c170c44c27f",
+      "inUpstream": true,
+      "rules": {},
+      "comment": 36,
+      "lines": 399,
+      "sectionRefs": 0,
+      "dates": 0
+    }
+  }
+}

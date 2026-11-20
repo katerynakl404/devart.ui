@@ -1,69 +1,88 @@
-import { render } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
-import { MetaRow } from '../index';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { createRef, type ReactNode } from 'react';
+import { describe, expect, it, vi } from 'vitest';
+import { TooltipProvider } from '../../Tooltip';
+import { MetaRow, MetaRowActions, MetaRowCount } from '../index';
 
-const row = (container: HTMLElement) =>
-  container.querySelector('[data-slot="meta-row"]') as HTMLElement;
+// The ✕ sits in a raw Radix tooltip, which throws without a provider.
+const renderRow = (ui: ReactNode) =>
+  render(<TooltipProvider>{ui}</TooltipProvider>);
 
 describe('MetaRow', () => {
-  describe('sticky', () => {
-    it('stays in the flow, transparent, by default', () => {
-      const { container } = render(
-        <MetaRow>
-          <MetaRow.Count>5 connections</MetaRow.Count>
-        </MetaRow>
-      );
+  it('renders its parts with their data-slot markers', () => {
+    const ref = createRef<HTMLDivElement>();
+    const { container } = renderRow(
+      <MetaRow ref={ref}>
+        <MetaRowCount>3 selected</MetaRowCount>
+        <MetaRowActions>
+          <button type="button">Delete</button>
+        </MetaRowActions>
+      </MetaRow>
+    );
 
-      expect(row(container)).not.toHaveClass('sticky');
-      expect(row(container)).toHaveClass('bg-transparent');
-      expect(row(container).style.top).toBe('');
-    });
+    const root = container.querySelector('[data-slot="meta-row"]');
+    expect(ref.current).toBe(root);
+    expect(screen.getByText('3 selected')).toHaveAttribute(
+      'data-slot',
+      'meta-row-count'
+    );
+    expect(screen.getByText('Delete').parentElement).toHaveAttribute(
+      'data-slot',
+      'meta-row-actions'
+    );
+  });
 
-    /**
-     * The page colour, not transparency: a sticky row the list scrolls under
-     * has to hide the rows passing behind it.
-     */
-    it('pins to the top of the scroller on the page colour', () => {
-      const { container } = render(
-        <MetaRow sticky>
-          <MetaRow.Count>3 selected</MetaRow.Count>
-        </MetaRow>
-      );
+  it('renders no ✕ without onClear', () => {
+    renderRow(
+      <MetaRow>
+        <MetaRowCount>5 connections</MetaRowCount>
+      </MetaRow>
+    );
 
-      expect(row(container)).toHaveClass('sticky', 'bg-surface-page');
-      expect(row(container)).not.toHaveClass('bg-transparent');
-      expect(row(container).style.top).toBe('0px');
-    });
+    expect(
+      screen.queryByRole('button', { name: 'Clear selection' })
+    ).toBeNull();
+  });
 
-    it('offsets by the caller’s length', () => {
-      const { container } = render(
-        <MetaRow sticky stickyOffset="3.5rem">
-          <MetaRow.Count>3 selected</MetaRow.Count>
-        </MetaRow>
-      );
+  it('renders the ✕ last, labelled, and calls onClear', () => {
+    const onClear = vi.fn();
+    const { container } = renderRow(
+      <MetaRow onClear={onClear} clearLabel="Exit selection">
+        <MetaRowCount>3 selected</MetaRowCount>
+      </MetaRow>
+    );
 
-      expect(row(container).style.top).toBe('3.5rem');
-    });
+    const clear = screen.getByRole('button', { name: 'Exit selection' });
+    expect(container.querySelector('[data-slot="meta-row"]')?.lastChild).toBe(
+      clear
+    );
+    fireEvent.click(clear);
+    expect(onClear).toHaveBeenCalledTimes(1);
+  });
 
-    it('sets no offset while not sticky, even when one is passed', () => {
-      const { container } = render(
-        <MetaRow stickyOffset="3.5rem">
-          <MetaRow.Count>5 connections</MetaRow.Count>
-        </MetaRow>
-      );
+  it('sets top only when sticky', () => {
+    const { container, rerender } = renderRow(
+      <MetaRow stickyOffset="3rem" style={{ color: 'red' }} />
+    );
+    const root = () =>
+      container.querySelector<HTMLElement>('[data-slot="meta-row"]');
 
-      expect(row(container).style.top).toBe('');
-    });
+    expect(root()?.style.top).toBe('');
+    expect(root()?.style.color).toBe('red');
 
-    it('keeps the caller’s own style alongside the offset', () => {
-      const { container } = render(
-        <MetaRow sticky style={{ zIndex: 30 }}>
-          <MetaRow.Count>3 selected</MetaRow.Count>
-        </MetaRow>
-      );
+    rerender(
+      <TooltipProvider>
+        <MetaRow sticky stickyOffset="3rem" style={{ color: 'red' }} />
+      </TooltipProvider>
+    );
+    expect(root()?.style.top).toBe('3rem');
+    expect(root()?.style.color).toBe('red');
 
-      expect(row(container).style.top).toBe('0px');
-      expect(row(container).style.zIndex).toBe('30');
-    });
+    rerender(
+      <TooltipProvider>
+        <MetaRow sticky />
+      </TooltipProvider>
+    );
+    expect(root()?.style.top).toBe('0px');
   });
 });

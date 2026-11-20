@@ -1,7 +1,8 @@
 'use client';
 
+import { cn } from '../../lib/utils';
 import { Button } from '../Button';
-import { PAGINATION_BOX, type PaginationSize } from './size';
+import { type PaginationSize, paginationBoxVariants } from './size';
 
 interface Props {
   page: number;
@@ -21,7 +22,7 @@ const PageButton = ({ page, isActive, onClick, size = 'sm' }: Props) => (
     /* A SQUARE, not a button sized by its label: `px-0` and an explicit box,
        so "1" and "15" are the same width and the row does not reflow as the
        reader pages through it. */
-    className={`${PAGINATION_BOX[size]} px-0`}
+    className={cn(paginationBoxVariants({ size }), 'px-0')}
   >
     {page}
   </Button>

@@ -1,27 +1,53 @@
 'use client';
 
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { cva, type VariantProps } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Card } from '../Card';
 import { Typography } from '../Typography';
 
-const statTileVariants = cva('flex flex-col', {
+const statTileVariants = cva(
+  cn(
+    'flex flex-col',
+    // The kit's outline tile is filled and does not react to hover; the
+    // package's Card outline is unfilled and darkens its border on hover.
+    'bg-surface-card hover:border-stroke'
+  ),
+  {
+    variants: {
+      size: {
+        sm: 'gap-1 p-4',
+        md: 'gap-1.5 p-5',
+      },
+    },
+    defaultVariants: { size: 'md' },
+  }
+);
+
+const statTileValueVariants = cva('font-semibold tabular-nums', {
   variants: {
-    // The two rungs the rest of the system uses for a padded surface: `sm` is
-    // a dense row of tiles under a heading, `md` a dashboard's own top row.
     size: {
-      sm: 'gap-1 p-4',
-      md: 'gap-1.5 p-5',
+      sm: 'text-xl',
+      md: 'text-2xl',
     },
   },
   defaultVariants: { size: 'md' },
 });
 
-const VALUE_STYLE = { sm: 'title20', md: 'title24' } as const;
+const statTilePartVariants = cva('', {
+  variants: {
+    part: {
+      header: 'flex items-start justify-between gap-3',
+      // Overline: a caption, not a heading.
+      label: 'font-semibold text-xxs uppercase leading-4 tracking-caps',
+      description: 'font-normal text-xs',
+    },
+  },
+  defaultVariants: { part: 'header' },
+});
 
 export interface StatTileProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'title'>,
+  extends Omit<ComponentProps<'div'>, 'children'>,
     VariantProps<typeof statTileVariants> {
   /** What is being counted. Overline — it is a caption, not a heading. */
   label: ReactNode;
@@ -43,7 +69,7 @@ export interface StatTileProps
  * The value is `tabular-nums` — a row of tiles whose digits are different
  * widths shifts as the data refreshes.
  */
-function StatTile({
+const StatTile = ({
   label,
   value,
   description,
@@ -51,36 +77,55 @@ function StatTile({
   size,
   className,
   ...props
-}: StatTileProps) {
-  return (
-    <Card
-      variant="outline"
-      className={cn(statTileVariants({ size }), className)}
-      {...props}
+}: StatTileProps) => (
+  <Card
+    variant="outline"
+    data-slot="stat-tile"
+    className={cn(statTileVariants({ size }), className)}
+    {...props}
+  >
+    <div
+      data-slot="stat-tile-header"
+      className={statTilePartVariants({ part: 'header' })}
     >
-      <div className="flex items-start justify-between gap-3">
-        <Typography element="span" textStyle="overline" textColor="secondary">
-          {label}
-        </Typography>
-        {rightSlot}
-      </div>
       <Typography
-        element="span"
-        textStyle={VALUE_STYLE[size ?? 'md']}
-        textColor="primary"
-        className="tabular-nums"
+        variant="span"
+        textColor="secondary"
+        data-slot="stat-tile-label"
+        className={statTilePartVariants({ part: 'label' })}
       >
-        {value}
+        {label}
       </Typography>
-      {description ? (
-        <Typography element="span" textStyle="body12" textColor="secondary">
-          {description}
-        </Typography>
-      ) : null}
-    </Card>
-  );
-}
+      {rightSlot}
+    </div>
+
+    <Typography
+      variant="span"
+      textColor="primary"
+      data-slot="stat-tile-value"
+      className={statTileValueVariants({ size })}
+    >
+      {value}
+    </Typography>
+
+    {description ? (
+      <Typography
+        variant="span"
+        textColor="secondary"
+        data-slot="stat-tile-description"
+        className={statTilePartVariants({ part: 'description' })}
+      >
+        {description}
+      </Typography>
+    ) : null}
+  </Card>
+);
 
 StatTile.displayName = 'StatTile';
 
-export { StatTile, statTileVariants };
+export {
+  StatTile,
+  statTilePartVariants,
+  statTileValueVariants,
+  statTileVariants,
+};

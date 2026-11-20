@@ -62,6 +62,8 @@ interface FileProps extends VariantProps<typeof fileVariants> {
   rightSlot?: ReactNode;
   onClick?: () => void;
   onDismiss?: () => void;
+  /** Accessible name of the ✕ button. @default 'Dismiss' */
+  dismissLabel?: string;
   onRetry?: () => void;
 }
 
@@ -79,6 +81,7 @@ function File({
   rightSlot: rightSlotProp,
   onClick,
   onDismiss,
+  dismissLabel,
   onRetry,
 }: FileProps) {
   const Icon = iconProp ?? <FileIcon className="size-6 text-brand-tertiary" />;
@@ -166,6 +169,7 @@ function File({
         isError={isError}
         onRetry={onRetry}
         onDismiss={onDismiss}
+        dismissLabel={dismissLabel}
       />
     </div>
   );

@@ -15,7 +15,7 @@ interface ModalBodyProps extends PropsWithChildren<ComponentProps<'div'>> {
  * The dialog's scrolling middle. It spans the dialog's full width (`-mx-4`,
  * out over `ModalContent`'s `p-4`) and puts the padding back inside, so the
  * scrollbar sits in the dialog's own right padding, against its edge — not
- * between the fields and that padding (§176).
+ * between the fields and that padding.
  *
  * `useGutterInset` reserves the gutter and pads the right by the measured left
  * padding less the bar, so the content is inset alike on both sides, with a bar

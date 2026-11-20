@@ -70,7 +70,7 @@ function SidebarMobileTrigger({
           burger reads as promising. It also made the one control the two
           products share behave differently in each, because the turn had
           reached one prototype's bundle and not the other's, which is how
-          it was found (Kateryna, 2026-11-20). A caller that wants a second
+          it was found. A caller that wants a second
           state passes `icon` and draws it. */}
       {icon ?? <Menu />}
     </IconButton>

@@ -77,7 +77,7 @@ export function ModalContent({
         <ModalOverlay />
         <ModalPrimitive.Content
           ref={ref}
-          // No `aria-describedby={undefined}` here any more (2026-10-27). It
+          // No `aria-describedby={undefined}` here any more. It
           // silenced the old Radix warning for a dialog without a Description,
           // and it also overrode the id Radix points at one — so the
           // `ModalDescription` sentence was never announced. Radix now leaves

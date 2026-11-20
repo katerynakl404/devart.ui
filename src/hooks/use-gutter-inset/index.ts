@@ -5,7 +5,7 @@ import { useLayoutEffect, useState } from 'react';
 
 /**
  * The style a scrolling body needs so its scrollbar costs the content nothing
- * on one side only (§176, §178).
+ * on one side only.
  *
  * The gutter is reserved whether or not the body overflows
  * (`scrollbar-gutter: stable`), so the content does not change width as it

@@ -13,7 +13,7 @@ import { expect, fn, screen, waitFor } from 'storybook/test';
 import { Button } from '../Button';
 import { DropdownMenuItem, DropdownMenuSeparator } from '../DropdownMenu';
 import { InlineRename } from '../InlineRename';
-import { MetaRow } from '../MetaRow';
+import { MetaRow, MetaRowActions, MetaRowCount } from '../MetaRow';
 import { PinToggle } from '../PinToggle';
 import { TooltipProvider } from '../Tooltip';
 import { Typography } from '../Typography';
@@ -385,13 +385,13 @@ export const Interactive: Story = {
               sticky={hasSelection}
               onClear={hasSelection ? () => setSelected(new Set()) : undefined}
             >
-              <MetaRow.Count>
+              <MetaRowCount>
                 {hasSelection
                   ? `${selected.size} selected`
                   : `${chats.length} conversations`}
-              </MetaRow.Count>
+              </MetaRowCount>
               {hasSelection ? (
-                <MetaRow.End>
+                <MetaRowActions>
                   <Button
                     size="sm"
                     variant="destructiveTertiary"
@@ -405,7 +405,7 @@ export const Interactive: Story = {
                   >
                     Delete
                   </Button>
-                </MetaRow.End>
+                </MetaRowActions>
               ) : null}
             </MetaRow>
 

@@ -17,7 +17,7 @@ import { cn, glyphStroke } from '../../lib/utils';
    banner and beside a name, but NOT `Alert`'s whole scale. `info` and
    `success` were carried over from it and neither earned its place: `info`
    was the same ⓘ as `neutral` in another colour, and a description is grey
-   (her decision, 2026-11-19); `success` had zero call sites in either
+   `success` had zero call sites in either
    product, and a green tick beside a name marks the thing nobody needs
    marked.
 
@@ -25,7 +25,7 @@ import { cn, glyphStroke } from '../../lib/utils';
    `IconHint`, which is a button and renders this inside it — that is what the
    `interactive` axis is for: the neutral ⓘ steps up a shade as its button is
    hovered or focused, and standalone it never does. Splitting the two is what
-   `IconHint` was before (§152): one component with a `tooltip` prop that
+   `IconHint` was before: one component with a `tooltip` prop that
    swapped the whole render — a focusable `role="img"` with it, an
    `aria-hidden` span without — which is two jobs and two accessibility
    contracts behind one prop. */

@@ -102,7 +102,7 @@ function OverCatalog({ className }: { className?: string }) {
           {index === 0 ? (
             <Popover open>
               <PopoverTrigger asChild>
-                <LinkButton tone="body">{name}</LinkButton>
+                <LinkButton variant="secondary">{name}</LinkButton>
               </PopoverTrigger>
               <PopoverContent
                 align="start"

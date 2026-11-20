@@ -23,7 +23,7 @@ export function ModalTitle({
         textColor="primary"
         align={align}
         // A name with no spaces (a connection id) breaks instead of running
-        // out of the dialog; the title is never truncated (§185).
+        // out of the dialog; the title is never truncated.
         className={cn('min-w-0 break-words', className)}
         {...props}
       />
