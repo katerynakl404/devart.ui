@@ -4272,3 +4272,28 @@ whatever the caller aligns the card to. The bridge LinkAI held meanwhile
   along.
 - **The 18px checkbox** is itself off the 4px step, and it is what makes
   "align to the top" land 1px out even where the card is one line.
+
+---
+
+## 191. `SidebarMobileTrigger` — the burger stands still
+
+`src/components/Sidebar/SidebarMobileTrigger.tsx`
+
+From — LinkAI, where the drawer's trigger turned and Insightis's did not
+(Kateryna, 2026-11-20).
+
+The default glyph turned a quarter while the sheet was open. Two things
+were wrong with it:
+
+- **A burger turned a quarter is three vertical lines.** It is not a second
+  state of the same sign — it is a different, meaningless one. A turning
+  burger reads as promising the ✕ that closes, and this never arrives at
+  one.
+- **It was the one control both prototypes share, behaving differently in
+  each.** Not by anyone's decision: the turn had reached LinkAI's bundle
+  and not Insightis's, so the difference was the age of a copy. That is how
+  it was noticed, and it is the better argument of the two — a shared
+  control that drifts by bundle age is a defect whatever the glyph does.
+
+The glyph is now the same open or closed. A caller that wants a second
+state passes `icon` and draws it, which is what the prop is for.

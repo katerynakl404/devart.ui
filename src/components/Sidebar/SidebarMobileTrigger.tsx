@@ -31,8 +31,8 @@ export interface SidebarMobileTriggerProps
  * apart with `:not([data-sidebar])`, so stamping one here would quietly make
  * every such selector match both.
  *
- * The default glyph rotates a quarter turn while the sheet is open. The
- * tooltip hangs below by default: the button lives in a header at the top of
+ * The glyph does not change while the sheet is open — pass `icon` to draw a
+ * second state. The tooltip hangs below by default: the button lives in a header at the top of
  * the page, with nothing above it to hang from.
  */
 function SidebarMobileTrigger({
@@ -48,7 +48,7 @@ function SidebarMobileTrigger({
   onClick,
   ...props
 }: SidebarMobileTriggerProps) {
-  const { openMobile, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const name = ariaLabel ?? label;
 
   const trigger = (
@@ -64,14 +64,15 @@ function SidebarMobileTrigger({
       className={cn('pointer-events-auto z-10 [&_svg]:size-[18px]', className)}
       {...props}
     >
-      {icon ?? (
-        <Menu
-          className={cn(
-            'transition-transform duration-200',
-            openMobile && 'rotate-90'
-          )}
-        />
-      )}
+      {/* The glyph does not turn while the sheet is open. It used to turn a
+          quarter, and a burger turned a quarter is three VERTICAL lines —
+          not a second state of the same sign, and not the ✕ that a turning
+          burger reads as promising. It also made the one control the two
+          products share behave differently in each, because the turn had
+          reached one prototype's bundle and not the other's, which is how
+          it was found (Kateryna, 2026-11-20). A caller that wants a second
+          state passes `icon` and draws it. */}
+      {icon ?? <Menu />}
     </IconButton>
   );
 

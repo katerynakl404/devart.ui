@@ -70,7 +70,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** The glyph rotates a quarter turn while the sheet is open. */
+/** The glyph is the same open or closed; a second state is the caller's `icon`. */
 export const Secondary: Story = {
   args: { variant: 'secondary' },
 };
