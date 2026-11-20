@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { PanelLeft } from 'lucide-react';
 import { Typography } from '../Typography';
 import {
   Sidebar,
@@ -70,9 +71,19 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-/** The glyph is the same open or closed; a second state is the caller's `icon`. */
+/** The button's own variant, for a header that needs an outlined control. */
 export const Secondary: Story = {
   args: { variant: 'secondary' },
+};
+
+/**
+ * The glyph is the same whether the sheet is open or closed: a burger turned
+ * a quarter is three vertical lines, not a second state of the same sign.
+ * A caller that wants the open state to look different draws it — `icon`
+ * takes whatever the glyph should be.
+ */
+export const OwnGlyph: Story = {
+  args: { icon: <PanelLeft /> },
 };
 
 /**
